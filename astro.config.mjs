@@ -3,9 +3,6 @@ import alpine from '@astrojs/alpinejs';
 import mdx from "@astrojs/mdx";
 
 export default defineConfig({
-	redirects: {
-		'/wiki/': '/wiki/index/'
-	},
 	markdown: {
 		smartypants: false,
 		syntaxHighlight: 'prism',

@@ -1,5 +1,5 @@
 [
-    ["", "Home"],
+    ["index", "Home"],
     ["differences", "Differences between other FNF engines"],
     ["usage", "How does one use the engine? <span style='color: #d4b528;'>(Needs Links)</span>"],
     ["faq", "<span style='color: #43a1aa;'>FAQ</span>"],
