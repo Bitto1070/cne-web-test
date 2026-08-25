@@ -1,2 +1,1 @@
-# https://betpowo.github.io
-my site
+cod name
