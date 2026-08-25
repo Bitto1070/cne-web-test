@@ -11,13 +11,13 @@ function stupid(b:Array<any>, root:string):string {
     if (!url.endsWith('/')) url += '/';
     return `<div>
         <a href=${'/wiki/'+root+b[0]} style="text-decoration: none;">
-            <button style="width: 100%; text-align: left; justify-content: left; margin: 0px; display: block; padding: 8px; font-size: 0.9em;"
+            <button style="width: 100%; text-align: left; justify-content: left; margin: 0px; display: block; border-radius: 8px;"
             class=${((url == ('/wiki/'+root+b[0])) || (url == ('/wiki/'+root+b[0]+'/'))) ? '' : 'col-black'}>
                 ${b[1]}
             </button>
         </a>
         ${(b[2] != undefined) ? 
-            `<div style="margin-left: 1em;
+            `<div style="margin-left: 0.5em;
             padding-left: 0.5em;
             border-left: 2px solid var(--primary-color);">
                 ${b[2].map((c:any) => (stupid(c, b[0] + '/'))).join('\n')}
@@ -29,7 +29,7 @@ function stupid(b:Array<any>, root:string):string {
 
 <Page title={frontmatter.title}>
     <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px;">
-        <div class="subpanel" style="display: flex; flex-direction: column; overflow-y: auto; height: 100vh; position: sticky; top: 0;">
+        <div class="subpanel" style="display: flex; padding: 3px; flex-direction: column; overflow-y: auto; height: 100vh; position: sticky; top: 0;">
             {
                 poop.map((b:any) => (
                     <Fragment set:html={stupid(b, '')} />
