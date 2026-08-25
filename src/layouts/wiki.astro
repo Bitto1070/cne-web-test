@@ -27,9 +27,9 @@ function stupid(b:Array<any>, root:string):string {
 }
 ---
 
-<Page title={frontmatter.title}>
-    <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px; height: 92vh;">
-        <div class="subpanel" style="display: flex; flex-direction: column; overflow-y: auto;">
+<Page title={frontmatter.title} noFooter={true}>
+    <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px;">
+        <div class="subpanel" style="display: flex; flex-direction: column; overflow-y: auto; height: 100vh; position: sticky; top: 0;">
             {
                 poop.map((b:any) => (
                     <Fragment set:html={stupid(b, '')} />

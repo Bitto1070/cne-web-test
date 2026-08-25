@@ -2,9 +2,10 @@
 import './src/styles/global.css';
 interface Props {
 	title?: string;
+	noFooter?: boolean;
 }
 
-const { title = 'Home' } = Astro.props;
+const { title = 'Home', noFooter = false } = Astro.props;
 ---
 
 <!-- blehhh -->
@@ -68,43 +69,45 @@ const { title = 'Home' } = Astro.props;
 		<div style="margin: 12px;">
             <slot/>
 		</div>
-        <footer>
-            <div style="display: flex; align-items: center; justify-content: center;">
-				{
-					[
-						{name: 'Home', url: '/'},
-						{name: 'API', url: '/api-docs'},
-						{name: 'Wiki', url: '/wiki'},
-						{name: 'Tools', url: '/tools'},
-						{name: 'Contribute', url: 'https://deltarune.com/lancer'}
-					].map((a) => (
-						<a href={a.url} style="text-decoration: none;">
-							<button>{a.name}</button>
-						</a>
-					))
-				}
-				<div style="width: 100px;"></div>
-				☻ Codename Crew
-				<br/>
-				{
-					[
-						['github', 'https://github.com/CodenameCrew/'],
-						['gamebanana', 'https://deltarune.com/lancer'],
-						['itch', 'https://deltarune.com/lancer'],
-						['discord', 'https://deltarune.com/lancer'],
-						['twitter', 'https://deltarune.com/lancer'],
-						['bluesky', 'https://deltarune.com/lancer'],
-						['youtube', 'https://deltarune.com/lancer'],
-						
-					].map((a) => (
-						<a href={a[1]} style="text-decoration: none;">
-							<button style="margin: 3px;">
-								<img src={"/img/icons/" + a[0] + ".svg"} height="16"/>
-							</button>
-						</a>
-					))
-				}
-			</div>
-		</footer>
+		{
+			!noFooter && (<footer>
+				<div style="display: flex; align-items: center; justify-content: center;">
+					{
+						[
+							{name: 'Home', url: '/'},
+							{name: 'API', url: '/api-docs'},
+							{name: 'Wiki', url: '/wiki'},
+							{name: 'Tools', url: '/tools'},
+							{name: 'Contribute', url: 'https://deltarune.com/lancer'}
+						].map((a) => (
+							<a href={a.url} style="text-decoration: none;">
+								<button>{a.name}</button>
+							</a>
+						))
+					}
+					<div style="width: 100px;"></div>
+					☻ Codename Crew
+					<br/>
+					{
+						[
+							['github', 'https://github.com/CodenameCrew/'],
+							['gamebanana', 'https://deltarune.com/lancer'],
+							['itch', 'https://deltarune.com/lancer'],
+							['discord', 'https://deltarune.com/lancer'],
+							['twitter', 'https://deltarune.com/lancer'],
+							['bluesky', 'https://deltarune.com/lancer'],
+							['youtube', 'https://deltarune.com/lancer'],
+							
+						].map((a) => (
+							<a href={a[1]} style="text-decoration: none;">
+								<button style="margin: 3px;">
+									<img src={"/img/icons/" + a[0] + ".svg"} height="16"/>
+								</button>
+							</a>
+						))
+					}
+				</div>
+			</footer>)
+		}
 	</body>
 </html>
