@@ -195,12 +195,6 @@ li::marker {
     filter: brightness(111%);
 }
 
-.last-updated {
-    margin-top: 2em;
-    opacity: 60%;
-    font-size: 0.8em;
-}
-
 .mod.premium {
     background: linear-gradient(-45deg, var(--secondary-color), var(--primary-color) 22%, var(--secondary-color) 75%);
     padding: 16px;

@@ -32,12 +32,12 @@ const descAlign =  (tags.includes('centered-desc')) ? 'center' : 'left';
 }
 
 <a href={data.link} target="_blank" class={"mod" + (isPremium ? ' premium' : '')} x-data={`{lastUpdatedDate: ${data.lastUpdated == 'unreleased' ? -1 : `new Date("${data.lastUpdated}")`}}`} style="text-decoration: none; position: relative;" x-show={show}>
-	<div>
-		<img alt={data.name} src={`./src/content/mods/${id}.jpg`} style="width: 100%; margin-bottom: 8px; border: 2px solid #0004;"/>
-		<br/>
-		<p class="phantommuff" style={`text-align: ${titleAlign}; font-size: ${titleSize}em; margin-top: 0; margin-bottom: 0; font-weight: 600;`}>{data.name}</p>
-		<p style={`text-align: ${descAlign}; font-size: ${descSize}em; margin-top: 0;`}>{data.description}</p>
-		<b class="last-updated" x-html="(lastUpdatedDate == -1) ? 'unreleased' : getRelativeTimeString(lastUpdatedDate)" title={new Date(data.lastUpdated).toDateString()}/>
+	<div style="display: flex; flex-direction: column;">
+		<img alt={data.name} src={`./src/content/mods/${id}.jpg`} style="width: 100%; border: 2px solid #0004;"/>
+		<p class="phantommuff" style={`text-align: ${titleAlign}; font-size: ${titleSize}em; margin: 0; margin-top: 0.5em; font-weight: 600;`}>{data.name}</p>
+		<p style={`text-align: ${descAlign}; font-size: ${descSize}em; margin: 0; flex-grow: 1;`}>{data.description}</p>
+		<b class="last-updated" style="opacity: 50%; margin-top: 0.2em; font-size: 0.8em;"
+		x-html="(lastUpdatedDate == -1) ? 'unreleased' : getRelativeTimeString(lastUpdatedDate)" title={new Date(data.lastUpdated).toDateString()}/>
 	</div>
 	{
 		isPremium && (<div style="position: absolute; bottom: -40px; pointer-events: none;" >
