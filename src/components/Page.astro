@@ -1,5 +1,5 @@
 ---
-import './src/styles/global.css';
+import '../styles/global.css';
 interface Props {
 	title?: string;
 	noFooter?: boolean;
@@ -55,9 +55,9 @@ const { title = 'Home', noFooter = false } = Astro.props;
 			<div style="display: flex;">
 			{
 				[
-					{name: 'API', url: '/api-docs'},
-					{name: 'Wiki', url: '/wiki'},
-					{name: 'Tools', url: '/tools'}
+					{name: 'API', url: '/api-docs/'},
+					{name: 'Wiki', url: '/wiki/'},
+					{name: 'Tools', url: '/tools/'}
 				].map((a) => (
 					<a href={a.url} style="text-decoration: none; margin-top: 0.1em; margin-bottom: 0.1em;">
 						<button class="col-black">{a.name}</button>
@@ -75,9 +75,9 @@ const { title = 'Home', noFooter = false } = Astro.props;
 					{
 						[
 							{name: 'Home', url: '/'},
-							{name: 'API', url: '/api-docs'},
-							{name: 'Wiki', url: '/wiki'},
-							{name: 'Tools', url: '/tools'},
+							{name: 'API', url: '/api-docs/'},
+							{name: 'Wiki', url: '/wiki/'},
+							{name: 'Tools', url: '/tools/'},
 							{name: 'Contribute', url: 'https://deltarune.com/lancer'}
 						].map((a) => (
 							<a href={a.url} style="text-decoration: none;">
