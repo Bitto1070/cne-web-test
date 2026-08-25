@@ -20,15 +20,15 @@ function stupid(b:Array<any>, root:string):string {
             `<div style="margin-left: 1em;
             padding-left: 0.5em;
             border-left: 2px solid var(--primary-color);">
-                ${b[2].map((c:any) => (stupid(c, b[0] + '/')))}
+                ${b[2].map((c:any) => (stupid(c, b[0] + '/'))).join('\n')}
             </div>`
          : ''}
-    </div>`.replaceAll(',', ''); // ?????? WHERE ARE THOSE COMMAS COMING FROM
+    </div>`
 }
 ---
 
 <Page title={frontmatter.title}>
-    <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px; height: 90vh;">
+    <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px; height: 92vh;">
         <div class="subpanel" style="display: flex; flex-direction: column; overflow-y: auto;">
             {
                 poop.map((b:any) => (
