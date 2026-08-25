@@ -1,0 +1,49 @@
+---
+interface ModInfo {
+	name:string,
+	description:string,
+	lastUpdated:string,
+	link:string,
+	tags?: string[]
+};
+
+interface Props {
+	data: ModInfo,
+	id: string,
+	show: string
+}
+
+const { data, id, show } = Astro.props;
+const tags = data?.tags ?? [];
+const isPremium = (tags.includes('premium'));
+const titleSize = (tags.includes('longer-title')) ? 0.75 : ((tags.includes('long-title')) ? 0.9 : 1);
+const descSize = (tags.includes('longer-desc')) ? 0.75 : ((tags.includes('long-desc')) ? 0.9 : 1);
+
+const titleAlign = (tags.includes('centered-title')) ? 'center' : 'left';
+const descAlign =  (tags.includes('centered-desc')) ? 'center' : 'left';
+---
+
+{
+/*
+	i would have to use alpine stuff here
+	due to the fact the website could not get updated ever
+	and mods will freeze in time
+*/
+}
+
+<a href={data.link} target="_blank" class={"mod" + (isPremium ? ' premium' : '')} x-data={`{lastUpdatedDate: ${data.lastUpdated == 'unreleased' ? -1 : `new Date("${data.lastUpdated}")`}}`} style="text-decoration: none; position: relative;" x-show={show}>
+	<div>
+		<img alt={data.name} src={`./src/content/mods/${id}.jpg`} style="width: 100%; margin-bottom: 8px; border: 2px solid #0004;"/>
+		<br/>
+		<p style={`text-align: ${titleAlign}; font-size: ${titleSize}em; margin-top: 0; margin-bottom: 0; font-weight: 600;`}>{data.name}</p>
+		<p class="no-phantommuff" style={`text-align: ${descAlign}; font-size: ${descSize}em; margin-top: 0;`}>{data.description}</p>
+		<b class="last-updated" x-html="(lastUpdatedDate == -1) ? 'unreleased' : getRelativeTimeString(lastUpdatedDate)" title={new Date(data.lastUpdated).toDateString()}/>
+	</div>
+	{
+		isPremium && (<div style="position: absolute; bottom: -40px; pointer-events: none;" >
+			<img src="/img/sparkle-bottom.webp" class="sparkle" style="position: relative; left: -35px; width: 125%;"/>
+		</div><div style="position: absolute; top: -30px; z-index: 3;" >
+			<img src="/img/sparkle-top.webp" class="sparkle" style="position: relative; left: -25px; width: 125%;"/>
+		</div>)
+	}
+</a>

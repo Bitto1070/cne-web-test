@@ -1,0 +1,55 @@
+---
+import './src/styles/global.css';
+import Page from '../components/Page.astro';
+import poop from '../wiki.json';
+
+const { frontmatter } = Astro.props;
+
+// WORST SHIT IVE EVER done
+function stupid(b:Array<any>, root:string):string {
+    var url = Astro.url.pathname;
+    if (!url.endsWith('/')) url += '/';
+    return `<div style="margin-bottom: 0.5em;">
+        <a href=${'/wiki/'+root+b[0]} style="text-decoration: none;">
+            <button style="width: 100%; text-align: left; justify-content: left; margin: 0px; display: block; padding: 8px; font-size: 0.9em;"
+            class=${((url == ('/wiki/'+root+b[0])) || (url == ('/wiki/'+root+b[0]+'/'))) ? '' : 'col-black'}>
+                ${b[1]}
+            </button>
+        </a>
+        ${(b[2] != undefined) ? 
+            `<div style="margin-left: 1em;
+            padding-left: 0.5em;
+            border-left: 2px solid var(--primary-color);">
+                ${b[2].map((c:any) => (stupid(c, b[0] + '/')))}
+            </div>`
+         : ''}
+    </div>`.replaceAll(',', ''); // ?????? WHERE ARE THOSE COMMAS COMING FROM
+}
+---
+
+<Page title={frontmatter.title}>
+    <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px; height: 90vh;">
+        <div class="subpanel" style="display: flex; flex-direction: column; overflow-y: auto;">
+            {
+                poop.map((b:any) => (
+                    <Fragment set:html={stupid(b, '')} />
+                ))
+            }
+        </div>
+        <div class="panel" x-data={`{lastUpdated: new Date("${frontmatter.lastUpdated}")}`} style="overflow-y: auto; padding: 32px;">
+            <slot/>
+            <hr/>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <b style="opacity: 50%; font-weight: 100;">
+                    Written by {frontmatter.author} &bull;
+                    <span x-html="getRelativeTimeString(lastUpdated)" title={new Date(frontmatter.lastUpdated).toDateString()} />
+                </b>
+                <a href="https://deltarune.com/lancer/">Edit on GitHub</a>
+            </div>
+
+            <!--
+                add comment box here later
+            -->
+        </div>
+    </div>
+</Page>

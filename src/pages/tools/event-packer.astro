@@ -1,0 +1,56 @@
+---
+import './src/styles/global.css';
+import Page from '../../components/Page.astro';
+import FileUpload from '../../components/FileUpload.astro';
+---
+<style is:global>
+    .missed {
+        border: 1px dashed #f33;
+    }
+</style>
+<Page title="Event Packer">
+    <div class="panel" style="text-align: center; width: fit-content; margin: auto;">
+        <br/>
+        <h2>Event Packer</h2>
+        Pack event files into a single <code>.pack</code> file
+        <hr/>
+        <div style="width: 50vw;">
+            {
+                [
+                    {
+                        name: 'Event Script <span style="color: var(--primary-color);" title=".hx, .hxs, .hxc, .hscript">(hscript file)</span>',
+                        required: true,
+                        icon: 'script'
+                    },
+                    {
+                        name: 'Parameters (.json)',
+                        required: true,
+                        icon: 'json'
+                    },
+                    {
+                        name: 'Icon (.png)',
+                        required: false,
+                        icon: 'image'
+                    },
+                    {
+                        name: 'UI Script (.ui.hx)<sup style="color: var(--primary-color); cursor: help;" title="Script that generates a dynamic\nicon inside the Chart Editor\n\nThis field is not required">?</sup>',
+                        required: false,
+                        icon: 'ui-script'
+                    }
+                ].map((a) => (
+                    <div class="subpanel" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
+                        <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                            <img src={"/img/icons/pixel/" + a.icon + ".png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                            <span set:html={a.name}/>
+                            {
+                                (a.required) && <sup style="color: #f33; cursor: help; font-size: 1.3em;" title="This field is required">*</sup>
+                            }
+                        </div>
+                        <FileUpload/>
+                    </div>
+                ))
+            }
+            <button style="display: flex; width: 100%;">Pack Event Files</button>
+        </div>
+    </div>
+</Page>

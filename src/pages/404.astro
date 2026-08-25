@@ -1,0 +1,18 @@
+---
+import './src/styles/global.css';
+import Page from '../components/Page.astro';
+---
+<Page title="Page Not Found">
+    <div class="panel" style="text-align: center; width: fit-content; margin: auto;">
+        <img src="/img/codename-animated-icon.webp" alt="Codename Engine" height="150" />
+        <br/>
+        <br/>
+        The page you were trying to access does not exist.
+        <br/>
+        <br/>
+        <div style="display: flex; text-align: center; width: fit-content; margin: auto;">
+            <button onclick="window.history.back();">⬅ Back</button>
+            <button onclick="window.location.href = '/';">🏠 Home</button>
+        </div>
+    </div>
+</Page>

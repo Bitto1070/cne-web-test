@@ -1,0 +1,54 @@
+---
+import './src/styles/global.css';
+---
+<style>
+    input[type="file"] {
+        opacity: 0;
+        cursor: pointer;
+        font-size: 8px;
+    }
+
+    .custom-file-upload {
+        display: flex;
+        padding: 8px;
+        float: right;
+        align-items: center;
+        justify-content: space-between;
+        text-align: right;
+        gap: 12px;
+        border: 2px dotted var(--primary-color);
+        border-radius: 10px;
+        background: radial-gradient(#0000 10%, var(--secondary-color));
+        background-size: 200% 200%;
+        background-position: center;
+        cursor: pointer;
+    }
+
+    .custom-file-upload.uploaded {
+        background: radial-gradient(#0000 5%, var(--primary-color));
+        background-size: 200% 200%;
+        background-position: center;
+    }
+</style>
+<label class="custom-file-upload" for="files">
+    <input type="file" style="width: 12em; position: absolute;"/>
+    <img src="/img/icons/pixel/upload.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+    <span>Upload...</span>
+</label>
+<script>
+    var all = document.querySelectorAll('input[type="file"]');
+    all.forEach((a:any) => {
+        a.onchange = function() {
+            const label = a.parentNode;
+            const span = label.children[2];
+            if (a.files[0] != null) {
+                const fileName = a.files[0].name;
+                span.innerText = fileName;
+                label.classList.add('uploaded');
+            } else {
+                span.innerText = 'Upload...';
+                label.classList.remove('uploaded');
+            }
+        };
+    });
+</script>

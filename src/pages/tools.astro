@@ -1,0 +1,53 @@
+---
+import './src/styles/global.css';
+import Page from '../components/Page.astro';
+---
+<Page title="Tools">
+    <div class="panel" style="text-align: center; width: fit-content; margin: auto;">
+        <br/>
+        <h2>Tools</h2>
+        A variety of tools to help with mod development.
+        <hr/>
+        <div style="width: 50vw; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            {
+                [
+                    {
+                        name: 'Event Packer',
+                        desc: 'Pack event files into a single <code>.pack</code> file',
+                        url: '/tools/event-packer/'
+                    },
+                    {
+                        name: 'Texture Packer',
+                        desc: 'Optimize or repack spritesheets',
+                        url: 'https://kitzsh.github.io/tex-packer-ex/'
+                    },
+                    {
+                        name: 'Video Compressor',
+                        desc: 'Compress videos to reduce their size <b style="font-size: 0.7em;">(Warning: this is not a lossless compression)</b>',
+                        url: 'https://tools.rotato.app/compress/'
+                    },
+                    {
+                        name: 'Psych Character Converter',
+                        desc: 'Converts a Psych Engine character JSON to a Codename character XML',
+                        url: '/tools/psych-char-converter/'
+                    }
+                ].map((a) => (
+                    <a href={a.url} style="text-decoration: none;">
+                    <div class="subpanel"
+                    style="
+                    border: 2px solid #fff3; text-align: left;
+                    ">
+                        {
+                            (a.url.startsWith('https://')) && (
+                                <img src="/img/icons/external.svg" width="20" style="float: right;"/>
+                            )
+                        }
+                        <h3>{a.name}</h3>
+                        <p style="margin: 0;" class="no-phantommuff" set:html={a.desc}/>
+                    </div>
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</Page>

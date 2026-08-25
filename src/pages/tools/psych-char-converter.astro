@@ -1,0 +1,40 @@
+---
+import './src/styles/global.css';
+import Page from '../../components/Page.astro';
+import FileUpload from '../../components/FileUpload.astro';
+---
+<Page title="Psych Character Converter">
+    <div class="panel" style="text-align: center; width: fit-content; margin: auto;">
+        <br/>
+        <h2>Psych Character Converter</h2>
+        Converts a Psych Engine character JSON to a Codename character XML
+        <br/>
+        <b>Warning:</b> Offsets may not be fully accurate.
+        <hr/>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 80vw;">
+            <div class="subpanel" style="display: flex; flex-direction: column;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
+                    <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                        <img src="/img/icons/pixel/json.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                        <span>Input File (.json)</span>
+                    </div>
+                    <FileUpload/>
+                    <FileUpload/>
+                </div>
+                <textarea class="subpanel code" placeholder='{\n  ...\n}'
+                style="resize: none; border: 2px solid var(--secondary-color); display: flex; height: 100%;" />
+            </div>
+            <div class="subpanel" style="display: flex; flex-direction: column;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
+                    <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+                        <img src="/img/icons/pixel/xml.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                        <span>Output File (.xml)</span>
+                    </div>
+                    <button>Download</button>
+                </div>
+                <textarea class="subpanel code" placeholder='<...>\n\n</...>'
+                style="resize: none; border: 2px solid var(--secondary-color); height: 20em;" readonly />
+            </div>
+        </div>
+    </div>
+</Page>

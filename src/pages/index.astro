@@ -1,0 +1,198 @@
+---
+import './src/styles/global.css';
+import { getCollection } from "astro:content";
+import Page from '../components/Page.astro';
+import Mod from '../components/Mod.astro';
+import poop from '../donators.json';
+
+const modsCollection = await getCollection("mods");
+const mods = modsCollection.map((data) => data);
+
+mods.sort((a, b) => {
+    return Date.parse(b.data.lastUpdated) - Date.parse(a.data.lastUpdated);
+});
+
+function getTotalDonations(d:any):number {
+	var amount = 0;
+	for (let i = 0; i < d.donations.length; i++) {
+		amount += d.donations[i].amount;
+	}
+	return amount;
+}
+
+const donators = poop.donators.sort((a, b) => {
+    return getTotalDonations(b) - getTotalDonations(a);
+});
+
+function getIconButton(i:string) {
+	return `<img src="/img/icons/${i}.svg" width="20" style="margin-right: 7px;"/> `
+}
+// this sucks
+function getShowCondition(a:any) {
+	var ret = "'All'";
+	if (a.data.tags != undefined) {
+		if (a.data.lastUpdated == 'unreleased') ret = ",'Upcoming'";
+		if (a.data.tags.includes('featured')) ret += ",'Featured'";
+		if (a.data.tags.includes('loved')) ret += ",'Loved'";
+		if (a.data.tags.includes('admin-pick')) ret += ",'Admin Pick'";
+	}
+	return `[${ret}].includes(curSelected)`;
+}
+---
+<style is:global>
+	div.container {
+		display: grid;
+		grid-template-columns: 1.2fr 0.8fr;
+		gap: 16px;
+	}
+
+	.mod-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		justify-content: space-evenly;
+	}
+
+	@media screen and (max-width: 1000px) {
+		div.container {
+			display: block;
+		}
+	}
+
+	td {
+		margin: 20px;
+	}
+
+	td.name {
+		display: flex;
+		align-items: start;
+		font-size: 0.8em;
+	}
+
+	.experimental-table-elem {
+		box-shadow: 0px 1px 0px var(--primary-color) inset;
+	}
+
+	.donator {
+		border: 1px solid #000;
+		background-color: var(--background-secondary-color);
+		text-shadow: 1px 1px 2px var(--secondary-color);
+	}
+
+	.donator:first-child {
+		border: 1px solid #d7a537;
+		background-color: #725d2f;
+	}
+
+	.donator:nth-child(2) {
+		border: 1px solid #a3a3a3;
+		background-color: #5f5f5f;
+	}
+</style>
+<Page>
+	<div class="container">
+		<div class="panel" style="text-align: center;">
+			<img src="/img/codename-animated.webp" alt="Codename Engine" height="361" style="width: 44vw; height: auto;"/>
+			<br/>
+			Codename Engine is a fork of <a href="https://funkin.me/" target="_blank">Friday Night Funkin'</a>
+			<br/>with a focus on softcoding and modding.
+			<br/><br/>
+			<h2>Downloads</h2>
+			<table style="text-align: left; margin: auto;" class="subpanel">
+				<tr>
+					<td class="name">Stable</td>
+					<td>
+						<div style="display: flex;">
+						{
+							[`${getIconButton('github')} GitHub`,
+							 `${getIconButton('gamebanana')} GameBanana`,
+							 `${getIconButton('itch')} itch.io`].map((a) => (
+								<button set:html={a}/>
+							))
+						}
+						</div>
+					</td>
+				</tr>
+				<tr class="experimental-table-elem">
+					<td class="name">Experimental<span style="font-size: 4em;">*</span></td>
+					<td>
+						<div style="display: flex;">
+						{
+							[`${getIconButton('os/windows')} Windows`,
+							 /*`${getIconButton('os/apple')} Mac`,*/
+							 `${getIconButton('os/linux')} Linux`].map((a) => (
+								<button set:html={a}/>
+							))
+						}
+						</div>
+						<p style="width: 24em;">
+							* <span style="color: var(--primary-color); font-size: 0.9em;">These downloads come directly from our GitHub Actions and run on the latest changes.<br/><br/>They might be unstable as they're really new, use them at risk of bugs!</span>
+						</p>
+					</td>
+				</tr>
+			</table>
+			<br/><br/>
+			<i>
+			Make sure to join our official <a href="https://deltarune.com/lancer" target="_blank">Discord Server</a>!
+			<br/>You can contribute to this website by going to the <a href="https://deltarune.com/lancer" target="_blank">Website repository</a>
+			<br/>You can find the engine source by going to the <a href="https://github.com/CodenameCrew/CodenameEngine/" target="_blank">Engine repository</a>
+			</i>
+		</div>
+		<div class="panel" style="display: flex; flex-direction: column;" x-data="{ curSelected: 'All' }">
+			<h3 style="text-align: center;">Mods</h3>
+			<div style="display: flex; justify-content: center; margin-bottom: 5px;">
+			{
+				['All', 'Featured', 'Loved', 'Admin Pick', 'Upcoming'].map((a) => (
+					<button x-on:click={`curSelected = '${a}'`} x-bind:class={`curSelected == '${a}' ? null : 'col-black'`}>{a}</button>
+				))
+			}
+			</div>
+			<div style="display: flex; justify-content: center; margin-bottom: 5px;">
+				<a href="https://deltarune.com/lancer/" target="_blank" style="text-decoration: none; width: 100%;">
+					<button style="width: 100%;" set:html={`${getIconButton('external')} Submit your own!`}/>
+				</a>
+			</div>
+			<div class="subpanel mod-container" style="height: 100%; max-height: 64vh;">
+				{
+					mods.map((a) => (
+						<Mod data={a.data} id={a.id} show={getShowCondition(a)} />
+					))
+				}
+			</div>
+		</div>
+		<div class="panel" style="grid-column: 1/3; padding: 32px; text-align: center;">
+			<h2>Donators</h2>
+			<p class="phantommuff" style="width: 48em; margin: auto;">
+				Donations help support the engine's development. If you really REALLY like the engine, consider donating to our <a href="https://ko-fi.com/codename_engine/">Ko-fi</a>!
+				You can also access it with the button at the bottom left.
+			</p>
+			<br/>
+			<div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+				{
+					donators.map((a) => (
+						<div class="donator" style={
+							`text-align: left; display: flex; gap: 5px; padding: 8px; width: fit-content; `
+							+ (a.hasMembership && `box-shadow: 0px 0px 8px #ff0;`) // care
+						}>
+							<img src={a.profilePicture} width="32" height="32"/>
+							<div>
+								<b style="margin: 0; width: fit-content;">{a.name}</b>
+								<p style="margin: 0; width: fit-content;" class="no-phantommuff">&dollar;{getTotalDonations(a)}</p>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
+	<!--
+		TODO: implement the widget
+		PLEASE i cant get it to work somehow
+	-->
+	<button onclick='window.open("https://ko-fi.com/codename_engine", "_blank")' style="border-radius: 2px; position: fixed; bottom: 1vw; left: 1vw; z-index: 999;">
+		<img src="https://storage.ko-fi.com/cdn/logomarkLogo.png" width="20" alt="Ko-fi"/>&nbsp;Donate
+	</button>
+</Page>
