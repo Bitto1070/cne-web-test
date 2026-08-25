@@ -9,7 +9,7 @@ const { frontmatter } = Astro.props;
 function stupid(b:Array<any>, root:string):string {
     var url = Astro.url.pathname;
     if (!url.endsWith('/')) url += '/';
-    return `<div style="margin-bottom: 0.5em;">
+    return `<div>
         <a href=${'/wiki/'+root+b[0]} style="text-decoration: none;">
             <button style="width: 100%; text-align: left; justify-content: left; margin: 0px; display: block; padding: 8px; font-size: 0.9em;"
             class=${((url == ('/wiki/'+root+b[0])) || (url == ('/wiki/'+root+b[0]+'/'))) ? '' : 'col-black'}>
@@ -27,7 +27,7 @@ function stupid(b:Array<any>, root:string):string {
 }
 ---
 
-<Page title={frontmatter.title} noFooter={true}>
+<Page title={frontmatter.title}>
     <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px;">
         <div class="subpanel" style="display: flex; flex-direction: column; overflow-y: auto; height: 100vh; position: sticky; top: 0;">
             {

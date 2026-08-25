@@ -21,7 +21,6 @@
 * {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
     font-size: 16px;
-    color: var(--text-color);
 }
 
 :not(.no-phantommuff):not(code):not(textarea):not(p), p.phantommuff {
@@ -34,13 +33,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 2.25em;
-}
-h2 {
     font-size: 2em;
 }
-h3 {
+h2 {
     font-size: 1.5em;
+}
+h3 {
+    font-size: 1.25em;
 }
 
 a {
@@ -50,6 +49,7 @@ a {
 html {
     background-color: var(--background-primary-color);
     text-shadow: 1px 1px 2px #0006;
+    color: var(--text-color);
 }
 
 body {
@@ -81,6 +81,7 @@ button {
     background-position: center 60%;
 
     text-shadow: 1px 1px 3px #0008;
+    color: var(--text-color);
 }
 
 ::file-selector-button {
@@ -94,6 +95,7 @@ button {
     border-radius: 3px;
     cursor: pointer;
     width: 0px;
+    color: var(--text-color);
 }
 
 hr {
