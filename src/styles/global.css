@@ -83,20 +83,6 @@ button {
     color: var(--text-color);
 }
 
-::file-selector-button {
-    font-size: 16px;
-    color: var(--text-color);
-    font-family: 'PhantomMuff';
-    background-image: radial-gradient(var(--primary-color) 20%, var(--secondary-color));
-    background-size: 250% 200%;
-    background-position: center 60%;
-    border: 2px solid var(--primary-color);
-    border-radius: 3px;
-    cursor: pointer;
-    width: 0px;
-    color: var(--text-color);
-}
-
 hr {
     border: 1px solid;
     border-image-slice: 1;

@@ -2,16 +2,10 @@
 import './src/styles/global.css';
 ---
 <style>
-    input[type="file"] {
-        opacity: 0;
-        cursor: pointer;
-        font-size: 8px;
-    }
 
     .custom-file-upload {
         display: flex;
         padding: 8px;
-        float: right;
         align-items: center;
         justify-content: space-between;
         text-align: right;
@@ -22,6 +16,10 @@ import './src/styles/global.css';
         background-size: 200% 200%;
         background-position: center;
         cursor: pointer;
+        max-width: 12em;
+
+        position: relative;
+        overflow: hidden;
     }
 
     .custom-file-upload.uploaded {
@@ -29,12 +27,32 @@ import './src/styles/global.css';
         background-size: 200% 200%;
         background-position: center;
     }
+
+    div.fakefile {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+    }
+
+    input.file {
+        cursor: pointer;
+        position: absolute;
+        -moz-opacity: 0;
+        filter: alpha(opacity: 0);
+        opacity: 0;
+        z-index: 0;
+        font-size: 3em;
+    }
+    input.file::file-selector-button {
+        cursor: pointer;
+    }
 </style>
-<label class="custom-file-upload" for="files">
-    <input type="file" style="width: 12em; position: absolute;"/>
+<div class="custom-file-upload">
+    <input type="file" class="file" />
     <img src="/img/icons/pixel/upload.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
     <span>Upload...</span>
-</label>
+</div>
 <script>
     var all = document.querySelectorAll('input[type="file"]');
     all.forEach((a:any) => {
