@@ -18,8 +18,9 @@ import FileUpload from '../../components/FileUpload.astro';
                         <img src="/img/icons/pixel/json.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                         <span>Input File (.json)</span>
                     </div>
-                    <FileUpload/>
-                    <FileUpload/>
+                    <div style="margin: 6px;">
+                        <FileUpload/>
+                    </div>
                 </div>
                 <textarea class="subpanel code" placeholder='{\n  ...\n}'
                 style="resize: none; border: 2px solid var(--secondary-color); display: flex; height: 100%;" />
@@ -30,11 +31,22 @@ import FileUpload from '../../components/FileUpload.astro';
                         <img src="/img/icons/pixel/xml.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                         <span>Output File (.xml)</span>
                     </div>
-                    <button>Download</button>
+                    <button>
+                        <img src="/img/icons/pixel/download.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                        &nbsp;Download
+                    </button>
                 </div>
                 <textarea class="subpanel code" placeholder='<...>\n\n</...>'
                 style="resize: none; border: 2px solid var(--secondary-color); height: 20em;" readonly />
             </div>
+        </div>
+        <div class="subpanel">
+            <button style="width: 100%;">
+                <img src="/img/icons/pixel/json.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                &nbsp;<img src="/img/icons/pixel/arrow-right.png" alt=" " width="11" height="8" style="image-rendering: pixelated;"/>
+                &nbsp;<img src="/img/icons/pixel/xml.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;Convert Entire Folder
+            </button>
         </div>
     </div>
 </Page>
