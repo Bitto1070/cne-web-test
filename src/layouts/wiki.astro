@@ -1,5 +1,6 @@
 ---
 import './src/styles/global.css';
+import './src/styles/code.css';
 import Page from '../components/Page.astro';
 import poop from '../wiki.json';
 
@@ -20,7 +21,7 @@ function stupid(b:Array<any>, root:string):string {
             `<div style="margin-left: 0.5em;
             padding-left: 0.5em;
             border-left: 2px solid var(--primary-color);">
-                ${b[2].map((c:any) => (stupid(c, b[0] + '/'))).join('\n')}
+                ${b[2].map((c:any) => (stupid(c, root + b[0] + '/'))).join('\n')}
             </div>`
          : ''}
     </div>`
@@ -28,7 +29,7 @@ function stupid(b:Array<any>, root:string):string {
 ---
 
 <Page title={frontmatter.title}>
-    <div style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px;">
+    <div class="no-phantommuff" style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px; width: 100%;">
         <div class="subpanel" style="display: flex; padding: 3px; flex-direction: column; overflow-y: auto; height: 100vh; position: sticky; top: 0;">
             {
                 poop.map((b:any) => (
@@ -36,10 +37,10 @@ function stupid(b:Array<any>, root:string):string {
                 ))
             }
         </div>
-        <div class="panel" x-data={`{lastUpdated: new Date("${frontmatter.lastUpdated}")}`} style="overflow-y: auto; padding: 32px;">
+        <div class="panel " x-data={`{lastUpdated: new Date("${frontmatter.lastUpdated}")}`} style="overflow-y: auto; padding: 32px;">
             <slot/>
             <hr/>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="phantommuff" style="display: flex; justify-content: space-between; align-items: center;">
                 <b style="opacity: 50%; font-weight: 100;">
                     Written by {frontmatter.author} &bull;
                     <span x-html="getRelativeTimeString(lastUpdated)" title={new Date(frontmatter.lastUpdated).toDateString()} />

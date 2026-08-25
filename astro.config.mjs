@@ -14,6 +14,7 @@ export default defineConfig({
 	markdown: {
 		smartypants: false,
 		remarkPlugins: [setLayout],
+		syntaxHighlight: 'prism',
 	},
 	integrations: [alpine(), mdx({
 		extendMarkdownConfig: true

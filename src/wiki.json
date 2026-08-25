@@ -1,5 +1,4 @@
 [
-    ["webv3-alert", "<span style='color: #f00; text-shadow: 0px 0px 3px #f00; font-weight: 900; font-family: \"Papyrus\";'>READ ME  .</span>"],
     ["", "Home"],
     ["differences", "Differences between other FNF engines"],
     ["usage", "How does one use the engine? <span style='color: #d4b528;'>(Needs Links)</span>"],
@@ -34,10 +33,10 @@
             ["3d", "3D Rendering <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
     ]],
-    ["tutorials", "Useful Tutorials", [
+    ["tutorials", "Useful Tutorials - UNFINISHED", [
         ["weeks", "Making weeks - <span style='color: #32e53a;'>(Complete)</span>"]
     ]],
-    ["source", "Source Modding", [
+    ["source", "Source Modding - <span style='color: #32e53a;'>(Complete)</span>", [
         ["init", "Initalization - <span style='color: #32e53a;'>(Complete)</span>"]
     ]]
 ]

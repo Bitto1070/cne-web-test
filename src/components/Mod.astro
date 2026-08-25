@@ -35,8 +35,8 @@ const descAlign =  (tags.includes('centered-desc')) ? 'center' : 'left';
 	<div>
 		<img alt={data.name} src={`./src/content/mods/${id}.jpg`} style="width: 100%; margin-bottom: 8px; border: 2px solid #0004;"/>
 		<br/>
-		<p style={`text-align: ${titleAlign}; font-size: ${titleSize}em; margin-top: 0; margin-bottom: 0; font-weight: 600;`}>{data.name}</p>
-		<p class="no-phantommuff" style={`text-align: ${descAlign}; font-size: ${descSize}em; margin-top: 0;`}>{data.description}</p>
+		<p class="phantommuff" style={`text-align: ${titleAlign}; font-size: ${titleSize}em; margin-top: 0; margin-bottom: 0; font-weight: 600;`}>{data.name}</p>
+		<p style={`text-align: ${descAlign}; font-size: ${descSize}em; margin-top: 0;`}>{data.description}</p>
 		<b class="last-updated" x-html="(lastUpdatedDate == -1) ? 'unreleased' : getRelativeTimeString(lastUpdatedDate)" title={new Date(data.lastUpdated).toDateString()}/>
 	</div>
 	{

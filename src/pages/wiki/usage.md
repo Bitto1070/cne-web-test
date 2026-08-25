@@ -6,7 +6,6 @@ title: How to use / navigate the engine
 ---
 
 <h1 id="do-i-compile" sidebar="Compiling??">Do I need to compile the engine?</h1>
-
 No! It is reccomended to use the engine as is, as the engine comes with modding tools out of the box.
 
 ### The only reason you should think about compiling the engine is to make Feature Requests, fix bugs, and / or add features for your mod that Modding Tools can't provide (So you can add them yourself).

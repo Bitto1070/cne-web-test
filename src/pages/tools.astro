@@ -4,9 +4,10 @@ import Page from '../components/Page.astro';
 ---
 <Page title="Tools">
     <div class="panel" style="text-align: center; width: fit-content; margin: auto;">
-        <br/>
-        <h2>Tools</h2>
-        A variety of tools to help with mod development.
+        <div class="phantommuff">
+            <h1>Tools</h1>
+            A variety of tools to help with mod development.
+        </div>
         <hr/>
         <div style="width: 50vw; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             {
@@ -42,8 +43,8 @@ import Page from '../components/Page.astro';
                                 <img src="/img/icons/external.svg" width="20" style="float: right;"/>
                             )
                         }
-                        <h3>{a.name}</h3>
-                        <p style="margin: 0;" class="no-phantommuff" set:html={a.desc}/>
+                        <h3 style="margin-top: 0;">{a.name}</h3>
+                        <p style="margin: 0;" set:html={a.desc}/>
                     </div>
                     </a>
                 ))

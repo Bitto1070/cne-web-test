@@ -1,0 +1,26 @@
+code:not(pre > code) {
+    color: #d19a66;
+    background-color: var(--background-secondary-color);
+    padding: 1px;
+    border-radius: 5px;
+    border: 2px solid var(--background-primary-color);
+}
+
+pre {
+    background-color: var(--list-background-color);
+    padding: 16px;
+    border: 1px solid var(--background-primary-color);
+    box-shadow: 0 0 0 2px var(--background-secondary-color);
+    font-size: 14px;
+    color: #dddddd;
+}
+
+
+.token.tag { color: #e06c75; }
+.token.number, .token.property, .token.attr-name { color: #d19a66; }
+.token.class-name { color: #e6c07b; }
+.token.string, .token.attr-value, .token.attr-value>.token.punctuation:not(.attr-equals) { color: #98c379; }
+.token.function { color: #61aeee; }
+.token.keyword, .token.boolean { color: #c678dd; }
+.token.comment { color: #5c6370; }
+.token.punctuation { color: #dddddd; }

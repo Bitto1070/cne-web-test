@@ -6,9 +6,9 @@ import Mod from '../components/Mod.astro';
 import poop from '../donators.json';
 
 const modsCollection = await getCollection("mods");
-const mods = modsCollection.map((data) => data);
+const mods = modsCollection.map((data:any) => data);
 
-mods.sort((a, b) => {
+mods.sort((a:any, b:any) => {
     return Date.parse(b.data.lastUpdated) - Date.parse(a.data.lastUpdated);
 });
 
@@ -93,7 +93,7 @@ function getShowCondition(a:any) {
 </style>
 <Page>
 	<div class="container">
-		<div class="panel" style="text-align: center;">
+		<div class="panel phantommuff" style="text-align: center;">
 			<img src="/img/codename-animated.webp" alt="Codename Engine" height="361" style="width: 44vw; height: auto;"/>
 			<br/>
 			Codename Engine is a fork of <a href="https://funkin.me/" target="_blank">Friday Night Funkin'</a>
@@ -156,7 +156,7 @@ function getShowCondition(a:any) {
 			</div>
 			<div class="subpanel mod-container" style="height: 100%; max-height: 64vh;">
 				{
-					mods.map((a) => (
+					mods.map((a:any) => (
 						<Mod data={a.data} id={a.id} show={getShowCondition(a)} />
 					))
 				}
@@ -179,7 +179,7 @@ function getShowCondition(a:any) {
 							<img src={a.profilePicture} width="32" height="32"/>
 							<div>
 								<b style="margin: 0; width: fit-content;">{a.name}</b>
-								<p style="margin: 0; width: fit-content;" class="no-phantommuff">&dollar;{getTotalDonations(a)}</p>
+								<p style="margin: 0; width: fit-content;" class="">&dollar;{getTotalDonations(a)}</p>
 							</div>
 						</div>
 					))

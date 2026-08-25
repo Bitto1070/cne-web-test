@@ -5,18 +5,19 @@ import FileUpload from '../../components/FileUpload.astro';
 ---
 <Page title="Psych Character Converter">
     <div class="panel" style="text-align: center; width: fit-content; margin: auto;">
-        <br/>
-        <h2>Psych Character Converter</h2>
-        Converts a Psych Engine character JSON to a Codename character XML
-        <br/>
-        <b>Warning:</b> Offsets may not be fully accurate.
+        <div class="phantommuff">
+            <h1 style="margin: 0.2em;">Psych Character Converter</h1>
+            Converts a Psych Engine character JSON to a Codename character XML
+            <br/>
+            <b>Warning:</b> Offsets may not be fully accurate.
+        </div>
         <hr/>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 80vw;">
             <div class="subpanel" style="display: flex; flex-direction: column;">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
                     <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
                         <img src="/img/icons/pixel/json.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
-                        <span>Input File (.json)</span>
+                        <span class="phantommuff">Input File (.json)</span>
                     </div>
                     <div style="margin: 6px;">
                         <FileUpload/>
@@ -29,7 +30,7 @@ import FileUpload from '../../components/FileUpload.astro';
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
                     <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
                         <img src="/img/icons/pixel/xml.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
-                        <span>Output File (.xml)</span>
+                        <span class="phantommuff">Output File (.xml)</span>
                     </div>
                     <button>
                         <img src="/img/icons/pixel/download.png" alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
