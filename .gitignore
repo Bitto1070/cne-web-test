@@ -24,3 +24,4 @@ pnpm-debug.log*
 .idea/
 
 # shortcut file for "npm run dev" (im lazy)
+run.bat
