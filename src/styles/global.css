@@ -115,6 +115,7 @@ header {
     padding-bottom: 2px;
     top: 0;
     left: 0;
+    height: 60px;
     background: url(/img/top-bar-bg-mini.png) center center / cover;
     box-shadow: 0 0 0 2px #0003 inset, 0 0px 8px #0008;
 }
@@ -122,7 +123,7 @@ header {
 header button {
     font-size: 18px;
     margin: 6% .2em;
-    padding: 1vw;
+    padding: 0.75em;
     width: 76px;
     height: auto;
 }
