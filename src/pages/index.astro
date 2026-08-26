@@ -132,7 +132,7 @@ function getShowCondition(a:any) {
 					</td>
 				</tr>
 			</table>
-			<br/><br/>
+			<br/>
 			<i>
 			Make sure to join our official <a href="https://deltarune.com/lancer" target="_blank">Discord Server</a>!
 			<br/>You can contribute to this website by going to the <a href="https://deltarune.com/lancer" target="_blank">Website repository</a>
@@ -153,7 +153,7 @@ function getShowCondition(a:any) {
 					<button style="width: 100%;" set:html={`${getIconButton('external')} Submit your own!`}/>
 				</a>
 			</div>
-			<div class="subpanel mod-container" style="height: 100%; max-height: 64vh;">
+			<div class="subpanel mod-container" style="height: 100%; max-height: 54vh;">
 				{
 					mods.map((a:any) => (
 						<Mod data={a.data} id={a.id} show={getShowCondition(a)} />
