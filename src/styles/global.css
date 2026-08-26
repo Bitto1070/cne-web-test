@@ -22,6 +22,10 @@ button, h1, h2, h3, h4, h5, h6, b, .phantommuff {
     font-family: 'PhantomMuff';
 }
 
+.no-phantommuff :not(code, .language-ini, span) {
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
+}
+
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.5em;
 }

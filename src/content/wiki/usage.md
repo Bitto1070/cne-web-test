@@ -5,17 +5,14 @@ lastUpdated: 2026-03-28T04:08:54.618Z
 title: How to use / navigate the engine
 ---
 
-<h1 id="do-i-compile" sidebar="Compiling??">Do I need to compile the engine?</h1>
-No! It is reccomended to use the engine as is, as the engine comes with modding tools out of the box.
+<h2 id="do-i-compile" sidebar="Compiling??">Do I need to compile the engine?</h1>
+No! It is recommended to use the engine as is, as the engine comes with modding tools out of the box.
 
-### The only reason you should think about compiling the engine is to make Feature Requests, fix bugs, and / or add features for your mod that Modding Tools can't provide (So you can add them yourself).
-Otherwise you can just use the `./mods/` folder to make your mod!
-
-<h1 id="navigate" sidebar="How to navigate the engine">How to navigate the engine</h1>
+<h2 id="navigate" sidebar="How to navigate the engine">How to navigate the engine</h1>
 
 The engine is basically similar to what you'd expect, but here are the immediate differences you will see.
 
-<h2 id="options-menu" sidebar="Options Menu">Options Menu</h2>
+<h3 id="options-menu" sidebar="Options Menu">Options Menu</h2>
 <div style="display: flex; justify-content: center; gap: 25px;">
     <img src="./images/home/Options Menu.png" alt="Options Menu" style="width:50%;">
     <img src="./images/home/Options - Gameplay.png" alt="Gameplay Menu" style="width:50%;">

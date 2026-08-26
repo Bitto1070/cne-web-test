@@ -4,7 +4,7 @@ desc: Main Page to the Wiki
 title: Home
 lastUpdated: 2025-11-15T05:32:50.298Z
 ---
-# Welcome to the Codename Engine Wiki
+# Welcome to the Codename Engine Wiki!
 The wiki is here to document, explain, and to teach you a bit of knowledge about the engine!
 ### Navigation is done via this sidebar!
 <img class="arrow_thing desktop" src="/img/sidebar_pointer(1).png">
@@ -18,8 +18,8 @@ If you wish to help contribute to the wiki, please visit the <a href="https://gi
 Currently alot of the rework is being done on a Fork branch by ItsLJcool, you can find the GitHub Fork <a href="https://github.com/ItsLJcool/codename-website/tree/wiki-reformat">here</a>.
 
 Credits:
-- [LOSER] - some styling and basically making the entire structure of the website.
-- Frakits - useless documentation and tons of styling.
-- Nex_isDumb - other documentations, keeping the api up to date (mostly) plus few other stuff.
-- swordcube - helping hand for documentation.
-- ItsLJcool - reworking the wiki to be up-to-date with v1.0.1+.
+- **Blehtty** - some styling and basically making the entire structure of the website.
+- **Frakits** - useless documentation and tons of styling.
+- **Nex_isDumb** - other documentations, keeping the api up to date (mostly) plus few other stuff.
+- **swordcube** - helping hand for documentation.
+- **ItsLJcool** - reworking the wiki to be up-to-date with v1.0.1+.
