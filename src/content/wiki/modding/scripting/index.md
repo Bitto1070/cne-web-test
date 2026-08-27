@@ -23,13 +23,14 @@ function onCreate()
     -- this is a comment!
 end
 
+-- Psych Engine example
 function onCreatePost()
     -- make a sprite called mySprite using an image from the files called myImage
     makeLuaSprite("mySprite", "myImage", 100, 100)
     -- set antialiasing to true
     setProperty("mySprite.antialiasing", true)
     -- make it display in HUD
-    setObjectCamera("mySpirte", "hud")
+    setObjectCamera("mySprite", "hud")
     -- add it to the game
     addLuaSprite(mySprite, false)
 end
