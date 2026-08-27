@@ -9,7 +9,7 @@ title: Scripting - Features
 Explain all the features scripts can use. (i.e getter / setter, enums, imports, using, etc.)
 
 # Variables, and Functions
-First, lets start off very basic. HScript provides 2 different ways to define a variable, but do note, <i>technically</i> it doesn't matter as they both are the same anyways.<br>
+First, lets start off very basic. HScript provides 2 different ways to define a variable, but do note, <i>technically</i> it doesn't matter as they both are the same anyways.<br/>
 To define a variable you can use the `var` and `final` keywords before the variable's name. You cannot have whitespace for variable names.
 <!-- This just makes it so the whole block doesn't take the whole screen up :) -->
 <div style="display: grid; justify-content: left;">
@@ -34,11 +34,11 @@ function new() {
 </div>
 
 #### What is a `final`?
-In Haxe, a final just tells the compiler you cannot change this variable during runtime. Think of it as a `constant` that cannot be changed.<br>
+In Haxe, a final just tells the compiler you cannot change this variable during runtime. Think of it as a `constant` that cannot be changed.<br/>
 In CodenameEngine this doesn't actually make it constant, <u>you can still modify `final` variables</u> but you can use the keyword to indicate you shouldn't modify the data.
 
 ## Public & Static ... & Private?
-Haxe basically forces you to use `public` or `private` keywords when making classes, in HScript you don't have access to the `private` keyword unless you're using **[Custom Classes](./classes.md)**. However, this keyword does not do anything, as it is purely <u>sugar syntax.</u><br>
+Haxe basically forces you to use `public` or `private` keywords when making classes, in HScript you don't have access to the `private` keyword unless you're using **[Custom Classes](./classes.md)**. However, this keyword does not do anything, as it is purely <u>sugar syntax.</u><br/>
 You do have access to the `public` keyword, which do nothing in [`Script`](../../../api-docs/funkin/backend/scripting/Script)s, but in any [`ScriptPack`](../../../api-docs/funkin/backend/scripting/ScriptPack)s it will allow other scripts to access that variable / function.
 
 It doesn't "copy" the variable, it references the original so you can modify from one script and read the change from another.
@@ -99,7 +99,7 @@ function optionalParameters(name:String, ?log:Bool = true, ?some_other_arg:Dynam
 </div>
 
 ## Type Defining
-In haxe, you can declare types on variables and return types on functions. You cannot set that variable to a different Class Type unless it's a `Dynamic` / `Any` / `T` type.<br>
+In haxe, you can declare types on variables and return types on functions. You cannot set that variable to a different Class Type unless it's a `Dynamic` / `Any` / `T` type.<br/>
 This doesn't apply to HScript, **<u>every variable is `Dynamic`</u>** no matter what, so defining variables with types is only sugar syntax. I'd recommend you still do it for readability, though you're not forced to define every variable.
 <div style="display: grid; justify-content: left;">
 
@@ -144,7 +144,7 @@ function new() {
 </div>
 
 </details>
-<br>
+<br/>
 
 # Differences between `Script` and `ScriptPack`
 When looking through the source, you might find that there is 2 commonly used Classes for Scripts.

@@ -1,0 +1,46 @@
+---
+interface Props {
+    level?:string,
+    title?: string;
+    icon?: string;
+    color?: string;
+}
+
+const colorMap = new Map();
+colorMap.set('note', '#6dbafa');
+colorMap.set('warning', '#e5cd34');
+colorMap.set('error', '#ee4358');
+colorMap.set('question', '#3a67e7');
+
+function fastTitle(a:string):string {
+    return a.substring(0, 1).toLocaleUpperCase() + a.substring(1).toLocaleLowerCase();
+}
+
+const { level = "note" } = Astro.props;
+const title = Astro.props.title ?? fastTitle(level);
+const icon = Astro.props.icon ?? ("/img/warnings/"+level+".png");
+const color = Astro.props.color ?? colorMap.get(level) ?? '#999999';
+---
+<style is:global>
+    .note {
+        --color: #6dbafa;
+        margin: 6px;
+    }
+
+    .note-container > * {
+        margin: 0;
+    }
+</style> {/* i hate it here */}
+<div class="note" style={'--color: '+color+';'}>
+    <div style="background-color: #333; padding: 4px; font-size: 0.8em;
+    padding-left: 16px; border-top-left-radius: 9px; border-top-right-radius: 9px; border: 1px solid #aaa;">
+        {title}
+    </div>
+    <div style="background-color: rgb(from var(--color) calc(r * 0.25) calc(g * 0.25) calc(b * 0.25));
+                display: flex; gap: 12px; padding: 16px; border: 1px solid var(--color);">
+        <img src={icon} width="70" style="image-rendering: pixelated; height: 100%;"/>
+        <div class="note-container">
+            <slot/>
+        </div>
+    </div>
+</div>

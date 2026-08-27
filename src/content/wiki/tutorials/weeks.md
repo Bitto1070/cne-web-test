@@ -18,9 +18,8 @@ Week XMLs go in `./data/weeks/weeks/` (yes, two "weeks" folders). Here's a compl
 	<song>Blammed</song>
 </week>
 ```
-<div style="display: flex; justify-content: center;">
-    <img src="../images/tutorials/weeks/example.png" alt="Name of the week in the up right corner">
-</div>
+
+<img src="../images/tutorials/weeks/example.png" alt="Name of the week in the up right corner" height="400"/>
 
 Let's break down what each part does:
 
@@ -208,7 +207,7 @@ var weeks:Array<WeekData> = StoryWeeklist.get(true, false).weeks;
 // since you don't need the actual class instance for anything besides getting the data 99.999% of the time.
 ```
 
-The `weeks` array contains all the Week XML data as a [`WeekData`](../../api-docs/funkin/backend/week/WeekData) typedef / structure.<br>
+The `weeks` array contains all the Week XML data as a [`WeekData`](../../api-docs/funkin/backend/week/WeekData) typedef / structure.<br/>
 You can then use this to get all the songs in the week, the name, id, difficulties, etc. This will allow you to make your own Custom Week State, and load into a Week through PlayState with the [`loadWeek`](../../api-docs/funkin/game/PlayState#loadWeek) function!
 ```haxe
 PlayState.loadWeek(weeks[0]); // loads the first week into PlayState

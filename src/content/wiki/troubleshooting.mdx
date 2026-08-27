@@ -1,0 +1,151 @@
+---
+author: clairedeluneee, ItsLJcool & Betopia
+desc: This page explains how to fix common issues.
+lastUpdated: 2026-07-25T03:15:36.494Z
+title: Troubleshooting
+---
+import InlineCode from './src/components/InlineCode.astro';
+
+# Troubleshooting
+
+## Black screen
+
+This usually means the game failed to start. The reasons for this could be:
+
+- Non-ASCII characters on the file path (example: `C:\Users\Niña\`)
+- File path being too long
+- Running the game inside an archive (like `.zip` files) or on a cloud folder (like Onedrive)
+
+The solution is to move the folder somewhere else on the disk.
+
+<br/>
+
+## Mod refuses to load
+
+Double check your mod folder.
+
+Make sure that it **DOES NOT** look like either of these:
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+<div>
+```yaml
+└─ 📂 mods/
+    └─ 📂 My Mod/           # This is a folder
+        └─ 📂 My Mod/
+            ├─ 📂 data/
+            ├─ 📂 images/
+            ├─ 📂 songs/
+            └─ 📂 .../
+```
+</div>
+<div>
+```yaml
+└─ 📂 mods/
+    └─ 📚 My Mod.zip        # This is a zip file.
+        └─ 📂 My Mod/       # A mistake like this
+            ├─ 📂 data/     # is very common.
+            ├─ 📂 images/
+            ├─ 📂 songs/
+            └─ 📂 .../
+```
+</div>
+</div>
+
+You may only use 1 subfolder for your mod. For example, the final path for the data folder would be `./mods/My Mod/data/`.
+
+<br/>
+
+## No audio
+You probably muted the game. Hit `0` or `+` on your keyboard.
+
+Can't use `0` or `+`? You installed a VERY old CodenameEngine Action build that broke it! Go to Controls to rebind the keys!
+
+<br/>
+
+## Invalid field error
+Some players might have found out that after a song, the game crashes with this error:
+
+<img src="./images/troubleshooting/invalid-field.png" alt="Error with invalid field"/>
+
+This is a save data error in which saves from Legacy (v0.1) are not recognized in v1.0. The fix is to wipe the save in **Options > Miscellaneous > Reset save data**.
+
+If you are unable to reset it in the engine, you may instead delete the save yourself in your file manager.
+
+The folder to be deleted is 
+- Windows: `%AppData%/CodenameEngine`
+- Mac: `Users/[your user]/Library/Application Support/CodenameEngine`
+- Linux: `/.local/share/CodenameEngine`
+
+<br/>
+
+## Modding
+### Notes only on the left side of the screen
+
+Change the strumline X position of the second strumline to be 0.75 in the Chart Editor. New strumlines use the X position of 0.25 by default.
+
+<br/>
+
+### Entering Story Mode crashes the game
+
+Getting a `Null Object Reference` error in Story Mode means you have no weeks loaded.
+Verify that your `data/weeks/weeks.txt` has actual existing written to it, and that it isnt blank or if the first week listed does not exist.
+
+<br/>
+
+### Setting a sprite's `velocity` / `acceleration` does nothing
+
+If using a `FunkinSprite` instance on a script, the `moves` field is `false` by default. This will remove physics logic for optimization reasons.
+To re-enable them just set <InlineCode lang='haxe' code={'yourSprite.moves'}/> to `true`.
+
+If using a stage XML, using a <InlineCode lang='xml' code={'<property type="float" name="velocity.x" value="?"/>'}/> node should enable `moves` automatically.
+- This applies for `velocity.x`, `velocity.y`, `acceleration.x` and `acceleration.y`.
+
+<br/>
+
+### Character and/or Stage Editor is buggy or crashes
+
+They are both technically still a WIP, so expect lots of instability. Right now it is recommended to edit the Data XMLs directly instead.
+
+<br/>
+
+### Strum rotation also moves notes
+
+Set <InlineCode lang='haxe' code={'strum.noteAngle'}/> to 0.
+
+The default value for this property is `null` for both notes and strums, which in turn will copy the regular `angle` property as the default.
+
+<br/>
+
+### Atlas animations not working (usually in characters)
+
+There's multiple causes for this, most common ones include:
+- **Animations were inside a folder in the FLA:** You need to specify the folder where they come from, as it is technicaly also part of the animation symbol name.
+
+- **Every symbol is misplaced horrendously:** *Layer parenting is not supported.*
+
+- **Some symbols are not showing:** Verify that they are actual symbols and not something like groups, it is unknown if they are supported or not.
+
+<br/>
+
+### `stage` variable not working
+
+This happens in stage scripts. The issue is that you have a sprite with the name "stage" which causes conflicts. 
+
+To fix this, rename that sprite to something else.
+
+<br/>
+
+### Game can't find assets for my stage / Stage Editor doesn't show my sprites
+
+Verify your Stage Path in your stage XML.
+
+For example, <InlineCode lang='xml' code={'<stage folder="stages/philly">'}/> would be like adding
+`./mods/Your Mod/images/stages/philly/` to the start of the file path for every <InlineCode lang='xml' code={'<sprite/>'}/> in your file.
+
+<details>
+<summary>Common Mistakes</summary>
+- **Adding `images/` at the start of the stage path:** It is redundant, it already adds that. It would be doing `/images/images/...`.
+
+- **Using the absolute path relative to the executable (`mods/---/images/stages/philly/`)**: I don't even know what to write about this one
+
+- **Using the whole absolute path relative to your drive (`C:/Users/USER/.../(codename folder)/mods/---/images/stages/philly/`)**: ??????????????????
+</details>

@@ -4,6 +4,7 @@ desc: Explains what a GlobalScript is, and how to effectivly use it.
 lastUpdated: 2026-06-05T06:00:45.809Z
 title: Scripting - Global Script
 ---
+import InlineCode from './src/components/InlineCode.astro';
 
 # What is a `GlobalScript`?
 
@@ -15,46 +16,44 @@ With this power, you can manage your entire Mod with this singular script, and i
 
 # Callbacks
 
-There is only a few functions that `GlobalScript` manages itself, though you can call custom functions yourself from other scripts by doing `GlobalScript.call("functionName", [/* arguments */])`.<br>
+There is only a few functions that `GlobalScript` manages itself, though you can call custom functions yourself from other scripts by doing <InlineCode lang='haxe' code={'GlobalScript.call("functionName", [/* arguments */])'}/>.<br/>
 Although there really should be no reason to call functions directly to `GlobalScript`, it's there if you really need it.
 
-<!-- region -->
 <details>
     <summary>Here is a list of callbacks GlobalScript manages</summary>
-
-- `focusGained()`
-- `focusLost()`
-- `gameResized(w:Int, h:Int)`
-
-- `preDraw()`
-- `postDraw()`
-
-- `preGameReset()`
-- `postGameReset()`
-
-- `preGameStart()`
-- `postGameStart()`
-
-- `preStateCreate(state:FlxState)`
-
-- `preStateSwitch()`
-- `postStateSwitch()`
-
-- `preUpdate(elapsed:Float)`
-- `update(elapsed:Float)`
-- `postUpdate(elapsed:Float)`
-
-- `beatHit(curBeat:Int)`
-- `stepHit(curStep:Int)`
-
-- `destroy()`
-
+<ul>
+{
+[
+	"focusGained()",
+	"focusLost()",
+	"gameResized(w:Int, h:Int)",
+	"preDraw()",
+	"postDraw()",
+	"preGameReset()",
+	"postGameReset()",
+	"preGameStart()",
+	"postGameStart()",
+	"preStateCreate(state:FlxState)",
+	"preStateSwitch()",
+	"postStateSwitch()",
+	"preUpdate(elapsed:Float)",
+	"update(elapsed:Float)",
+	"postUpdate(elapsed:Float)",
+	"beatHit(curBeat:Int)",
+	"stepHit(curStep:Int)",
+	"destroy()"
+].map((a) => (
+	<li>
+		<InlineCode lang='haxe' code={a}/>
+	</li>
+))
+}
+</ul>
 </details>
-<!-- endregion -->
 
 # Hot Reloading
 
-Codename can reload `GlobalScript`s by holding `Shift` and pressing the "Reload State" keybind. By default this is `Shift` + `F5`.<br>
+Codename can reload `GlobalScript`s by holding `Shift` and pressing the "Reload State" keybind. By default this is `Shift` + `F5`.<br/>
 Doing this will destroy and re-initalize all `GlobalScript`s, so you need to ensure you properly `destroy` things or remove them once the script is no longer active.
 
 You should always do this in a `GlobalScript`, to ensure unloading your Mod never causes any issues with other mods / addons.
@@ -69,11 +68,11 @@ function destroy() {
 
 # Cross-script Communication
 
-`GlobalScript` maintains it's own `ScriptPack` that is <b>_freely accessible_</b> as `GlobalScript.scripts` as a `static` variable.
+`GlobalScript` maintains it's own `ScriptPack` that is <b>_freely accessible_</b> as <InlineCode lang='haxe' code={`GlobalScript.scripts`}/> as a `static` variable.
 
-You can manage the whole `ScriptPack` anywhere in your mod, but for simplicity you should use `GlobalScripts.scripts` only if you need to access either a specific script inside, or internal variables. Using the `public` modifier in `GlobalScript` should never be used, as it only allows other `GlobalScripts` to access it, so it does nothing for your mod.
+You can manage the whole `ScriptPack` anywhere in your mod, but for simplicity you should use <InlineCode lang='haxe' code={`GlobalScript.scripts`}/> only if you need to access either a specific script inside, or internal variables. Using the `public` modifier in `GlobalScript` should never be used, as it only allows other `GlobalScripts` to access it, so it does nothing for your mod.
 
-You can either make `static` variables / functions inside your `GlobalScript` to call anywhere, or just normal functions you can then call with `GlobalScript.call`.
+You can either make `static` variables / functions inside your `GlobalScript` to call anywhere, or just normal functions you can then call with <InlineCode lang='haxe' code={`GlobalScript.call()`}/>.
 It's common to think that you should shove everything that you want to use globally in a Global Script, but that is bad practice.
 
 You should only use `GlobalScript` for managing custom classes, or holding data globally. You don't need to manage anything here either!
@@ -103,7 +102,7 @@ function create() {
 </div>
 
 
-or... you can just straight up call them without `GlobalScript.scripts.call`!
+or... you can just straight up call them without <InlineCode lang='haxe' code={`GlobalScript.scripts.call()`}/>!
 <div style="display: grid; justify-content: center;">
 
 ```haxe

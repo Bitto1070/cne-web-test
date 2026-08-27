@@ -8,12 +8,15 @@ title: Modding The Engine
 # Modding The Engine
 
 Certain modding features will be documented here to help you immediately start making a mod.
-<br>This won't cover source coding so if you want to do that instead go to [insert link here]
+<br/>This won't cover source coding so if you want to do that instead go to [insert link here]
 
 This is what a maxed out Mod Folder will contain. We will go over some folders that require more explanation later.
+
+<!--for some reason yaml makes the comments actually show up as comments-->
 <details>
-    <summary>Click to expand</summary>
-```
+<summary>Click to expand</summary>
+
+```yaml
 └─ 📂 My Mod/                                
    ├─ 📂 data/                                # Usually contains configuration, or information you want to store.
    │  ├─ 📂 characters/                       # Contains your Character's XML data.
@@ -56,7 +59,7 @@ This is what a maxed out Mod Folder will contain. We will go over some folders t
    ├─ 📂 music/                              
    ├─ 📂 shaders/                            
    ├─ 📂 songs/                               # Where songs are located, along with charts, events, scripts, audio, meta, etc.
-   │  ├─ 📄 Example Global Song Script.hx     # Scripts inside the `./songs/` folder will load for every song.
+   │  ├─ 📄 Example Global Song Script.hx     # Scripts inside the `songs/` folder will load for every song.
    │  └─ 📂 example-song-here/               
    │     ├─ 📂 charts/                       
    │     │  └─ 📄 hard.json                  
@@ -74,35 +77,36 @@ This is what a maxed out Mod Folder will contain. We will go over some folders t
    ├─ 📂 source/                              # Custom Classes go here.
    └─ 📂 videos/                             
 ```
+</details>
 
 #### NOTE!
 This might not be EVERYTHING, but it's a good chunk of the folders Codename Engine interacts with.
 </details>
 
-Don't be scared by the amount of folders, usually you only mess with the `./songs/`, `./data/`, and `./images/` folders most of the time.
-<br>It's good to have a reference of what you can do at least, so this will be updated from time to time with new updates.
+Don't be scared by the amount of folders, usually you only mess with the `songs/`, `data/`, and `images/` folders most of the time.
+<br/>It's good to have a reference of what you can do at least, so this will be updated from time to time with new updates.
 
 ## Sections
 These areas will split up into their own sub-pages, and they will explain to you what each folder is for, what files you can add, and how to effectively use them.
-- <a href="./config.md">Configuration</a>
-- <a href="./libraries.md">What is a "AssetLibrary"?</a>
-- <a href="./scripting/index.md">Scripting</a>
-    - <a href="./scripting/features.md">Scripting Features</a>
-    - <a href="./scripting/style.md">Code Formatting / Style</a>
-    - <a href="./scripting/cancellables.md">Event Callbacks</a>
-    - <a href="./scripting/playstate.md">PlayState Scripting</a>
-    - <a href="./scripting/states.md">Custom States / SubStates</a>
-    - <a href="./scripting/events.md">Custom Events / Notetypes</a>
-    - <a href="./scripting/global.md">Global Script(s)</a>
-    - <a href="./scripting/classes.md">Custom Classes</a>
-- <a href="./editors/index.md">Editors Introduction</a>
-    - <a href="./editors/chart.md">Chart Editor</a>
-    - <a href="./editors/character.md">Character Editor</a>
-    - <a href="./editors/stage.md">Stage Editor</a>
-    - <a href="./editors/alphabet.md">Alphabet Editor...?</a>
-    - <a href="./editors/character.md">Custom Editors</a>
-- <a href="./hxvlc.mdhxvlc.md">Using hxvlc for Videos</a>
-- <a href="./advanced/index.md">Intro to Advanced Topics</a>
+- <a href="./modding/config/">Configuration</a>
+- <a href="./modding/libraries/">What is a "AssetLibrary"?</a>
+- <a href="./modding/scripting/">Scripting</a>
+    - <a href="./modding/scripting/features/">Scripting Features</a>
+    - <a href="./modding/scripting/style/">Code Formatting / Style</a>
+    - <a href="./modding/scripting/cancellables/">Event Callbacks</a>
+    - <a href="./modding/scripting/playstate/">PlayState Scripting</a>
+    - <a href="./modding/scripting/states/">Custom States / SubStates</a>
+    - <a href="./modding/scripting/events/">Custom Events / Notetypes</a>
+    - <a href="./modding/scripting/global/">Global Script(s)</a>
+    - <a href="./modding/scripting/classes/">Custom Classes</a>
+- <a href="./modding/editors/">Editors Introduction</a>
+    - <a href="./editors/chart/">Chart Editor</a>
+    - <a href="./editors/character/">Character Editor</a>
+    - <a href="./editors/stage/">Stage Editor</a>
+    - <a href="./editors/alphabet/">Alphabet Editor...?</a>
+    - <a href="./editors/character/">Custom Editors</a>
+- <a href="./modding/videos/">Using hxvlc for Videos</a>
+- <a href="./modding/advanced/">Intro to Advanced Topics</a>
 
 All of those above are for Softcoding, if you want to learn how to mod Source, you can check out the Introduction here
-- <a href="./source/index.md">Modding The Engine - Source</a>
+- <a href="/wiki/source/">Modding The Engine - Source</a>

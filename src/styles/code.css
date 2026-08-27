@@ -1,9 +1,17 @@
+:root {
+    --default-code-color: #dfdde9;
+}
+
 code:not(pre > code) {
-    color: #d19a66;
+    color: var(--default-code-color);
     background-color: var(--background-secondary-color);
     padding: 1px;
     border-radius: 5px;
     border: 2px solid var(--background-primary-color);
+}
+
+code:not(pre > code, .inline-code) {
+    color: #d19a66;
 }
 
 pre {
@@ -12,7 +20,7 @@ pre {
     border: 1px solid var(--background-primary-color);
     box-shadow: 0 0 0 2px var(--background-secondary-color);
     font-size: 14px;
-    color: #dddddd;
+    color: var(--default-code-color);
 }
 
 
@@ -23,4 +31,4 @@ pre {
 .token.function { color: #61aeee; }
 .token.keyword, .token.boolean { color: #c678dd; }
 .token.comment { color: #5c6370; }
-.token.punctuation { color: #dddddd; }
+.token.punctuation { color: var(--default-code-color); }

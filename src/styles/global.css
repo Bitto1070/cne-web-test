@@ -104,6 +104,10 @@ button.col-black:hover {
     filter: none;
 }
 
+pre {
+    text-wrap: wrap;
+    overflow: auto auto;
+}
 code, textarea.code {
     font-family: monospace;
 }
@@ -183,6 +187,23 @@ li::marker {
     padding: 16px;
     border: 1px solid var(--background-primary-color);
     box-shadow: 0 0 0 2px var(--background-secondary-color);
+}
+
+summary {
+    cursor: pointer;
+}
+details {
+    background-color: var(--list-background-color);
+    padding: 16px;
+    margin: 2px;
+    border: 1px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to top right, var(--primary-color), var(--secondary-color), var(--primary-color));
+    box-shadow: 0 0 0 2px var(--background-secondary-color);
+}
+
+details:not(:open) {
+    background-color: rgb(from var(--primary-color) calc(r * 0.5) calc(g * 0.5) calc(b * 0.5));
 }
 
 .mod {

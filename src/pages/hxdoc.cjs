@@ -575,7 +575,7 @@ function buildSidebar(classes, activeName) {
 }
 
 function docTextHtml(text) {
-	return esc(text).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+	return esc(text).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, "<br/>")}</p>`).join("");
 }
 
 function buildClassPage(cls, sidebar) {

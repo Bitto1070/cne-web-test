@@ -70,7 +70,7 @@ function new() {
 
 You can also import custom classes into custom classes, same import method.
 
-Now as of v1.0.1 and it's Experimentals, Static variables in Custom Classes are *not exactly static*, but are <u><i>locally static.</u></i><br>
+Now as of v1.0.1 and it's Experimentals, Static variables in Custom Classes are *not exactly static*, but are <u><i>locally static.</u></i><br/>
 This means if you import it in 2 different scripts they can have different static values. This can be easily fixed with a simple workaround, if your using the `./source/` folder for your class initalization.
 
 ```haxe
@@ -87,7 +87,7 @@ static var RealClassName:Class = InternalClassName;
 ```
 
 ## Extending Classes
-You can also extend other classes, but there is a limit and some things to note.<br>
+You can also extend other classes, but there is a limit and some things to note.<br/>
 Any class with `<T>` or Abstract class you cannot extend from. This is in the works to be fixed.
 
 You cannot extend `FlxState` / `FlxSubState` because they extend off of `FlxGroup` (which is `FlxTypedGroup<T:FlxBasic>`)
@@ -114,7 +114,7 @@ class MyCustomFunkinSprite extends FunkinSprite {
 </div>
 
 ## The `using` keyword
-In HScript you are allowed to use the `using` keyword, what this allows you to do is call functions on variables that class contains.<br>
+In HScript you are allowed to use the `using` keyword, what this allows you to do is call functions on variables that class contains.<br/>
 Basically in other words it calls the class your `using` with those variables and does whatever calculation it needs to.
 
 Here is an example:

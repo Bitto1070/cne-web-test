@@ -4,6 +4,8 @@ desc: This page explains the most commonly asked questions about the engine.
 lastUpdated: 2024-10-12T17:38:10.934Z
 title: FAQ
 ---
+import InlineCode from './src/components/InlineCode.astro';
+
 # Frequently Asked Questions
 
 ## <h2 id="why-should-i-use-the-engine">Why should I use the engine?</h2>
@@ -16,7 +18,7 @@ This is a really tough one, since both have pros and cons, but to help you make 
 
 **V-Slice is the official solution to modding the game**, developed by Funkin Crew themselves, which may sound more appealing to you. It also offers a tough, battle-tested modding system called Polymod, that... actually has working Custom Classes! Other things include advanced editors, song variations, character mixes, official mobile support *(no sideloading needed)* and probably much more. What V-Slice pales in comparison is the restrictions applied to the scripting, some imports are blocked due to security reasons, and scripting overall is just more complicated *(since every script is cached and ran as soon as you load the mod, and each script works as an individual instance instead of being a child of the state it runs for)*.
 
-Our engine on the other hand doesn't have any restrictions and even gives you easy access to NDLLs *(whether that's a good thing or not you decide)*, scripts will inherit variables from the state it runs on (so you don't have to type out `PlayState.instance` every single time), and we don't block mods from loading when a new API Version releases *(though we still break mods lol sorry about that)*.
+Our engine on the other hand doesn't have any restrictions and even gives you easy access to NDLLs *(whether that's a good thing or not you decide)*, scripts will inherit variables from the state it runs on (so you don't have to type out <InlineCode lang='haxe' code={'PlayState.instance'}/> every single time), and we don't block mods from loading when a new API Version releases *(though we still break mods lol sorry about that)*.
 
 ## <h2 id="this-vs-psych" sidebar="Should i use Psych Engine">I'm unsure whether to use this engine or Psych Engine</h2>
 
