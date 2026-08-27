@@ -2,24 +2,18 @@
 author: ItsLJcool
 desc: Basic tutorial on how to setup and initalize your own mod!.
 lastUpdated: 2025-11-15T05:32:50.298Z
-title: Modding The Engine - Softcoding
+title: Modding The Engine
 ---
 
-# Modding The Engine - Softcoding
-No matter what you do, editing the `./assets/` folder is not recommended, as it's used as your Backup folder / Mod if assets or data cannot be found, it will use the `./assets/` as a saftey catch. You should only make `Mods` in the `./mods/` folder.
+# Modding The Engine
 
-There is also an `./addons/` folder which is somewhat similar to the way `./mods/` works, but it has it's own set of rules and best practices to follow.
-#### TODO: Add a link to know how to make an Addon.
+Certain modding features will be documented here to help you immediately start making a mod.
+<br>This won't cover source coding so if you want to do that instead go to [insert link here]
 
-## THIS IS NOT A GUIDE FOR SOURCE MODDING!!
-If you want to know how to make a Mod in Source, [TODO: Write a Doc.md for seting up a Source Project and link it from here!]
-
-## <h2 id="folder-structure" sidebar="Folder Structure">How should I structure my folders</h2>
-
-For starters, this is what an average Mod Folder will contain. We will go over some folders that require more explanation later.
+This is what a maxed out Mod Folder will contain. We will go over some folders that require more explanation later.
 <details>
     <summary>Click to expand</summary>
-```text
+```
 └─ 📂 My Mod/                                
    ├─ 📂 data/                                # Usually contains configuration, or information you want to store.
    │  ├─ 📂 characters/                       # Contains your Character's XML data.
@@ -86,7 +80,7 @@ This might not be EVERYTHING, but it's a good chunk of the folders Codename Engi
 </details>
 
 Don't be scared by the amount of folders, usually you only mess with the `./songs/`, `./data/`, and `./images/` folders most of the time.
-<br>It's good to have a reference of what you can do at least, so this will be updated from time to time with new updates (hopefully 😭).
+<br>It's good to have a reference of what you can do at least, so this will be updated from time to time with new updates.
 
 ## Sections
 These areas will split up into their own sub-pages, and they will explain to you what each folder is for, what files you can add, and how to effectively use them.

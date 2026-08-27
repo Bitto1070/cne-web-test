@@ -30,26 +30,23 @@ Change your controls here to any key you want, and you get an extra second keybi
 #### TODO: Put a link here to learn more about how your mod can make custom Options with the XML, same for custom Controls.
 
 <h2 id="mod-select-menu" sidebar="Mod Select Menu">Mod Select Menu</h2>
-This menu is accessed by pressing `TAB` (by default) in the `MainMenuState`. Selecting `"Disable Mods"` will use just load the default [`AssetLibrary`](./modding/libraries.md)'s (i.e the `./assets/` folder).
+
+This menu is accessed by pressing **TAB** (by default) in the **Main Menu**. Selecting `Disable Mods` will use just load the base game without any modifications.
 
 <img src="./images/home/Mod Select Menu.png" alt="Substate for Switching Mods" style="width:85%;">
 
-If you want a mod to Automatically load when launching the game, you can place a `autoload.txt` in your `./mods/` folder and inside it, just put the folder name of the mod you want to load (no file extensions if you're attempting to possibly load a `Compressed Mod`)
+If you want a mod to automatically load when launching the game, you can place an `autoload.txt` file in your `./mods/` folder and inside it, just put the name of the mod (folder name) you wish to autoload.
 
 <h2 id="fps-debugger" sidebar="FPS Counter">FPS Counter</h2>
 <img src="./images/home/FPS Counter.png" alt="Substate for Switching Mods" style="width:50%;">
 
-You can toggle the FPS Counter into 3 different states by pressing `F3`. (Currently you cannot change the keybind for this)
+You can toggle the FPS Counter by pressing **F3**, either hiding it, showing it or extend it to show even more information *(Currently you cannot change the keybind for this)*
 
-These are all the states you can cycle through:
-1. Disabled
-2. FPS, RAM Usage / Allocated RAM, Build Version
-3. Advanced Details
-
-You can see A lot of useful information about what state the game is in, what is currently happening, and all your loaded [`AssetLibrary`](./modding/libraries.md)'s.
+With this, you can see a lot of useful information about what state the game is in, for example: the current song position and BPM *(under Conductor Info)* the current state and object count *(under Flixel Info)* and system specs *(under System Info)*, all useful for development and debugging.
 
 <h2 id="freeplay-state" sidebar="Freeplay State">Freeplay State</h2>
-The `FreeplayState` is hasn't changed much, besides the Gamemode Types you can cycle and add onto yourself.
+
+The **Freeplay Menu** is hasn't changed much, but there's a new Gamemodes feature you can play with and add onto yourself. You may switch through them by using **TAB** *(not to be confused with the Mod Selection Menu keybind)*
 
 <img src="./images/home/freeplay/1.png" alt="Preview of FreeplayState" style="width:85%;">
 
@@ -69,7 +66,9 @@ The `FreeplayState` is hasn't changed much, besides the Gamemode Types you can c
 Co-Op Mode will use your Player 1 Keys for Dad, and Player 2 Keys for Boyfriend. The Switched Variant swaps them.
 
 ## Developer Mode
-Finally, to access basic modding tools you must enable **Developer Mode**, something that only must be done on mods you are developing (since it enables mod warnings and they tend to get annoying). Afterwards you may press **7** in the Main Menu to open a menu where you can choose the editor you want to use.
+
+Finally, to access basic modding tools you must enable **Developer Mode**, something that only must be done on mods you are developing (since it enables mod warnings and they tend to get annoying). Afterwards you may press **7** in the **Main Menu** to open a Selection menu where you can choose the editor you want to use.
+
 <img src="./images/home/Developer Options.png" alt="Developer Options" style="width:85%;">
 
 ## That's all the changes you really need to know / worry about for Codename Engine.
