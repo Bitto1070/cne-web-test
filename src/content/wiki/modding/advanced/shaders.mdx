@@ -4,6 +4,9 @@ desc: Creating and Using Shaders
 lastUpdated: 2026-08-07T16:39:14.193Z
 title: Advanced Topics - Shaders
 ---
+import InlineCode from './src/components/InlineCode.astro';
+import Note from './src/components/Note.astro';
+
 <h1 id="what" sidebar="What Are Shaders?">What Are Shaders?</h1>
 
 Shaders are scripts that modify how a graphic looks in-game. Think of shaders as post-processing effects in a video editor; while you're not modifying the file directly, you're changing how something looks in the project.
@@ -14,7 +17,7 @@ Shaders in Flixel - and by extension, shaders in Codename - are written in the O
 
 This page will not cover all the details of *making* a shader, but you can find resources at the bottom of this page to do that. Instead, we'll talk about how to implement shaders into Codename, including importing shaders you find from places like [Shadertoy](https://www.shadertoy.com/), and we'll finish by making a basic shader while also talking about shader uniforms/variables.
 
-<h2 id="cne-shaders" sidebar="Implementing CNE Shaders">Implementing CNE Shaders</h1>
+<h2 id="cne-shaders" sidebar="Implementing CNE Shaders">Implementing CNE Shaders</h2>
 
 Codename Engine comes pre-packaged with some shaders out of the box. Let's talk about how to implement those first!
 
@@ -29,12 +32,13 @@ bg.shader = new CustomShader('coloredVignette');
 
 It's really that simple to implement one of the custom Codename shaders. Note that you don't have to include the extension - Codename finds it for you. To see what other shaders are built into Codename, take a look at the [shaders folder](https://github.com/CodenameCrew/CodenameEngine/tree/main/assets/shaders) in source assets.
 
-<h2 id="custom-shaders" sidebar="Custom Shaders">Implementing/Converting Custom Shaders</h1>
+<h2 id="custom-shaders" sidebar="Custom Shaders">Implementing/Converting Custom Shaders</h2>
 
 What about shaders outside of the source assets? For this example, we'll use this [Fast CRT Shader](https://www.shadertoy.com/view/WsVSzV) from kbjwes77 on Shadertoy, and we're going to put it on our main camera using our global script (`./data/global.hx`).
 
-## ⚠️ WARNING ⚠️
+<Note level="warning">
 Always check to ensure that you have permission to use a shader before implementing it in your mod! Just because something is on Shadertoy doesn't inherently mean it's free to use!
+</Note>
 
 Create a new file in your `shaders` folder (`./data/shaders/crt.frag`). Paste the code from the shader into the file. Then, in `global.hx`, add the following code to the `onPostStateSwitch` function:
 <div style="display: grid; justify-content: left;">
@@ -57,14 +61,14 @@ vec2 fragCoord = openfl_TextureCoordv*openfl_TextureSize.xy;
 vec2 uv = fragCoord/openfl_TextureSize.xy;
 ```
 4. Change `texture(iChannel0,uv)` to `texture2D(bitmap, uv)` *(see appendix)*
-5. Change `fragColor` to `gl_fragColor`.
+5. Change `fragColor` to `gl_FragColor`.
 
 Now when you run the game, you should see the shader working and applied as intended!
 
 There is also a tool called [Shadertoy to Flixel](https://theleername.github.io/ShadertoyToFlixel/) that can convert *most* Shadertoy shaders, not every shader is a 1:1 convert!
 Will save you some time though!
 
-<h2 id="create-shaders" sidebar="Create Shaders/Shader Variables">Creating Custom Shaders & Shader Variables</h1>
+<h2 id="create-shaders" sidebar="Create Shaders/Shader Variables">Creating Custom Shaders & Shader Variables</h2>
 
 For our final example, we're going to create a simple shader from scratch. Our goal is to turn Boyfriend blue - but we'll have a variable to determine how blue he is. That's our special shader!
 
@@ -107,15 +111,25 @@ Now not only is Boyfriend blue, but we can control how blue he is in a regular H
 <h1 id="appendix" sidebar="Appendix">Appendix</h1>
 
 The following is some good information to know:
-- When getting the texture of a sprite or singular object, use `flixel_texture2d` when getting the texture of a camera or `FlxGame`, use `texture2D`.
+
+- Use <code class="token function" set:html="flixel_texture2D"/> to get the sprite or camera's bitmap with color transform applied. If not supported or you don't want it to be affected, use the regular <code class="token function" set:html="texture2D"/> instead.
+
 - Don't use `0.` or `.0` for floats, instead use `0.0` (append a trailing number).
+
 - Avoid using switch cases - use if statements to ensure macOS compatibility.
-- Use floats instead of integers when initiating vectors (ex. `vec2(1.0, 1.0)` instead of `vec2(1, 1)`).
-- Avoid using or initializing variables that start with `gl_`, or that use the name `input` or `sample` - these can break shaders on some or all platforms.
-- The `ivec` family (2/3/4), `bvec` family, `uvec` family, and `uint` are all unsupported on certain platforms, so avoid using them.
+    - For reference, macOS only supports up to <InlineCode lang="glsl" code={`#version 120`}/>.
+
+- Use floats instead of integers when initiating vectors (ex. <InlineCode lang="glsl" code={`vec2(1.0, 1.0)`}/> instead of <InlineCode lang="glsl" code={`vec2(1, 1)`}/>).
+
+- Avoid using or initializing variables that start with `gl_`, or that use the name <InlineCode lang="glsl" code={`input`}/> or <InlineCode lang="glsl" code={`sample`}/> - these can break shaders on some or all platforms.
+
+- The non-regular vector families (<code class="token keyword" set:html="ivecX"/>, <code class="token keyword" set:html="bvecX"/>, <code class="token keyword" set:html="uvecX"/>), and <InlineCode lang="glsl" code={`uint`}/> are all unsupported on certain platforms, so avoid using them.
+
 - Avoid using the modulo operator and instead use the mod function.
+
 - Avoid using arrays as some platforms don't support them.
-- Runtime-dependent variables, such as `openfl_TextureCoordv` and `openfl_TextureSize`, should be established *inside* your `void main()` function and not outside of it.
+
+- Runtime-dependent variables, such as `openfl_TextureCoordv` and `openfl_TextureSize`, should be established *inside* your <InlineCode lang="glsl" code={`void main()`}/> function and not outside of it.
 
 <h1 id="further" sidebar="Further Reading">Further Reading</h1>
 

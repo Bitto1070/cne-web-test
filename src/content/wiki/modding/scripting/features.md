@@ -18,7 +18,7 @@ To define a variable you can use the `var` and `final` keywords before the varia
 var myVariable:Bool = true;
 final my_final:Bool = true;
 
-// Not valid syntax and will cause a Null Object Reference.
+// Not valid syntax and will cause a syntax error.
 var my cool variable:Bool = false;
 ```
 </div>
@@ -65,7 +65,7 @@ function unreadable_function() {
 function new():Void {
     my_accessable_var = false;
     read_changes(); // "my_accessable_var: false"
-    unreadable_function() // Null Object Reference. This is not defined in Script #2 so it will throw this error.
+    unreadable_function(); // Null Object Reference, or Null Function Pointer. This is not defined in Script #2 so it will throw this error.
 }
 ```
 </div>

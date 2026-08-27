@@ -33,8 +33,9 @@
             ["3d", "3D Rendering <span style='color: #489fb7;'>(WIP)</span>"]
         ]]
     ]],
-    ["tutorials", "Useful Tutorials - UNFINISHED", [
-        ["weeks", "Making weeks - <span style='color: #32e53a;'>(Complete)</span>"]
+    ["tutorials", "Manual File Making for Nerds", [
+        ["stages", "Stage XMLs"],
+        ["weeks", "Making Weeks"]
     ]],
     ["source", "Source Modding - <span style='color: #32e53a;'>(Complete)</span>", [
         ["init", "Initalization - <span style='color: #32e53a;'>(Complete)</span>"]

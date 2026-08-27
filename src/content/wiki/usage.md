@@ -16,14 +16,14 @@ Navigating the engine should be pretty obvious as the experience is mostly simil
 
 <h2 id="options-menu" sidebar="Options Menu">Options Menu</h2>
 <div style="display: flex; justify-content: center; gap: 25px;">
-    <img src="./images/home/Options Menu.png" alt="Options Menu" style="width:50%;">
-    <img src="./images/home/Options - Gameplay.png" alt="Gameplay Menu" style="width:50%;">
+    <img src="./images/home/Options Menu.png" alt="Options Menu" style="width:50%;"/>
+    <img src="./images/home/Options - Gameplay.png" alt="Gameplay Menu" style="width:50%;"/>
 </div>
 
 Here is the new options menu, formatted as a Tree Menu with branches for each category of options. Extra information can be seen at the top of the screen, and you can add your own options too! (see [insert link here]).
 
 ### Controls Menu
-<img src="./images/home/Options - Controls.png" alt="Control Options Substate" style="width:85%;">
+<img src="./images/home/Options - Controls.png" alt="Control Options Substate" style="width:85%;"/>
 
 Change your controls here to any key you want, and you get an extra second keybind option too!
 
@@ -33,14 +33,14 @@ Change your controls here to any key you want, and you get an extra second keybi
 
 This menu is accessed by pressing **TAB** (by default) in the **Main Menu**. Selecting `Disable Mods` will use just load the base game without any modifications.
 
-<img src="./images/home/Mod Select Menu.png" alt="Substate for Switching Mods" style="width:85%;">
+<img src="./images/home/Mod Select Menu.png" alt="Substate for Switching Mods" style="width:85%;"/>
 
 If you want a mod to automatically load when launching the game, you can place an `autoload.txt` file in your `./mods/` folder and inside it, just put the name of the mod (folder name) you wish to autoload.
 
 <h2 id="fps-debugger" sidebar="FPS Counter">FPS Counter</h2>
-<img src="./images/home/FPS Counter.png" alt="Substate for Switching Mods" style="width:50%;">
+<img src="./images/home/FPS Counter.png" alt="Substate for Switching Mods" style="width:50%;"/>
 
-You can toggle the FPS Counter by pressing **F3**, either hiding it, showing it or extend it to show even more information *(Currently you cannot change the keybind for this)*
+You can toggle the FPS Counter by pressing **F3** *(you can change this!)*, either hiding it, showing it or extend it to show even more information
 
 With this, you can see a lot of useful information about what state the game is in, for example: the current song position and BPM *(under Conductor Info)* the current state and object count *(under Flixel Info)* and system specs *(under System Info)*, all useful for development and debugging.
 
@@ -48,27 +48,24 @@ With this, you can see a lot of useful information about what state the game is 
 
 The **Freeplay Menu** is hasn't changed much, but there's a new Gamemodes feature you can play with and add onto yourself. You may switch through them by using **TAB** *(not to be confused with the Mod Selection Menu keybind)*
 
-<img src="./images/home/freeplay/1.png" alt="Preview of FreeplayState" style="width:85%;">
+<img src="./images/home/freeplay/1.png" alt="Preview of FreeplayState" style="width:85%;"/>
 
-#### TODO: Add a link to explain How to add custom Gamemode Types.
 ## Gamemode Types
-1. Solo
-2. Opponent Mode
-3. Co-Op Mode
-4. Co-Op Mode (Switched)
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; justify-items: center;">
-  <img src="./images/home/freeplay/2.png" alt="Solo" style="width:100%;">
-  <img src="./images/home/freeplay/3.png" alt="Opponent Mode" style="width:100%;">
-  <img src="./images/home/freeplay/4.png" alt="Co-Op Mode" style="width:100%;">
-  <img src="./images/home/freeplay/5.png" alt="Co-Op Mode (Switched)" style="width:100%;">
+  <img src="./images/home/freeplay/2.png" alt="Solo" style="width:100%;"/>
+  <img src="./images/home/freeplay/3.png" alt="Opponent Mode" style="width:100%;"/>
+  <img src="./images/home/freeplay/4.png" alt="Co-Op Mode" style="width:100%;"/>
+  <img src="./images/home/freeplay/5.png" alt="Co-Op Mode (Switched)" style="width:100%;"/>
 </div>
 
-Co-Op Mode will use your Player 1 Keys for Dad, and Player 2 Keys for Boyfriend. The Switched Variant swaps them.
+Co-Op Mode will use your Player 1 Keys for Boyfriend, and Player 2 Keys for the Opponent. The Switched variant swaps them.
+
+Custom Gamemodes will be available in the future.
 
 ## Developer Mode
 
 Finally, to access basic modding tools you must enable **Developer Mode**, something that only must be done on mods you are developing (since it enables mod warnings and they tend to get annoying). Afterwards you may press **7** in the **Main Menu** to open a Selection menu where you can choose the editor you want to use.
 
-<img src="./images/home/Developer Options.png" alt="Developer Options" style="width:85%;">
+<img src="./images/home/Developer Options.png" alt="Developer Options" style="width:85%;"/>
 
 ## That's all the changes you really need to know / worry about for Codename Engine.
