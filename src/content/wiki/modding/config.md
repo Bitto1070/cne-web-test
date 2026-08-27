@@ -59,7 +59,7 @@ This is your `INI` file, the file that holds all of your configuration. The esse
 
 This is something that you will be most likely using a LOT, as it will help you easily replace the current Base Game menus with ones of your own!
 
-You can redirect ANY state by inputting the Class Name, and setting it to a string that points to either a new Class State, or a ModState Script! Though at this point you must also know how to code your own menus... (we cover that in [insert link here])
+You can redirect ANY menu and state by inputting the Class Name of it, and setting it to a string that points to either different menu (basically if you want to skip MainMenuState by replacing it with FreeplayState), or a ModState Script! Though at this point you must also know how to code your own menus... (we cover that in [insert link here])
 ```ini
 [StateRedirects]
 TitleState="funkin.menus.MainMenuState"
