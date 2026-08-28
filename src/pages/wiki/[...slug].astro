@@ -4,10 +4,16 @@ import Wiki from "../../layouts/wiki.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("wiki");
-  return entries.map((entry:any) => ({
+  var e = entries.map((entry:any) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
+  // make /wiki/ show the /wiki/index/ content
+  e.push({
+    params: {slug: undefined},
+    props: { entry: entries.filter((a:any) => a.id.startsWith('index'))[0] }
+  });
+  return e;
 }
 
 const { entry } = Astro.props;
