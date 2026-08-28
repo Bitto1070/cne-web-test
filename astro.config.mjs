@@ -3,7 +3,6 @@ import alpine from '@astrojs/alpinejs';
 import mdx from "@astrojs/mdx";
 
 export default defineConfig({
-    base: "/cne-web-test",
 	markdown: {
 		smartypants: false,
 		syntaxHighlight: 'prism',
@@ -11,7 +10,8 @@ export default defineConfig({
 	integrations: [alpine(), mdx({
 		extendMarkdownConfig: true
 	})],
-	site: 'https://codenamecrew.github.io/cne-web-test/',
+	site: 'https://codenamecrew.github.io/',
+	base: "/cne-web-test",
 	server: {
 		open: true
 	},
