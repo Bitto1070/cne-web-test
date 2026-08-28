@@ -1,12 +1,12 @@
 ---
 import '../../styles/code.css';
-import Page from '../../components/Page.astro';
+import APIPage from "../../layouts/api.astro";
 import InlineCode from '../../components/InlineCode.astro';
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
     const entries = await getCollection("api-docs");
-    return entries.map((a) => {
+    return entries.map((a:any) => {
         console.log(a.id);
         return {
             params: {
@@ -19,40 +19,109 @@ export async function getStaticPaths() {
     });
 }
 
-const { entry } = Astro.props;
-const { pluh } = Astro.params;
+const { entry }:any = Astro.props;
+const { pluh }:any = Astro.params;
 
-function getFunctionParamText(a:object):string {
-    return `(${a.args.map((b) => (
-        (b.optional ? '?' : '') + b.name + ':' + (b.type ?? 'Void')
+function getFunctionParamText(a:any):string {
+    return `(${a.args.map((b:any) => (
+        (b.optional ? '?' : '') + b.name + (b.type != null ? (':' + (b.type ?? 'Void')) : '')
         + (((b.def != null) && (b.def != undefined)) ? (' = ' + b.def) : '')
     )).join(', ')})`;
 }
 
-function generateFieldText(a:object):string {
-    return `${((a.meta != undefined) && (a.meta.length > 0)) ? (a.meta.join(' ') + ' ') : ''
-            }${a?.isStatic ? 'static ' : ''}${a?.isInline ? 'inline ' : ''}${a.kind} ${a.name}${
+function generateFieldText(a:any):string {
+    return `${a?.isStatic ? 'static ' : ''}${a?.isInline ? 'inline ' : ''}${a.kind} ${a.name}${
             ((a.access != undefined) && (a.access.length > 0)) ? ('(' + a.access + ')') : ''}${
             (a.kind === 'function') ? (getFunctionParamText(a) + ':' + (a?.ret ?? 'Void')) : ((a.type != undefined) && (a.type.length > 0)) ? (':' + a.type) : ''};`;
 }
----
-<Page title={pluh.replaceAll('/', '.')}>
-    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 12px; width: 100%; align-items: start;">
-        <div class="subpanel">
-            search goes here
-        </div>
-        <div class="panel" style="">
-            {entry.kind} <span class="phantommuff" style="font-size: 2em; margin-left: 0.25em;">{entry.name}</span>
-            <br/>{entry?.doc?.text ?? ''}
-            <hr/>
 
-            <h2>Variables</h2>
-            {
-                entry.fields.map((a) => (<div class="subpanel">
-                    <InlineCode lang="haxe" code={generateFieldText(a)}/>
-                    <br/>{a?.doc?.text && <br/>}{a?.doc?.text ?? ''}
-                </div><br/>))
+function shouldHide(a:any) {
+    return (a.meta != undefined) && (a.meta.length > 0) && (a.meta.includes('@:dox(hide)'));
+}
+
+function isDeprecated(a:any) {
+    if ((a.meta != undefined) && (a.meta.length > 0)) {
+        for (const i of a.meta) {
+            if (i.includes('@:deprecated')) {
+                // strings always evaluate to true
+                return i.substring(14, i.length - 2);
             }
-        </div>
-    </div>
-</Page>
+        }
+    }
+    return false;
+}
+
+entry.fields = entry.fields.filter((a:any) => !shouldHide(a));
+
+const vars = entry.fields.filter((a:any) => (a.kind !== 'function' && !isDeprecated(a)));
+const funcs = entry.fields.filter((a:any) => (a.kind === 'function' && !isDeprecated(a)));
+const deprecated = entry.fields.filter((a:any) => (isDeprecated(a)));
+---
+<style is:global>
+    .with-desc {
+        border: 1px solid var(--secondary-color);
+    }
+    :target {
+        background: linear-gradient(to bottom,
+                        rgb(from var(--primary-color) calc(r * 0.5) calc(g * 0.5) calc(b * 0.5)),
+                        rgb(from var(--primary-color) calc(r * 0.3) calc(g * 0.3) calc(b * 0.3)));
+        border: 1px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to top left, var(--primary-color), var(--secondary-color), var(--primary-color));
+    }
+</style>
+<APIPage title={pluh.replaceAll('/', '.')}>
+    {entry.kind} <span class="phantommuff" style="font-size: 2em; margin-left: 0.25em;">{entry.name}</span>
+    <hr/>{entry?.doc?.text?.split('\n').map((c:any) => (<p>{c}</p>)) ?? ''}
+    <br/>
+    {
+    (vars.length > 0) && (
+    <details open>
+    <summary><b>Variables</b></summary>
+    <br/>
+    {
+        vars.map((a:any) => (<div id={a.name} class={a?.doc?.text && "subpanel with-desc"}>
+            <InlineCode lang="haxe" code={generateFieldText(a)}/>
+            <br/>{a?.doc?.text && (<br/>)}{a?.doc?.text?.split('\n').map((c:any) => (<p>{c}</p>)) ?? ''}
+        </div><hr/>))
+    }
+    </details>
+    )}
+    {
+    (funcs.length > 0) && (
+    <details open>
+    <summary><b>Methods</b></summary>
+    <br/>
+    {
+        funcs.map((a:any) => (<div id={a.name} class={a?.doc?.text && "subpanel with-desc"}>
+            <InlineCode lang="haxe" code={generateFieldText(a)}/>
+            <br/>{a?.doc?.text && (<br/>)}{a?.doc?.text?.split('\n').map((c:any) => (<p>{c}</p>)) ?? ''}
+        </div><hr/>))
+    }
+    </details>
+    )}
+    {
+    (deprecated.length > 0) && (
+    <details>
+    <summary><b>Deprecated Variables</b></summary>
+    <br/>
+    {
+        deprecated.map((a:any) => (<div id={a.name} class="subpanel" style="border: 2px dotted #c00;">
+            <code set:html={generateFieldText(a)} class="token tag" style="font-style: italic;"/>
+            <br/><br/>{isDeprecated(a)}
+        </div><hr/>))
+    }
+    </details>
+    )}
+
+    <script is:inline>
+        var buh = window.location.hash;
+        if (buh.length > 0) {
+            buh = buh.substring(1);
+            document.getElementById(buh)?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    </script>
+</APIPage>
