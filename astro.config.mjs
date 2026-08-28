@@ -3,6 +3,7 @@ import alpine from '@astrojs/alpinejs';
 import mdx from "@astrojs/mdx";
 
 export default defineConfig({
+	outDir: "./dist/cne-web-test",
 	markdown: {
 		smartypants: false,
 		syntaxHighlight: 'prism',
