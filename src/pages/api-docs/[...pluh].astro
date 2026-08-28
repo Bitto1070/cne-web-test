@@ -3,6 +3,8 @@ import '../../styles/code.css';
 import APIPage from "../../layouts/api.astro";
 import InlineCode from '../../components/InlineCode.astro';
 import { getCollection } from "astro:content";
+import markdownit from "markdown-it";
+const md = markdownit();
 
 export async function getStaticPaths() {
     const entries = await getCollection("api-docs");
@@ -82,7 +84,9 @@ const deprecated = entry.fields.filter((a:any) => (isDeprecated(a)));
     {
         vars.map((a:any) => (<div id={a.name} class={a?.doc?.text && "subpanel with-desc"}>
             <InlineCode lang="haxe" code={generateFieldText(a)}/>
-            <br/>{a?.doc?.text && (<br/>)}{a?.doc?.text?.split('\n').map((c:any) => (<p>{c}</p>)) ?? ''}
+            <br/>{((a?.doc != null) && (a?.doc?.text != undefined)) ?
+            <Fragment set:html={md.render(a.doc.text)}/>
+            : ''}
         </div><hr/>))
     }
     </details>
@@ -95,7 +99,9 @@ const deprecated = entry.fields.filter((a:any) => (isDeprecated(a)));
     {
         funcs.map((a:any) => (<div id={a.name} class={a?.doc?.text && "subpanel with-desc"}>
             <InlineCode lang="haxe" code={generateFieldText(a)}/>
-            <br/>{a?.doc?.text && (<br/>)}{a?.doc?.text?.split('\n').map((c:any) => (<p>{c}</p>)) ?? ''}
+            <br/>{((a?.doc != null) && (a?.doc?.text != undefined)) ?
+            <Fragment set:html={md.render(a.doc.text)}/>
+            : ''}
         </div><hr/>))
     }
     </details>
@@ -115,13 +121,21 @@ const deprecated = entry.fields.filter((a:any) => (isDeprecated(a)));
     )}
 
     <script is:inline>
-        var buh = window.location.hash;
-        if (buh.length > 0) {
-            buh = buh.substring(1);
-            document.getElementById(buh)?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
+        function scrollToHash() {
+            var buh = window.location.hash;
+            if (buh.length > 0) {
+                buh = buh.substring(1);
+                console.log(buh);
+                document.getElementById(buh)?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
         }
+        scrollToHash();
+        window.addEventListener('hashchange', function(e) {
+            e.preventDefault();
+            scrollToHash();
+        });
     </script>
 </APIPage>
