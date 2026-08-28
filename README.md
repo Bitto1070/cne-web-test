@@ -2,7 +2,8 @@
 # Website Version uhhh.............. 2? 3? idk
 
 ---
-⚠⚠☣☣☢🚸THIS IS A WORK IN PROGRESS⚠🚸🚸🚸🚸🚸
+# ⚠⚠☣☣☢🚸THIS IS A WORK IN PROGRESS⚠🚸🚸🚸🚸🚸
+
 uhh yea it is being remade !!!!! contributors might wanna like .  look at the notes below
 
 ## Contributing
