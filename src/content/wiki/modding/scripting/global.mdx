@@ -1,153 +1,139 @@
 ---
-author: rufius & ItsLJcool & HeroEyad
-desc: Explains what a GlobalScript is, and how to effectivly use it.
-lastUpdated: 2026-06-05T06:00:45.809Z
+author: Bitto1070
+desc: Explains what a Global Script is, and how to use it effectively.
+lastUpdated: 2026-08-28T21:49:06.311Z
 title: Scripting - Global Script
 ---
 import InlineCode from '../../../../components/InlineCode.astro';
 
-# What is a `GlobalScript`?
+# What is the Global Script?
 
-`GlobalScript` is perhaps one of the more powerful script that can be loaded by a mod, and it's most commonly the first file generated in your mod. You can make a `GlobalScript` by making a script file at `./data/global.hx`.
+The **Global Script** is the first file of your mod to run, and stays loaded for as long as your mod is active. It's useful for running functions on every state, or for setup that needs to happen before anything else in the mod.
 
-When your mod loads up, GlobalScript is one of the very first scripts to be executed, this script will persist throughout the entire mod, and will never be destroyed or become inactive (unless you manually tell it to). Once your mod is no longer loaded, it will be removed alongside it.
-
-With this power, you can manage your entire Mod with this singular script, and is one of the many crucial components in building a sucessful backend structure for yourself, and as a utility.
+You can make a global script by adding `global.hx` to your `data` folder.
 
 # Callbacks
+Below is a list of all the functions that can be used in global scripts:
 
-There is only a few functions that `GlobalScript` manages itself, though you can call custom functions yourself from other scripts by doing <InlineCode lang='haxe' code={'GlobalScript.call("functionName", [/* arguments */])'}/>.<br/>
-Although there really should be no reason to call functions directly to `GlobalScript`, it's there if you really need it.
+<style>
+{
+	`td {
+		align-content: start;
+		padding: 0.66em;
+		border-top: 1px solid var(--primary-color);
+	}`
+}
+</style>
 
 <details>
-    <summary>Here is a list of callbacks GlobalScript manages</summary>
-<ul>
-{
-[
-	"focusGained()",
-	"focusLost()",
-	"gameResized(w:Int, h:Int)",
-	"preDraw()",
-	"postDraw()",
-	"preGameReset()",
-	"postGameReset()",
-	"preGameStart()",
-	"postGameStart()",
-	"preStateCreate(state:FlxState)",
-	"preStateSwitch()",
-	"postStateSwitch()",
-	"preUpdate(elapsed:Float)",
-	"update(elapsed:Float)",
-	"postUpdate(elapsed:Float)",
-	"beatHit(curBeat:Int)",
-	"stepHit(curStep:Int)",
-	"destroy()"
-].map((a) => (
-	<li>
-		<InlineCode lang='haxe' code={a}/>
-	</li>
-))
-}
-</ul>
+	<summary>GlobalScript callbacks</summary>
+| Function | Runs... | Notes
+| - | - | -
+| <InlineCode lang='haxe' code={`new()`}/> | Right as your mod loads
+| <InlineCode lang='haxe' code={`gameResized(width:Int, height:Int)`}/> | Whenever the game window is resized
+| <InlineCode lang='haxe' code={`preGameReset()`}/> | When <InlineCode lang='haxe' code={`FlxG.resetGame()`}/> is called, before the game resets
+| <InlineCode lang='haxe' code={`postGameReset()`}/> | When <InlineCode lang='haxe' code={`FlxG.resetGame()`}/> is called, after the game resets
+| <InlineCode lang='haxe' code={`preGameStart()`}/> | When <InlineCode lang='haxe' code={`FlxG.resetGame()`}/> is called, after preStateSwitch
+| <InlineCode lang='haxe' code={`postGameStart()`}/> | If the game automatically loads the mod on startup, or after preGameStart
+| <InlineCode lang='haxe' code={`preStateSwitch()`}/> | Before the next state is loaded
+| <InlineCode lang='haxe' code={`preStateCreate(state:FlxState)`}/> | Before the state is created
+| <InlineCode lang='haxe' code={`postStateSwitch()`}/> | After the state is switched to
+| <InlineCode lang='haxe' code={`preUpdate(elapsed:Float)`}/> | Before objects are updated
+| <InlineCode lang='haxe' code={`update(elapsed:Float)`}/> | Right after preUpdate
+| <InlineCode lang='haxe' code={`postUpdate(elapsed:Float)`}/> | After objects are updated
+| <InlineCode lang='haxe' code={`preDraw()`}/> | Before sprites are rendered to the screen
+| <InlineCode lang='haxe' code={`postDraw()`}/> | After sprites are rendered to the screen
+| <InlineCode lang='haxe' code={`onScriptCreated(script:HScript,type:String)`}/> | When a script is created | `type` always ends up being `hscript`.
+| <InlineCode lang='haxe' code={`onScriptSetup(script:HScript,type:String)`}/> | When a script is loaded | `type` always ends up being `hscript`.
+| <InlineCode lang='haxe' code={`beatHit(curBeat:Int)`}/> | Every beat (quarter note) of the music | This only gets called when `FlxG.sound.music` is playing (ex. after using `CoolUtil.playMusic()`).
+| <InlineCode lang='haxe' code={`stepHit(curStep:Int)`}/> | Every step (sixteenth note) of the music | This only gets called when `FlxG.sound.music` is playing (ex. after using `CoolUtil.playMusic()`).
+| <InlineCode lang='haxe' code={`focusGained()`}/> | When the game window is clicked on
+| <InlineCode lang='haxe' code={`focusLost()`}/> | When the game window is clicked off of | if `Auto Pause` is enabled in the options, this will only have an effect once you refocus the window.
+| <InlineCode lang='haxe' code={`destroy()`}/> | When the mod is switched off of
+
 </details>
 
-# Hot Reloading
-
-Codename can reload `GlobalScript`s by holding `Shift` and pressing the "Reload State" keybind. By default this is `Shift` + `F5`.<br/>
-Doing this will destroy and re-initalize all `GlobalScript`s, so you need to ensure you properly `destroy` things or remove them once the script is no longer active.
-
-You should always do this in a `GlobalScript`, to ensure unloading your Mod never causes any issues with other mods / addons.
-<div style="display: grid; justify-content: left;">
-
-```haxe
-function destroy() {
-	trace("AAAAH IM BEING REMOVED!!!!");
-}
-```
-</div>
+For most mods, you'll mostly only need `new()` for setup, `destroy()` for resetting and `update()` for any extra key combinations that you'd need to use on any state.
 
 # Cross-script Communication
-
-`GlobalScript` maintains it's own `ScriptPack` that is <b>_freely accessible_</b> as <InlineCode lang='haxe' code={`GlobalScript.scripts`}/> as a `static` variable.
-
-You can manage the whole `ScriptPack` anywhere in your mod, but for simplicity you should use <InlineCode lang='haxe' code={`GlobalScript.scripts`}/> only if you need to access either a specific script inside, or internal variables. Using the `public` modifier in `GlobalScript` should never be used, as it only allows other `GlobalScripts` to access it, so it does nothing for your mod.
-
-You can either make `static` variables / functions inside your `GlobalScript` to call anywhere, or just normal functions you can then call with <InlineCode lang='haxe' code={`GlobalScript.call()`}/>.
-It's common to think that you should shove everything that you want to use globally in a Global Script, but that is bad practice.
-
-You should only use `GlobalScript` for managing custom classes, or holding data globally. You don't need to manage anything here either!
-You can also use `GlobalScript` to execute code on Mod Launch.
-
-Here is a basic example on how you should use `GlobalScript` to it's fullest potential.
-<div style="display: grid; justify-content: center;">
-
+You can use the global script to store functions that are needed in a lot of states, or variables that need to be remembered between them. The easiest way to do this is by making them `static`:
+<div style="display: grid; justify-content: left;">
 ```haxe
-function apiFunc() {
-	trace("API!");
-}
+// global.hx
+static var tickets = 0; // Tickets need to be remembered to be spent later
 
-function apiCalc(number_1:Int, number_2:Int) {
-	trace('$number_1 + $number_2 = ${(number_1 + number_2)}!');
+static function giveTickets(amount:Int) {
+	tickets += amount;
+	trace('You now have ' + tickets + ' tickets.');
 }
 ```
-
 ```haxe
-import funkin.backend.scripting.GlobalScript;
+// Then, in a different script...
 
 function create() {
-	GlobalScript.scripts.call("apiFunc", []); // API!
-	GlobalScript.scripts.call("apiCalc", [9, 10]); // 9 + 10 = 19!
+	trace(tickets); // 0
+	giveTickets(10); // You now have 10 tickets.
+	trace(tickets); // 10
 }
 ```
 </div>
 
+However, it's recommended to instead have less used functions as a [custom class](./classes) to import only when needed to save on memory.
 
-or... you can just straight up call them without <InlineCode lang='haxe' code={`GlobalScript.scripts.call()`}/>!
-<div style="display: grid; justify-content: center;">
 
+# Reloading the Global Script
+
+You can reload global scripts by holding `Shift` and pressing the `Reload State` keybind. By default, this is `Shift` + `F5`.<br/>
+Doing this will destroy and re-initialize the global script, so you need to ensure you properly destroy or remove things once the script is no longer active, to prevent issues with other mods or addons.
+<div style="display: grid; justify-content: left;">
 ```haxe
-function create() {
-	apiFunc(); // API!
-	apiCalc(9, 10); // 9 + 10 = 19!
+function destroy() {
+/*
+	In here, you'd reset things that would persist to other mods, breaking them in the process:
+	- Resize the window back to 1280x720 (ex. 4:3 mods);
+	- Unload custom cursors;
+	- Reset the framerate counter;
+	- etc.
+*/
 }
 ```
 </div>
-
-
-Here's another example on how variables and functions works on `GlobalScript`
-
-On `global.hx`
-<div style="display: grid; justify-content: center;">
-
+However, this does not reset any `static` variables, so to make sure that your mod does not break when being reloaded, it's recommended that you reset any static variables to their original value, if needed.
+<div style="display: grid; justify-content: left;">
 ```haxe
-static var balance:Int = 0;
+static var exampleCounter = 0; // Elsewhere, this counter would be incremented.
 
-static function addMoney(amount:Int) {
-	balance += amount;
-	trace("Added " + amount " to balance!");
+function new() {
+	exampleCounter = 0; // Reloading the global script now resets the counter.
 }
 ```
+
+Reloading via rechoosing the mod from the mod switch menu does clear static variables, so if anything breaks from them not being reset, do that instead.
+
 </div>
 
-on any script!
-<div style="display: grid; justify-content: center;">
+# Multiple Global Scripts
 
+You can have multiple global scripts by importing them inside `global.hx`:
+<div style="display: grid; justify-content: left;">
 ```haxe
-function create() {
-	trace("Balance before: " + balance); // Balance before: 0
-	addMoney(300); // Added 300 to balance!
-	trace("Balance after: " + balance); // Balance after: 300
-}
+importScript("data/utils"); // Doing this inside global.hx would turn utils.hx into a second global script
 ```
-
 </div>
+Anything you put in these scripts will function as a global script, and will be accessible by other global scripts if set to `public` or `static`.
+
+This is mostly only useful for organization purposes, but may make global script creation easier.
+
+Note: this is the only time where making something `public` does something, as scripts from outside the global scripts pack can't access them unless they're `static`.
+
+
 Next steps in learning the In-and-out's of HScript
 
-- [Features](./features.md)
-- [Formatting, and Basic Syntax](./style.md)
-- [Event Callbacks](./cancellables.md)
-- [PlayState Interaction](./playstate.md)
-- [Custom States / SubStates](./states.md)
-- [[PREV] Custom Events / Notetypes](./events.md)
-- [Global Script](./global.md)
-- [[NEXT] Custom Classes](./classes.md)
+- [Features](./features)
+- [Formatting, and Basic Syntax](./style)
+- [Event Callbacks](./cancellables)
+- [PlayState Interaction](./playstate)
+- [Custom States / SubStates](./states)
+- [[PREV] Custom Events / Notetypes](./events)
+- [Global Script](./global)
+- [[NEXT] Custom Classes](./classes)
