@@ -1,0 +1,58 @@
+---
+import '../../styles/code.css';
+import Page from '../../components/Page.astro';
+import InlineCode from '../../components/InlineCode.astro';
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const entries = await getCollection("api-docs");
+    return entries.map((a) => {
+        console.log(a.id);
+        return {
+            params: {
+                pluh: a.id,
+            },
+            props: {
+                entry: a.data
+            },
+        };
+    });
+}
+
+const { entry } = Astro.props;
+const { pluh } = Astro.params;
+
+function getFunctionParamText(a:object):string {
+    return `(${a.args.map((b) => (
+        (b.optional ? '?' : '') + b.name + ':' + (b.type ?? 'Void')
+        + (((b.def != null) && (b.def != undefined)) ? (' = ' + b.def) : '')
+    )).join(', ')})`;
+}
+
+function generateFieldText(a:object):string {
+    return `${((a.meta != undefined) && (a.meta.length > 0)) ? (a.meta.join(' ') + ' ') : ''
+            }${a?.isStatic ? 'static ' : ''}${a?.isInline ? 'inline ' : ''}${a.kind} ${a.name}${
+            ((a.access != undefined) && (a.access.length > 0)) ? ('(' + a.access + ')') : ''}${
+            (a.kind === 'function') ? (getFunctionParamText(a) + ':' + (a?.ret ?? 'Void')) : ((a.type != undefined) && (a.type.length > 0)) ? (':' + a.type) : ''};`;
+}
+---
+<Page title={pluh.replaceAll('/', '.')}>
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 12px; width: 100%; align-items: start;">
+        <div class="subpanel">
+            search goes here
+        </div>
+        <div class="panel" style="">
+            {entry.kind} <span class="phantommuff" style="font-size: 2em; margin-left: 0.25em;">{entry.name}</span>
+            <br/>{entry?.doc?.text ?? ''}
+            <hr/>
+
+            <h2>Variables</h2>
+            {
+                entry.fields.map((a) => (<div class="subpanel">
+                    <InlineCode lang="haxe" code={generateFieldText(a)}/>
+                    <br/>{a?.doc?.text && <br/>}{a?.doc?.text ?? ''}
+                </div><br/>))
+            }
+        </div>
+    </div>
+</Page>
