@@ -11,12 +11,12 @@ HScript allows for Custom classes, and it is not a 1:1 copy-paste from how sourc
 You can define a Custom Class to import into any script by adding a file in `./source` in your Modpack called the Class name. You can add sub-folders for organization as well.
 <div style="display: grid; justify-content: left;">
 
-```text
+```yaml
 └─ 📂 My Mod/                                
 	└─ 📂 source/                              # Custom Classes go here.
-		├─ 📄 MyCustomClass.hx                  # `import MyCustomClass;` in your code.
+		├─ 📄 MyCustomClass.hx                 # `import MyCustomClass;` in your code.
 		└─ 📂 extra/                           
-			└─ 📄 CoolClass.hx                   # `import extra.CoolClass;` in your code.
+			└─ 📄 CoolClass.hx                 # `import extra.CoolClass;` in your code.
 ```
 
 Here is an example of a Custom Class:
@@ -70,7 +70,7 @@ function new() {
 
 You can also import custom classes into custom classes, same import method.
 
-Now as of v1.0.1 and it's Experimentals, Static variables in Custom Classes are *not exactly static*, but are <u><i>locally static.</u></i><br/>
+Now as of v1.0.1 and it's Experimentals, Static variables in Custom Classes are *not exactly static*, but are <u><i>locally static.</i></u><br/>
 This means if you import it in 2 different scripts they can have different static values. This can be easily fixed with a simple workaround, if your using the `./source/` folder for your class initalization.
 
 ```haxe

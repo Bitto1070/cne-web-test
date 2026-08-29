@@ -4,6 +4,7 @@ desc: Basic tutorial on how to setup and initalize your own mod!.
 lastUpdated: 2025-11-15T05:32:50.298Z
 title: Modding The Engine
 ---
+import Note from '../../../components/Note.astro';
 
 # Modding The Engine
 
@@ -12,10 +13,12 @@ Certain modding features will be documented here to help you immediately start m
 
 This is what a maxed out Mod Folder will contain. We will go over some folders that require more explanation later.
 
-<!--for some reason yaml makes the comments actually show up as comments-->
+{/*for some reason yaml makes the comments actually show up as comments*/}
 <details>
 <summary>Click to expand</summary>
-
+<Note>
+This might not be EVERYTHING, but it's a good chunk of the folders Codename Engine interacts with.
+</Note>
 ```yaml
 └─ 📂 My Mod/                                
    ├─ 📂 data/                                # Usually contains configuration, or information you want to store.
@@ -77,11 +80,9 @@ This is what a maxed out Mod Folder will contain. We will go over some folders t
    ├─ 📂 source/                              # Custom Classes go here.
    └─ 📂 videos/                             
 ```
+
 </details>
 
-#### NOTE!
-This might not be EVERYTHING, but it's a good chunk of the folders Codename Engine interacts with.
-</details>
 
 Don't be scared by the amount of folders, usually you only mess with the `songs/`, `data/`, and `images/` folders most of the time.
 <br/>It's good to have a reference of what you can do at least, so this will be updated from time to time with new updates.

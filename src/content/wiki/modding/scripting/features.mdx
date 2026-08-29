@@ -10,8 +10,8 @@ Explain all the features scripts can use. (i.e getter / setter, enums, imports, 
 
 # Variables, and Functions
 First, lets start off very basic. HScript provides 2 different ways to define a variable, but do note, <i>technically</i> it doesn't matter as they both are the same anyways.<br/>
-To define a variable you can use the `var` and `final` keywords before the variable's name. You cannot have whitespace for variable names.
-<!-- This just makes it so the whole block doesn't take the whole screen up :) -->
+To define a variable you can use the <code class="token keyword">var</code> and <code class="token keyword">final</code> keywords before the variable's name. You cannot have whitespace for variable names.
+
 <div style="display: grid; justify-content: left;">
 
 ```haxe
@@ -25,7 +25,7 @@ var my cool variable:Bool = false;
 
 <div style="display: grid; justify-content: left;">
 
-Every `HScript` / `Script` will always execute the `new` function whenever it loads the script.
+Every `HScript` / `Script` will always execute the <code class="token keyword">new</code> function whenever it loads the script.
 ```haxe
 function new() {
 	trace("I have loaded!");
@@ -33,13 +33,13 @@ function new() {
 ```
 </div>
 
-#### What is a `final`?
-In Haxe, a final just tells the compiler you cannot change this variable during runtime. Think of it as a `constant` that cannot be changed.<br/>
-In CodenameEngine this doesn't actually make it constant, <u>you can still modify `final` variables</u> but you can use the keyword to indicate you shouldn't modify the data.
+#### What is a <code class="token keyword">final</code>?
+In Haxe, a <code class="token keyword">final</code> just tells the compiler you cannot change this variable during runtime. Think of it as a `constant` that cannot be changed.<br/>
+In CodenameEngine this doesn't actually make it constant, <u>you can still modify <code class="token keyword">final</code> variables</u> but you can use the keyword to indicate you shouldn't modify the data.
 
 ## Public & Static ... & Private?
-Haxe basically forces you to use `public` or `private` keywords when making classes, in HScript you don't have access to the `private` keyword unless you're using **[Custom Classes](./classes.md)**. However, this keyword does not do anything, as it is purely <u>sugar syntax.</u><br/>
-You do have access to the `public` keyword, which do nothing in [`Script`](../../../api-docs/funkin/backend/scripting/Script)s, but in any [`ScriptPack`](../../../api-docs/funkin/backend/scripting/ScriptPack)s it will allow other scripts to access that variable / function.
+Haxe basically forces you to use <code class="token keyword">public</code> or <code class="token keyword">private</code> keywords when making classes, in HScript you don't have access to the <code class="token keyword">private</code> keyword unless you're using **[Custom Classes](./classes.md)**. However, this keyword does not do anything, as it is purely <u>sugar syntax.</u><br/>
+You do have access to the <code class="token keyword">public</code> keyword, which do nothing in [`Script`](../../../api-docs/funkin/backend/scripting/Script)s, but in any [`ScriptPack`](../../../api-docs/funkin/backend/scripting/ScriptPack)s it will allow other scripts to access that variable / function.
 
 It doesn't "copy" the variable, it references the original so you can modify from one script and read the change from another.
 <div style="display: grid; justify-content: left;">
@@ -70,7 +70,7 @@ function new():Void {
 ```
 </div>
 
-**Functions** are a bit different, all you need is the `function` keyword, then define the name. Then you can tell it what parameters it expects.
+**Functions** are a bit different, all you need is the <code class="token keyword">function</code> keyword, then define the name. Then you can tell it what parameters it expects.
 
 <div style="display: grid; justify-content: left;">
 
@@ -99,8 +99,8 @@ function optionalParameters(name:String, ?log:Bool = true, ?some_other_arg:Dynam
 </div>
 
 ## Type Defining
-In haxe, you can declare types on variables and return types on functions. You cannot set that variable to a different Class Type unless it's a `Dynamic` / `Any` / `T` type.<br/>
-This doesn't apply to HScript, **<u>every variable is `Dynamic`</u>** no matter what, so defining variables with types is only sugar syntax. I'd recommend you still do it for readability, though you're not forced to define every variable.
+In haxe, you can declare types on variables and return types on functions. You cannot set that variable to a different Class Type unless it's a <code class="token class-name">Dynamic</code> / <code class="token class-name">Any</code> / <code class="token class-name">T</code> type.<br/>
+This doesn't apply to HScript, **<u>every variable is <code class="token class-name">Dynamic</code></u>** no matter what, so defining variables with types is only sugar syntax. I'd recommend you still do it for readability, though you're not forced to define every variable.
 <div style="display: grid; justify-content: left;">
 
 ```haxe
@@ -148,7 +148,8 @@ function new() {
 
 # Differences between `Script` and `ScriptPack`
 When looking through the source, you might find that there is 2 commonly used Classes for Scripts.
-<!-- Yo I forgot to continue this and im too lazy to continue it LMAO sorry. - LJ -->
+A `ScriptPack` is, well, a pack of `Script`s. Its base functions (like <code class="token function">call</code>) are instead called on each script in the `scripts` array of said pack.
+That's all.
 
 ### Anonymous Structures
 Anonymous structures are objects that allow for storing multiple values in a key-value pair format, separated by commas. They are features of Haxe that provide data grouping in general. Keys must be regular Haxe identifiers, and values are dynamic. They are useful to share data around in a compact manner. Anonymous structures themselves are treated as dynamic values.
@@ -190,7 +191,7 @@ This also works with nested structures - you just need an extra dot the deeper y
 structA.structB.key = value;
 ```
 
-Since the state/substate's `data` field is of the type `Dynamic`, anonymous structures may be used as data you can pass over.
+Since the state/substate's `data` field is of the type <code class="token class-name">Dynamic</code>, anonymous structures may be used as data you can pass over.
 
 Going back to the results screen example, we may supply an anonymous structure to send over more information such as the player's accuracy, score, and others. As such, we can modify that line once more to do exactly that.
 

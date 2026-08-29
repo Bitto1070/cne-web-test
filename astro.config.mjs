@@ -15,7 +15,10 @@ export default defineConfig({
 	server: {
 		open: true
 	},
-	 devToolbar: {
+	devToolbar: {
 		enabled: false
+	},
+	redirects: {
+		'index': '../'
 	}
 });

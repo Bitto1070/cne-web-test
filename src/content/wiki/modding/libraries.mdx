@@ -4,12 +4,15 @@ desc: Basic and (somewhat) Advanced explanation on how AssetLibrary's work.
 lastUpdated: 2025-11-15T05:32:50.298Z
 title: Modding The Engine - AssetLibrary
 ---
+import Note from '../../../components/Note.astro';
+import InlineCode from '../../../components/InlineCode.astro';
 
 # AssetLibrary, ScriptedAssetLibrary, ModsFolderLibrary, etc
 This section isn't Codename Engine specific, but it is still relevant to how you make your Codename Engine Mods.
 
-## ⚠️ Warning ⚠️
+<Note level="warning">
 If you do not care about the in-depth explanation, or care about Library's you are free to skip this section, although there is some things to note before doing so.
+</Note>
 
 From now on, we will be referencing your Mod as some of the following:
 - Mod Library
@@ -26,7 +29,7 @@ It is reccomended you read this section, as it will help you better understand h
 
 In this context, a Library is literally what you'd expect it to mean. It's just a class you interact to get Assets from. You can think of it being a folder, and all of it's contents are indexed by the folder's location.
 
-For example, if you want to path to a file like `./images/stages/stage.png`, you would do `Library.getPath('assets/images/stages/stage.png')`. This would return the file's location based on the context of where your library wants to locate for your files.
+For example, if you want to path to a file like `./images/stages/stage.png`, you would do <InlineCode lang="haxe" code={`Library.getPath('assets/images/stages/stage.png')`}/>. This would return the file's location based on the context of where your library wants to locate for your files.
 
 To Haxe, usually you want the absolute path relative to your project's root, which is prefixed by the common `./`. In Codename Engine's case, it will return the path in the mod's folder. `./mods/My Mod/images/stages/stage.png`.
 
@@ -100,8 +103,8 @@ Usually, you won't need to worry about that. 99.99% of the time your not going t
 <details>
     <summary>If you want to see what this code produces, here:</summary>
 <div style="display: flex; justify-content: center; gap: 15px;">
-    <img src="../images/library/Example Script 1.png" alt="Freeplay." style="width:50%;">
-    <img src="../images/library/Example Script 2.png" alt="Yes, this is UGH." style="width:50%;">
+    <img src={import.meta.env.BASE_URL+"wiki/images/library/Example Script 1.png"} alt="Freeplay."         title="Freeplay."         style="width:50%;"/>
+    <img src={import.meta.env.BASE_URL+"wiki/images/library/Example Script 2.png"} alt="Yes, this is UGH." title="Yes, this is UGH." style="width:50%;"/>
 </div>
 </details>
 

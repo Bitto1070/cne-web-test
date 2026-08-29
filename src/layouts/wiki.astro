@@ -9,10 +9,11 @@ const { frontmatter } = Astro.props;
 function stupid(b:Array<any>, root:string):string {
     var url = Astro.url.pathname;
     if (!url.endsWith('/')) url += '/';
+    const coolRoot = import.meta.env.BASE_URL+'wiki/'+root+b[0];
     return `<div>
-        <a href=${'/wiki/'+root+b[0]} style="text-decoration: none;">
+        <a href=${coolRoot+'/'} style="text-decoration: none;">
             <button style="width: 100%; text-align: left; justify-content: left; margin: 0px; display: block; border-radius: 8px; font-weight: bolder;"
-            class=${((url == ('/wiki/'+root+b[0])) || (url == ('/wiki/'+root+b[0]+'/'))) ? '' : 'col-black'}>
+            class=${((url == coolRoot) || (url == (coolRoot+'/'))) ? '' : 'col-black'}>
                 ${b[1]}
             </button>
         </a>

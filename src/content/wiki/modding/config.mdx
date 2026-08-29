@@ -12,7 +12,7 @@ Now you may open the game and select the mod you just made.
 
 When you first load up your Modpack for the fist time, you will see this warning message:
 <div style="display: flex; justify-content: center;">
-    <img src="../images/config/warning.png" alt="Warning Screen for launching a Modpack without a modpack.ini file">
+    <img src={import.meta.env.BASE_URL+"wiki/images/config/warning.png"} alt="Warning Screen for launching a Modpack without a modpack.ini file"/>
 </div>
 
 Clicking yes will auto-generate a `modpack.ini` file for you, and opening it from `./data/config/modpack.ini` should look something similar to this:
@@ -93,4 +93,4 @@ Do note that the modpack configuration isn't the only way to configure Discord R
 
 <h2 id="miscellaneous-config" sidebar="Miscellaneous Information">Miscellaneous Information</h2>
 
-As of right now, `MOD_ICON`, `ICON`, `DOWNLOAD_LINK` do nothing. There are plans in the future to use these configuration, but they are not required.
+As of right now, `DOWNLOAD_LINK` does nothing. There are plans in the future to use these configuration, but they are not required.

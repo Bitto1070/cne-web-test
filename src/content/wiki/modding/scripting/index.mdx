@@ -9,7 +9,7 @@ title: Modding The Engine - Scripting
 If you're familiar with **Psych Lua** you will be able to quickly catch on to coding in this engine, but it's recommended you learn and understand Haxe and Haxeflixel *(yes they are 2 separate things)*, as doing anything in this engine relies on that knowledge a lot.
 
 The differences between both languages is very clear.
-<!-- #region Difference between lua syntax and haxe syntax (summary) -->
+
 <details>
     <summary>Here is a small script side by side in Lua, then Haxe.</summary>
 <div style="display: flex; justify-content: center; gap: 25px;">
@@ -58,7 +58,6 @@ function postCreate() {
 ```
 </div>
 </details>
-<!-- #endregion -->
 
 From now on, we will use **"HScript"** to refer to the scripting language Codename Engine uses. It's just Haxe code but interpreted at run-time so it doesn't need to be compiled and stuff.
 
@@ -71,52 +70,49 @@ Here is relevant links to the Haxe / HaxeFlixel documentation and creating your 
 ## Before we get to Scripting
 
 It is recommended you use Command Block or Powershell to catch logs about the game. Our engine will spew out errors if your code isn't correct or give you traces if you use the `trace()` command in scripting *(useful for many reasons)*, to which you can either ask someone or figure it out yourself *(Keep in mind your game won't be saved if you write game-crashing code, so you will get a more thorough trace of the crash)*.
-<br>If you don't want to open the game through a powershell command you can also just go into the game and press **F2**, which will open a new Console window with the game's logs
-<!--
+<br/>If you don't want to open the game through a powershell command you can also just go into the game and press **F2**, which will open a new Console window with the game's logs
+{/*
 My idea to get across here, is how to setup a script, and basic function showcases and in-depth explanation on what it does, and the logic behind it.<br/>
 Then there will be a section that explains why it runs this way.
--->
+*/}
 
 # Intro to Scripting
 
-When creating a script, the name of the file does not matter (except for global.hx)<br>
+When creating a script, the name of the file does not matter (except for global.hx)<br/>
 You must put `.hx` as the file extension (enable file extensions in File Explorer) to make the file be recognized as a script (note that `.hscript`, `.hsc`, and `.hsx` are supported too, but using `.hx` is recommended).
 
 The placement of this file is very important depending on your situation. You can place it anywhere and import it in other scripts using `importScript("path")`, but other than that it just won't load.
 
 Here is a guide on where to place that script:
 
-- `./songs/`<br>
-Every script placed there will load **when playing ANY song**. They are called <u>Global Song Scripts</u><br>
+- `./songs/`<br/>
+Every script placed there will load **when playing ANY song**. They are called <u>Global Song Scripts</u><br/>
 See the **[PlayState](./playstate.md)** documentation for more info.
 
-- `./songs/[SONG NAME]/scripts/`<br>
-Every script placed in your song folder in the designated `scripts/` folder will **only load when THAT song** is selected. They are called <u>Song Scripts</u><br>
+- `./songs/[SONG NAME]/scripts/`<br/>
+Every script placed in your song folder in the designated `scripts/` folder will **only load when THAT song** is selected. They are called <u>Song Scripts</u><br/>
 See the **[PlayState](./playstate.md)** documentation for more info.
 
-- `./data/global.hx`<br>
+- `./data/global.hx`<br/>
 When creating a script name called `global.hx` in `./data/` it will **load the script globally** *(always active during playthrough)* upon **loading the modpack**, It's called <u>**[Global Script](./global.md)**</u>
 
-- `./data/discord.hx`<br>
+- `./data/discord.hx`<br/>
 When creating a script named `discord.hx` in `./data/` it will load when **the RPC initalizes** and will call various functions. You may use this to write custom RPC behavior.
 
-- `./data/characters/[CHARACTER NAME].hx`<br>
+- `./data/characters/[CHARACTER NAME].hx`<br/>
 When creating a script named after your character it will load **alongside the respective character**, and it allows you to write custom behavior for that character *(loads both in PlayState and the Character Editor)*. It is seperate from **[PlayState](./playstate.md)**, so you must use `PlayState.instance` if you want to change gameplay related things. They are called <u>Character Scripts</u>
 
-- `./data/events/[CUSTOM EVENT NAME].hx`<br>
+- `./data/events/[CUSTOM EVENT NAME].hx`<br/>
 When creating a script named after your event, it will load in **the songs that need it**. See the **[Events](./events.md)** documentation for more information.
 
-- `./data/stages/[STAGE NAME].hx`<br>
+- `./data/stages/[STAGE NAME].hx`<br/>
 When creating a Script with the same name as your **Stage**, it will load when the stage also loads. Known as the <u>Stage Script</u>
 
 - `./data/states/`<br/>
 See the **[States](./states.md)** documentation for more information.
 
-- `./source/`<br>
+- `./source/`<br/>
 Any script here will be classified as **[Custom Classes](./classes.md)**
-
-
-<!-- TODO: Add more info here, idk what else to add for introduction tbh -->
 
 Next steps in learning the In-and-out's of HScript
 - [[NEXT] Features](./features.md)

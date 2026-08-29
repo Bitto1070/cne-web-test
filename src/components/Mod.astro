@@ -33,7 +33,7 @@ const descAlign =  (tags.includes('centered-desc')) ? 'center' : 'left';
 
 <a href={data.link} target="_blank" class={"mod" + (isPremium ? ' premium' : '')} x-data={`{lastUpdatedDate: ${data.lastUpdated == 'unreleased' ? -1 : `new Date("${data.lastUpdated}")`}}`} style="text-decoration: none; position: relative;" x-show={show}>
 	<div style="display: flex; flex-direction: column;">
-		<img alt={data.name} src={`/img/mods/${id}.jpg`} style="width: 100%; border: 2px solid #0004;"/>
+		<img alt={data.name} src={import.meta.env.BASE_URL+`img/mods/${id}.jpg`} style="width: 100%; border: 2px solid #0004;"/>
 		<p class="phantommuff" style={`text-align: ${titleAlign}; font-size: ${titleSize}em; margin: 0; margin-top: 0.5em; font-weight: 600;`}>{data.name}</p>
 		<p style={`text-align: ${descAlign}; font-size: ${descSize}em; margin: 0; flex-grow: 1;`}>{data.description}</p>
 		<b class="last-updated" style="opacity: 50%; margin-top: 0.2em; font-size: 0.8em;"
@@ -41,9 +41,9 @@ const descAlign =  (tags.includes('centered-desc')) ? 'center' : 'left';
 	</div>
 	{
 		isPremium && (<div style="position: absolute; bottom: -40px; pointer-events: none;" >
-			<img src="/img/sparkle-bottom.webp" class="sparkle" style="position: relative; left: -35px; width: 125%;"/>
+			<img src={import.meta.env.BASE_URL+"img/sparkle-bottom.webp"} class="sparkle" style="position: relative; left: -35px; width: 125%;"/>
 		</div><div style="position: absolute; top: -30px; z-index: 3;" >
-			<img src="/img/sparkle-top.webp" class="sparkle" style="position: relative; left: -25px; width: 125%;"/>
+			<img src={import.meta.env.BASE_URL+"img/sparkle-top.webp"} class="sparkle" style="position: relative; left: -25px; width: 125%;"/>
 		</div>)
 	}
 </a>

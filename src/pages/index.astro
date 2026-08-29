@@ -24,7 +24,7 @@ const donators = poop.donators.sort((a, b) => {
 });
 
 function getIconButton(i:string) {
-	return `<img src="/img/icons/${i}.svg" width="20" style="margin-right: 7px;"/> `
+	return `<img src="${import.meta.env.BASE_URL}img/icons/${i}.svg" width="20" style="margin-right: 7px;"/> `
 }
 // this sucks
 function getShowCondition(a:any) {
@@ -93,7 +93,7 @@ function getShowCondition(a:any) {
 <Page>
 	<div class="container">
 		<div class="panel phantommuff" style="text-align: center;">
-			<img src="/img/codename-animated.webp" alt="Codename Engine" height="361" style="width: 44vw; height: auto;"/>
+			<img src={import.meta.env.BASE_URL+"img/codename-animated.webp"} alt="Codename Engine" height="361" style="width: 44vw; height: auto;"/>
 			<br/>
 			Codename Engine is a fork of <a href="https://funkin.me/" target="_blank">Friday Night Funkin'</a>
 			<br/>with a focus on softcoding and modding.
