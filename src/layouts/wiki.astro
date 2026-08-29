@@ -28,7 +28,7 @@ function stupid(b:Array<any>, root:string):string {
 }
 ---
 
-<Page title={frontmatter.title}>
+<Page title={frontmatter.title} desc={frontmatter.desc}>
     <div class="no-phantommuff" style="display: grid; grid-template-columns: 0.5fr 1.5fr; gap: 12px; width: 100%;">
         <div class="subpanel" style="display: flex; padding: 3px; flex-direction: column; overflow-y: auto; height: calc(100vh - 64px - 36px); position: sticky; top: calc(64px + 12px);">
             {
