@@ -10,7 +10,7 @@ export default defineConfig({
 	integrations: [alpine(), mdx({
 		extendMarkdownConfig: true
 	})],
-	site: 'https://codenamecrew.github.io/cne-web-test',
+	site: 'https://codenamecrew.github.io/cne-web-test/',
 	// base: '/cne-web-test',
 	server: {
 		open: true
