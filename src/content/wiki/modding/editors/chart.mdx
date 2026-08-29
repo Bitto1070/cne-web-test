@@ -15,12 +15,12 @@ This tutorial will focus on the in-game way of adding songs to your mod.
 When you first open the chart editor on a mod with no songs, you will see this:
 
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/start.png"} alt="Song Info popup menu" height="450"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/start.png"} alt="Song Info popup menu" height="450"/>
 </div>
 
 To create your own song, select `New Song` at the top of the list. Doing so will make a popup appear, prompting you to insert some info about your song.
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/makesong.png"} alt="Song Info popup menu"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/makesong.png"} alt="Song Info popup menu"/>
 </div>
 
 This is the main data of your song:
@@ -40,17 +40,17 @@ Codename Engine supports importing charts from other engines, notably:
 - `V-Slice Project (.fnfc)` - V-Slice "Friday Night Funkin'" project files.
 
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/importsource.png"} alt="Import Source"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/importsource.png"} alt="Import Source"/>
 </div>
 
 Next, you have to import the audio files. This step can be skipped if you selected `V-Slice Project`.
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/importsounds.png"} alt="Add Audios"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/importsounds.png"} alt="Add Audios"/>
 </div>
 
 Finally, you need to import the song's data.
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/importdata.png"} alt="Add Data"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/importdata.png"} alt="Add Data"/>
 </div>
 
 - `Song File Name` - the same as the `Song Name` previously mentioned. Not needed when importing with `V-Slice Project`.
@@ -61,7 +61,7 @@ Finally, you need to import the song's data.
 <a name="metadata"></a>
 After inserting the song info, you move to the Menus Data menu, which is where you insert the song's metadata.
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/menudata.png"} alt="Menus Data popup menu"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/menudata.png"} alt="Menus Data popup menu"/>
 </div>
 
 - `Display Name` is what the song will show as in freeplay, story mode, and other menus.
@@ -74,7 +74,7 @@ After inserting the song info, you move to the Menus Data menu, which is where y
 
 Once you're finished, click "Save & Close" and the song will appear on the song list. Don't worry about getting it right on the first try, you can change all of these later.
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/songmade.png"} alt="Initial screen of the chart editor, now with the added song" height="450"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/songmade.png"} alt="Initial screen of the chart editor, now with the added song" height="450"/>
 </div>
 
 (Disclaimer: once you create a song, all the base game songs will be hidden, both from the chart editor as well as the freeplay menu. You can make them reappear by changing the `SONGS_LIST_MOD_MODE` flag from `override` to `append` or `prepend`.)
@@ -83,7 +83,7 @@ Once you're finished, click "Save & Close" and the song will appear on the song 
 
 Once you click your song, you'll need to add a difficulty to begin charting. Select the `New Difficulty` option to create a new difficulty. Once you do, this menu will appear:
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/newchart.png"} alt="New Chart menu"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/newchart.png"} alt="New Chart menu"/>
 </div>
 
 It looks complicated, but for now you only need to worry about the top boxes:
@@ -97,7 +97,7 @@ Once done, press `Save & Close`. The game will create your files.
 
 If you want, you may also add variants (ex. pico mixes) to songs. Select the `Add Variation` option:
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/addvariation.png"} alt="New Variation menu"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/addvariation.png"} alt="New Variation menu"/>
 </div>
 
 It's the exact same as the song creation process, but instead of `Song Name`, you write the `Song Variation` name.
@@ -106,7 +106,7 @@ It's the exact same as the song creation process, but instead of `Song Name`, yo
 Once you select a difficulty, you will be sent to the charter.
 
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/charterinitial.png"} alt="Chart Editor" height="450"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/charterinitial.png"} alt="Chart Editor" height="450"/>
 </div>
 
 Each character in the song is given a `strumline`. By default, you get one for the opponent (Dad), one for the player (Bf), and one additional strumline (Gf), which is hidden (as seen by the more transparent background). The opponent's strumline will also be highlighted. This indicates that they're currently focused by the camera.
@@ -132,21 +132,21 @@ You may have noticed the two `Local Events (Only this Difficulty)` and `Global E
 
 To add an event, hover your mouse over whichever type's side you want your event to be.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/events/local.png"} alt="Add Local Event"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/events/local.png"} alt="Add Local Event"/>
 </div>
 
 Once `Add Event` shows up, click it to add an event marker at its position.
 
 Initially, this event marker will have no events.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/events/noevent.png"} alt="No Event"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/events/noevent.png"} alt="No Event"/>
 </div>
 
 To add an event, click the `+`.
 
 Once you do, this menu will show up:
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/events/addevent.png"} alt="Add Event"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/events/addevent.png"} alt="Add Event"/>
 </div>
 
 These are all the default events of the engine. If you previously added any custom events (in `data/events/`), they will show up below these.
@@ -167,20 +167,20 @@ If you're confused as to how to use any of these, they're all explained this sec
 
 | Name | Function | Parameters
 | - | - | -
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/hscript.png"}/> HScript Call | Calls a function in all loaded scripts. | `Function Name`: The name of the function.<br/> `Function Parameters (String split with commas)`: The parameters of the called function.<br/><br/>Example usage would be setting the following: <div class="subpanel">**Function Name:** setHealthAndScore<br/>**Parameters:** 0.3, 400</div>...along with a script that has: <pre class="language-haxe"><InlineCode lang="haxe" code={`function setHealthAndScore(hp, scr) {\n\t// Keep in mind ALL values called by HScript Call are String !!! You must convert them to another type manually.\n\thp = Std.parseFloat(hp);\n\tscr = Std.parseInt(scr);\n\n\thealth = hp;\n\tsongScore = scr;\n}\n\n// HScript Call will call the following:\nsetHealthAndScore("0.3", "400");`}/></pre> This may be used to avoid making multiple [Custom Events](/wiki/modding/scripting/events/) for very tiny things.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/movement.png"}/> Camera Movement | Moves the camera to a specified character. | `Camera Target`: Which character the camera should move to<br/>`Tween Movement?`: If unchecked, movement will be instant.<br/>`Tween Time (Steps, IF NOT CLASSIC)`: How long the movement should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The movement's ease. If set to `CLASSIC`, the camera will instead "lerp" to the character (like most other engines), ignoring the time and tween type.<br/>`Tween Type (excluded if CLASSIC or linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/position.png"}/> Camera Position | Moves the camera to a specified position. | `X`: The X position on the stage.<br/>`Y`: The Y position on the stage.<br/>`Tween Movement?`: If unchecked, movement will be instant.<br/>`Tween Time (Steps, IF NOT CLASSIC)`: How long the movement should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The movement's ease. If set to `CLASSIC`, the camera will instead "lerp" to the position, ignoring the time and tween type.<br/>`Tween Type (excluded if CLASSIC or linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.<br/>`Is Offset?`: If checked, the `X` and `Y` parameters will instead be relative to the current position of the camera.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/addzoom.png"}/> Add Camera Zoom | Adds a set amount of "zoom" to a camera, but does not set the camera's zoom. | `Amount`: How much zoom is added. <br/>`Camera`: Which camera is affected.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/addbop.png"}/> Camera Bop | Causes a camera bop. | `Amount`: How much the camera bops by.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/zoom.png"}/> Camera Zoom | Zooms the camera. | `Tween Zoom?`: If unchecked, the zoom will be instant.<br/>`New Zoom`: The desired zoom.<br/> `Camera`: Which camera gets zoomed.<br/>`Tween Time (Steps)`: How long the zoom should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The zoom's ease.<br/>`Tween Type (excluded if linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.<br/>`Mode`: `direct` uses a base zoom of 1 as the reference point. `stage` uses the stage's default zoom as the reference point instead.<br/>`Multiplicative?`: If checked, the new zoom is multiplied on top of the camera's current zoom rather than replacing it.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/modulo.png"}/> Camera Modulo Change | Changes the interval and strength of the camera bops. | `Modulo Interval`: How frequently the camera will bop. Counts depending on `Every beat type`. For example, `2` with `BEAT` type will make it bop every 2 beats.<br/>`Bump Strength`: How strong these bops are.<br/>`Every Beat Type`: Defines what the interval will count between bops.<br/>`Beat Offset`: The offset at which these bops happen.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/flash.png"}/> Camera Flash | Flashes a camera. | `Reversed?`: If checked, the flash will fade in instead of out<br/>`Color`: The flash's color.<br/>`Time (Steps)`: How long the flash lasts.<br/>`Camera`: Which camera the flash happens on.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/bpm.png"}/> BPM Change | Changes the Beats Per Second of the song. | `Target BPM`: The desired BPM.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/bpmcontinuous.png"}/> Continuous BPM Change | Same as `BPM Change`, but over a set time. |`Target BPM`: The desired BPM.<br/>`Time (steps)`: How long the BPM change will last.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/timesig.png"}/> Time Signature Change | Changes the time signature of the song. | `Target Numerator`: How many beats are in a measure.<br/>`Target Denominator`: What note value (quarter note, eighth note, etc.) defines a "beat".<br/>`Denominator is Steps Per Beat`: If checked, the denominator is instead how many steps are in a beat.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/scroll.png"}/> Scroll Speed Change | Changes the scroll speed of the song. | `Tween Speed?`: If unchecked, the change will be instant.<br/>`New Speed`: The desired scroll speed.<br/>`Tween Time (Steps)`: How long the change should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The change's ease.<br/>`Tween Type (excluded if linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.<br/>`Multiplicative?`: If checked, the new speed is multiplied on top of the current scroll speed rather than replacing it.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/alt.png"}/> Alt Animation Toggle | Changes the suffix of every character in a strumline's animations to `-alt`. | `Enable On Sing Poses`: Adds the suffix to the characters' sing poses.<br/>`Enable On Idle`: Adds the suffix to the characters' Idle.<br/>`Strumline`: The target strumline.
-| <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/eventicons/anim.png"}/> Play Animation | Plays a character's animation. | `Character`: The target strumline. The animation will play for every character in the selected strumline.<br/>`Animation`: The animation you want the character(s) to play.<br/>`Is forced?` If unchecked, the animation will not play if the character is already playing it.<br/>`Animation Context`: Changes how the animation interacts with the character's idle. `NONE` will disable the idle until the animation is over, `SING` and `MISS` will disable it for as long as the character's sing animation length, `DANCE` won't disable it, and `LOCK` will disable it until another animation that allows idling is played.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/hscript.png"}/> HScript Call | Calls a function in all loaded scripts. | `Function Name`: The name of the function.<br/> `Function Parameters (String split with commas)`: The parameters of the called function.<br/><br/>Example usage would be setting the following: <div class="subpanel">**Function Name:** setHealthAndScore<br/>**Parameters:** 0.3, 400</div>...along with a script that has: <pre class="language-haxe"><InlineCode lang="haxe" code={`function setHealthAndScore(hp, scr) {\n\t// Keep in mind ALL values called by HScript Call are String !!! You must convert them to another type manually.\n\thp = Std.parseFloat(hp);\n\tscr = Std.parseInt(scr);\n\n\thealth = hp;\n\tsongScore = scr;\n}\n\n// HScript Call will call the following:\nsetHealthAndScore("0.3", "400");`}/></pre> This may be used to avoid making multiple [Custom Events](/wiki/modding/scripting/events/) for very tiny things.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/movement.png"}/> Camera Movement | Moves the camera to a specified character. | `Camera Target`: Which character the camera should move to<br/>`Tween Movement?`: If unchecked, movement will be instant.<br/>`Tween Time (Steps, IF NOT CLASSIC)`: How long the movement should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The movement's ease. If set to `CLASSIC`, the camera will instead "lerp" to the character (like most other engines), ignoring the time and tween type.<br/>`Tween Type (excluded if CLASSIC or linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/position.png"}/> Camera Position | Moves the camera to a specified position. | `X`: The X position on the stage.<br/>`Y`: The Y position on the stage.<br/>`Tween Movement?`: If unchecked, movement will be instant.<br/>`Tween Time (Steps, IF NOT CLASSIC)`: How long the movement should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The movement's ease. If set to `CLASSIC`, the camera will instead "lerp" to the position, ignoring the time and tween type.<br/>`Tween Type (excluded if CLASSIC or linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.<br/>`Is Offset?`: If checked, the `X` and `Y` parameters will instead be relative to the current position of the camera.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/addzoom.png"}/> Add Camera Zoom | Adds a set amount of "zoom" to a camera, but does not set the camera's zoom. | `Amount`: How much zoom is added. <br/>`Camera`: Which camera is affected.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/addbop.png"}/> Camera Bop | Causes a camera bop. | `Amount`: How much the camera bops by.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/zoom.png"}/> Camera Zoom | Zooms the camera. | `Tween Zoom?`: If unchecked, the zoom will be instant.<br/>`New Zoom`: The desired zoom.<br/> `Camera`: Which camera gets zoomed.<br/>`Tween Time (Steps)`: How long the zoom should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The zoom's ease.<br/>`Tween Type (excluded if linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.<br/>`Mode`: `direct` uses a base zoom of 1 as the reference point. `stage` uses the stage's default zoom as the reference point instead.<br/>`Multiplicative?`: If checked, the new zoom is multiplied on top of the camera's current zoom rather than replacing it.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/modulo.png"}/> Camera Modulo Change | Changes the interval and strength of the camera bops. | `Modulo Interval`: How frequently the camera will bop. Counts depending on `Every beat type`. For example, `2` with `BEAT` type will make it bop every 2 beats.<br/>`Bump Strength`: How strong these bops are.<br/>`Every Beat Type`: Defines what the interval will count between bops.<br/>`Beat Offset`: The offset at which these bops happen.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/flash.png"}/> Camera Flash | Flashes a camera. | `Reversed?`: If checked, the flash will fade in instead of out<br/>`Color`: The flash's color.<br/>`Time (Steps)`: How long the flash lasts.<br/>`Camera`: Which camera the flash happens on.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/bpm.png"}/> BPM Change | Changes the Beats Per Second of the song. | `Target BPM`: The desired BPM.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/bpmcontinuous.png"}/> Continuous BPM Change | Same as `BPM Change`, but over a set time. |`Target BPM`: The desired BPM.<br/>`Time (steps)`: How long the BPM change will last.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/timesig.png"}/> Time Signature Change | Changes the time signature of the song. | `Target Numerator`: How many beats are in a measure.<br/>`Target Denominator`: What note value (quarter note, eighth note, etc.) defines a "beat".<br/>`Denominator is Steps Per Beat`: If checked, the denominator is instead how many steps are in a beat.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/scroll.png"}/> Scroll Speed Change | Changes the scroll speed of the song. | `Tween Speed?`: If unchecked, the change will be instant.<br/>`New Speed`: The desired scroll speed.<br/>`Tween Time (Steps)`: How long the change should last.<br/>`Tween Ease (ex: circ, quad, cube)`: The change's ease.<br/>`Tween Type (excluded if linear, ex. InOut)`: The type of the selected ease. In speeds up at the start, Out slows down at the end, and InOut does both.<br/>`Multiplicative?`: If checked, the new speed is multiplied on top of the current scroll speed rather than replacing it.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/alt.png"}/> Alt Animation Toggle | Changes the suffix of every character in a strumline's animations to `-alt`. | `Enable On Sing Poses`: Adds the suffix to the characters' sing poses.<br/>`Enable On Idle`: Adds the suffix to the characters' Idle.<br/>`Strumline`: The target strumline.
+| <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/eventicons/anim.png"}/> Play Animation | Plays a character's animation. | `Character`: The target strumline. The animation will play for every character in the selected strumline.<br/>`Animation`: The animation you want the character(s) to play.<br/>`Is forced?` If unchecked, the animation will not play if the character is already playing it.<br/>`Animation Context`: Changes how the animation interacts with the character's idle. `NONE` will disable the idle until the animation is over, `SING` and `MISS` will disable it for as long as the character's sing animation length, `DANCE` won't disable it, and `LOCK` will disable it until another animation that allows idling is played.
 
 </details>
 
@@ -188,7 +188,7 @@ Once you've picked an event, it will show up where you placed it.
 
 For example: this is what the `Camera Movement` event will look like.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/events/eventexample.png"} alt="Top Bar"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/events/eventexample.png"} alt="Top Bar"/>
 </div>
 
 Change the properties to your liking, and click off the event to save those changes.
@@ -201,7 +201,7 @@ You can also add multiple events in one marker. Simply press the `+` again and a
 
 At the top of the screen, there is a bar:
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar.png"} alt="Top Bar" style="width: 100%;"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar.png"} alt="Top Bar" style="width: 100%;"/>
 </div>
 Directly on it, there are multiple menus, which will be explained in their own sections. They are:
 
@@ -224,7 +224,7 @@ For any of the options, you can also use them by hitting the keybinds written on
 
 <h3>File</h3>
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/file.png"} alt="Top Bar - File"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/file.png"} alt="Top Bar - File"/>
 </div>
 
 (any `As...` option does the same as its normal counterpart, only letting you choose where it gets saved to)
@@ -240,7 +240,7 @@ You can also export for the `FNF Legacy` and `Psych Engine` formats, to then imp
 
 <h3>Edit</h3>
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/edit.png"} alt="Top Bar - Edit"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/edit.png"} alt="Top Bar - Edit"/>
 </div>
 
 Most options here are self-explanatory, as they work the exact same as they do on most software.
@@ -250,7 +250,7 @@ However, `Delete Stacked Notes` is special: it checks the current selection (or 
 <h3>Chart</h3>
 
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/chart.png"} alt="Top Bar - Chart"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/chart.png"} alt="Top Bar - Chart"/>
 </div>
 
 - `Playtest` plays the song from the start.
@@ -263,7 +263,7 @@ However, `Delete Stacked Notes` is special: it checks the current selection (or 
 <h3>View</h3>
 
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/view.png"} alt="Top Bar - View"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/view.png"} alt="Top Bar - View"/>
 </div>
 
 - `Zoom in`, `Zoom out` and `Reset zoom` are self explanatory. You can also zoom in and out by holding ctrl/command and using the scroll wheel. The `[+]`, `[-]` and `[0]` are the **Numpad** versions of those keys.
@@ -278,7 +278,7 @@ However, `Delete Stacked Notes` is special: it checks the current selection (or 
 <h3>Song</h3>
 
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/song.png"} alt="Top Bar - Song"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/song.png"} alt="Top Bar - Song"/>
 </div>
 
 - `Go back to the start` and `Go forward to the end` will move the song position to the beginning and end of the song, respectively.
@@ -287,12 +287,12 @@ However, `Delete Stacked Notes` is special: it checks the current selection (or 
 - `Add Bookmark Here` Lets you add a bookmark (a sort of "shortcut" to different parts of the song). You can set the name and color of them.
 - `Edit Bookmark List` allows you to change the name of each bookmark, and their order in the Bookmark List.
 - `Bookmark List` only appears once you have at least one bookmark in your song. There, you can select your bookmarks to go to them.
-- `Instrumental`, `Voices` and `Hitsounds` let you control the volume of those sounds. You can either change them by dragging the bar, or mute/unmute them by clicking the <img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/speaker.png"}/> speaker icon.
+- `Instrumental`, `Voices` and `Hitsounds` let you control the volume of those sounds. You can either change them by dragging the bar, or mute/unmute them by clicking the <img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/speaker.png"}/> speaker icon.
 
 <h3>Note</h3>
 
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/note.png"} alt="Top Bar - Song"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/note.png"} alt="Top Bar - Song"/>
 </div>
 
 - `Add sustain length` and `Subtract sustain length` add and remove sustain length from the currently selected notes.
@@ -307,7 +307,7 @@ Finally, `Edit Note Types List` is where you add your custom note types. If your
 (If you don't have a note type already in your mod's files, either get one from the Codename Engine Server's Scripts channel, or learn how to make one in the [Custom Notetypes page](../scripting/events.html).)
 
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/notetypes.png"} alt="Notetypes submenu"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/notetypes.png"} alt="Notetypes submenu"/>
 </div>
 
 Once you have your custom note type in `data/notes`, to use it in your song, add an index by pressing the `+` on the note types list. Once you do, a new note type with the name `Note Type X` will be created (`X` will be a different number depending on how many note types already exist in your song).
@@ -320,7 +320,7 @@ You can delete change the order of the notes, but know that **the charter will n
 
 The base engine already comes with two common note types.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/topbar/default-notes.png"} alt="The two note types that already come with the game"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/topbar/default-notes.png"} alt="The two note types that already come with the game"/>
 </div>
 
 - `Alt Anim Note` will play the characters sing animations with the suffix `-alt`, if they have any.
@@ -331,21 +331,21 @@ The base engine already comes with two common note types.
 
 You can unlock the strumlines' positions by pressing the `Lock/Unlock` icon next to them.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/unlockstrumlines.png"} alt="The two note types that already come with the game"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/unlockstrumlines.png"} alt="The two note types that already come with the game"/>
 </div>
 
 You can then drag them to change their order.
 
 You can also add new strumlines by pressing the `Create New` button.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/addstrumline.png"} alt="The two note types that already come with the game"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/addstrumline.png"} alt="The two note types that already come with the game"/>
 </div>
 
 What each parameter does is explained later.
 
 To edit a strumline, open the `Options` menu.
 <div style="display: flex;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/editstrumline.png"} alt="The two note types that already come with the game"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/editstrumline.png"} alt="The two note types that already come with the game"/>
 </div>
 
 - `Waveforms` lets you add a waveform to a strumline for easier charting (this includes the instrumental)
@@ -355,7 +355,7 @@ To edit a strumline, open the `Options` menu.
 
 Once you click `Create New` or `Edit`, a menu like this will appear:
 <div style="display: flex; justify-content: center;">
-	<img src={import.meta.env.BASE_URL+"wiki/images/editors/chart/editstrumlinemenu.png"} alt="The two note types that already come with the game"/>
+	<img src={import.meta.env.BASE_URL+'/'+"wiki/images/editors/chart/editstrumlinemenu.png"} alt="The two note types that already come with the game"/>
 </div>
 
 (It'll say "Create New Strumline" if you're making a new strumline, otherwise it's the same)
