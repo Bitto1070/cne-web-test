@@ -3,7 +3,7 @@ import '../styles/code.css';
 import Page from '../components/Page.astro';
 import poop from '../wiki.json';
 
-const { frontmatter } = Astro.props;
+const { frontmatter, id } = Astro.props;
 
 // WORST SHIT IVE EVER done
 function stupid(b:Array<any>, root:string):string {
@@ -45,12 +45,29 @@ function stupid(b:Array<any>, root:string):string {
                     Written by {frontmatter.author} &bull;
                     <span x-html="getRelativeTimeString(lastUpdated)" title={new Date(frontmatter.lastUpdated).toDateString()} />
                 </b>
-                <a href="https://deltarune.com/lancer/">Edit on GitHub</a>
+                <a href={"https://github.com/CodenameCrew/cne-web-test/tree/main/wiki/" + id}>Edit on GitHub</a>
             </div>
+            <br/>
+            <div class="giscus"></div>
+			<div class="giscus-frame"></div>
 
-            <!--
-                add comment box here later
-            -->
+			<script src="https://giscus.app/client.js"
+				data-repo="CodenameCrew/codename-website"
+				data-repo-id="R_kgDOMm2E8w"
+				data-category="Website"
+				data-category-id="DIC_kwDOMm2E884Cio1F"
+				data-mapping="specific"
+				data-term="{{ giscusID }}"
+				data-strict="0"
+				data-reactions-enabled="0"
+				data-emit-metadata="0"
+				data-input-position="top"
+				data-theme="https://codename-engine.com/giscus-theme.css"
+				data-lang="en"
+				data-loading="lazy"
+				crossorigin="anonymous"
+				async>
+			</script>
         </div>
     </div>
 </Page>

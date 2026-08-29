@@ -20,6 +20,6 @@ const { entry }:any = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<Wiki frontmatter={entry.data}>
+<Wiki frontmatter={entry.data} id={entry.id}>
   <Content />
 </Wiki>
