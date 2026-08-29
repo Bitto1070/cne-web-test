@@ -102,7 +102,7 @@ const { title = 'Home', desc = 'cod name', noFooter = false } = Astro.props;
 							{name: 'Tools', url: 'tools/'},
 							{name: 'Contribute', url: 'https://github.com/CodenameCrew/cne-web-test/'}
 						].map((a) => (
-							<a href={(a.url.startsWith('http')?'':(import.meta.env.DEV?'':import.meta.env.BASE_URL))+a.url} style="text-decoration: none;">
+							<a href={(a.url.startsWith('http')?'':(import.meta.env.DEV?'':(import.meta.env.BASE_URL+'/')))+a.url} style="text-decoration: none;">
 								<button>{a.name}</button>
 							</a>
 						))
