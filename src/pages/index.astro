@@ -24,7 +24,7 @@ const donators = poop.donators.sort((a, b) => {
 });
 
 function getIconButton(i:string) {
-	return `<img src="${import.meta.env.BASE_URL}img/icons/${i}.svg" width="20" style="margin-right: 7px;"/> `
+	return `<img src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)}/img/icons/${i}.svg" width="20" style="margin-right: 7px;"/> `
 }
 // this sucks
 function getShowCondition(a:any) {
