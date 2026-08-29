@@ -18,7 +18,7 @@ function fastTitle(a:string):string {
 
 const { level = "note" } = Astro.props;
 const title = Astro.props.title ?? fastTitle(level);
-const icon = Astro.props.icon ?? (import.meta.env.BASE_URL+'/'+"img/warnings/"+level+".png");
+const icon = Astro.props.icon ?? ((import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/warnings/"+level+".png");
 const color = Astro.props.color ?? colorMap.get(level) ?? '#999999';
 ---
 <style is:global>

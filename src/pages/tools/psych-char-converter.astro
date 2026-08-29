@@ -15,7 +15,7 @@ import FileUpload from '../../components/FileUpload.astro';
             <div class="subpanel" style="display: flex; flex-direction: column;">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
                     <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                        <img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/json.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                        <img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/json.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                         <span class="phantommuff">Input File (.json)</span>
                     </div>
                     <div style="margin: 6px;">
@@ -28,11 +28,11 @@ import FileUpload from '../../components/FileUpload.astro';
             <div class="subpanel" style="display: flex; flex-direction: column;">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
                     <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                        <img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/xml.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                        <img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/xml.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                         <span class="phantommuff">Output File (.xml)</span>
                     </div>
                     <button>
-                        <img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/download.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                        <img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/download.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                         &nbsp;Download
                     </button>
                 </div>
@@ -42,9 +42,9 @@ import FileUpload from '../../components/FileUpload.astro';
         </div>
         <div class="subpanel">
             <button style="width: 100%;">
-                <img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/json.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
-                &nbsp;<img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/arrow-right.png"} alt=" " width="11" height="8" style="image-rendering: pixelated;"/>
-                &nbsp;<img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/xml.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                <img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/json.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                &nbsp;<img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/arrow-right.png"} alt=" " width="11" height="8" style="image-rendering: pixelated;"/>
+                &nbsp;<img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/xml.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;Convert Entire Folder
             </button>
         </div>

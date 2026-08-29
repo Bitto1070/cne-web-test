@@ -38,7 +38,7 @@ import FileUpload from '../../components/FileUpload.astro';
                 ].map((a) => (
                     <div class="subpanel" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 3px;">
                         <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
-                            <img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/" + a.icon + ".png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                            <img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/" + a.icon + ".png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                             <span set:html={a.name}/>
                             {
                                 (a.required) && <sup style="color: #f33; cursor: help; font-size: 1.3em;" title="This field is required">*</sup>
@@ -49,7 +49,7 @@ import FileUpload from '../../components/FileUpload.astro';
                 ))
             }
             <button style="display: flex; width: 100%;">
-                <img src={import.meta.env.BASE_URL+'/'+"img/icons/pixel/download.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
+                <img src={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/download.png"} alt=" " width="16" height="16" style="image-rendering: pixelated;"/>
                 &nbsp;&nbsp;Pack Event Files
             </button>
         </div>
