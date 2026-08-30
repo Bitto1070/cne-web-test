@@ -16,8 +16,11 @@ function stupid(b:Array<any>, root:string):string {
     // b[3] being true means its unclickable, but still has subpages
     if (b[3] == true) return `
     <div x-data="{show:true}">
-        <div class="panel" style="border-radius: 8px; font-weight: bolder; padding: 8px; margin: 2px; display: flex; align-items: center; justify-content: space-between;">
-            ${b[1]} <img src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/menu.png"}" alt="Show/Hide" title="Show/Hide" width="16" height="16" x-on:click="show = !show" style="image-rendering: pixelated; cursor: pointer;"/>
+        <div class="panel" style="position: relative; border-radius: 8px; font-weight: bolder; padding: 8px; margin: 2px; display: flex; align-items: center; justify-content: space-between;">
+            ${b[1]} 
+            <span x-on:click="show = !show" style="cursor: pointer; position: absolute; top: 0; width: calc(100% - 24px); height: calc(100% - 16px); text-align: right; vertical-align: middle; padding: 8px;">
+                <img src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/menu.png"}" alt="Show/Hide" title="Show/Hide" width="16" height="16" style="image-rendering: pixelated; margin-top: auto; margin-bottom: auto;"/>
+            </span>
         </div>
         <div x-show="show">
             ${subpages}
