@@ -68,8 +68,8 @@ function stupid(a:any, root?:string):string {
         return `
         <div x-data="{show:${shouldStartOpen}}">
             <div class="panel" style="padding: 2px; margin: 2px; display: flex; align-items: center; justify-content: space-between;">
-                <span data-name="${a.name}" class="what mem" style="font-weight: bold;">${a.name}</span>
-                <img data-name="${a.name}" class="what mem" src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/menu.png"}" alt="Show/Hide" title="Show/Hide" width="16" height="16" x-on:click="show = !show" style="image-rendering: pixelated; cursor: pointer;"/>
+                <span style="font-weight: bold;">${a.name}</span>
+                <img src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/menu.png"}" alt="Show/Hide" title="Show/Hide" width="16" height="16" x-on:click="show = !show" style="image-rendering: pixelated; cursor: pointer;"/>
             </div>
             <div x-show="show" style="display: flex; flex-direction: column; margin-left: 0.5em; padding-left: 0.5em; border-left: 2px solid var(--primary-color);">
                 ${a.children.map((b:any)=>stupid(b, root+a.name+'/')).join('\n')}
