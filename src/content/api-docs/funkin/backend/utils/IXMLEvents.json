@@ -1,0 +1,33 @@
+{
+	"kind": "interface",
+	"name": "IXMLEvents",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "onPropertySet",
+			"args": [
+				{
+					"name": "property",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onPropertySet(property:String, value:Dynamic):Void;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

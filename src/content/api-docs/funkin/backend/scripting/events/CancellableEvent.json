@@ -1,0 +1,140 @@
+{
+	"kind": "class",
+	"name": "CancellableEvent",
+	"pkg": "funkin.backend.scripting.events",
+	"doc": null,
+	"meta": [
+		"@:allow(funkin.backend.scripting.ScriptPack)",
+		"@:autoBuild(funkin.backend.system.macros.EventMacro.build())"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "cancelled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Additional data if used in scripts",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventDefault",
+			"args": [
+				{
+					"name": "c",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventDefault(c:Bool = false) {\r\n\t\tcancelled = true;\r\n\t\t__continueCalls = c;\r\n\t}",
+			"doc": {
+				"text": "Prevents default action from occurring.",
+				"params": {
+					"c": "Whenever the scripts following this one should be called or not. (Defaults to `true`)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancel",
+			"args": [
+				{
+					"name": "c",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancel(c:Bool = true) {preventDefault(c);}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": {
+				"text": "Creates a new cancellable event.\nThis allows scripts to call `cancel()` to cancel the event.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "recycleBase",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function recycleBase() {\r\n\t\tdata = {};\r\n\t\tcancelled = false;\r\n\t\t__continueCalls = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\tvar fields = Reflect.fields(this);\r\n\t\tvar claName = Type.getClassName(Type.getClass(this)).split(\".\");\r\n\t\tvar rep = '[${claName[claName.length-1]}${cancelled ? \" (Cancelled)\" : \"\"}]';\r\n\t\treturn rep;\r\n\t}",
+			"doc": {
+				"text": "Returns a string representation of the event, in this format:\n`[CancellableEvent]`\n`[CancellableEvent (Cancelled)]`",
+				"params": {},
+				"returns": "String",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function destroy() {\r\n\t\tdata = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

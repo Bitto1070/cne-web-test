@@ -1,0 +1,73 @@
+{
+	"kind": "class",
+	"name": "UISoftcodedWindow",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "xmlPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "customVariables",
+					"type": "Map<String, Dynamic>",
+					"optional": false,
+					"def": "null"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(xmlPath:String, customVariables:Map<String, Dynamic> = null) {\r\n\t\tsuper();\r\n\t\tthis.xmlPath = xmlPath;\r\n\t\tthis.filename = Path.withoutDirectory(xmlPath);\r\n\t\tthis.customVariables = customVariables;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tvar layout = new Access(Xml.parse(Assets.getText(Paths.xml(\"editors/\" + xmlPath))).firstElement());\r\n\r\n\t\tfor(k=>e in Script.getDefaultVariables()) {\r\n\t\t\tset(k, e);\r\n\t\t}\r\n\t\tset(\"self\", this);\r\n\t\tset(\"hasSaveButton\", true);\r\n\t\tset(\"hasCloseButton\", true);\r\n\t\tset(\"getRadioButtons\", function(forID:String) {\r\n\t\t\tvar radios:Array<UIRadioButton> = cast members.filter((o) -> o is UIRadioButton);\r\n\t\t\treturn cast radios.filter((o) -> o.forID == forID);\r\n\t\t});\r\n\t\tfor(k=>v in customVariables) {\r\n\t\t\tset(k, v);\r\n\t\t}\r\n\t\tset(\"last\", null);\r\n\r\n\t\tif(varExists(\"winTitle\")) winTitle = get(\"winTitle\");\r\n\t\tif(varExists(\"winWidth\")) winWidth = get(\"winWidth\");\r\n\t\tif(varExists(\"winHeight\")) winHeight = get(\"winHeight\");\r\n\r\n\t\twinTitle = execString(layout.getAtt(\"title\").getDefault(winTitle));\r\n\t\twinWidth = Std.parseInt(layout.getAtt(\"width\")).getDefault(winWidth);\r\n\t\twinHeight = Std.parseInt(layout.getAtt(\"height\")).getDefault(winHeight);\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String)\r\n\t\t\tadd(new UIText(ui.x, ui.y - 24, 0, text));\r\n\r\n\t\tfunction getArr(i:Iterator<Access>) {\r\n\t\t\treturn [for(e in i) e];\r\n\t\t}\r\n\r\n\t\tfunction addLayout(elements:Array<Access>) {\r\n\t\t\tfor(el in elements) {\r\n\t\t\t\tvar type = el.name;\r\n\r\n\t\t\t\tswitch(type) {\r\n\t\t\t\t\tcase \"section\":\r\n\t\t\t\t\t\tif(execAtt(el, \"if\", true) != true)\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\tif(execAtt(el, \"unless\", false) != false)\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\taddLayout(getArr(el.elements));\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\tcase \"set\":\r\n\t\t\t\t\t\tset(execString(el.getAtt(\"name\")), execAtt(el, \"value\"));\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\tcase \"exec\":\r\n\t\t\t\t\t\texec(el.innerData);\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tvar name:String = execString(el.getAtt(\"name\"));\r\n\t\t\t\tvar label:String = execString(el.getAtt(\"label\"));\r\n\t\t\t\tvar x:Float = execAtt(el, \"x\", 0);\r\n\t\t\t\tvar y:Float = execAtt(el, \"y\", 0);\r\n\r\n\t\t\t\tvar sprite:FlxSprite = switch(type) {\r\n\t\t\t\t\tcase \"image\":\r\n\t\t\t\t\t\tvar spr = XMLUtil.createSpriteFromXML(el, \"\", LOOP);\r\n\t\t\t\t\t\tspr.x = x;\r\n\t\t\t\t\t\tspr.y = y;\r\n\t\t\t\t\t\tcast add(spr);\r\n\t\t\t\t\tcase \"solid\":\r\n\t\t\t\t\t\tvar spr = new FunkinSprite(x, y).makeSolid(\r\n\t\t\t\t\t\t\texecAtt(el, \"width\", 100),\r\n\t\t\t\t\t\t\texecAtt(el, \"height\", 100),\r\n\t\t\t\t\t\t\texecAtt(el, \"color\", 0xFFFFFFFF)\r\n\t\t\t\t\t\t);\r\n\t\t\t\t\t\tcast add(spr);\r\n\t\t\t\t\tcase \"textbox\":\r\n\t\t\t\t\t\tvar text:String = execString(el.getAtt(\"text\"));\r\n\t\t\t\t\t\ttext = Std.string(execAtt(el, \"value\", text));\r\n\t\t\t\t\t\tvar textBox = new UITextBox(x, y, text, execAtt(el, \"width\"), execAtt(el, \"height\"), execAtt(el, \"multiline\", false));//(el.getAtt(\"multiline\").getDefault(\"false\") == \"true\"));\r\n\t\t\t\t\t\tadd(textBox);\r\n\t\t\t\t\t\taddLabelOn(textBox, label);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tcase \"title\":\r\n\t\t\t\t\t\tcast add(new UIText(x, y, execAtt(el, \"width\", 0), execString(el.getAtt(\"text\")), execAtt(el, \"size\", 28)));\r\n\t\t\t\t\tcase \"label\":\r\n\t\t\t\t\t\tcast add(new UIText(x, y - 24, execAtt(el, \"width\", 0), execString(el.getAtt(\"text\")), execAtt(el, \"size\", 15)));\r\n\t\t\t\t\tcase \"text\":\r\n\t\t\t\t\t\tcast add(new UIText(x, y, execAtt(el, \"width\", 0), execString(el.getAtt(\"text\")), execAtt(el, \"size\", 15)));\r\n\t\t\t\t\tcase \"stepper\":\r\n\t\t\t\t\t\t// x:Float, y:Float, value:Float = 0, step:Float = 1, precision:Int = 0, ?min:Float, ?max:Float, w:Int = 180, h:Int = 32\r\n\t\t\t\t\t\tvar stepper = new UINumericStepper(\r\n\t\t\t\t\t\t\tx,\r\n\t\t\t\t\t\t\ty,\r\n\t\t\t\t\t\t\texecAtt(el, \"value\", 0),\r\n\t\t\t\t\t\t\texecAtt(el, \"step\", 1),\r\n\t\t\t\t\t\t\texecAtt(el, \"precision\", 0),\r\n\t\t\t\t\t\t\texecAtt(el, \"min\"),\r\n\t\t\t\t\t\t\texecAtt(el, \"max\"),\r\n\t\t\t\t\t\t\texecAtt(el, \"width\"),\r\n\t\t\t\t\t\t\texecAtt(el, \"height\")\r\n\t\t\t\t\t\t);\r\n\t\t\t\t\t\tadd(stepper);\r\n\t\t\t\t\t\taddLabelOn(stepper, label);\r\n\t\t\t\t\t\tstepper;\r\n\t\t\t\t\tcase \"checkbox\":\r\n\t\t\t\t\t\tvar checkbox = new UICheckbox(x, y, execString(el.getAtt(\"text\")), execAtt(el, \"value\", false));\r\n\t\t\t\t\t\tadd(checkbox);\r\n\t\t\t\t\t\taddLabelOn(checkbox, label);\r\n\t\t\t\t\t\tcheckbox;\r\n\t\t\t\t\tcase \"radio\":\r\n\t\t\t\t\t\tvar radio = new UIRadioButton(x, y, execString(el.getAtt(\"text\")), execAtt(el, \"value\", false), execString(el.getAtt(\"for\")));\r\n\t\t\t\t\t\tradio.parent = this;\r\n\t\t\t\t\t\tadd(radio);\r\n\t\t\t\t\t\taddLabelOn(radio, label);\r\n\t\t\t\t\t\tradio;\r\n\t\t\t\t\tcase \"slider\":\r\n\t\t\t\t\t\tvar slider = new UISlider(x, y, execAtt(el, \"width\"), execAtt(el, \"value\", 0), execAtt(el, \"segments\", []), execAtt(el, \"centered\", false));\r\n\t\t\t\t\t\tadd(slider);\r\n\t\t\t\t\t\taddLabelOn(slider, label);\r\n\t\t\t\t\t\tslider;\r\n\t\t\t\t\tcase \"dropdown\":\r\n\t\t\t\t\t\tvar items:Array<DropDownItem> = [];\r\n\t\t\t\t\t\tfor(i=>node in el.nodes.item)\r\n\t\t\t\t\t\t\titems.push({label: execString(node.getAtt(\"label\")), value: execAtt(node, \"value\", i)});\r\n\t\t\t\t\t\tvar curValue = execAtt(el, \"value\");\r\n\t\t\t\t\t\tvar index = UIDropDown.indexOfItemValue(items, curValue);\r\n\t\t\t\t\t\tif (index == -1) index = 0;\r\n\r\n\t\t\t\t\t\tvar dropdown = new UIDropDown(x, y, execAtt(el, \"width\"), execAtt(el, \"height\"), items, index);\r\n\t\t\t\t\t\tadd(dropdown);\r\n\t\t\t\t\t\taddLabelOn(dropdown, label);\r\n\t\t\t\t\t\tdropdown;\r\n\t\t\t\t\tcase \"colorwheel\":\r\n\t\t\t\t\t\tvar color = CoolUtil.getColorFromDynamic(execAtt(el, \"color\", 0xFFFFFFFF));\r\n\r\n\t\t\t\t\t\tvar wheel = new UIColorwheel(x, y, color);\r\n\t\t\t\t\t\tadd(wheel);\r\n\t\t\t\t\t\taddLabelOn(wheel, label);\r\n\t\t\t\t\t\twheel;\r\n\t\t\t\t\tcase \"buttonlist\":\r\n\t\t\t\t\t\t//x:Float, y:Float, width:Int, height:Int, windowName:String, buttonSize:FlxPoint, ?buttonOffset:FlxPoint, ?buttonSpacing:Float\r\n\t\t\t\t\t\tvar buttonlist = new UIButtonList<UIButton>(\r\n\t\t\t\t\t\t\tx,\r\n\t\t\t\t\t\t\ty,\r\n\t\t\t\t\t\t\texecAtt(el, \"width\"),\r\n\t\t\t\t\t\t\texecAtt(el, \"height\"),\r\n\t\t\t\t\t\t\texecString(el.getAtt(\"title\")).getDefault(\"\"),\r\n\t\t\t\t\t\t\tFlxPoint.get(execAtt(el, \"buttonSizeX\", 0), execAtt(el, \"buttonSizeY\", 0)),\r\n\t\t\t\t\t\t\tFlxPoint.get(execAtt(el, \"buttonOffsetX\", 0), execAtt(el, \"buttonOffsetY\", 0)),\r\n\t\t\t\t\t\t\texecAtt(el, \"buttonSpacing\")\r\n\t\t\t\t\t\t);\r\n\t\t\t\t\t\tvar old = get(\"buttonlist\");\r\n\t\t\t\t\t\tset(\"buttonlist\", buttonlist);\r\n\t\t\t\t\t\tvar texture = \"editors/ui/inputbox\";\r\n\t\t\t\t\t\tvar code = \"\";\r\n\t\t\t\t\t\tfor(node in getArr(el.elements)) {\r\n\t\t\t\t\t\t\tswitch(node.name) {\r\n\t\t\t\t\t\t\t\tcase \"camSpacing\": buttonlist.cameraSpacing = execAtt(node, \"value\", 0);\r\n\t\t\t\t\t\t\t\tcase \"texture\": texture = execString(node.getAtt(\"path\")).getDefault(texture);\r\n\t\t\t\t\t\t\t\tcase \"code\": code = node.innerData;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tbuttonlist.frames = Paths.getFrames(texture);\r\n\t\t\t\t\t\tif(code != \"\")\r\n\t\t\t\t\t\t\texec(code);\r\n\t\t\t\t\t\tadd(buttonlist);\r\n\t\t\t\t\t\taddLabelOn(buttonlist, label);\r\n\t\t\t\t\t\tset(\"buttonlist\", old);\r\n\t\t\t\t\t\tbuttonlist;\r\n\t\t\t\t\t// UIAudioPlayer\r\n\t\t\t\t\t// UIFileExplorer\r\n\t\t\t\t\t// UIAutoCompleteTextbox\r\n\t\t\t\t\tdefault: {\r\n\t\t\t\t\t\tLogs.trace(\"Unknown element type: \" + type, ERROR, RED);\r\n\t\t\t\t\t\tLogs.trace(\"Skipping element: \" + el.x.toString(), ERROR, RED);\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\tset(\"last\", sprite);\r\n\t\t\t\tif(name != null) set(name, sprite);\r\n\t\t\t\tif(sprite is UISprite) elementMap.set(name, cast sprite);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\taddLayout(getArr(layout.elements));\r\n\r\n\t\tif(get(\"hasSaveButton\")) {\r\n\t\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20, windowSpr.y + windowSpr.bHeight - 20, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\t\tsaveData();\r\n\t\t\t\tclose();\r\n\t\t\t}, 125);\r\n\t\t\tsaveButton.x -= saveButton.bWidth;\r\n\t\t\tsaveButton.y -= saveButton.bHeight;\r\n\t\t\tadd(saveButton);\r\n\t\t}\r\n\r\n\t\tif(get(\"hasCloseButton\")) {\r\n\t\t\tvar x = saveButton != null ? saveButton.x - 20 : windowSpr.x + windowSpr.bWidth - 20;\r\n\t\t\tvar y = saveButton != null ? saveButton.y : windowSpr.y + windowSpr.bHeight - 20;\r\n\t\t\tcloseButton = new UIButton(x, y, TU.translate(\"editor.close\"), function() {\r\n\t\t\t\tclose();\r\n\t\t\t}, 125);\r\n\t\t\tif(saveButton != null)\r\n\t\t\t\tcloseButton.color = 0xFFFF0000;\r\n\t\t\tcloseButton.x -= closeButton.bWidth;\r\n\t\t\tif(saveButton == null)\r\n\t\t\t\tcloseButton.y -= closeButton.bHeight;\r\n\t\t\tadd(closeButton);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveData",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveData() {\r\n\t\tfor (el in elementMap) {\r\n\t\t\tif(el is UINumericStepper) {\r\n\t\t\t\tvar el:UINumericStepper = cast el;\r\n\t\t\t\t@:privateAccess el.__onChange(el.label.text);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tcallFunc(\"onSave\", []);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

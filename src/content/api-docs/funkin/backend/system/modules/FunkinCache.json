@@ -1,0 +1,350 @@
+{
+	"kind": "class",
+	"name": "FunkinCache",
+	"pkg": "funkin.backend.system.modules",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "FunkinCache",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bitmapData2",
+			"type": "Map<String, BitmapData>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Internal",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noCompletion",
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "font2",
+			"type": "Map<String, Font>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Internal",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noCompletion",
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "sound2",
+			"type": "Map<String, Sound>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Internal",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noCompletion",
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\t\tmoveToSecondLayer();\r\n\t\tinstance = this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\topenfl.utils.Assets.cache = new FunkinCache();\r\n\r\n\t\tFlxG.signals.preStateSwitch.add(function() {\r\n\t\t\tinstance.moveToSecondLayer();\r\n\t\t});\r\n\r\n\t\tFlxG.signals.postStateSwitch.add(function() {\r\n\t\t\tinstance.clearSecondLayer();\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "moveToSecondLayer",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function moveToSecondLayer() {\r\n\t\tbitmapData2 = bitmapData;\r\n\t\tfont2 = font;\r\n\t\tsound2 = sound;\r\n\t\tbitmapData = [];\r\n\t\tfont = [];\r\n\t\tsound = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clearSecondLayer",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function clearSecondLayer() {\r\n\t\tfor(k=>b in bitmapData2) {\r\n\t\t\tFlxG.bitmap.removeByKey(k);\r\n\t\t\tLimeAssets.cache.image.remove(k);\r\n\t\t}\r\n\t\tfor(k=>f in font2) {\r\n\t\t\tLimeAssets.cache.font.remove(k);\r\n\t\t}\r\n\t\tfor(k=>s in sound2) {\r\n\t\t\tLimeAssets.cache.audio.remove(k);\r\n\t\t}\r\n\r\n\t\tbitmapData2 = [];\r\n\t\tfont2 = [];\r\n\t\tsound2 = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBitmapData",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "BitmapData",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getBitmapData(id:String):BitmapData\r\n\t{\r\n\t\tvar s = bitmapData.get(id);\r\n\t\tif (s != null)\r\n\t\t\treturn s;\r\n\t\tvar s2 = bitmapData2.get(id);\r\n\t\tif (s2 != null) {\r\n\t\t\tbitmapData2.remove(id);\r\n\t\t\tbitmapData.set(id, s2);\r\n\t\t}\r\n\t\treturn s2;\r\n\t}",
+			"doc": {
+				"text": "Retrieves a cached BitmapData.",
+				"params": {
+					"id": "The ID of the cached BitmapData"
+				},
+				"returns": "The cached BitmapData instance",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Font",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getFont(id:String):Font\r\n\t{\r\n\t\tvar s = font.get(id);\r\n\t\tif (s != null)\r\n\t\t\treturn s;\r\n\t\tvar s2 = font2.get(id);\r\n\t\tif (s2 != null) {\r\n\t\t\tfont2.remove(id);\r\n\t\t\tfont.set(id, s2);\r\n\t\t}\r\n\t\treturn s2;\r\n\t}",
+			"doc": {
+				"text": "Retrieves a cached Font.",
+				"params": {
+					"id": "The ID of the cached Font"
+				},
+				"returns": "The cached Font instance",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSound",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Sound",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getSound(id:String):Sound\r\n\t{\r\n\t\tvar s = sound.get(id);\r\n\t\tif (s != null)\r\n\t\t\treturn s;\r\n\t\tvar s2 = sound2.get(id);\r\n\t\tif (s2 != null) {\r\n\t\t\tsound2.remove(id);\r\n\t\t\tsound.set(id, s2);\r\n\t\t}\r\n\t\treturn s2;\r\n\t}",
+			"doc": {
+				"text": "Retrieves a cached Sound.",
+				"params": {
+					"id": "The ID of the cached Sound"
+				},
+				"returns": "The cached Sound instance",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasBitmapData",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function hasBitmapData(id:String):Bool\r\n\t{\r\n\t\treturn bitmapData.exists(id) || bitmapData2.exists(id);\r\n\t}",
+			"doc": {
+				"text": "Checks whether a BitmapData asset is cached.",
+				"params": {
+					"id": "The ID of a BitmapData asset"
+				},
+				"returns": "Whether the object has been cached",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function hasFont(id:String):Bool\r\n\t{\r\n\t\treturn font.exists(id) || font2.exists(id);\r\n\t}",
+			"doc": {
+				"text": "Checks whether a Font asset is cached.",
+				"params": {
+					"id": "The ID of a Font asset"
+				},
+				"returns": "Whether the object has been cached",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasSound",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function hasSound(id:String):Bool\r\n\t{\r\n\t\treturn sound.exists(id) || sound2.exists(id);\r\n\t}",
+			"doc": {
+				"text": "Checks whether a Sound asset is cached.",
+				"params": {
+					"id": "The ID of a Sound asset"
+				},
+				"returns": "Whether the object has been cached",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeBitmapData",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function removeBitmapData(id:String):Bool\r\n\t{\r\n\t\t#if lime\r\n\t\tLimeAssets.cache.image.remove(id);\r\n\t\t#end\r\n\t\treturn bitmapData.remove(id) || bitmapData2.remove(id);\r\n\t}",
+			"doc": {
+				"text": "Removes a BitmapData from the cache.",
+				"params": {
+					"id": "The ID of a BitmapData asset"
+				},
+				"returns": "`true` if the asset was removed, `false` if it was not in the cache",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function removeFont(id:String):Bool\r\n\t{\r\n\t\t#if lime\r\n\t\tLimeAssets.cache.font.remove(id);\r\n\t\t#end\r\n\t\treturn font.remove(id) || font2.remove(id);\r\n\t}",
+			"doc": {
+				"text": "Removes a Font from the cache.",
+				"params": {
+					"id": "The ID of a Font asset"
+				},
+				"returns": "`true` if the asset was removed, `false` if it was not in the cache",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeSound",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function removeSound(id:String):Bool\r\n\t{\r\n\t\t#if lime\r\n\t\tLimeAssets.cache.audio.remove(id);\r\n\t\t#end\r\n\t\treturn sound.remove(id) || sound2.remove(id);\r\n\t}",
+			"doc": {
+				"text": "Removes a Sound from the cache.",
+				"params": {
+					"id": "The ID of a Sound asset"
+				},
+				"returns": "`true` if the asset was removed, `false` if it was not in the cache",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

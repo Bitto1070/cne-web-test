@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "MessageBoxIcon",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

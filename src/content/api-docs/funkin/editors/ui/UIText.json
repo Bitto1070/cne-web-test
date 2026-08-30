@@ -1,0 +1,83 @@
+{
+	"kind": "class",
+	"name": "UIText",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "optimized",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "text",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Int",
+					"optional": false,
+					"def": "15"
+				},
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": "0xFFFFFFFF"
+				},
+				{
+					"name": "outline",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// PUTTING THIS HERE IN CASE IMMA MAKE FUTURE CHANGES\r\n\tpublic function new(x, y, w, text, size:Int = 15, color:FlxColor = 0xFFFFFFFF, ?outline:Bool = true) {\r\n\t\tsuper(x, y, w, text, size, false);\r\n\t\tthis.color = color;\r\n\r\n\t\tif (outline) {\r\n\t\t\tthis.borderStyle = OUTLINE_FAST;\r\n\t\t\tthis.borderColor = 0x88000000;\r\n\t\t\tthis.borderSize = 1;\r\n\t\t}\r\n\t\tthis.active = false;\r\n\t\tthis.antialiasing = false;\r\n\r\n\t\t// this.textField.antiAliasType = ADVANCED;\r\n\t\t// this.textField.sharpness = 400;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "applyBorderStyle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function applyBorderStyle() {\r\n\t\tif (borderStyle == OUTLINE_FAST && optimized) {\r\n\t\t\tvar iterations:Int = Std.int(borderSize * borderQuality);\r\n\t\t\tif (iterations <= 0)\r\n\t\t\t{\r\n\t\t\t\titerations = 1;\r\n\t\t\t}\r\n\t\t\tvar delta:Float = borderSize / iterations;\r\n\r\n\t\t\tapplyFormats(_formatAdjusted, true);\r\n\r\n\t\t\tvar curDelta:Float = delta;\r\n\t\t\tfor (i in 0...iterations)\r\n\t\t\t{\r\n\t\t\t\tcopyTextWithOffset(-curDelta, -curDelta); // upper-left\r\n\t\t\t\tcopyTextWithOffset(curDelta * 2, curDelta * 2); // lower-right\r\n\r\n\t\t\t\t_matrix.translate(-curDelta, -curDelta); // return to center\r\n\t\t\t\tcurDelta += delta;\r\n\t\t\t}\r\n\t\t\treturn;\r\n\t\t}\r\n\t\tsuper.applyBorderStyle();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

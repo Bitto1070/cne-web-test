@@ -1,0 +1,234 @@
+{
+	"kind": "class",
+	"name": "CharterEventScreenNew",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "cam",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventCam",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "chartEvent",
+			"type": "CharterEvent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "events",
+			"type": "Array<ChartEvent>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsList",
+			"type": "UIButtonList<EventButtonNew>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventName",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "paramsPanel",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "paramsFields",
+			"type": "Array<FlxBasic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "downIndicator",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bWidth",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "chartEvent",
+					"type": "Null<CharterEvent>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?chartEvent:Null<CharterEvent>) {\r\n\t\tif (chartEvent != null) this.chartEvent = chartEvent;\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tFlxG.sound.music.pause(); // prevent the song from continuing\r\n\t\tCharter.instance.vocals.pause();\r\n\t\tfor (strumLine in Charter.instance.strumLines.members) strumLine.vocals.pause();\r\n\r\n\t\tevents = chartEvent.events.copy();\r\n\r\n\t\tFlxG.state.persistentUpdate = true;\r\n\r\n\t\tcamera = cam = new FlxCamera();\r\n\t\tcam.bgColor = 0;\r\n\r\n\t\teventCam = new FlxCamera();\r\n\t\teventCam.bgColor = 0;\r\n\r\n\t\tFlxG.cameras.add(cam, false);\r\n\t\tFlxG.cameras.add(eventCam, false);\r\n\r\n\t\tbg = new UISliceSprite(0, 0, 0, 0, 'editors/ui/inputbox');\r\n\t\tbg.alpha = 0.75;\r\n\t\tbg.cameras = [cam];\r\n\t\tbg.setPosition(0, 0);\r\n\t\tadd(bg);\r\n\r\n\t\tparamsPanel = new FlxGroup();\r\n\t\tparamsPanel.cameras = [eventCam];\r\n\t\tadd(paramsPanel);\r\n\r\n\t\teventName = new UIText(0, 0, 0, \"\", 24);\r\n\t\teventName.cameras = [eventCam];\r\n\t\tadd(eventName);\r\n\r\n\t\tdownIndicator = new UIText(0, 0, 0, \"↓\", 16);\r\n\t\tdownIndicator.cameras = [eventCam];\r\n\t\tdownIndicator.scrollFactor.set();\r\n\t\tdownIndicator.borderSize = 2;\r\n\t\tdownIndicator.alpha = 0;\r\n\t\tadd(downIndicator);\r\n\r\n\t\teventsList = new UIButtonList<EventButtonNew>(10, 10, 75, 570, null, FlxPoint.get(75, 40), null, 0);\r\n\t\teventsList.alpha = 0;\r\n\t\teventsList.cameras = [cam];\r\n\t\teventsList.addButton.callback = () -> {\r\n\t\t\t__ignoreLastClick = true; // Stop closing >:D\r\n\t\t\topenSubState(new CharterEventTypeSelection(function(eventName) {\r\n\t\t\t\tevents.push({\r\n\t\t\t\t\ttime: Conductor.getTimeForStep(chartEvent.step),\r\n\t\t\t\t\tparams: [],\r\n\t\t\t\t\tname: eventName\r\n\t\t\t\t});\r\n\t\t\t\teventsList.add(new EventButtonNew(events[events.length-1], CharterEvent.generateEventIcon(events[events.length-1]), events.length-1, this, eventsList));\r\n\t\t\t\tchangeTab(events.length-1);\r\n\t\t\t}, chartEvent.step));\r\n\t\t};\r\n\t\tfor (k=>i in events)\r\n\t\t\teventsList.add(new EventButtonNew(i, CharterEvent.generateEventIcon(i), k, this, eventsList));\r\n\t\tadd(eventsList);\r\n\r\n\t\t// this took forever to find out omg >:D -lunar\r\n\t\teventsList.cameraSpacing = 0; eventsList.topHeight = 0;\r\n\r\n\t\tchangeTab(0);\r\n\t\tboundWindow();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curEvent",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "winHeight",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeTab",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "save",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeTab(id:Int, save:Bool = true) {\r\n\t\tif (save)\r\n\t\t\tsaveCurTab();\r\n\r\n\t\t// destroy old elements\r\n\t\tparamsFields = [];\r\n\t\tfor(e in paramsPanel) {\r\n\t\t\te.destroy();\r\n\t\t\tparamsPanel.remove(e);\r\n\t\t}\r\n\r\n\t\twinHeight = eventName.y + eventName.height + 6;\r\n\t\teventCam.scroll.y = 0;\r\n\r\n\t\tif (id >= 0 && id < events.length) {\r\n\t\t\tcurEvent = id;\r\n\t\t\tvar curEvent = events[curEvent];\r\n\t\t\teventName.text = curEvent.name;\r\n\t\t\tbWidth = eventName.x + eventName.width+16;\r\n\r\n\t\t\t// add new elements\r\n\t\t\tfor(k=>param in EventsData.getEventParams(curEvent.name)) {\r\n\t\t\t\tfunction addLabel() {\r\n\t\t\t\t\tvar label:UIText = new UIText(eventName.x+6, winHeight, 0, param.name);\r\n\t\t\t\t\twinHeight += label.height + 4;\r\n\t\t\t\t\tparamsPanel.add(label);\r\n\r\n\t\t\t\t\tbWidth = Math.max(bWidth, label.x+label.width+10);\r\n\t\t\t\t};\r\n\r\n\t\t\t\tvar value:Dynamic = CoolUtil.getDefault(curEvent.params[k], param.defValue);\r\n\t\t\t\tvar lastAdded = switch(param.type) {\r\n\t\t\t\t\tcase TString:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar textBox:UITextBox = new UITextBox(eventName.x+6, winHeight, cast value);\r\n\t\t\t\t\t\tparamsPanel.add(textBox); paramsFields.push(textBox);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tcase TBool:\r\n\t\t\t\t\t\twinHeight += 2;\r\n\t\t\t\t\t\tvar checkbox = new UICheckbox(eventName.x+8, winHeight, param.name, cast value);\r\n\t\t\t\t\t\tparamsPanel.add(checkbox); paramsFields.push(checkbox);\r\n\t\t\t\t\t\tcheckbox;\r\n\t\t\t\t\tcase TInt(min, max, step):\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar numericStepper = new UINumericStepper(eventName.x+6, winHeight, cast value, step.getDefault(1), 0, min, max);\r\n\t\t\t\t\t\tparamsPanel.add(numericStepper); paramsFields.push(numericStepper);\r\n\t\t\t\t\t\tnumericStepper;\r\n\t\t\t\t\tcase TFloat(min, max, step, precision):\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar numericStepper = new UINumericStepper(eventName.x+6, winHeight, cast value, step.getDefault(1), precision, min, max);\r\n\t\t\t\t\t\tparamsPanel.add(numericStepper); paramsFields.push(numericStepper);\r\n\t\t\t\t\t\tnumericStepper;\r\n\t\t\t\t\tcase TStrumLine:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar dropdown = new UIDropDown(eventName.x+6, winHeight, 320, 32, [for(k=>s in cast(FlxG.state, Charter).strumLines.members) 'Strumline #${k+1} (${s.strumLine.characters[0]})'], cast value);\r\n\t\t\t\t\t\tparamsPanel.add(dropdown); paramsFields.push(dropdown);\r\n\t\t\t\t\t\tdropdown;\r\n\t\t\t\t\tcase TColorWheel:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar colorWheel = new UIColorwheel(eventName.x+6, winHeight, value is String ? FlxColor.fromString(value) : Std.int(value));\r\n\t\t\t\t\t\tparamsPanel.add(colorWheel); paramsFields.push(colorWheel);\r\n\t\t\t\t\t\tcolorWheel;\r\n\t\t\t\t\tcase TDropDown(options):\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar optionIndex = options.indexOf(cast value);\r\n\t\t\t\t\t\tif(optionIndex < 0) {\r\n\t\t\t\t\t\t\toptionIndex = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tvar dropdown = new UIDropDown(eventName.x+6, winHeight, 320, 32, options, optionIndex);\r\n\t\t\t\t\t\tparamsPanel.add(dropdown); paramsFields.push(dropdown);\r\n\t\t\t\t\t\tdropdown;\r\n\t\t\t\t\tcase TCharacter:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar charFileList = Character.getList(false);\r\n\t\t\t\t\t\tvar textBox:UIAutoCompleteTextBox = new UIAutoCompleteTextBox(eventName.x+6, winHeight, cast value);\r\n\t\t\t\t\t\ttextBox.suggestItems = charFileList;\r\n\t\t\t\t\t\tparamsPanel.add(textBox); paramsFields.push(textBox);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tcase TStage:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar stageFileList = Stage.getList(false);\r\n\t\t\t\t\t\tvar textBox:UIAutoCompleteTextBox = new UIAutoCompleteTextBox(eventName.x+6, winHeight, cast value);\r\n\t\t\t\t\t\ttextBox.suggestItems = stageFileList;\r\n\t\t\t\t\t\tparamsPanel.add(textBox); paramsFields.push(textBox);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t\t\tparamsFields.push(null);\r\n\t\t\t\t\t\tnull;\r\n\t\t\t\t}\r\n\t\t\t\tif (lastAdded is UISliceSprite) {\r\n\t\t\t\t\twinHeight += cast(lastAdded, UISliceSprite).bHeight + 4;\r\n\t\t\t\t\tbWidth = Math.max(bWidth, eventName.x + 6 + cast(lastAdded, UISliceSprite).bWidth + 6 + 10);\r\n\t\t\t\t}\r\n\t\t\t\telse if (lastAdded is FlxSprite) {\r\n\t\t\t\t\twinHeight += cast(lastAdded, FlxSprite).height + 6;\r\n\t\t\t\t\tbWidth = Math.max(bWidth, eventName.x + 6 + cast(lastAdded, FlxSprite).width + 6 + 10);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t} else {\r\n\t\t\teventName.text = \"No event\";\r\n\t\t\tcurEvent = -1;\r\n\r\n\t\t\tbWidth = eventName.x + eventName.width+16;\r\n\t\t}\r\n\r\n\t\twinHeight = Math.max(winHeight, (eventsList.buttonSize.y * (eventsList.buttons.length + 1))-4) + 10;\r\n\t\tbWidth += 10+75+10+4; // add events list width to account for event name being on a diff cam +4 because margins >:D\r\n\t\tupdate(0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "boundWindow",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function boundWindow() {\r\n\t\tvar screenPos:FlxPoint = CoolUtil.pointToScreenPosition(FlxPoint.get(chartEvent.x, chartEvent.y + chartEvent.bHeight));\r\n\t\tscreenPos.x -= chartEvent.global ? -8 : 68+12; screenPos.y += 8;\r\n\r\n\t\tbg.bWidth = cam.width = cast bWidth-6;\r\n\t\tbg.bHeight = cam.height = cast winHeight + 10;\r\n\t\teventsList.bHeight = cast winHeight - 10;\r\n\r\n\t\t// Bound stuff from being off screen \r\n\t\tvar screenSpaceY:Float = (screenPos.y + winHeight + 10) - FlxG.height;\r\n\t\tscreenPos.x = FlxMath.bound(screenPos.x, 4, (FlxG.width - 20) - bWidth - 4); // FlxG.width - 20 for the scroll bar on the right\r\n\t\tif (screenSpaceY > -8) { // border of 8 of screen >:D\r\n\t\t\tbg.bHeight -= cast screenSpaceY + 8; cam.height -= cast screenSpaceY + 8;\r\n\r\n\t\t\tscreenSpaceY -= 20; // events list is slight diff with its camera\r\n\t\t\tif (screenSpaceY > -8) eventsList.bHeight -= cast screenSpaceY + 8;\r\n\t\t}\r\n\r\n\t\tcam.x = screenPos.x; cam.y = screenPos.y;\r\n\r\n\t\teventCam.x = cam.x+10+75+10; eventCam.y = cam.y+10;\r\n\t\teventCam.width = bg.bWidth-(10+75+10); eventCam.height = bg.bHeight - 20;\r\n\r\n\t\tscreenPos.put();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function update(elapsed:Float) {\r\n\t\tvar mousepoint = FlxG.mouse.getPositionInCameraView(cam);\r\n\t\tboundWindow();\r\n\r\n\t\tif (FlxG.mouse.justPressed && (FlxMath.inBounds(mousepoint.x, 0, bg.bWidth) && FlxMath.inBounds(mousepoint.y, 0, bg.bHeight))) __clickedWhileHovering = true;\r\n\r\n\t\tvar boundingParamY:Float = 0;\r\n\t\tvar lastParamSprite:FlxObject = paramsFields != null ? cast paramsFields[paramsFields.length-1] : null;\r\n\t\tif (lastParamSprite != null) boundingParamY = lastParamSprite.y;\r\n\r\n\t\tif (FlxMath.inBounds(mousepoint.x, 0, bg.bWidth) && FlxMath.inBounds(mousepoint.y, 0, bg.bHeight)) {\r\n\t\t\tCharter.instance.shouldScroll = false;\r\n\t\t\tif (FlxMath.inBounds(mousepoint.x, 10+75+10, eventCam.width) && FlxMath.inBounds(mousepoint.y, 10, eventCam.height)) {\r\n\t\t\t\tvar boundingParamYHeight:Float = boundingParamY;\r\n\t\t\t\tif (lastParamSprite != null) {\r\n\t\t\t\t\tif (lastParamSprite is UISliceSprite) boundingParamYHeight += cast(lastParamSprite, UISliceSprite).bHeight;\r\n\t\t\t\t\telse if (lastParamSprite is FlxSprite) boundingParamYHeight += cast(lastParamSprite, FlxSprite).height;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (boundingParamYHeight > eventCam.height)\r\n\t\t\t\t\teventCam.scroll.y = CoolUtil.bound(eventCam.scroll.y - (FlxG.mouse.wheel * 12), 0, boundingParamYHeight - eventCam.height);\r\n\t\t\t}\r\n\t\t} else if (Charter.instance.curContextMenu == null && ((FlxG.mouse.justReleased && !__clickedWhileHovering) || FlxG.mouse.wheel != 0)) {\r\n\t\t\tif (__ignoreLastClick) \r\n\t\t\t\t__ignoreLastClick = false;\r\n\t\t\telse {\r\n\t\t\t\tCharter.instance.shouldScroll = true;\r\n\t\t\t\tquit();\r\n\t\t\t}\r\n\t\t}\r\n\t\tsuper.update(elapsed);\r\n\t\t\r\n\t\tif (FlxG.mouse.justReleased) __clickedWhileHovering = false;\r\n\r\n\t\tsinner += elapsed;\r\n\r\n\t\tdownIndicator.setPosition(((eventCam.width/2)) - (downIndicator.fieldWidth/2), (eventCam.height-downIndicator.height) - 2 - (FlxMath.fastSin(sinner*2) * 2));\r\n\t\tdownIndicator.alpha = CoolUtil.fpsLerp(downIndicator.alpha, (eventCam.scroll.y+eventCam.height > boundingParamY) ? 0 : 1, 1/3);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "quit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function quit() {\r\n\t\tCharterEventGroup.stopThisFuckingShitDudeIstg = false;\r\n\t\tsaveCurTab();\r\n\r\n\t\tif (events.length <= 0)\r\n\t\t\tCharter.instance.deleteSelection([chartEvent]);\r\n\t\telse if (events.length > 0) {\r\n\t\t\tvar oldEvents:Array<ChartEvent> = chartEvent.events.copy();\r\n\t\t\tchartEvent.events = [for (i in eventsList.buttons.members) i.event];\r\n\r\n\t\t\tCharter.undos.addToUndo(CEditEvent(chartEvent, oldEvents, [for (event in events) Reflect.copy(event)]));\r\n\t\t}\r\n\t\tchartEvent.refreshEventIcons();\r\n\t\tCharter.instance.updateBPMEvents();\r\n\t\tclose();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveCurTab",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveCurTab() {\r\n\t\tif (curEvent < 0) return;\r\n\r\n\t\tevents[curEvent].params = [\r\n\t\t\tfor(p in paramsFields) {\r\n\t\t\t\tif (p is UIDropDown) {\r\n\t\t\t\t\tvar dataParams = EventsData.getEventParams(events[curEvent].name);\r\n\t\t\t\t\tif (dataParams[paramsFields.indexOf(p)].type == TStrumLine) cast(p, UIDropDown).index;\r\n\t\t\t\t\telse cast(p, UIDropDown).label.text;\r\n\t\t\t\t}\r\n\t\t\t\telse if (p is UINumericStepper) {\r\n\t\t\t\t\tvar stepper = cast(p, UINumericStepper);\r\n\t\t\t\t\t@:privateAccess stepper.__onChange(stepper.label.text);\r\n\t\t\t\t\tif (stepper.precision == 0) // int\r\n\t\t\t\t\t\tStd.int(stepper.value);\r\n\t\t\t\t\telse\r\n\t\t\t\t\t\tstepper.value;\r\n\t\t\t\t}\r\n\t\t\t\telse if (p is UITextBox)\r\n\t\t\t\t\tcast(p, UITextBox).label.text;\r\n\t\t\t\telse if (p is UICheckbox)\r\n\t\t\t\t\tcast(p, UICheckbox).checked;\r\n\t\t\t\telse if (p is UIColorwheel)\r\n\t\t\t\t\tcast(p, UIColorwheel).curColor;\r\n\t\t\t\telse\r\n\t\t\t\t\tnull;\r\n\t\t\t}\r\n\t\t];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tFlxG.cameras.remove(cam);\r\n\t\tFlxG.cameras.remove(eventCam);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

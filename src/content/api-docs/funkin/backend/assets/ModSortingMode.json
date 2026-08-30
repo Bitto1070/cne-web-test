@@ -1,0 +1,14 @@
+{
+	"kind": "enum abstract",
+	"name": "ModSortingMode",
+	"pkg": "funkin.backend.assets",
+	"doc": {
+		"text": "The mods list can be sorted in all of the ways provided by this enum.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": []
+}

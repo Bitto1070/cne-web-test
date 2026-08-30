@@ -1,0 +1,184 @@
+{
+	"kind": "class",
+	"name": "CharterEventScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "chartEvent",
+			"type": "CharterEvent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "events",
+			"type": "Array<ChartEvent>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsList",
+			"type": "UIButtonList<EventButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventName",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "paramsPanel",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "paramsFields",
+			"type": "Array<FlxBasic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "global",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "global",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "chartEvent",
+					"type": "Null<CharterEvent>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(step:Float, global:Bool, ?chartEvent:Null<CharterEvent>) {\r\n\t\tif (chartEvent != null) this.chartEvent = chartEvent;\r\n\t\tthis.step = step; this.global = global;\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tvar creatingEvent:Bool = chartEvent == null;\r\n\t\tif (creatingEvent) chartEvent = new CharterEvent(step, [], global);\r\n\r\n\t\twinTitle = TU.translate(\"charterEventScreen.title\" + (creatingEvent ? \"-creating\" : \"-editing\"));\r\n\t\twinWidth = 960;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tFlxG.sound.music.pause(); // prevent the song from continuing\r\n\t\tCharter.instance.vocals.pause();\r\n\t\tfor (strumLine in Charter.instance.strumLines.members) strumLine.vocals.pause();\r\n\r\n\t\tevents = chartEvent.events.copy();\r\n\r\n\t\teventsList = new UIButtonList<EventButton>(0,0,75, 570, null, FlxPoint.get(73, 40), null, 0);\r\n\t\teventsList.drawTop = false;\r\n\t\teventsList.addButton.callback = () -> openSubState(new CharterEventTypeSelection(function(eventName) {\r\n\t\t\tevents.push({\r\n\t\t\t\ttime: Conductor.getTimeForStep(chartEvent.step),\r\n\t\t\t\tparams: [],\r\n\t\t\t\tname: eventName\r\n\t\t\t});\r\n\t\t\teventsList.add(new EventButton(events[events.length-1], CharterEvent.generateEventIcon(events[events.length-1]), events.length-1, this, eventsList));\r\n\t\t\tchangeTab(events.length-1);\r\n\t\t}, chartEvent.step));\r\n\t\tfor (k=>i in events)\r\n\t\t\teventsList.add(new EventButton(i, CharterEvent.generateEventIcon(i), k, this, eventsList));\r\n\t\tadd(eventsList);\r\n\r\n\t\tparamsPanel = new FlxGroup();\r\n\t\tadd(paramsPanel);\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tsaveCurTab();\r\n\t\t\tchartEvent.refreshEventIcons();\r\n\r\n\t\t\tCharter.instance.updateBPMEvents();\r\n\r\n\t\t\tif (events.length <= 0 && !creatingEvent)\r\n\t\t\t\tCharter.instance.deleteSelection([chartEvent]);\r\n\t\t\telse if (events.length > 0) {\r\n\t\t\t\tvar oldEvents:Array<ChartEvent> = chartEvent.events.copy();\r\n\t\t\t\tchartEvent.events = [for (i in eventsList.buttons.members) i.event];\r\n\t\t\t\tchartEvent.global = global;\r\n\r\n\t\t\t\tchartEvent.refreshEventIcons();\r\n\r\n\t\t\t\tif (creatingEvent && events.length > 0)\r\n\t\t\t\t\tCharter.instance.createSelection([chartEvent]);\r\n\t\t\t\telse {\r\n\t\t\t\t\tCharter.undos.addToUndo(CEditEvent(chartEvent, oldEvents, [for (event in events) Reflect.copy(event)]));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tclose();\r\n\t\t});\r\n\t\tsaveButton.x -= saveButton.bWidth;\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 10, saveButton.y, TU.translate(\"editor.close\"), ()->close());\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t\tcloseButton.x -= closeButton.bWidth;\r\n\t\tadd(closeButton);\r\n\r\n\t\teventName = new UIText(eventsList.bWidth + windowSpr.x + 15, windowSpr.y + 41, 0, \"\", 24);\r\n\t\tadd(eventName);\r\n\r\n\t\tchangeTab(0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curEvent",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeTab",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "save",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeTab(id:Int, save:Bool = true) {\r\n\t\tif (save)\r\n\t\t\tsaveCurTab();\r\n\r\n\t\t// destroy old elements\r\n\t\tparamsFields = [];\r\n\t\tfor(e in paramsPanel) {\r\n\t\t\te.destroy();\r\n\t\t\tparamsPanel.remove(e);\r\n\t\t}\r\n\r\n\t\tif (id >= 0 && id < events.length) {\r\n\t\t\tcurEvent = id;\r\n\t\t\tvar curEvent = events[curEvent];\r\n\r\n\t\t\tvar visualName = curEvent.name;\r\n\t\t\tvar tuId = \"charter.events.\" + TU.raw2Id(curEvent.name);\r\n\t\t\tif(TU.exists(tuId))\r\n\t\t\t\tvisualName = TU.translate(tuId);\r\n\r\n\t\t\teventName.text = visualName;\r\n\t\t\t// add new elements\r\n\t\t\tvar y:Float = eventName.y + eventName.height + 10;\r\n\t\t\tfor(k=>param in EventsData.getEventParams(curEvent.name)) {\r\n\t\t\t\tfunction addLabel() {\r\n\t\t\t\t\tvar visualName = param.name;\r\n\t\t\t\t\t// TODO: add translations\r\n\t\t\t\t\tvar label:UIText = new UIText(eventName.x, y, 0, visualName);\r\n\t\t\t\t\ty += label.height + 4;\r\n\t\t\t\t\tparamsPanel.add(label);\r\n\t\t\t\t};\r\n\r\n\t\t\t\tvar value:Dynamic = CoolUtil.getDefault(curEvent.params[k], param.defValue);\r\n\t\t\t\tvar lastAdded = switch(param.type) {\r\n\t\t\t\t\tcase TString:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar textBox:UITextBox = new UITextBox(eventName.x, y, cast value);\r\n\t\t\t\t\t\tparamsPanel.add(textBox); paramsFields.push(textBox);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tcase TBool:\r\n\t\t\t\t\t\tvar checkbox = new UICheckbox(eventName.x, y, param.name, cast value);\r\n\t\t\t\t\t\tparamsPanel.add(checkbox); paramsFields.push(checkbox);\r\n\t\t\t\t\t\tcheckbox;\r\n\t\t\t\t\tcase TInt(min, max, step):\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar numericStepper = new UINumericStepper(eventName.x, y, cast value, step.getDefault(1), 0, min, max);\r\n\t\t\t\t\t\tparamsPanel.add(numericStepper); paramsFields.push(numericStepper);\r\n\t\t\t\t\t\tnumericStepper;\r\n\t\t\t\t\tcase TFloat(min, max, step, precision):\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar numericStepper = new UINumericStepper(eventName.x, y, cast value, step.getDefault(1), precision, min, max);\r\n\t\t\t\t\t\tparamsPanel.add(numericStepper); paramsFields.push(numericStepper);\r\n\t\t\t\t\t\tnumericStepper;\r\n\t\t\t\t\tcase TStrumLine:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar strumlineFormat = TU.getRaw(\"charterEventScreen.strumLine.format\");\r\n\t\t\t\t\t\tvar dropdown = new UIDropDown(eventName.x, y, 320, 32, [\r\n\t\t\t\t\t\t\tfor(k=>s in cast(FlxG.state, Charter).strumLines.members)\r\n\t\t\t\t\t\t\t\tstrumlineFormat.format([k+1, s.strumLine.characters[0]])\r\n\t\t\t\t\t\t], cast value);\r\n\t\t\t\t\t\tparamsPanel.add(dropdown); paramsFields.push(dropdown);\r\n\t\t\t\t\t\tdropdown;\r\n\t\t\t\t\tcase TColorWheel:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar colorWheel = new UIColorwheel(eventName.x, y, value is String ? FlxColor.fromString(value) : Std.int(value));\r\n\t\t\t\t\t\tparamsPanel.add(colorWheel); paramsFields.push(colorWheel);\r\n\t\t\t\t\t\tcolorWheel;\r\n\t\t\t\t\tcase TDropDown(options):\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar optionIndex = options.indexOf(cast value);\r\n\t\t\t\t\t\tif(optionIndex < 0) {\r\n\t\t\t\t\t\t\toptionIndex = 0;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tvar dropdown = new UIDropDown(eventName.x, y, 320, 32, options, optionIndex);\r\n\t\t\t\t\t\tparamsPanel.add(dropdown); paramsFields.push(dropdown);\r\n\t\t\t\t\t\tdropdown;\r\n\t\t\t\t\tcase TCharacter:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar charFileList = Character.getList(false);\r\n\t\t\t\t\t\tvar textBox:UIAutoCompleteTextBox = new UIAutoCompleteTextBox(eventName.x, y, cast value);\r\n\t\t\t\t\t\ttextBox.suggestItems = charFileList;\r\n\t\t\t\t\t\tparamsPanel.add(textBox); paramsFields.push(textBox);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tcase TStage:\r\n\t\t\t\t\t\taddLabel();\r\n\t\t\t\t\t\tvar stageFileList = Stage.getList(false);\r\n\t\t\t\t\t\tvar textBox:UIAutoCompleteTextBox = new UIAutoCompleteTextBox(eventName.x, y, cast value);\r\n\t\t\t\t\t\ttextBox.suggestItems = stageFileList;\r\n\t\t\t\t\t\tparamsPanel.add(textBox); paramsFields.push(textBox);\r\n\t\t\t\t\t\ttextBox;\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t\t\tparamsFields.push(null);\r\n\t\t\t\t\t\tnull;\r\n\t\t\t\t}\r\n\t\t\t\tif (lastAdded is UISliceSprite)\r\n\t\t\t\t\ty += cast(lastAdded, UISliceSprite).bHeight + 4;\r\n\t\t\t\telse if (lastAdded is FlxSprite)\r\n\t\t\t\t\ty += cast(lastAdded, FlxSprite).height + 6;\r\n\t\t\t}\r\n\t\t} else {\r\n\t\t\teventName.text = TU.translate(\"charterEventScreen.noEvent\"); // Maybe should be No Events?\r\n\t\t\tcurEvent = -1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveCurTab",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveCurTab() {\r\n\t\tif (curEvent < 0) return;\r\n\r\n\t\tvar dataParams = EventsData.getEventParams(events[curEvent].name);\r\n\t\tvar params:Array<Dynamic> = [\r\n\t\t\tfor (i => p in paramsFields) {\r\n\t\t\t\tif (p is UIDropDown) {\r\n\t\t\t\t\tif (dataParams[i].type == TStrumLine) cast(p, UIDropDown).index;\r\n\t\t\t\t\telse cast(p, UIDropDown).label.text;\r\n\t\t\t\t}\r\n\t\t\t\telse if (p is UINumericStepper) {\r\n\t\t\t\t\tvar stepper = cast(p, UINumericStepper);\r\n\t\t\t\t\t@:privateAccess stepper.__onChange(stepper.label.text);\r\n\t\t\t\t\tif (stepper.precision == 0) // int\r\n\t\t\t\t\t\tStd.int(stepper.value);\r\n\t\t\t\t\telse\r\n\t\t\t\t\t\tstepper.value;\r\n\t\t\t\t}\r\n\t\t\t\telse if (p is UITextBox)\r\n\t\t\t\t\tcast(p, UITextBox).label.text;\r\n\t\t\t\telse if (p is UICheckbox)\r\n\t\t\t\t\tcast(p, UICheckbox).checked;\r\n\t\t\t\telse if (p is UIColorwheel)\r\n\t\t\t\t\tcast(p, UIColorwheel).curColor;\r\n\t\t\t\telse\r\n\t\t\t\t\tnull;\r\n\t\t\t}\r\n\t\t];\r\n\r\n\t\twhile(dataParams.length > 0 && {\r\n\t\t\tvar index = params.length - 1;\r\n\t\t\tvar dataParam = dataParams[index];\r\n\t\t\tdataParam.saveIfDefault == false && params[index] == dataParam.defValue;\r\n\t\t}) params.pop();\r\n\r\n\t\tevents[curEvent].params = params;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

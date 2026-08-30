@@ -1,0 +1,54 @@
+{
+	"kind": "class",
+	"name": "NewOption",
+	"pkg": "funkin.options.type",
+	"doc": {
+		"text": "Option type that has a new button, and is green.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "iconSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, desc:String, callback:Void->Void) {\r\n\t\tsuper(name, desc, callback);\r\n\t\titemHeight = 150;\r\n\r\n\t\t__text.color = FlxColor.LIME;\r\n\t\t__text.x = 100;\r\n\r\n\t\ticonSpr = new FlxSprite().loadGraphic(Paths.image(\"editors/new\"));\r\n\t\ticonSpr.setPosition(90 - iconSpr.width, (__text.height - iconSpr.height) / 2);\r\n\t\ticonSpr.scale.set(1.4, 1.4);\r\n\t\ticonSpr.updateHitbox();\r\n\t\ticonSpr.offset.set(15, -15);\r\n\t\tadd(iconSpr);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

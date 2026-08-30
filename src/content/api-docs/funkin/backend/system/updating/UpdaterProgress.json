@@ -1,0 +1,101 @@
+{
+	"kind": "class",
+	"name": "UpdaterProgress",
+	"pkg": "funkin.backend.system.updating",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "UpdaterStep",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curFile",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "files",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bytesLoaded",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bytesTotal",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "downloadSpeed",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curFileName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "done",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curZipProgress",
+			"type": "ZipProgress",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

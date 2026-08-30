@@ -1,0 +1,352 @@
+{
+	"kind": "class",
+	"name": "Chart",
+	"pkg": "funkin.backend.chart",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "final",
+			"name": "version",
+			"type": "String",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cleanSongData",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function cleanSongData(data:Dynamic):Dynamic {\r\n\t\tif (Reflect.hasField(data, \"song\")) {\r\n\t\t\tvar field:Dynamic = Reflect.field(data, \"song\");\r\n\t\t\tif (field != null && Type.typeof(field) == TObject) // Cant use Reflect.isObject, because it detects strings for some reason\r\n\t\t\t\treturn field;\r\n\t\t}\r\n\t\treturn data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "detectChartFormat",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ChartFormat",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function detectChartFormat(data:Dynamic):ChartFormat {\r\n\t\tvar __temp:Dynamic;  // imma reuse this var so the program doesn't have to get values multiple times  - Nex\r\n\r\n\t\tif ((__temp = data.codenameChart) == true || __temp == \"true\")\r\n\t\t\treturn CODENAME;\r\n\r\n\t\tif (Reflect.hasField(data, \"version\") && Reflect.hasField(data, \"scrollSpeed\"))\r\n\t\t\treturn VSLICE;\r\n\r\n\t\tif ((__temp = cleanSongData(data).format) != null && __temp is String && StringTools.startsWith(__temp, \"psych_v1\"))\r\n\t\t\treturn PSYCH_NEW;\r\n\r\n\t\treturn LEGACY;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadEventsJson",
+			"args": [
+				{
+					"name": "songName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "variant",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadEventsJson(songName:String, ?variant:String) {\r\n\t\tvar variantSuffix = variant != null && variant != \"\" ? '-$variant' : \"\";\r\n\t\tvar path = Paths.file('songs/${songName}/events$variantSuffix.json');\r\n\t\tvar data:Array<ChartEvent> = null;\r\n\t\tif (Assets.exists(path)) {\r\n\t\t\ttry {\r\n\t\t\t\tdata = Json.parse(Assets.getText(path)).events;\r\n\t\t\t\tfor (event in data) event.global = true;\r\n\t\t\t} catch(e) Logs.trace('Failed to load song event data for ${songName} ($path): ${Std.string(e)}', ERROR);\r\n\t\t}\r\n\t\treturn data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "defaultChartMetaFields",
+			"args": [
+				{
+					"name": "data",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ChartMetaData",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline public static function defaultChartMetaFields(data:ChartMetaData):ChartMetaData {\r\n\t\tdata.setFieldDefault(\"displayName\", data.name);\r\n\r\n\t\tdata.setFieldDefault(\"bpm\", Flags.DEFAULT_BPM);\r\n\t\tdata.setFieldDefault(\"beatsPerMeasure\", Flags.DEFAULT_BEATS_PER_MEASURE);\r\n\t\tdata.setFieldDefault(\"stepsPerBeat\", Flags.DEFAULT_STEPS_PER_BEAT);\r\n\t\tdata.setFieldDefault(\"icon\", Flags.DEFAULT_HEALTH_ICON);\r\n\t\tdata.setFieldDefault(\"coopAllowed\", Flags.DEFAULT_COOP_ALLOWED);\r\n\t\tdata.setFieldDefault(\"opponentModeAllowed\", Flags.DEFAULT_OPPONENT_MODE_ALLOWED);\r\n\t\tdata.setFieldDefault(\"instSuffix\", \"\");\r\n\t\tdata.setFieldDefault(\"vocalsSuffix\", \"\");\r\n\t\tdata.setFieldDefault(\"needsVoices\", true);\r\n\t\tdata.setFieldDefault(\"difficulties\", []);\r\n\t\tdata.setFieldDefault(\"variants\", []);\r\n\t\tdata.setFieldDefault(\"metas\", []);\r\n\r\n\t\treturn data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadChartMeta",
+			"args": [
+				{
+					"name": "songName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "variant",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "fromMods",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "includeMetaVariations",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "ChartMetaData",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadChartMeta(songName:String, ?variant:String, ?difficulty:String, fromMods:Bool = true, includeMetaVariations = true):ChartMetaData {\r\n\t\tvar folder = 'songs/$songName', isVariant = false, data:ChartMetaData = null;\r\n\t\tvar defaultPaths = [Paths.file('$folder/meta-$difficulty.json'), Paths.file('$folder/meta.json')], variantPaths = [];\r\n\t\tif (difficulty != null) defaultPaths.unshift(Paths.file('$folder/meta-$difficulty.json'));\r\n\r\n\t\tif (variant != null && variant != '') {\r\n\t\t\tvariantPaths.push(Paths.file('$folder/meta-$variant.json'));\r\n\t\t\tif (difficulty != null) variantPaths.unshift(Paths.file('$folder/meta-$variant-$difficulty.json'));\r\n\t\t}\r\n\r\n\t\tfor (path in variantPaths.concat(defaultPaths)) if (Assets.exists(path)) {\r\n\t\t\tfromMods = Paths.assetsTree.existsSpecific(path, \"TEXT\", MODS);\r\n\t\t\ttry {\r\n\t\t\t\tvar tempData = Json.parse(Assets.getText(path));\r\n\t\t\t\ttempData.color = CoolUtil.getColorFromDynamic(tempData.color).getDefault(Flags.DEFAULT_COLOR);\r\n\t\t\t\tdata = tempData;\r\n\t\t\t} catch(e) Logs.trace('Failed to load song metadata for $songName ($path): ${Std.string(e)}', ERROR);\r\n\r\n\t\t\tif (data != null) {\r\n\t\t\t\tisVariant = variantPaths.contains(path);\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (data != null) data.name = songName;\r\n\t\telse data = {\r\n\t\t\tname: songName,\r\n\t\t\tcolor: Flags.DEFAULT_COLOR\r\n\t\t};\r\n\r\n\t\tif (isVariant) data.variant = variant;\r\n\t\telse data.variant = null;\r\n\r\n\t\tdefaultChartMetaFields(data);\r\n\r\n\t\tif (data.difficulties.length <= 0) {\r\n\t\t\tvar path = 'songs/$songName/charts/';\r\n\t\t\tif (isVariant) path += '$variant/';\r\n\r\n\t\t\tdata.difficulties = [for(f in Paths.getFolderContent(path, false, fromMods ? MODS : SOURCE)) if (Path.extension(f.toUpperCase()) == \"JSON\") Path.withoutExtension(f)];\r\n\t\t\tif (data.difficulties.length == 3) {\r\n\t\t\t\tvar tempDiffs = [];\r\n\t\t\t\tfor (d in data.difficulties) switch(d.toLowerCase()) {\r\n\t\t\t\t\tcase \"easy\":   tempDiffs.insert(0, d);\r\n\t\t\t\t\tcase \"normal\": tempDiffs.insert(1, d);\r\n\t\t\t\t\tcase \"hard\":   tempDiffs.insert(2, d);\r\n\t\t\t\t}\r\n\t\t\t\tif (tempDiffs.length == 3) data.difficulties = tempDiffs;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tdata.metas = [];\r\n\t\tif (includeMetaVariations && data.variants.length > 0) for (variant in data.variants) {\r\n\t\t\tif (!data.metas.exists(variant) && Assets.exists(Paths.file('songs/$songName/meta-$variant.json'))) {\r\n\t\t\t\tvar meta = loadChartMeta(songName, variant, fromMods);\r\n\t\t\t\tif (meta.variant != null) data.metas.set(variant, meta);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parse",
+			"args": [
+				{
+					"name": "songName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "variant",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ChartData",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parse(songName:String, ?difficulty:String, ?variant:String):ChartData {\r\n\t\tif (difficulty == null) difficulty = Flags.DEFAULT_DIFFICULTY;\r\n\r\n\t\tvar chartPath = Paths.chart(songName, difficulty, variant);\r\n\t\tvar base:ChartData = {\r\n\t\t\tstrumLines: [],\r\n\t\t\tnoteTypes: [],\r\n\t\t\tevents: [],\r\n\t\t\tmeta: {\r\n\t\t\t\tname: null\r\n\t\t\t},\r\n\t\t\tscrollSpeed: Flags.DEFAULT_SCROLL_SPEED,\r\n\t\t\tstage: Flags.DEFAULT_STAGE,\r\n\t\t\tcodenameChart: true,\r\n\t\t\tfromMods: Paths.assetsTree.existsSpecific(chartPath, \"TEXT\", MODS)\r\n\t\t};\r\n\r\n\t\tvar valid:Bool = true, namePrint = '$songName $difficulty' + ((variant != null && variant != '') ? ' ($variant)' : '');\r\n\t\tif (!Assets.exists(chartPath)) {\r\n\t\t\tLogs.error('Chart for song $namePrint at \"$chartPath\" was not found.');\r\n\t\t\tvalid = false;\r\n\t\t}\r\n\t\tvar data:Dynamic = null;\r\n\t\tif (valid) {\r\n\t\t\ttry data = Json.parse(Assets.getText(chartPath))\r\n\t\t\tcatch(e) Logs.trace('Could not parse chart for song $namePrint: ${Std.string(e)}', ERROR, RED);\r\n\t\t}\r\n\r\n\t\t/**\r\n\t\t * CHART CONVERSION\r\n\t\t */\r\n\t\t#if REGION\r\n\t\tif (data != null) switch (detectChartFormat(data)) {\r\n\t\t\tcase CODENAME:\r\n\t\t\t\t// backward compat on events since it caused problems\r\n\t\t\t\tvar eventTypesToString:Map<Int, String> = [\r\n\t\t\t\t\t-1 => \"HScript Call\",\r\n\t\t\t\t\t0 => \"Unknown\",\r\n\t\t\t\t\t1 => \"Camera Movement\",\r\n\t\t\t\t\t2 => \"BPM Change\",\r\n\t\t\t\t\t3 => \"Alt Animation Toggle\",\r\n\t\t\t\t];\r\n\r\n\t\t\t\tif (data.events == null) data.events = [];\r\n\t\t\t\tfor (event in cast(data.events, Array<Dynamic>)) if (Reflect.hasField(event, \"type\")) {\r\n\t\t\t\t\tif (event.type != null)\r\n\t\t\t\t\t\tevent.name = eventTypesToString[event.type];\r\n\t\t\t\t\tReflect.deleteField(event, \"type\");\r\n\t\t\t\t}\r\n\r\n\t\t\t\tbase = data;\r\n\t\t\tcase PSYCH_NEW: PsychParser.parse(data, base);\r\n\t\t\tcase VSLICE: Logs.trace(\"Couldn't parse V-Slice chart because it's not supported on runtime, it MUST be imported and converted in the new song editor window.\", ERROR, RED);\r\n\t\t\tcase LEGACY: FNFLegacyParser.parse(data, base);\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\tvar loadedMeta = loadChartMeta(songName, variant, difficulty, base.fromMods, false);\r\n\t\tif (base.meta == null) base.meta = loadedMeta;\r\n\t\telse {\r\n\t\t\tfor (field in Reflect.fields(base.meta)) {\r\n\t\t\t\tvar f = Reflect.field(base.meta, field);\r\n\t\t\t\tif (f != null) Reflect.setField(loadedMeta, field, f);\r\n\t\t\t}\r\n\t\t\tbase.meta = loadedMeta;\r\n\t\t}\r\n\r\n\t\t/**\r\n\t\t * events.json LOADING\r\n\t\t */\r\n\t\t#if REGION\r\n\t\tvar extraEvents:Array<ChartEvent> = loadEventsJson(songName, variant);\r\n\t\tif (extraEvents != null) base.events = base.events.concat(extraEvents);\r\n\t\t#end\r\n\r\n\t\t/**\r\n\t\t * Set defaults on strum lines\r\n\t\t*/\r\n\t\tfor(strumLine in base.strumLines) {\r\n\t\t\tif(strumLine.keyCount == null)\r\n\t\t\t\tstrumLine.keyCount = 4;\r\n\t\t}\r\n\r\n\t\treturn base;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addNoteType",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "noteTypeName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function addNoteType(chart:ChartData, noteTypeName:String):Int {\r\n\t\tswitch(noteTypeName.trim()) {\r\n\t\t\tcase \"Default Note\" | null | \"\":\r\n\t\t\t\treturn 0;\r\n\t\t\tdefault:\r\n\t\t\t\tvar index = chart.noteTypes.indexOf(noteTypeName);\r\n\t\t\t\tif (index > -1) return index + 1;\r\n\t\t\t\tchart.noteTypes.push(noteTypeName);\r\n\t\t\t\treturn chart.noteTypes.length;\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Set defaults on strum lines",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "save",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "variant",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "saveSettings",
+					"type": "ChartSaveSettings",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ChartData",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function save(chart:ChartData, ?difficulty:String, ?variant:String, ?saveSettings:ChartSaveSettings):ChartData {\r\n\t\tif (difficulty == null) difficulty = Flags.DEFAULT_DIFFICULTY;\r\n\t\tif (saveSettings == null) saveSettings = {};\r\n\r\n\t\tvar filteredChart = filterChartForSaving(chart, saveSettings.saveMetaInChart, saveSettings.saveLocalEvents, saveSettings.saveGlobalEvents && saveSettings.seperateGlobalEvents != true);\r\n\r\n\t\t#if sys\r\n\t\tvar songPath = saveSettings.songFolder == null ? 'songs/${chart.meta.name}' : saveSettings.songFolder, variantSuffix = variant != null && variant != \"\" ? '-$variant' : \"\", difficultySuffix = difficulty != null && difficulty != \"\" ? '-$difficulty' : \"\";\r\n\t\tvar metaPath = 'meta$variantSuffix.json', altMetaPath = 'meta${variantSuffix}${difficultySuffix}.json', prettyPrint = saveSettings.prettyPrint == true ? Flags.JSON_PRETTY_PRINT : null, temp:String;\r\n\t\tif ((temp = Paths.assetsTree.getPath('assets/$songPath/$altMetaPath')) != null) { //check for difficulty specific\r\n\t\t\tsongPath = temp.substr(0, temp.length - altMetaPath.length - 1);\r\n\t\t\tmetaPath = temp;\r\n\t\t}\r\n\t\telse if ((temp = Paths.assetsTree.getPath('assets/$songPath/$metaPath')) != null) {\r\n\t\t\tsongPath = temp.substr(0, temp.length - metaPath.length - 1);\r\n\t\t\tmetaPath = temp;\r\n\t\t}\r\n\t\telse if (saveSettings.songFolder == null)\r\n\t\t\tmetaPath = (songPath = '${Paths.getAssetsRoot()}/$songPath') + '/$metaPath';\r\n\r\n\t\tvar chartFolder = saveSettings.folder == null ? ((variant == null || variant == '') ? 'charts' : 'charts/$variant') : saveSettings.folder;\r\n\t\tvar chartPath = '$songPath/$chartFolder/${difficulty.trim()}.json';\r\n\r\n\t\tif (saveSettings.saveChart == null || saveSettings.saveChart == true)\r\n\t\t\tCoolUtil.safeSaveFile(chartPath, Json.stringify(filteredChart, null, prettyPrint));\r\n\r\n\t\tif (saveSettings.overrideExistingMeta || !FileSystem.exists(metaPath))\r\n\t\t\tCoolUtil.safeSaveFile(metaPath, Json.stringify(filterMetaForSaving(chart.meta), null, prettyPrint));\r\n\r\n\t\tif (saveSettings.seperateGlobalEvents == true) {\r\n\t\t\tvar eventsPath = '$songPath/events$variantSuffix.json', events = filterEventsForSaving(chart.events, false, true);\r\n\r\n\t\t\tif (events.length != 0) CoolUtil.safeSaveFile(eventsPath, Json.stringify({events: events}, null, prettyPrint));\r\n\t\t\telse if (FileSystem.exists(eventsPath)) FileSystem.deleteFile(eventsPath); // If there's no events to save, then get rid of the file (if it exists already).\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\treturn filteredChart;\r\n\t}",
+			"doc": {
+				"text": "Saves the chart to the specific song folder path.",
+				"params": {
+					"chart": "Chart to save.",
+					"difficulty": "Name of the difficulty (Optional).",
+					"variant": "Name of the Variant (Optional).",
+					"saveSettings": "(Optional)."
+				},
+				"returns": "Filtered chart used for saving.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "filterChartForSaving",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "saveMetaInChart",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "saveLocalEvents",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "saveGlobalEvents",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ChartData",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function filterChartForSaving(chart:ChartData, saveMetaInChart = true, ?saveLocalEvents:Bool, ?saveGlobalEvents:Bool):ChartData {\r\n\t\tvar meta = chart.meta, events = chart.events;\r\n\t\tchart.meta = null;\r\n\t\tchart.events = null;\r\n\r\n\t\tvar data = Reflect.copy(chart); // make a copy of the chart to leave the OG intact\r\n\r\n\t\tchart.meta = meta;\r\n\t\tchart.events = events;\r\n\r\n\t\tdata.meta = saveMetaInChart ? filterMetaForSaving(meta) : null;\r\n\t\tdata.events = filterEventsForSaving(events, saveLocalEvents, saveGlobalEvents);\r\n\t\tdata.fromMods = null;\r\n\r\n\t\tvar sortedData:Dynamic = {};\r\n\t\tfor (f in Reflect.fields(data)) {\r\n\t\t\tvar v = Reflect.field(data, f);\r\n\t\t\tif (v != null)\r\n\t\t\t\tReflect.setField(sortedData, f, v);\r\n\t\t}\r\n\t\treturn sortedData;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "filterEventsForSaving",
+			"args": [
+				{
+					"name": "events",
+					"type": "Array<ChartEvent>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "saveLocalEvents",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "saveGlobalEvents",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Array<ChartEvent>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function filterEventsForSaving(events:Array<ChartEvent>, saveLocalEvents = true, saveGlobalEvents = false):Array<ChartEvent> {\r\n\t\tvar data = [];\r\n\t\tif (!saveLocalEvents && !saveGlobalEvents) return data;\r\n\r\n\t\tfor (event in events) if ((saveLocalEvents && event.global != true) || (saveGlobalEvents && event.global == true)) {\r\n\t\t\tvar copy = Reflect.copy(event);\r\n\t\t\tif (saveLocalEvents ? event.global != true : event.global == true) Reflect.deleteField(copy, \"global\"); // should NOT delete the field when saving with the local events and the event should have been global  - Nex\r\n\t\t\tdata.push(copy);\r\n\t\t}\r\n\r\n\t\treturn data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "makeMetaSaveable",
+			"args": [
+				{
+					"name": "meta",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prettyPrint",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function makeMetaSaveable(meta:ChartMetaData, prettyPrint:Bool = true):String\r\n\t\treturn Json.stringify(filterMetaForSaving(meta), null, prettyPrint ? Flags.JSON_PRETTY_PRINT : null);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "filterMetaForSaving",
+			"args": [
+				{
+					"name": "meta",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ChartMetaData",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function filterMetaForSaving(meta:ChartMetaData):ChartMetaData {\r\n\t\tvar data:Dynamic = Reflect.copy(meta);\r\n\t\tif (data.color != null) data.color = FlxColor.fromInt(data.color).toWebString(); // dont even ask me  - Nex\r\n\t\tReflect.deleteField(data, \"name\");\r\n\t\tReflect.deleteField(data, 'parsedColor');\r\n\t\tReflect.deleteField(data, 'metas');\r\n\t\tReflect.deleteField(data, \"variant\");\r\n\t\tif (data.instSuffix != null && data.instSuffix == \"\") Reflect.deleteField(data, \"instSuffix\");\r\n\t\tif (data.vocalsSuffix != null && data.vocalsSuffix == \"\") Reflect.deleteField(data, \"vocalsSuffix\");\r\n\t\tif (data.variants != null && data.variants.length == 0) Reflect.deleteField(data, \"variants\");\r\n\t\treturn data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

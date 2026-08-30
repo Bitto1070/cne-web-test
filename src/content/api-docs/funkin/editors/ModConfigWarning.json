@@ -1,0 +1,68 @@
+{
+	"kind": "class",
+	"name": "ModConfigWarning",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "hadPopup",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultModConfigText",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "library",
+					"type": "ModsFolderLibrary",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "goToState",
+					"type": "Class<FlxState>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "useAPIWarning",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(library:ModsFolderLibrary, ?goToState:Class<FlxState>, ?useAPIWarning:Bool = false) {\r\n\t\tsuper();\r\n\t\tthis.library = library;\r\n\t\tthis.goToState = goToState != null ? goToState : funkin.menus.TitleState;\r\n\t\tthis.useAPIWarning = useAPIWarning;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "goBack",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function goBack() {\r\n\t\tMusicBeatState.skipTransOut = MusicBeatState.skipTransIn = false;\r\n\t\tFlxG.switchState(cast Type.createInstance(goToState, []));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

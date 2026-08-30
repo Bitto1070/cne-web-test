@@ -1,0 +1,18 @@
+{
+	"kind": "typedef",
+	"name": "ChartMetaData",
+	"pkg": "funkin.backend.chart",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,129 @@
+{
+	"kind": "final class",
+	"name": "GameOverEvent",
+	"pkg": "funkin.backend.scripting.events.gameplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "x",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The X pos of where the gameover character will be.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "y",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The Y pos of where the gameover character will be.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Character which died. Default to `boyfriend`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deathCharID",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Character ID (name) for game over. Default to whatever is specified in the character's XML.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isPlayer",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If the character has isPlayer",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameOverSong",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Song for the game over screen. Default to `this.gameOverSong` (`gameOver`)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lossSFX",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "SFX at the beginning of the game over (Mic drop). Default to `this.lossSFX` (`gameOverSFX`)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "retrySFX",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "SFX played whenever the player retries. Defaults to `retrySFX` (`gameOverEnd`)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

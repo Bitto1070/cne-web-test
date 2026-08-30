@@ -1,0 +1,137 @@
+{
+	"kind": "final class",
+	"name": "Rating",
+	"pkg": "funkin.game.scoring",
+	"doc": null,
+	"meta": [
+		"@:structInit"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Name of rating.\n\nAlso used for the image file name of the rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accuracy",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Amount of accuracy given when earning this rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "window",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "MS Timing Window to hit the rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "score",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Amount of score given when earning this rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "health",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Amount of health given when earning this rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "splash",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If this rating was hit, a note splash will appear.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:optional"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "breaksCombo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether the rating will break your combo or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:optional"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "hittable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether the rating is hittable or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:optional"
+			]
+		}
+	]
+}

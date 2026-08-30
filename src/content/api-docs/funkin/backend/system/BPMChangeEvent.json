@@ -1,0 +1,101 @@
+{
+	"kind": "class",
+	"name": "BPMChangeEvent",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [
+		"@:structInit"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "songTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bpm",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatsPerMeasure",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stepsPerBeat",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "endSongTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "endStepTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "continuous",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stepTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "measureTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

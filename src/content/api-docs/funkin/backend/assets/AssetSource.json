@@ -1,0 +1,42 @@
+{
+	"kind": "enum abstract",
+	"name": "AssetSource",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "fromString",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AssetSource",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:from public static function fromString(str:String):AssetSource\r\n\t{\r\n\t\treturn switch (StringTools.trim(str).toLowerCase())\r\n\t\t{\r\n\t\t\tcase \"source\": SOURCE;\r\n\t\t\tcase \"mods\": MODS;\r\n\t\t\tcase \"both\": BOTH;\r\n\t\t\tdefault: MODS;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:from"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:to public inline function toString():String\r\n\t{\r\n\t\treturn switch (this)\r\n\t\t{\r\n\t\t\tcase SOURCE: \"source\";\r\n\t\t\tcase MODS: \"mods\";\r\n\t\t\tcase BOTH: \"both\";\r\n\t\t\tdefault: \"mods\";\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:to"
+			]
+		}
+	]
+}

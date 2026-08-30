@@ -1,0 +1,54 @@
+{
+	"kind": "class",
+	"name": "HudCamera",
+	"pkg": "funkin.game",
+	"doc": {
+		"text": "Camera meant for PlayState hud, allows for flipping the camera.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "downscroll",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the camera should flip the y axis.\nKeeps the sprites not flipped, but the positions are flipped.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "alterScreenPosition",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FlxObject",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "pos",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function alterScreenPosition(spr:FlxObject, pos:FlxPoint) {\r\n\t\tif (downscroll) {\r\n\t\t\tpos.set(pos.x, height - pos.y - spr.height);\r\n\t\t}\r\n\t\treturn pos;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

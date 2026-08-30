@@ -1,0 +1,328 @@
+{
+	"kind": "class",
+	"name": "CharterNote",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "sustainSpr",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tempSusLength",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sustainDraggable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "typeText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\r\n\t\tantialiasing = true; ID = -1;\r\n\t\tloadGraphic(Paths.image('editors/charter/note'), true, 157, 154);\r\n\t\tanimation.add(\"note\", [for(i in 0...frames.frames.length) i], 0, true);\r\n\t\tanimation.play(\"note\");\r\n\t\tthis.setUnstretchedGraphicSize(40, 40, false);\r\n\r\n\t\tsustainSpr = new UISprite(10, 20);\r\n\t\tsustainSpr.makeSolid(1, 1, -1, false, \"note-sustain\");\r\n\t\tsustainSpr.scale.set(10, 0);\r\n\t\tmembers.push(sustainSpr);\r\n\r\n\t\tthis.type = 0;\r\n\r\n\t\tcursor = sustainSpr.cursor = CLICK;\r\n\t\tmoves = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButtonHandler",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateButtonHandler() {\r\n\t\t__rect.set(x, y, 40, 40);\r\n\t\tUIState.state.updateRectButtonHandler(this, __rect, onHovered);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "id",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "susLength",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "type",
+			"type": "Null<Int>",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "typeVisible",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "typeAlpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "CharterStrumline",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLineID",
+			"type": "Int",
+			"access": "get, default",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_strumLineID",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get_strumLineID():Int\r\n\t\treturn strumLineID = (strumLine == null ? strumLineID : Charter.instance.strumLines.members.indexOf(strumLine));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "snappedToGrid",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fullID",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_fullID",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// instead of %4 get fullID (for mousepos stuff)\r\n\tpublic function get_fullID():Int\r\n\t\treturn strumLine.startingID + id;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "susLength",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "type",
+					"type": "Int",
+					"optional": true,
+					"def": "0"
+				},
+				{
+					"name": "strumLine",
+					"type": "CharterStrumline",
+					"optional": true,
+					"def": "null"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updatePos(step:Float, id:Int, susLength:Float = 0, ?type:Int = 0, ?strumLine:CharterStrumline = null) {\r\n\t\tthis.step = step;\r\n\t\tthis.id = id;\r\n\t\tthis.susLength = Math.max(susLength, 0);\r\n\t\tthis.type = type;\r\n\t\tif (strumLine != null) this.strumLine = strumLine;\r\n\r\n\t\tsustainSpr.exists = susLength != 0;\r\n\r\n\t\ty = step * 40;\r\n\r\n\t\tif (angleTween != null) angleTween.cancel();\r\n\r\n\t\tvar destAngle:Float = switch(animation.curAnim.curFrame = (id % 4)) {\r\n\t\t\tcase 0: 270;\r\n\t\t\tcase 1: 180;\r\n\t\t\tcase 2: 0;\r\n\t\t\tcase 3: 90;\r\n\t\t\tdefault: 0; // how is that even possible\r\n\t\t};\r\n\r\n\t\tsustainSpr.color = colors[animation.curAnim.curFrame];\r\n\r\n\t\tif (!__doAnim) {\r\n\t\t\tangle = destAngle;\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tif (angle == destAngle) return;\r\n\r\n\t\tif(angleTween != null)\r\n\t\t\tangleTween.cancel();\r\n\r\n\t\tdestAngle = CoolUtil.getClosestAngle(angle, destAngle);\r\n\t\t\r\n\t\tangleTween = FlxTween.angle(this, angle, destAngle, (2/3)/__animSpeed, {ease: function(t) {\r\n\t\t\treturn ((Math.sin(t * Math.PI) * 0.35) * 3 * t * Math.sqrt(1 - t)) + t;\r\n\t\t}});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "kill",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function kill() {\r\n\t\tif (angleTween != null) {\r\n\t\t\tangleTween.cancel();\r\n\t\t\tangleTween = null;\r\n\t\t\tangle = switch(animation.curAnim.curFrame = (id % 4)) {\r\n\t\t\t\tcase 0: 270;\r\n\t\t\t\tcase 1: 180;\r\n\t\t\t\tcase 2: 0;\r\n\t\t\t\tcase 3: 90;\r\n\t\t\t\tdefault: 0; // how is that even possible\r\n\t\t\t};\r\n\t\t\t__doAnim = false;\r\n\t\t}\r\n\t\tsuper.kill();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif(susLength != 0) {\r\n\t\t\tvar sprLength:Float = (40 * (susLength+tempSusLength)) + ((susLength+tempSusLength) != 0 ? (height/2) : 0);\r\n\t\t\tsustainSpr.scale.set(10, __susInstaLerp ? sprLength : CoolUtil.fpsLerp(sustainSpr.scale.y, sprLength, 1/2));\r\n\t\t\tsustainSpr.updateHitbox();\r\n\t\t\tsustainSpr.follow(this, 15, 20);\r\n\t\t}\r\n\r\n\t\tsustainDraggable = false;\r\n\t\tif (!hovered && susLength != 0) {\r\n\t\t\tsustainSpr.updateSpriteRect();\r\n\t\t\tsustainDraggable = UIState.state.isOverlapping(sustainSpr, @:privateAccess sustainSpr.__rect);\r\n\t\t}\r\n\r\n\t\tif (__passed != (__passed = step < Conductor.curStepFloat + (Options.songOffsetAffectEditors ? (Conductor.songOffset / Conductor.stepCrochet) : 0))) {\r\n\t\t\tif (__passed && FlxG.sound.music.playing) {\r\n\t\t\t\tCharter.instance.playHitsound(strumLineID);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (strumLine != null) {\r\n\t\t\tvar isVisible = strumLine.strumLine.visible;\r\n\t\t\tsustainSpr.alpha = alpha = !isVisible ? (__passed ? 0.2 : 0.4) : (__passed ? 0.6 : 1);\r\n\t\t\ttypeAlpha = !isVisible ? (__passed ? 0.4 : 0.6) : (__passed ? 0.8 : 1);\r\n\t\t}\r\n\r\n\t\tcolorTransform.redMultiplier = colorTransform.greenMultiplier = colorTransform.blueMultiplier = selected ? 0.75 : 1;\r\n\t\tcolorTransform.redOffset = colorTransform.greenOffset = selected ? 96 : 0;\r\n\t\tcolorTransform.blueOffset = selected ? 168 : 0;\r\n\r\n\t\t__doAnim = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "handleSelection",
+			"args": [
+				{
+					"name": "selectionBox",
+					"type": "UISliceSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function handleSelection(selectionBox:UISliceSprite):Bool {\r\n\t\tvar minX = Std.int(selectionBox.x / 40);\r\n\t\tvar minY = (selectionBox.y / 40) - 1;\r\n\t\tvar maxX = Std.int(Math.ceil((selectionBox.x + selectionBox.bWidth) / 40));\r\n\t\tvar maxY = ((selectionBox.y + selectionBox.bHeight) / 40);\r\n\r\n\t\treturn this.fullID >= minX && this.fullID < maxX && this.step >= minY && this.step < maxY;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "handleDrag",
+			"args": [
+				{
+					"name": "change",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function handleDrag(change:FlxPoint) {\r\n\t\tvar newStep = CoolUtil.bound(step + change.x, 0, Charter.instance.__endStep-1);\r\n\t\tvar newID:Int = Std.int(FlxMath.bound(fullID + Std.int(change.y), 0, Charter.instance.strumLines.totalKeyCount-1));\r\n\t\tvar newStrumLine = Charter.instance.strumLines.getStrumlineFromID(newID);\r\n\r\n\t\tupdatePos(newStep, (newID - newStrumLine.startingID) % newStrumLine.keyCount, susLength, type, newStrumLine);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tif (snappedToGrid)\r\n\t\t\tx = (strumLine != null ? strumLine.x : 0) + (id % (strumLine != null ? strumLine.keyCount : 4)) * 40;\r\n\r\n\t\tdrawMembers();\r\n\t\tdrawSuper();\r\n\t\tdrawNoteTypeText();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawNoteTypeText",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function drawNoteTypeText() {\r\n\t\tif(typeText.exists && typeText.visible && typeVisible) {\r\n\t\t\ttypeText.alpha = typeAlpha;\r\n\t\t\ttypeText.follow(this, 20 - (typeText.frameWidth/2), 20 - (typeText.frameHeight/2));\r\n\t\t\ttypeText.draw();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

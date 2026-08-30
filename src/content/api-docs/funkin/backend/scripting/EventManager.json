@@ -1,0 +1,71 @@
+{
+	"kind": "final class",
+	"name": "EventManager",
+	"pkg": "funkin.backend.scripting",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "eventCache",
+			"type": "haxe.ds.ObjectMap<Dynamic, CancellableEvent>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function get<T:CancellableEvent>(cl:Class<T>):T {\r\n\t\tvar event:CancellableEvent = eventCache.get(cl);\r\n\t\tif (event == null) {\r\n\t\t\tevent = Type.createInstance(cl, []);\r\n\t\t\teventCache.set(cl, event);\r\n\t\t}\r\n\t\treturn cast event;\r\n\t}\r\n\t#else\r\n\tpublic static var eventCache:Map<String, CancellableEvent> = [];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventCache",
+			"type": "Map<String, CancellableEvent>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function get<T:CancellableEvent>(cl:Class<T>):T {\r\n\t\tvar className = Type.getClassName(cl);\r\n\t\tvar event = eventCache.get(className);\r\n\t\tif (event == null) {\r\n\t\t\tevent = Type.createInstance(cl, []);\r\n\t\t\teventCache.set(className, event);\r\n\t\t}\r\n\t\treturn cast event;\r\n\t}\r\n\t#end\r\n\r\n\tpublic static function reset() {\r\n\t\t#if cpp\r\n\t\teventCache = new haxe.ds.ObjectMap();\r\n\t\t#else\r\n\t\tfor (event in eventCache) {\r\n\t\t\tevent.destroy();\r\n\t\t}\r\n\t\teventCache = [];\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static function init() {\r\n\t\tFlxG.signals.preStateCreate.add(onStateSwitch);\r\n\t}\r\n\r\n\tprivate static inline function onStateSwitch(newState:FlxState)\r\n\t\treset();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic static function reset() {\r\n\t\t#if cpp\r\n\t\teventCache = new haxe.ds.ObjectMap();\r\n\t\t#else\r\n\t\tfor (event in eventCache) {\r\n\t\t\tevent.destroy();\r\n\t\t}\r\n\t\teventCache = [];\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tFlxG.signals.preStateCreate.add(onStateSwitch);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

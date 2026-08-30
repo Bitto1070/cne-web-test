@@ -1,0 +1,117 @@
+{
+	"kind": "class",
+	"name": "CharterBackdropGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "strumLineGroup",
+			"type": "CharterStrumLineGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "notesGroup",
+			"type": "CharterNoteGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "conductorSprY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomLimitY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumlinesAmount",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "strumLineGroup",
+					"type": "CharterStrumLineGroup",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(strumLineGroup:CharterStrumLineGroup) {\r\n\t\tsuper();\r\n\t\tthis.strumLineGroup = strumLineGroup;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createGrids",
+			"args": [
+				{
+					"name": "amount",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createGrids(amount:Int = 0) {\r\n\t\tfor (i in 0...amount) {\r\n\t\t\tvar grid = new CharterBackdrop();\r\n\t\t\tgrid.active = grid.visible = false;\r\n\t\t\tadd(grid);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tfor (grid in members)\r\n\t\t\tgrid.active = grid.visible = false;\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tfor (i => strumLine in strumLineGroup.members) {\r\n\t\t\tif (strumLine == null) continue;\r\n\r\n\t\t\tif (members[i] == null)\r\n\t\t\t\tmembers[i] = recycle(CharterBackdrop, () -> {return new CharterBackdrop();});\r\n\r\n\t\t\tvar grid = members[i];\r\n\t\t\tgrid.cameras = this.cameras;\r\n\t\t\tgrid.strumLine = strumLine;\r\n\r\n\t\t\tgrid.conductorFollowerSpr.y = conductorSprY;\r\n\t\t\tgrid.bottomSeparator.y = (grid.bottomLimit.y = bottomLimitY)-2;\r\n\r\n\t\t\tgrid.waveformSprite.shader = strumLine.waveformShader;\r\n\r\n\t\t\tgrid.notesGroup.clear();\r\n\t\t\tnotesGroup.forEach((n) -> {\r\n\t\t\t\tif(n.exists && n.visible) {\r\n\t\t\t\t\tvar onStr:Bool = (n.snappedToGrid ? n.strumLineID : CoolUtil.boundInt(Std.int((n.x+n.width)/(40*strumLine.keyCount)), 0, strumLineGroup.members.length-1)) == i;\r\n\t\t\t\t\tif(onStr) grid.notesGroup.add(n);\r\n\t\t\t\t}\r\n\t\t\t});\r\n\r\n\t\t\tgrid.active = grid.visible = true;\r\n\t\t\tgrid.updateSprites();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggingObj",
+			"type": "CharterBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

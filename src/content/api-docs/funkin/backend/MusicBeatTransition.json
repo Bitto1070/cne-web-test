@@ -1,0 +1,194 @@
+{
+	"kind": "class",
+	"name": "MusicBeatTransition",
+	"pkg": "funkin.backend",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transitionScript",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transitionTween",
+			"type": "FlxTween",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transitionCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "newState",
+			"type": "FlxState",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transOut",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "allowSkip",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blackSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transitionSprite",
+			"type": "FunkinSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "newState",
+					"type": "FlxState",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?newState:FlxState) {\r\n\t\tsuper();\r\n\t\tthis.newState = newState;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tif (newState != null)\r\n\t\t\tadd(new FunkinParentDisabler(true, false));\r\n\r\n\t\ttransitionCamera = new FlxCamera();\r\n\t\ttransitionCamera.bgColor = 0;\r\n\t\tFlxG.cameras.add(transitionCamera, false);\r\n\r\n\t\tcameras = [transitionCamera];\r\n\r\n\t\ttransitionScript = Script.create(Paths.script(script));\r\n\t\ttransitionScript.setParent(this);\r\n\t\ttransitionScript.load();\r\n\r\n\t\tvar event = EventManager.get(TransitionCreationEvent).recycle(newState != null, newState);\r\n\t\ttransitionScript.call('create', [event]);\r\n\r\n\t\ttransOut = event.transOut;\r\n\t\tnewState = event.newState;\r\n\r\n\t\tif (event.cancelled) {\r\n\t\t\tsuper.create();\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tadd(blackSpr = new FlxSprite(0, transOut ? -transitionCamera.height : transitionCamera.height).makeGraphic(1, 1, -1));\r\n\t\tblackSpr.color = 0xFF000000;\r\n\t\tadd(transitionSprite = new FunkinSprite().loadSprite(Paths.image('menus/transitionSpr')));\r\n\t\tresizeDefaultSprites();\r\n\r\n\t\ttransitionCamera.flipY = !transOut;\r\n\t\ttransitionCamera.scroll.y = transitionCamera.height;\r\n\t\ttransitionTween = FlxTween.tween(transitionCamera.scroll, {y: -transitionCamera.height}, 2/3, {\r\n\t\t\tease: FlxEase.sineOut,\r\n\t\t\tonComplete: function(_) {\r\n\t\t\t\tfinish();\r\n\t\t\t}\r\n\t\t});\r\n\r\n\t\tsuper.create();\r\n\t\ttransitionScript.call('postCreate', [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\ttransitionScript.call('update', [elapsed]);\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (nextFrameSkip) {\r\n\t\t\tvar event = new CancellableEvent();\r\n\t\t\ttransitionScript.call('onSkip', [event]);\r\n\t\t\tif (!event.cancelled) {\r\n\t\t\t\tfinish();\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (allowSkip && !parent.persistentUpdate && FlxG.keys.pressed.SHIFT) {\r\n\t\t\t// skip\r\n\t\t\tif (newState != null) {\r\n\t\t\t\tnextFrameSkip = true;\r\n\t\t\t\tparent.persistentDraw = false;\r\n\t\t\t} else {\r\n\t\t\t\tvar event = new CancellableEvent();\r\n\t\t\t\ttransitionScript.call('onSkip', [event]);\r\n\t\t\t\tif (!event.cancelled) {\r\n\t\t\t\t\tfinish();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\ttransitionScript.call('postUpdate', [elapsed]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResize",
+			"args": [
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResize(w:Int, h:Int) {\r\n\t\tsuper.onResize(w, h);\r\n\t\tif (FlxG.state is UIState && UIState.resolutionAware) resizeDefaultSprites();\r\n\t\ttransitionScript.call('onResize', [EventManager.get(ResizeEvent).recycle(w, h, null, null)]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resizeDefaultSprites",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function resizeDefaultSprites() {\r\n\t\tif (blackSpr != null) {\r\n\t\t\tblackSpr.scale.set(transitionCamera.width, transitionCamera.height);\r\n\t\t\tblackSpr.updateHitbox();\r\n\t\t}\r\n\r\n\t\tif (transitionSprite != null) {\r\n\t\t\ttransitionSprite.setGraphicSize(transitionCamera.width, transitionCamera.height);\r\n\t\t\ttransitionSprite.updateHitbox();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "finish",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function finish() {\r\n\t\tvar event = new CancellableEvent();\r\n\t\ttransitionScript.call('onFinish', [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tif (newState != null)\r\n\t\t\tFlxG.switchState(newState);\r\n\t\tclose();\r\n\r\n\t\ttransitionScript.call('onPostFinish');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\ttransitionScript.call('destroy');\r\n\r\n\t\tif (transitionTween != null) transitionTween.cancel();\r\n\t\ttransitionTween = FlxDestroyUtil.destroy(transitionTween);\r\n\t\tif (newState == null && FlxG.cameras.list.contains(transitionCamera)) FlxG.cameras.remove(transitionCamera);\r\n\t\telse transitionCamera.bgColor = 0xFF000000;\r\n\r\n\t\ttransitionScript.destroy();\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

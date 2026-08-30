@@ -1,0 +1,173 @@
+{
+	"kind": "class",
+	"name": "CharterStrumLineGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "totalKeyCount",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_totalKeyCount",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get_totalKeyCount():Int {\r\n\t\tif (__totalKeyCount != -1) return __totalKeyCount;\r\n\r\n\t\tvar v:Int = 0;\r\n\t\tfor (strumLine in members) v += strumLine.keyCount;\r\n\t\treturn __totalKeyCount = v;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isDragging",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_isDragging",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get_isDragging():Bool\r\n\t\treturn draggingObj != null;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tFlxG.mouse.getWorldPosition(cameras[0], __mousePos);\r\n\t\tfor (strumLine in members) {\r\n\t\t\tif (strumLine == null) continue;\r\n\t\t\tstrumLine.draggable = draggable;\r\n\t\t\tif (draggable && UIState.state.isOverlapping(strumLine.draggingSprite, @:privateAccess strumLine.draggingSprite.__rect) && FlxG.mouse.justPressed) {\r\n\t\t\t\tdraggingObj = strumLine;\r\n\t\t\t\tstrumLine.dragging = true;\r\n\r\n\t\t\t\tdraggingOffset = __mousePos.x - strumLine.button.x;\r\n\t\t\t\t__pastStrumlines = members.copy();\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (isDragging) {\r\n\t\t\tdraggingObj.x = __mousePos.x - draggingOffset;\r\n\t\t\tthis.sort(function(o, a, b) return FlxSort.byValues(o, a.x, b.x), -1);\r\n\t\t\trefreshStrumlineIDs();\r\n\t\t}\r\n\r\n\t\tfor (i=>strum in members)\r\n\t\t\tif (strum != null && !strum.dragging) strum.x = CoolUtil.fpsLerp(strum.x, 40*strum.startingID, 0.225);\r\n\r\n\t\tif (Charter.instance.leftEventsBackdrop != null && members[0] != null) {\r\n\t\t\tCharter.instance.leftEventsBackdrop.x = members[0].button.x - Charter.instance.leftEventsBackdrop.width;\r\n\t\t\tCharter.instance.leftEventsBackdrop.alpha = members[0].strumLine.visible ? 0.9 : 0.4;\r\n\r\n\t\t\tif (Charter.instance.leftEventRowText != null)\r\n\t\t\t\tCharter.instance.leftEventRowText.x = members[0].button.x - Charter.instance.leftEventRowText.width - 42;\r\n\t\t}\r\n\t\t\r\n\t\tif (Charter.instance.rightEventsBackdrop != null && members[CoolUtil.maxInt(0, members.length-1)] != null) {\r\n\t\t\tCharter.instance.rightEventsBackdrop.x = members[members.length-1].x + (40*members[members.length-1].keyCount);\r\n\t\t\tCharter.instance.rightEventsBackdrop.alpha = members[CoolUtil.maxInt(0, members.length-1)].strumLine.visible ? 0.9 : 0.4;\r\n\r\n\t\t\tif (Charter.instance.rightEventRowText != null)\r\n\t\t\t\tCharter.instance.rightEventRowText.x = Charter.instance.rightEventsBackdrop.x + 42;\r\n\t\t}\r\n\t\t\r\n\t\tif (Charter.instance.strumlineLockButton != null && members[0] != null)\r\n\t\t\tCharter.instance.strumlineLockButton.x = members[0].x - (160);\r\n\t\tif (Charter.instance.strumlineAddButton != null && members[CoolUtil.maxInt(0, members.length-1)] != null)\r\n\t\t\tCharter.instance.strumlineAddButton.x = members[members.length-1].x + (40*members[members.length-1].keyCount);\r\n\r\n\t\tif ((FlxG.mouse.justReleased || !draggable) && isDragging)\r\n\t\t\tfinishDrag();\r\n\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "snapStrums",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function snapStrums() {\r\n\t\tfor (i=>strum in members)\r\n\t\t\tif (strum != null && !strum.dragging) strum.x = 40*strum.startingID;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "orderStrumline",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "CharterStrumline",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "newID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function orderStrumline(strumLine:CharterStrumline, newID:Int) {\r\n\t\t__pastStrumlines = members.copy();\r\n\r\n\t\tmembers.remove(strumLine);\r\n\t\tmembers.insert(newID, strumLine);\r\n\r\n\t\trefreshStrumlineIDs();\r\n\t\tfinishDrag(false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "finishDrag",
+			"args": [
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function finishDrag(?addToUndo:Bool = true) {\r\n\t\tif (isDragging)\r\n\t\t\tdraggingObj.dragging = false;\r\n\r\n\t\t// Undo\r\n\t\tif (addToUndo) {\r\n\t\t\tvar oldID = __pastStrumlines.indexOf(draggingObj);\r\n\t\t\tvar newID = members.indexOf(draggingObj);\r\n\t\t\tif (newID != oldID) Charter.undos.addToUndo(COrderStrumLine(newID, oldID, newID));\r\n\t\t}\r\n\r\n\t\tdraggingObj = null;\r\n\t\tfixEvents();\r\n\t\trefreshStrumlineIDs();\r\n\t\tCharter.instance.updateCameraChanges();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixEvents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function fixEvents() {\r\n\t\tfor (eventsGroup in [Charter.instance.leftEventsGroup, Charter.instance.rightEventsGroup]) {\r\n\t\t\tfor (i in eventsGroup) {\r\n\t\t\t\tfor (j in i.events) {\r\n\t\t\t\t\tvar paramTypes:Array<EventParamInfo> = EventsData.getEventParams(j.name);\r\n\t\t\t\t\tfor (i => param in paramTypes) {\r\n\t\t\t\t\t\tif (param.type != TStrumLine) continue;\r\n\t\t\t\t\t\tj.params[i] = members.indexOf(__pastStrumlines[j.params[i]]);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\t__pastStrumlines = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshStrumlineIDs",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function refreshStrumlineIDs() {\r\n\t\t__totalKeyCount = -1;\r\n\t\t@:privateAccess\r\n\t\tfor (strumLine in members) strumLine.__startingID = -1;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStrumlineFromID",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getStrumlineFromID(id:Int) {\r\n\t\tvar v:Int = 0;\r\n\t\tfor (strumLine in members) {\r\n\t\t\tv += strumLine.keyCount;\r\n\t\t\tif (id < v) return strumLine;\r\n\t\t}\r\n\t\treturn members.last();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

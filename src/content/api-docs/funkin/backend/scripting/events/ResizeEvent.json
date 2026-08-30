@@ -1,0 +1,69 @@
+{
+	"kind": "final class",
+	"name": "ResizeEvent",
+	"pkg": "funkin.backend.scripting.events",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "width",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "New width",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "height",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "New height",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "oldWidth",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Old width (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "oldHeight",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Old height (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,113 @@
+{
+	"kind": "class",
+	"name": "FramerateCategory",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "title",
+			"type": "TextField",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "text",
+			"type": "TextField",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bgSprite",
+			"type": "Bitmap",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(title:String, text:String = \"\") {\r\n\t\tsuper();\r\n\r\n\t\tx = 10;\r\n\t\tthis.title = new TextField();\r\n\t\tthis.text = new TextField();\r\n\r\n\t\tbgSprite = new Bitmap(Framerate.__bitmap);\r\n\t\tbgSprite.alpha = 0.5;\r\n\t\taddChild(bgSprite);\r\n\r\n\t\tfor(label in [this.title, this.text]) {\r\n\t\t\tlabel.autoSize = LEFT;\r\n\t\t\tlabel.x = 0;\r\n\t\t\tlabel.y = 0;\r\n\t\t\tlabel.defaultTextFormat = new TextFormat(Framerate.fontName, label == this.title ? 18 : 12, -1);\r\n\t\t\tlabel.selectable = false;\r\n\t\t\taddChild(label);\r\n\t\t}\r\n\t\tthis.title.text = title;\r\n\t\tthis.title.multiline = this.title.wordWrap = false;\r\n\t\tthis.text.multiline = true;\r\n\r\n\r\n\t\tthis.text.y = this.title.y + this.title.height + 2;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reload() {\r\n\t\tfor(label in [this.title, this.text]) label.defaultTextFormat = new TextFormat(Framerate.fontName, label == this.title ? 18 : 12, -1);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\t\tsuper.__enterFrame(t);\r\n\r\n\t\tvar width = Math.max(this.title.width, this.text.width) + (Framerate.instance.x * 2);\r\n\t\tvar height = this.text.height + this.text.y;\r\n\t\tbgSprite.x = -Framerate.instance.x;\r\n\t\tbgSprite.scaleX = width;\r\n\t\tbgSprite.scaleY = height;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addLine",
+			"args": [
+				{
+					"name": "buf",
+					"type": "StringBuf",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "...values",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function addLine(buf:StringBuf, ...values:Array<Dynamic>):Void {\r\n\t\tfor (v in values) buf.add(v);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

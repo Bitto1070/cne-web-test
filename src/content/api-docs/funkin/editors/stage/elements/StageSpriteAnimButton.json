@@ -1,0 +1,143 @@
+{
+	"kind": "class",
+	"name": "StageSpriteAnimButton",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "fpsStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spriteXML",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animData",
+			"type": "AnimData",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "anim",
+					"type": "AnimData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": "280"
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": "35"
+				},
+				{
+					"name": "nameWidth",
+					"type": "Int",
+					"optional": false,
+					"def": "100"
+				},
+				{
+					"name": "valueWidth",
+					"type": "Int",
+					"optional": false,
+					"def": "135"
+				},
+				{
+					"name": "inputHeight",
+					"type": "Int",
+					"optional": false,
+					"def": "25"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(anim:AnimData, parent, width:Int = 280, height:Int = 35, nameWidth:Int = 100, valueWidth:Int = 135, inputHeight:Int = 25)\r\n\t{\r\n\t\tsuper(\"\", \"\", parent, width, height, nameWidth, valueWidth, inputHeight);\r\n\t\tanimData = anim;\r\n\t\tpropertyText.onChange = (text) -> animData.name = text;\r\n\t\tvalueText.onChange = \t\t(text) -> animData.anim = text;\r\n\r\n\t\tvar editSize = height - 5 * 2;\r\n\t\teditButton = new UIButton(deleteButton.x - deleteButton.bWidth - 5, 5, null, openAnimEdit, editSize, editSize);\r\n\t\teditButton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\teditButton.color = 0xFFFF5B0F;\r\n\t\teditButton.autoAlpha = false;\r\n\t\tmembers.insert(members.indexOf(deleteButton), editButton);\r\n\r\n\t\teditIcon = new FlxSprite(editButton.x + 8, editButton.y + 10).loadGraphic(Paths.image('editors/stage/edit-button'), true, 16, 16);\r\n\t\teditIcon.animation.add(\"advanced\", [1]);\r\n\t\teditIcon.animation.play(\"advanced\");\r\n\t\teditIcon.antialiasing = false;\r\n\t\tmembers.insert(members.indexOf(editButton) + 1, editIcon);\r\n\r\n\t\tfpsStepper = new UINumericStepper(valueText.x + valueText.bWidth + 15, 5, 0, 1, 2, 0, null, Math.round(width / 4), 25);\r\n\t\tfpsStepper.onChange = (text) -> \r\n\t\t{\r\n\t\t\t@:privateAccess fpsStepper.__onChange(text);\r\n\t\t\tanimData.fps = fpsStepper.value;\r\n\t\t};\r\n\t\tmembers.insert(members.indexOf(deleteButton), fpsStepper);\r\n\r\n\t\t__initialized = true;\r\n\t\tupdateDisplay();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openAnimEdit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function openAnimEdit()\r\n\t{\r\n\t\tfinal parent = (FlxG.state.subState is UISoftcodedWindow) ? FlxG.state.subState : FlxG.state;\r\n\t\tparent.openSubState(new SpriteAnimEditScreen(spriteXML, this, null));\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updatePos()\r\n\t{\r\n\t\tsuper.updatePos();\r\n\t\tif (!__initialized) return;\r\n\r\n\t\tfpsStepper.follow(this, valueText.x + valueText.bWidth, bHeight/2 - (fpsStepper.bHeight/2));\r\n\t\teditButton.follow(this, deleteButton.x - deleteButton.bWidth - 5, bHeight/2 - (editButton.bHeight/2));\r\n\t\teditIcon.follow(editButton, editButton.bWidth / 2 - editIcon.width / 2, editButton.bHeight / 2 - editIcon.height / 2);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateDisplay",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateDisplay()\r\n\t{\r\n\t\tpropertyText.label.text = animData.name;\r\n\t\tvalueText.label.text = animData.anim;\r\n\t\tfpsStepper.value = animData.fps;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

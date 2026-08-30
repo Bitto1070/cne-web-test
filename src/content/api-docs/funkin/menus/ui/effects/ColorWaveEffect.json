@@ -1,0 +1,66 @@
+{
+	"kind": "class",
+	"name": "ColorWaveEffect",
+	"pkg": "funkin.menus.ui.effects",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "period",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "color1",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "color2",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "color1",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color2",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "period",
+					"type": "Float",
+					"optional": true,
+					"def": "30"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(color1:FlxColor, color2:FlxColor, ?period:Float = 30) {\r\n\t\tsuper();\r\n\t\tspeed = 5;\r\n\t\tthis.color1 = color1;\r\n\t\tthis.color2 = color2;\r\n\t\tthis.period = period;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,236 @@
+{
+	"kind": "class",
+	"name": "AsyncUpdater",
+	"pkg": "funkin.backend.system.updating",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "releases",
+					"type": "Array<GitHubRelease>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// NON ASYNC STUFF\r\n\t#if REGION\r\n\tpublic function new(releases:Array<GitHubRelease>) {\r\n\t\tthis.releases = releases;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "execute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function execute() {\r\n\t\tMain.execAsync(installUpdates);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableGitHubName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableGitHubName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableGitHubName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "releases",
+			"type": "Array<GitHubRelease>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "progress",
+			"type": "UpdaterProgress",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "path",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "downloadStream",
+			"type": "URLLoader",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "executableReplaced",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "oldBytesLoaded",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "installUpdates",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function installUpdates() {\r\n\t\tprepareInstallationEnvironment();\r\n\t\tdownloadFiles();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "installFiles",
+			"args": [
+				{
+					"name": "files",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function installFiles(files:Array<String>) {\r\n\t\tprogress.step = INSTALLING;\r\n\t\tprogress.files = files.length+1;\r\n\t\tfor(k=>e in files) {\r\n\t\t\tvar path = '$path$e';\r\n\t\t\tprogress.curFile = k+1;\r\n\t\t\tprogress.curFileName = e;\r\n\t\t\ttrace('extracting file ${path}');\r\n\t\t\tvar reader = ZipUtil.openZip(path);\r\n\r\n\t\t\tprogress.curZipProgress = new ZipProgress();\r\n\t\t\tZipUtil.uncompressZip(reader, './', null, progress.curZipProgress);\r\n\t\t\t// FileSystem.deleteFile(path);\r\n\t\t}\r\n\t\tif (executableReplaced = FileSystem.exists('$path$executableName')) {\r\n\t\t\tprogress.curFile = files.length;\r\n\t\t\tprogress.curFileName = executableName;\r\n\r\n\t\t\tvar progPath = Sys.programPath();\r\n\t\t\tvar bakFile = '${Path.withoutExtension(progPath)}.bak';\r\n\t\t\tif (FileSystem.exists(bakFile))\r\n\t\t\t\tFileSystem.deleteFile(bakFile);\r\n\t\t\tFileSystem.rename(progPath, bakFile);\r\n\t\t\tFileSystem.rename('$path$executableName', progPath);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "downloadFiles",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function downloadFiles() {\r\n\t\tvar files:Array<String> = [];\r\n\t\tvar fileNames:Array<String> = [];\r\n\t\tvar exePath:String = \"\";\r\n\t\tfor(r in releases) {\r\n\t\t\tfor(e in r.assets) {\r\n\t\t\t\tif (e.name.toLowerCase() == \"update-assets.zip\") {\r\n\t\t\t\t\tfiles.push(e.browser_download_url);\r\n\t\t\t\t\tfileNames.push('${Path.withoutExtension(e.name)}-${r.tag_name}.${Path.extension(e.name)}');\r\n\t\t\t\t} else if (e.name.toLowerCase() == executableGitHubName) {\r\n\t\t\t\t\texePath = e.browser_download_url;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tprogress.curFile = -1;\r\n\t\tprogress.curFileName = null;\r\n\t\tprogress.files = files.length;\r\n\t\tprogress.step = DOWNLOADING_ASSETS;\r\n\t\ttrace('starting assets download');\r\n\t\tdoFile(files.copy(), fileNames.copy(), function() {\r\n\t\t\tprogress.curFile = -1;\r\n\t\t\tprogress.curFileName = null;\r\n\t\t\tprogress.files = 1;\r\n\t\t\tprogress.step = DOWNLOADING_EXECUTABLE;\r\n\t\t\ttrace('starting exe download');\r\n\t\t\tdoFile([exePath], [executableName], function() {\r\n\t\t\t\ttrace('done, starting installation');\r\n\t\t\t\tinstallFiles(fileNames);\r\n\t\t\t\tprogress.done = true;\r\n\t\t\t});\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "doFile",
+			"args": [
+				{
+					"name": "files",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fileNames",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onFinish",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function doFile(files:Array<String>, fileNames:Array<String>, onFinish:Void->Void) {\r\n\t\tvar f = files.shift();\r\n\t\tif (f == null) {\r\n\t\t\tonFinish();\r\n\t\t\treturn;\r\n\t\t}\r\n\t\tvar fn = fileNames.shift();\r\n\t\ttrace('downloading $f ($fn)');\r\n\t\tprogress.curFile++;\r\n\t\tprogress.curFileName = fn;\r\n\t\tprogress.bytesLoaded = 0;\r\n\t\tprogress.bytesTotal = 1;\r\n\t\tdownloadStream = new URLLoader();\r\n\t\tdownloadStream.dataFormat = BINARY;\r\n\r\n\t\tdownloadStream.addEventListener(ProgressEvent.PROGRESS, function(e) {\r\n\t\t\tprogress.bytesLoaded = e.bytesLoaded;\r\n\t\t\tprogress.bytesTotal = e.bytesTotal;\r\n\r\n\t\t\tvar curTime = Lib.getTimer();\r\n\r\n\t\t\tprogress.downloadSpeed = (e.bytesLoaded - oldBytesLoaded) / ((curTime - lastTime) / 1000);\r\n\r\n\t\t\tlastTime = curTime;\r\n\t\t\toldBytesLoaded = e.bytesLoaded;\r\n\t\t});\r\n\t\tdownloadStream.addEventListener(Event.COMPLETE, function(e) {\r\n\t\t\tvar fileOutput:FileOutput = File.write('$path$fn', true);\r\n\r\n\t\t\tvar data:ByteArray = new ByteArray();\r\n\t\t\tdownloadStream.data.readBytes(data, 0, downloadStream.data.length - downloadStream.data.position);\r\n\t\t\tfileOutput.writeBytes(data, 0, data.length);\r\n\t\t\tfileOutput.flush();\r\n\r\n\t\t\tfileOutput.close();\r\n\t\t\tdoFile(files, fileNames, onFinish);\r\n\t\t});\r\n\r\n\t\toldBytesLoaded = 0;\r\n\t\tlastTime = Lib.getTimer();\r\n\t\tdownloadStream.load(new URLRequest(f));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareInstallationEnvironment",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function prepareInstallationEnvironment() {\r\n\t\tprogress.step = PREPARING;\r\n\r\n\t\t#if windows\r\n\t\tpath = '${Sys.getEnv(\"TEMP\")}\\\\Codename Engine\\\\Updater\\\\';\r\n\t\t#else\r\n\t\tpath = '.temp/';\r\n\t\t#end\r\n\r\n\t\tFileSystem.createDirectory(path);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

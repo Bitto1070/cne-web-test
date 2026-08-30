@@ -1,0 +1,84 @@
+{
+	"kind": "final class",
+	"name": "FreeplaySongSelectEvent",
+	"pkg": "funkin.backend.scripting.events.menu.freeplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "song",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Song name that is about to be played",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficulty",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Difficulty name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "variant",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Variation Name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "opponentMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever opponent mode is enabled or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "coopMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever coop mode is enabled.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

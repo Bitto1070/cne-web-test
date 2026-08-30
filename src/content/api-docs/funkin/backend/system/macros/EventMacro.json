@@ -1,0 +1,26 @@
+{
+	"kind": "class",
+	"name": "EventMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": {
+		"text": "Macro that generates all additional fields, making events much easier to code in.\nIt adds the `recycle` function, which allows you to \"reset\" an event's values.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "build",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function build():Array<Field> {\r\n\t\tvar fields = Context.getBuildFields();\r\n\r\n\t\tvar curClassRest = Context.getLocalClass();\r\n\t\tif (curClassRest == null) return fields;\r\n\r\n\t\tvar curClass = curClassRest.get();\r\n\t\tif (curClass == null || curClass.name == \"CancellableEvent\") return fields;\r\n\r\n\t\tfor(f in fields)\r\n\t\t\tif (f.name == \"recycle\")\r\n\t\t\t\treturn fields;\r\n\r\n\t\t// gets all fields\r\n\t\tvar values:Array<EventVar> = [];\r\n\t\tvar hiddenValues:Array<EventVar> = [];\r\n\t\tfor(field in fields) {\r\n\t\t\tif (field.access.contains(AStatic)) continue;\r\n\r\n\t\t\tvar hidden = false;\r\n\t\t\tif (field.meta != null)\r\n\t\t\t\tfor(m in field.meta)\r\n\t\t\t\t\tif (m.name == \":dox\")\r\n\t\t\t\t\t\thidden = true;\r\n\t\t\tif (!field.access.contains(APublic)) hidden = true;\r\n\r\n\t\t\tswitch(field.kind) {\r\n\t\t\t\tcase FVar(type, expr):\r\n\t\t\t\t\t(hidden ? hiddenValues : values).push({\r\n\t\t\t\t\t\tname: field.name,\r\n\t\t\t\t\t\ttype: type,\r\n\t\t\t\t\t\texpr: expr\r\n\t\t\t\t\t});\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t// add recycle option\r\n\t\tvar func:Function = {\r\n\t\t\targs: [for(a in values) {\r\n\t\t\t\tvalue: a.expr,\r\n\t\t\t\ttype: a.type,\r\n\t\t\t\topt: false,\r\n\t\t\t\tname: a.name\r\n\t\t\t}],\r\n\t\t\texpr: {\r\n\t\t\t\tpos: Context.currentPos(),\r\n\t\t\t\texpr: EBlock([])\r\n\t\t\t}\r\n\t\t};\r\n\r\n\t\tvar funcField:Field = {\r\n\t\t\tpos: Context.currentPos(),\r\n\t\t\tname: \"recycle\",\r\n\t\t\tkind: FFun(func),\r\n\t\t\taccess: [APublic]\r\n\t\t};\r\n\r\n\t\tfields.push(funcField);\r\n\r\n\t\tswitch(func.expr.expr) {\r\n\t\t\tcase EBlock(exprs):\r\n\t\t\t\t// add a \"set this\" expr for each variable\r\n\t\t\t\tfor(v in values) {\r\n\t\t\t\t\tvar name = v.name;\r\n\t\t\t\t\texprs.push(macro this.$name = $i{name});\r\n\t\t\t\t}\r\n\r\n\t\t\t\t// add a \"set this\" expr to reset each private/hidden variables\r\n\t\t\t\tfor(v in hiddenValues) {\r\n\t\t\t\t\tvar name = v.name;\r\n\t\t\t\t\texprs.push(macro this.$name = ${v.expr});\r\n\t\t\t\t}\r\n\r\n\t\t\t\texprs.push(macro return this);\r\n\t\t\t\texprs.insert(0, macro recycleBase());\r\n\t\t\tdefault:\r\n\t\t\t\t// nothing\r\n\t\t}\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

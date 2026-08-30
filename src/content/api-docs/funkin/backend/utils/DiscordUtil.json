@@ -1,0 +1,445 @@
+{
+	"kind": "final class",
+	"name": "DiscordUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "currentID",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "discordThread",
+			"type": "#if DISCORD_RPC Thread #else Dynamic #end",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ready",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "initialized",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "user",
+			"type": "#if DISCORD_RPC DUser #else Dynamic #end",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastPresence",
+			"type": "#if DISCORD_RPC DPresence #else Dynamic #end",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "config",
+			"type": "#if DISCORD_RPC DiscordJson #else Dynamic #end",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "Script",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "REPLY_NO",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "REPLY_YES",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "REPLY_IGNORE",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "PARTY_PRIVATE",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "PARTY_PUBLIC",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic static function init()\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\treloadJsonData();\r\n\t\tif (initialized)\r\n\t\t\treturn;\r\n\t\tinitialized = true;\r\n\r\n\t\tdiscordThread = Thread.create(function()\r\n\t\t{\r\n\t\t\twhile (true)\r\n\t\t\t{\r\n\t\t\t\twhile (!stopThread)\r\n\t\t\t\t{\r\n\t\t\t\t\t#if DISCORD_DISABLE_IO_THREAD\r\n\t\t\t\t\tDiscord.UpdateConnection();\r\n\t\t\t\t\t#end\r\n\t\t\t\t\tDiscord.RunCallbacks();\r\n\r\n\t\t\t\t\tSys.sleep(2);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tSys.sleep(1); // to reduce cpu\r\n\t\t\t}\r\n\t\t});\r\n\r\n\t\tApplication.current.onExit.add(function(_) shutdown());\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadJsonData",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function reloadJsonData()\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tconfig = null;\r\n\t\tvar jsonPath = Paths.json(\"config/discord\");\r\n\t\tif (Assets.exists(jsonPath))\r\n\t\t{\r\n\t\t\ttry\r\n\t\t\t\tconfig = Json.parse(Assets.getText(jsonPath))\r\n\t\t\tcatch (e)\r\n\t\t\t\tLogs.error('Couldn\\'t load Discord RPC configuration: ${e.toString()}');\r\n\t\t}\r\n\r\n\t\tif (config == null)\r\n\t\t\tconfig = {};\r\n\r\n\t\tconfig.logoKey = config.logoKey.getDefault(Flags.DEFAULT_DISCORD_LOGO_KEY);\r\n\t\tconfig.logoText = config.logoText.getDefault(Flags.DEFAULT_DISCORD_LOGO_TEXT);\r\n\t\tconfig.clientID = config.clientID.getDefault(Flags.DEFAULT_DISCORD_CLIENT_ID);\r\n\t\t\r\n\t\tif (Flags.MOD_DISCORD_CLIENT_ID.length > 0) config.clientID = Flags.MOD_DISCORD_CLIENT_ID;\r\n\t\tif (Flags.MOD_DISCORD_LOGO_KEY.length > 0) config.logoKey = Flags.MOD_DISCORD_LOGO_KEY;\r\n\t\tif (Flags.MOD_DISCORD_LOGO_TEXT.length > 0) config.logoText = Flags.MOD_DISCORD_LOGO_TEXT;\r\n\t\tcurrentID = config.clientID;\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "event",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function event<T:CancellableEvent>(name:String, event:T):T\r\n\t{\r\n\t\tif (script != null)\r\n\t\t\tscript.call(name, [event]);\r\n\t\treturn event;\r\n\t}\r\n\r\n\tpublic static function call(name:String, ?args:Array<Dynamic>)\r\n\t{\r\n\t\tif (script != null)\r\n\t\t\tscript.call(name, args);\r\n\t}\r\n\r\n\tpublic static function loadScript()\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tif (script != null)\r\n\t\t{\r\n\t\t\tcall(\"destroy\");\r\n\t\t\tscript = FlxDestroyUtil.destroy(script);\r\n\t\t}\r\n\t\tscript = Script.create(Paths.script('data/discord'));\r\n\t\tscript.set(\"ActivityType\", {\r\n\t\t\tPlaying: ActivityType.Playing,\r\n\t\t\tPLAYING: ActivityType.Playing,\r\n\t\t\tStreaming: ActivityType.Streaming,\r\n\t\t\tSTREAMING: ActivityType.Streaming,\r\n\t\t\tWatching: ActivityType.Watching,\r\n\t\t\tWATCHING: ActivityType.Watching,\r\n\t\t\tListening: ActivityType.Listening,\r\n\t\t\tLISTENING: ActivityType.Listening,\r\n\t\t\tCompeting: ActivityType.Competing,\r\n\t\t\tCOMPETING: ActivityType.Competing\r\n\t\t});\r\n\t\t// script.setParent(DiscordUtil);\r\n\t\tscript.load();\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static function changePresence(details:String, state:String, ?smallImageKey:String)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tchangePresenceAdvanced({\r\n\t\t\tstate: state,\r\n\t\t\tdetails: details,\r\n\t\t\tsmallImageKey: smallImageKey\r\n\t\t});\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static function changeSongPresence(details:String, state:String, audio:FlxSound, ?smallImageKey:String)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tvar start:Float = 0;\r\n\t\tvar end:Float = 0;\r\n\r\n\t\tif (audio != null && audio.playing)\r\n\t\t{\r\n\t\t\tstart = Date.now().getTime();\r\n\t\t\tend = start + (audio.length - audio.time);\r\n\t\t}\r\n\r\n\t\tchangePresenceAdvanced({\r\n\t\t\tstate: state,\r\n\t\t\tdetails: details,\r\n\t\t\tsmallImageKey: smallImageKey,\r\n\t\t\tstartTimestamp: Std.int(start / 1000),\r\n\t\t\tendTimestamp: Std.int(end / 1000)\r\n\t\t});\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static function changePresenceSince(details:String, state:String, ?smallImageKey:String, ?time:Float)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tif (time == null)\r\n\t\t\ttime = Date.now().getTime();\r\n\r\n\t\tchangePresenceAdvanced({\r\n\t\t\tstate: state,\r\n\t\t\tdetails: details,\r\n\t\t\tsmallImageKey: smallImageKey,\r\n\t\t\tstartTimestamp: Std.int(time / 1000)\r\n\t\t});\r\n\t\t#end\r\n\t}\r\n\r\n\t#if cpp\r\n\t@:noCompletion public static function fixString(str:String)\r\n\t{\r\n\t\treturn new cpp.ConstCharStar(cast(str, String));\r\n\t}\r\n\r\n\t@:noCompletion public static function toString(str:cpp.ConstCharStar)\r\n\t{\r\n\t\treturn cast(str, String);\r\n\t}\r\n\t#end\r\n\r\n\tpublic static function changePresenceAdvanced(data:DPresence)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tif (data == null)\r\n\t\t\treturn;\r\n\r\n\t\t// copy last presence\r\n\t\tif (data.largeImageKey == null)\r\n\t\t\tdata.largeImageKey = config.logoKey;\r\n\t\tif (data.largeImageText == null)\r\n\t\t\tdata.largeImageText = config.logoText;\r\n\r\n\t\tvar evt = EventManager.get(DiscordPresenceUpdateEvent).recycle(data);\r\n\t\t#if GLOBAL_SCRIPT\r\n\t\t// kept for \"backwards compat\"\r\n\t\tfunkin.backend.scripting.GlobalScript.event(\"onDiscordPresenceUpdate\", evt);\r\n\t\t#end\r\n\t\tevent(\"onDiscordPresenceUpdate\", evt);\r\n\t\tif (evt.cancelled)\r\n\t\t\treturn;\r\n\t\tdata = evt.presence;\r\n\t\tlastPresence = data;\r\n\r\n\t\tvar dp:DiscordRichPresence = DiscordRichPresence.create();\r\n\t\t// TODO: make this use a reflection-like macro\r\n\t\tUtils.safeSetWrapper(dp.state, data.state, fixString);\r\n\t\tUtils.safeSetWrapper(dp.details, data.details, fixString);\r\n\t\tUtils.safeSet(dp.startTimestamp, data.startTimestamp);\r\n\t\tUtils.safeSet(dp.endTimestamp, data.endTimestamp);\r\n\t\tUtils.safeSetWrapper(dp.largeImageKey, data.largeImageKey, fixString);\r\n\t\tUtils.safeSetWrapper(dp.largeImageText, data.largeImageText, fixString);\r\n\t\tUtils.safeSetWrapper(dp.smallImageKey, data.smallImageKey, fixString);\r\n\t\tUtils.safeSetWrapper(dp.smallImageText, data.smallImageText, fixString);\r\n\t\tUtils.safeSetWrapper(dp.partyId, data.partyId, fixString);\r\n\t\tUtils.safeSet(dp.partySize, data.partySize);\r\n\t\tUtils.safeSet(dp.partyMax, data.partyMax);\r\n\t\tUtils.safeSet(dp.partyPrivacy, data.partyPrivacy);\r\n\t\tUtils.safeSetWrapper(dp.matchSecret, data.matchSecret, fixString);\r\n\t\tUtils.safeSetWrapper(dp.joinSecret, data.joinSecret, fixString);\r\n\t\tUtils.safeSetWrapper(dp.spectateSecret, data.spectateSecret, fixString);\r\n\t\tUtils.safeSet(dp.instance, data.instance);\r\n\t\tUtils.safeSet(dp.activityType, data.activityType);\r\n\t\tUtils.safeSetWrapper(dp.streamUrl, data.streamUrl, fixString);\r\n\t\tif (data.matchSecret == null && data.joinSecret == null && data.spectateSecret == null)\r\n\t\t{\r\n\t\t\tUtils.safeSetWrapper(dp.button1Label, data.button1Label, fixString);\r\n\t\t\tUtils.safeSetWrapper(dp.button1Url, data.button1Url, fixString);\r\n\t\t\tUtils.safeSetWrapper(dp.button2Label, data.button2Label, fixString);\r\n\t\t\tUtils.safeSetWrapper(dp.button2Url, data.button2Url, fixString);\r\n\t\t}\r\n\r\n\t\tDiscord.UpdatePresence(cpp.RawConstPointer.addressOf(dp));\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static function clearPresence()\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.ClearPresence();\r\n\t\t#end\r\n\t}\r\n\r\n\tprivate static function set_currentID(id:String):String\r\n\t{\r\n\t\tif (currentID == id)\r\n\t\t\treturn id;\r\n\t\t#if DISCORD_RPC\r\n\t\tif (currentID != null)\r\n\t\t\tshutdown();\r\n\r\n\t\tvar handlers:DiscordEventHandlers = DiscordEventHandlers.create();\r\n\t\thandlers.ready = cpp.Function.fromStaticFunction(onReady);\r\n\t\thandlers.disconnected = cpp.Function.fromStaticFunction(onDisconnected);\r\n\t\thandlers.errored = cpp.Function.fromStaticFunction(onError);\r\n\t\thandlers.joinGame = cpp.Function.fromStaticFunction(onJoin);\r\n\t\thandlers.joinRequest = cpp.Function.fromStaticFunction(onJoinReq);\r\n\t\thandlers.spectateGame = cpp.Function.fromStaticFunction(onSpectate);\r\n\t\thandlers.anyResponse = cpp.Function.fromStaticFunction(onAnyResponse);\r\n\t\tDiscord.Initialize(id, cpp.RawPointer.addressOf(handlers), 1, null);\r\n\t\tstopThread = false;\r\n\r\n\t\tloadScript();\r\n\t\t#end\r\n\r\n\t\treturn currentID = id;\r\n\t}\r\n\r\n\tpublic static function shutdown()\r\n\t{\r\n\t\tready = false;\r\n\t\tstopThread = true;\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.Shutdown();\r\n\t\t#end\r\n\r\n\t\tcall(\"destroy\");\r\n\t\tscript = FlxDestroyUtil.destroy(script);\r\n\t}\r\n\r\n\tpublic static function respond(userId:String, reply:Int)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.Respond(fixString(userId), reply);\r\n\t\t#end\r\n\t}\r\n\r\n\t// HANDLERS\r\n\t#if DISCORD_RPC\r\n\tprivate static function onReady(request:cpp.RawConstPointer<DiscordUser>):Void\r\n\t{\r\n\t\tuser = DUser.initRaw(request);\r\n\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.getPrefix(\"Discord\"),\r\n\t\t\tLogs.logText(\"Connected to User \" + user.globalName + \" (\"),\r\n\t\t\tLogs.logText(user.handle, GRAY),\r\n\t\t\tLogs.logText(\")\")\r\n\t\t], INFO);\r\n\r\n\t\tready = true;\r\n\r\n\t\tcall(\"onReady\", [user]);\r\n\t}\r\n\r\n\tprivate static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar):Void\r\n\t{\r\n\t\tvar finalMsg:String = cast(message, String);\r\n\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.getPrefix(\"Discord\"),\r\n\t\t\tLogs.logText(\"Disconnected (\"),\r\n\t\t\tLogs.logText('$errorCode: $finalMsg', RED),\r\n\t\t\tLogs.logText(\")\")\r\n\t\t], INFO);\r\n\r\n\t\tcall(\"onDisconnected\", [errorCode, cast(finalMsg, String)]);\r\n\t}\r\n\r\n\tprivate static function onError(errorCode:Int, message:cpp.ConstCharStar):Void\r\n\t{\r\n\t\tvar finalMsg:String = cast(message, String);\r\n\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.getPrefix(\"Discord\"),\r\n\t\t\tLogs.logText('Error ($errorCode: $finalMsg)', RED)\r\n\t\t], ERROR);\r\n\r\n\t\tcall(\"onError\", [errorCode, cast(finalMsg, String)]);\r\n\t}\r\n\r\n\tprivate static function onJoin(joinSecret:cpp.ConstCharStar):Void\r\n\t{\r\n\t\tLogs.traceColored([Logs.getPrefix(\"Discord\"), Logs.logText(\"Someone has just joined\", GREEN)], INFO);\r\n\r\n\t\tcall(\"onJoinGame\", [cast(joinSecret, String)]);\r\n\t}\r\n\r\n\tprivate static function onSpectate(spectateSecret:cpp.ConstCharStar):Void\r\n\t{\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.getPrefix(\"Discord\"),\r\n\t\t\tLogs.logText(\"Someone started spectating your game\", YELLOW)\r\n\t\t], INFO);\r\n\r\n\t\tcall(\"onSpectateGame\", [cast(spectateSecret, String)]);\r\n\t}\r\n\r\n\tprivate static function onJoinReq(request:cpp.RawConstPointer<DiscordUser>):Void\r\n\t{\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.getPrefix(\"Discord\"),\r\n\t\t\tLogs.logText(\"Someone has just requested to join\", YELLOW)\r\n\t\t], INFO);\r\n\r\n\t\tvar req:DUser = DUser.initRaw(request);\r\n\t\tcall(\"onJoinRequest\", [req]);\r\n\t}\r\n\r\n\tpublic static var anyResponse:FlxTypedSignal<String->Void> = new FlxTypedSignal<String->Void>();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "call",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function call(name:String, ?args:Array<Dynamic>)\r\n\t{\r\n\t\tif (script != null)\r\n\t\t\tscript.call(name, args);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadScript",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadScript()\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tif (script != null)\r\n\t\t{\r\n\t\t\tcall(\"destroy\");\r\n\t\t\tscript = FlxDestroyUtil.destroy(script);\r\n\t\t}\r\n\t\tscript = Script.create(Paths.script('data/discord'));\r\n\t\tscript.set(\"ActivityType\", {\r\n\t\t\tPlaying: ActivityType.Playing,\r\n\t\t\tPLAYING: ActivityType.Playing,\r\n\t\t\tStreaming: ActivityType.Streaming,\r\n\t\t\tSTREAMING: ActivityType.Streaming,\r\n\t\t\tWatching: ActivityType.Watching,\r\n\t\t\tWATCHING: ActivityType.Watching,\r\n\t\t\tListening: ActivityType.Listening,\r\n\t\t\tLISTENING: ActivityType.Listening,\r\n\t\t\tCompeting: ActivityType.Competing,\r\n\t\t\tCOMPETING: ActivityType.Competing\r\n\t\t});\r\n\t\t// script.setParent(DiscordUtil);\r\n\t\tscript.load();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changePresence",
+			"args": [
+				{
+					"name": "details",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "state",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "smallImageKey",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function changePresence(details:String, state:String, ?smallImageKey:String)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tchangePresenceAdvanced({\r\n\t\t\tstate: state,\r\n\t\t\tdetails: details,\r\n\t\t\tsmallImageKey: smallImageKey\r\n\t\t});\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSongPresence",
+			"args": [
+				{
+					"name": "details",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "state",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "audio",
+					"type": "FlxSound",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "smallImageKey",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function changeSongPresence(details:String, state:String, audio:FlxSound, ?smallImageKey:String)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tvar start:Float = 0;\r\n\t\tvar end:Float = 0;\r\n\r\n\t\tif (audio != null && audio.playing)\r\n\t\t{\r\n\t\t\tstart = Date.now().getTime();\r\n\t\t\tend = start + (audio.length - audio.time);\r\n\t\t}\r\n\r\n\t\tchangePresenceAdvanced({\r\n\t\t\tstate: state,\r\n\t\t\tdetails: details,\r\n\t\t\tsmallImageKey: smallImageKey,\r\n\t\t\tstartTimestamp: Std.int(start / 1000),\r\n\t\t\tendTimestamp: Std.int(end / 1000)\r\n\t\t});\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changePresenceSince",
+			"args": [
+				{
+					"name": "details",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "state",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "smallImageKey",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function changePresenceSince(details:String, state:String, ?smallImageKey:String, ?time:Float)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tif (time == null)\r\n\t\t\ttime = Date.now().getTime();\r\n\r\n\t\tchangePresenceAdvanced({\r\n\t\t\tstate: state,\r\n\t\t\tdetails: details,\r\n\t\t\tsmallImageKey: smallImageKey,\r\n\t\t\tstartTimestamp: Std.int(time / 1000)\r\n\t\t});\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixString",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#if cpp\r\n\t@:noCompletion public static function fixString(str:String)\r\n\t{\r\n\t\treturn new cpp.ConstCharStar(cast(str, String));\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [
+				{
+					"name": "str",
+					"type": "cpp.ConstCharStar",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noCompletion public static function toString(str:cpp.ConstCharStar)\r\n\t{\r\n\t\treturn cast(str, String);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changePresenceAdvanced",
+			"args": [
+				{
+					"name": "data",
+					"type": "DPresence",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic static function changePresenceAdvanced(data:DPresence)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tif (data == null)\r\n\t\t\treturn;\r\n\r\n\t\t// copy last presence\r\n\t\tif (data.largeImageKey == null)\r\n\t\t\tdata.largeImageKey = config.logoKey;\r\n\t\tif (data.largeImageText == null)\r\n\t\t\tdata.largeImageText = config.logoText;\r\n\r\n\t\tvar evt = EventManager.get(DiscordPresenceUpdateEvent).recycle(data);\r\n\t\t#if GLOBAL_SCRIPT\r\n\t\t// kept for \"backwards compat\"\r\n\t\tfunkin.backend.scripting.GlobalScript.event(\"onDiscordPresenceUpdate\", evt);\r\n\t\t#end\r\n\t\tevent(\"onDiscordPresenceUpdate\", evt);\r\n\t\tif (evt.cancelled)\r\n\t\t\treturn;\r\n\t\tdata = evt.presence;\r\n\t\tlastPresence = data;\r\n\r\n\t\tvar dp:DiscordRichPresence = DiscordRichPresence.create();\r\n\t\t// TODO: make this use a reflection-like macro\r\n\t\tUtils.safeSetWrapper(dp.state, data.state, fixString);\r\n\t\tUtils.safeSetWrapper(dp.details, data.details, fixString);\r\n\t\tUtils.safeSet(dp.startTimestamp, data.startTimestamp);\r\n\t\tUtils.safeSet(dp.endTimestamp, data.endTimestamp);\r\n\t\tUtils.safeSetWrapper(dp.largeImageKey, data.largeImageKey, fixString);\r\n\t\tUtils.safeSetWrapper(dp.largeImageText, data.largeImageText, fixString);\r\n\t\tUtils.safeSetWrapper(dp.smallImageKey, data.smallImageKey, fixString);\r\n\t\tUtils.safeSetWrapper(dp.smallImageText, data.smallImageText, fixString);\r\n\t\tUtils.safeSetWrapper(dp.partyId, data.partyId, fixString);\r\n\t\tUtils.safeSet(dp.partySize, data.partySize);\r\n\t\tUtils.safeSet(dp.partyMax, data.partyMax);\r\n\t\tUtils.safeSet(dp.partyPrivacy, data.partyPrivacy);\r\n\t\tUtils.safeSetWrapper(dp.matchSecret, data.matchSecret, fixString);\r\n\t\tUtils.safeSetWrapper(dp.joinSecret, data.joinSecret, fixString);\r\n\t\tUtils.safeSetWrapper(dp.spectateSecret, data.spectateSecret, fixString);\r\n\t\tUtils.safeSet(dp.instance, data.instance);\r\n\t\tUtils.safeSet(dp.activityType, data.activityType);\r\n\t\tUtils.safeSetWrapper(dp.streamUrl, data.streamUrl, fixString);\r\n\t\tif (data.matchSecret == null && data.joinSecret == null && data.spectateSecret == null)\r\n\t\t{\r\n\t\t\tUtils.safeSetWrapper(dp.button1Label, data.button1Label, fixString);\r\n\t\t\tUtils.safeSetWrapper(dp.button1Url, data.button1Url, fixString);\r\n\t\t\tUtils.safeSetWrapper(dp.button2Label, data.button2Label, fixString);\r\n\t\t\tUtils.safeSetWrapper(dp.button2Url, data.button2Url, fixString);\r\n\t\t}\r\n\r\n\t\tDiscord.UpdatePresence(cpp.RawConstPointer.addressOf(dp));\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clearPresence",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function clearPresence()\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.ClearPresence();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "shutdown",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function shutdown()\r\n\t{\r\n\t\tready = false;\r\n\t\tstopThread = true;\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.Shutdown();\r\n\t\t#end\r\n\r\n\t\tcall(\"destroy\");\r\n\t\tscript = FlxDestroyUtil.destroy(script);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "respond",
+			"args": [
+				{
+					"name": "userId",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "reply",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function respond(userId:String, reply:Int)\r\n\t{\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.Respond(fixString(userId), reply);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "anyResponse",
+			"type": "FlxTypedSignal<String->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sendCustomCommand",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function sendCustomCommand(data:Dynamic) {\r\n\t\t#if DISCORD_RPC\r\n\t\tif(data == null) return;\r\n\t\tif(data.nonce == null) data.nonce = getUUID();\r\n\t\tvar json = Json.stringify(data);\r\n\t\tDiscord.SendCustomCommand(json);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setDebugMode",
+			"args": [
+				{
+					"name": "mode",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setDebugMode(mode:Bool) {\r\n\t\t#if DISCORD_RPC\r\n\t\tDiscord.SetDebugMode(mode);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

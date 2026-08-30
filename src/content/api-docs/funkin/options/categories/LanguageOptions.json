@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "LanguageOptions",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function new() {\r\n\t\tsuper('optionsTree.language-name', 'optionsTree.language-desc', 'LanguageOptions.');\r\n\r\n\t\tfor (lang in TranslationUtil.foundLanguages) {\r\n\t\t\tvar split = lang.split(\"/\");\r\n\t\t\tvar langId = split.first(), langName = split.last();\r\n\t\t\tadd(new LanguageRadio(this, langName, langId));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

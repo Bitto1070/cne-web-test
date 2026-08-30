@@ -1,0 +1,156 @@
+{
+	"kind": "class",
+	"name": "AlphabetRenderData",
+	"pkg": "funkin.menus.ui.effects",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "letter",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "offsetX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "offsetY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "color",
+			"type": "FlxColor",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "red",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "green",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blue",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "alpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "parent",
+					"type": "Alphabet",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(parent:Alphabet) {\r\n\t\tthis.parent = parent;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [
+				{
+					"name": "parent",
+					"type": "Alphabet",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "red",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "green",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "blue",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "alpha",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "letter",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reset(parent:Alphabet, red:Float, green:Float, blue:Float, alpha:Float, letter:String) {\r\n\t\tthis.parent = parent;\r\n\t\tthis.letter = letter;\r\n\t\tthis.offsetX = 0;\r\n\t\tthis.offsetY = 0;\r\n\t\tthis.red = red;\r\n\t\tthis.green = green;\r\n\t\tthis.blue = blue;\r\n\t\tthis.alpha = alpha;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

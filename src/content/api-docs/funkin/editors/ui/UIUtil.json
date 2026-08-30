@@ -1,0 +1,197 @@
+{
+	"kind": "class",
+	"name": "UIUtil",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [
+		"@:access(flixel.FlxSprite)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "follow",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "target",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function follow(spr:FlxSprite, target:FlxSprite, x:Float = 0, y:Float = 0) {\r\n\t\tspr._cameras = target is UISprite ? ({var _:UISprite = cast target;_;}).__lastDrawCameras : target.cameras;\r\n\t\tspr.x = target.x + x;\r\n\t\tspr.y = target.y + y;\r\n\t\tspr.scrollFactor.set(target.scrollFactor.x, target.scrollFactor.y);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "contextMenuOpened",
+			"args": [
+				{
+					"name": "contextMenu",
+					"type": "UIContextMenu",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function contextMenuOpened(contextMenu:UIContextMenu) {\r\n\t\treturn contextMenu != null && UIState.state.curContextMenu == contextMenu;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixKey",
+			"args": [
+				{
+					"name": "key",
+					"type": "FlxKey",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FlxKey",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function fixKey(key:FlxKey):FlxKey {\r\n\t\treturn switch(key) {\r\n\t\t\t#if mac\r\n\t\t\tcase CONTROL: WINDOWS; // Remap control to the meta key\r\n\t\t\t#end\r\n\t\t\tdefault: key;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getKeyState",
+			"args": [
+				{
+					"name": "key",
+					"type": "FlxKey",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Status",
+					"type": "FlxInputState",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getKeyState(key:FlxKey, Status:FlxInputState):Bool {\r\n\t\treturn FlxG.keys.checkStatus(fixKey(key), Status);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "processShortcuts",
+			"args": [
+				{
+					"name": "topMenuOptions",
+					"type": "Array<UIContextMenuOption>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function processShortcuts(topMenuOptions:Array<UIContextMenuOption>) {\r\n\t\tvar maxKeyLength = 0;\r\n\t\tvar curTopMenuOption = null;\r\n\r\n\t\tfor(o in topMenuOptions) {\r\n\t\t\tif (o == null) continue;\r\n\r\n\t\t\tif (o.keybinds == null) {\r\n\t\t\t\tif (o.keybind != null) {\r\n\t\t\t\t\to.keybinds = [o.keybind];\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (o.keybinds != null) {\r\n\t\t\t\tfor (keybind in o.keybinds) {\r\n\t\t\t\t\tvar pressed = true;\r\n\t\t\t\t\tvar justPressed = false;\r\n\t\t\t\t\tvar needsShift = keybind.contains(SHIFT);\r\n\r\n\t\t\t\t\tfor (key in keybind) {\r\n\t\t\t\t\t\tvar shouldPress = Std.int(key) > 0;\r\n\t\t\t\t\t\tif(!shouldPress) key = -key;\r\n\r\n\t\t\t\t\t\tvar k = fixKey(key);\r\n\t\t\t\t\t\tif (FlxG.keys.checkStatus(k, shouldPress ? JUST_PRESSED : JUST_RELEASED)) {\r\n\t\t\t\t\t\t\tjustPressed = true;\r\n\t\t\t\t\t\t} else if (!FlxG.keys.checkStatus(k, shouldPress ? PRESSED : RELEASED)) {\r\n\t\t\t\t\t\t\tpressed = false;\r\n\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tif (!needsShift && FlxG.keys.pressed.SHIFT) continue;\r\n\t\t\t\t\tif (!pressed || !justPressed) continue;\r\n\r\n\t\t\t\t\tif (maxKeyLength < o.keybinds.length) {\r\n\t\t\t\t\t\tmaxKeyLength = o.keybinds.length;\r\n\t\t\t\t\t\tcurTopMenuOption = o;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (o.childs != null && processShortcuts(o.childs))\r\n\t\t\t\treturn true;\r\n\t\t}\r\n\r\n\t\tif (curTopMenuOption != null) {\r\n\t\t\tif (curTopMenuOption.onSelect != null)\r\n\t\t\t\tcurTopMenuOption.onSelect(curTopMenuOption);\r\n\t\t\treturn true;\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": {
+				"text": "Process all options with shortcuts present in a `Array<UIContextMenuOption>`. Also checks children.",
+				"params": {
+					"topMenuOptions": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toUIString",
+			"args": [
+				{
+					"name": "key",
+					"type": "FlxKey",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function toUIString(key:FlxKey):String {\r\n\t\treturn switch(key) {\r\n\t\t\tcase CONTROL: \t\t#if mac \"Cmd\" #else \"Ctrl\" #end; // ⌘\r\n\t\t\tcase ALT:\t\t\t#if mac \"Option\" #else \"Alt\" #end;\r\n\t\t\tcase HOME:\t\t\t\"Home\";\r\n\t\t\tcase ENTER:\t\t\t\"Enter\";\r\n\t\t\tcase DELETE:\t\t\"Del\";\r\n\t\t\tcase SHIFT:\t\t\t\"Shift\";\r\n\t\t\tcase SPACE:\t\t\t\"Space\";\r\n\t\t\tcase NUMPADZERO:\t\"[0]\";\r\n\t\t\tcase NUMPADONE:\t\t\"[1]\";\r\n\t\t\tcase NUMPADTWO:\t\t\"[2]\";\r\n\t\t\tcase NUMPADTHREE:\t\"[3]\";\r\n\t\t\tcase NUMPADFOUR:\t\"[4]\";\r\n\t\t\tcase NUMPADFIVE:\t\"[5]\";\r\n\t\t\tcase NUMPADSIX:\t\t\"[6]\";\r\n\t\t\tcase NUMPADSEVEN:\t\"[7]\";\r\n\t\t\tcase NUMPADEIGHT:\t\"[8]\";\r\n\t\t\tcase NUMPADNINE:\t\"[9]\";\r\n\t\t\tcase NUMPADPLUS:\t\"[+]\";\r\n\t\t\tcase NUMPADMINUS:\t\"[-]\";\r\n\t\t\tcase ZERO:\t\t\t\"0\";\r\n\t\t\tcase ONE:\t\t\t\"1\";\r\n\t\t\tcase TWO:\t\t\t\"2\";\r\n\t\t\tcase THREE:\t\t\t\"3\";\r\n\t\t\tcase FOUR:\t\t\t\"4\";\r\n\t\t\tcase FIVE:\t\t\t\"5\";\r\n\t\t\tcase SIX:\t\t\t\"6\";\r\n\t\t\tcase SEVEN:\t\t\t\"7\";\r\n\t\t\tcase EIGHT:\t\t\t\"8\";\r\n\t\t\tcase NINE:\t\t\t\"9\";\r\n\t\t\tdefault: prettify(key.toString());\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prettify",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function prettify(str:String) {\r\n\t\treturn [for(s in str.split(\" \")) [for(k=>l in s.split(\"\")) k == 0 ? l.toUpperCase() : l.toLowerCase()].join(\"\")].join(\" \");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "confirmUISelections",
+			"args": [
+				{
+					"name": "ui",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function confirmUISelections(ui:Dynamic) {\r\n\t\tvar members:Array<FlxBasic> = [];\r\n\r\n\t\tif (Reflect.fields(ui).contains(\"members\")) // hasField doesnt work >:(\r\n\t\t\tmembers = Reflect.field(ui, \"members\");\r\n\t\telse return;\r\n\r\n\t\tfor (member in members) {\r\n\t\t\tif (member is UINumericStepper) @:privateAccess {\r\n\t\t\t\tvar stepper:UINumericStepper = cast member;\r\n\t\t\t\tif (stepper.onChange != stepper.__onChange && stepper.__wasFocused) {\r\n\t\t\t\t\tstepper.onChange(stepper.label.text);\r\n\t\t\t\t\tstepper.__wasFocused = false;\r\n\t\t\t\t} else stepper.__onChange(stepper.label.text);\r\n\r\n\t\t\t} else if (member is UITextBox) @:privateAccess {\r\n\t\t\t\tvar textbox:UITextBox = cast member;\r\n\t\t\t\tif (textbox.__wasFocused) {\r\n\t\t\t\t\tif (textbox.onChange != null) textbox.onChange(textbox.label.text);\r\n\t\t\t\t\ttextbox.__wasFocused = false;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (member is UISprite || ui is UIState)\r\n\t\t\t\tconfirmUISelections(cast member);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "For when the user closes out before confriming all ui selections",
+				"params": {
+					"ui": "the thingy you wanna check"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

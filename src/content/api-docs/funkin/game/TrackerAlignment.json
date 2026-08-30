@@ -1,0 +1,14 @@
+{
+	"kind": "enum abstract",
+	"name": "TrackerAlignment",
+	"pkg": "funkin.game",
+	"doc": {
+		"text": "Used for `funkin.game.HealthIcon.sprTrackerAlignment`.\nThis determines the position of the icon in relation to the sprite tracker.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": []
+}

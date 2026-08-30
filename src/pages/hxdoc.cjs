@@ -231,15 +231,25 @@ function parseFile(source, filePath) {
 		if (/[a-zA-Z_]/.test(c)) {
 			let s = i;
 			while (i < len && /[\w]/.test(source[i])) i++;
-			const word = source.slice(s, i);
-
-			if ((word === "class" || word === "enum" || word === "interface" || word === "abstract" || word === "typedef") && braceDepth === 0) {
+			var word = source.slice(s, i);
+			const classKeywords = ['class', 'enum', 'abstract', 'interface', 'typedef', 'final']
+			if ((classKeywords.includes(word)) && braceDepth === 0) {
 				const cmods = modifiersBefore(s);
 				// read name
 				while (i < len && /\s/.test(source[i])) i++;
 				let ns = i;
 				while (i < len && /[\w]/.test(source[i])) i++;
-				const name = source.slice(ns, i);
+				var name = source.slice(ns, i);
+
+				// fix enum abstracts exporting "abstract.json"
+				while (classKeywords.includes(name)) {
+					word += ' ' + name;
+					ns += name.length + 1;
+					while (i < len && /\s/.test(source[i])) i++;
+					ns = i;
+					while (i < len && /[\w]/.test(source[i])) i++;
+					name = source.slice(ns, i);
+				}
 				currentClass = {
 					kind: word,
 					name,

@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "WarningState",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\r\n\t\ttitleAlphabet = new Alphabet(0, 0, \"WARNING\", true);\r\n\t\ttitleAlphabet.screenCenter(X);\r\n\t\tadd(titleAlphabet);\r\n\r\n\t\tdisclaimer = new FunkinText(16, titleAlphabet.y + titleAlphabet.height + 10, FlxG.width - 32, \"\", 32);\r\n\t\tdisclaimer.alignment = CENTER;\r\n\t\tdisclaimer.text = \"This is a warning state! Make a script #./data/states/WarningState.hx# to edit this text! \\n\\n Note: you can use *asterisks* or #hashtags# to highlight your text in *red* or #yellow#, or you can just make your own markup using postCreate (you have to change the text in create() to apply the default markup)\";\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tdisclaimer.applyMarkup(disclaimer.text,\r\n\t\t\t[\r\n\t\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFF4444), \"*\"),\r\n\t\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFFFF44), \"#\")\r\n\t\t\t]\r\n\t\t);\r\n\t\tadd(disclaimer);\r\n\r\n\t\tvar off = Std.int((FlxG.height - (disclaimer.y + disclaimer.height)) / 2);\r\n\t\tdisclaimer.y += off;\r\n\t\ttitleAlphabet.y += off;\r\n\r\n\t\tDiscordUtil.call(\"onMenuLoaded\", [\"Beta Warning\"]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (controls.ACCEPT && transitioning) {\r\n\t\t\tFlxG.camera.stopFX(); FlxG.camera.visible = false;\r\n\t\t\tgoToTitle();\r\n\t\t}\r\n\r\n\t\tif (controls.ACCEPT && !transitioning) {\r\n\t\t\ttransitioning = true;\r\n\t\t\tCoolUtil.playMenuSFX(CONFIRM);\r\n\t\t\tFlxG.camera.flash(FlxColor.WHITE, 1, function() {\r\n\t\t\t\tFlxG.camera.fade(FlxColor.BLACK, 2.5, false, goToTitle);\r\n\t\t\t});\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

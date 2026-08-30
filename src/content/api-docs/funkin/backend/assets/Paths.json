@@ -1,0 +1,1185 @@
+{
+	"kind": "class",
+	"name": "Paths",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "assetsTree",
+			"type": "AssetsLibraryList",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tempFramesCache",
+			"type": "Map<String, FlxFramesCollection>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tFlxG.signals.preStateSwitch.add(function() {\r\n\t\t\ttempFramesCache.clear();\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPath",
+			"args": [
+				{
+					"name": "file",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getPath(file:String, ?library:String) {\r\n\t\tvar returnedPath:String = library != null ? '$library:assets/$library/$file' : 'assets/$file';\r\n\t\t#if (sys && !windows)\r\n\t\treturnedPath = Path.normalize(returnedPath);\r\n\t\tif (OpenFlAssets.exists(returnedPath)) return returnedPath;\r\n\t\tvar fixedPath:String = library != null ? '$library:assets/$library/' : 'assets/';\r\n\t\tvar parts:Array<String> = returnedPath.split(\"/\");\r\n\t\tfor (it=>part in parts) {\r\n\t\t\tif (it == 0) continue;\r\n\t\t\tvar entries:Array<String> = null;\r\n\t\t\tif (Path.extension(part) == \"\") entries = assetsTree.getFolders(fixedPath);\r\n\t\t\telse entries = assetsTree.getFiles(fixedPath);\r\n\t\t\tfor (entry in entries) {\r\n\t\t\t\tif (entry.toLowerCase() == part.toLowerCase()) {\r\n\t\t\t\t\tfixedPath += entry + (it != parts.length - 1 ? \"/\" : \"\");\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tif (returnedPath.toLowerCase() == fixedPath.toLowerCase()) returnedPath = fixedPath;\r\n\t\t#end\r\n\t\treturn returnedPath;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "video",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function video(key:String, ?ext:String)\r\n\t\treturn getPath('videos/$key.${ext != null ? ext : Flags.VIDEO_EXT}');",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "ndll",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function ndll(key:String)\r\n\t\treturn getPath('ndlls/$key.ndll');",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "file",
+			"args": [
+				{
+					"name": "file",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function file(file:String, ?library:String)\r\n\t\treturn getPath(file, library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "txt",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function txt(key:String, ?library:String)\r\n\t\treturn getPath('data/$key.txt', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pack",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function pack(key:String, ?library:String)\r\n\t\treturn getPath('data/$key.pack', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "ini",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function ini(key:String, ?library:String)\r\n\t\treturn getPath('data/$key.ini', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fragShader",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function fragShader(key:String, ?library:String)\r\n\t\treturn getPath('shaders/$key.frag', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "vertShader",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function vertShader(key:String, ?library:String)\r\n\t\treturn getPath('shaders/$key.vert', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "xml",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function xml(key:String, ?library:String)\r\n\t\treturn getPath('data/$key.xml', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "json",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function json(key:String, ?library:String)\r\n\t\treturn getPath('data/$key.json', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "ps1",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function ps1(key:String, ?library:String)\r\n\t\treturn getPath('data/$key.ps1', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sound",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function sound(key:String, ?library:String, ?ext:String)\r\n\t\treturn getPath('sounds/$key.${ext != null ? ext : Flags.SOUND_EXT}', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "soundRandom",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "min",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "max",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function soundRandom(key:String, min:Int, max:Int, ?library:String)\r\n\t\treturn sound(key + FlxG.random.int(min, max), library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "music",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function music(key:String, ?library:String, ?ext:String)\r\n\t\treturn getPath('music/$key.${ext != null ? ext : Flags.SOUND_EXT}', library);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "voices",
+			"args": [
+				{
+					"name": "song",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": true,
+					"def": "\"\""
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function voices(song:String, ?difficulty:String, ?suffix:String = \"\", ?ext:String) {\r\n\t\tif (difficulty == null) difficulty = Flags.DEFAULT_DIFFICULTY;\r\n\t\tif (ext == null) ext = Flags.SOUND_EXT;\r\n\t\tvar diff = getPath('songs/$song/song/Voices$suffix-${difficulty}.${ext}', null);\r\n\t\treturn OpenFlAssets.exists(diff) ? diff : getPath('songs/$song/song/Voices$suffix.${ext}', null);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "inst",
+			"args": [
+				{
+					"name": "song",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": true,
+					"def": "\"\""
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function inst(song:String, ?difficulty:String, ?suffix:String = \"\", ?ext:String) {\r\n\t\tif (difficulty == null) difficulty = Flags.DEFAULT_DIFFICULTY;\r\n\t\tif (ext == null) ext = Flags.SOUND_EXT;\r\n\t\tvar diff = getPath('songs/$song/song/Inst$suffix-${difficulty}.${ext}', null);\r\n\t\treturn OpenFlAssets.exists(diff) ? diff : getPath('songs/$song/song/Inst$suffix.${ext}', null);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "image",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "checkForAtlas",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function image(key:String, ?library:String, checkForAtlas:Bool = false, ?ext:String) {\r\n\t\tif (ext == null) ext = Flags.IMAGE_EXT;\r\n\t\tif (checkForAtlas) {\r\n\t\t\tvar atlasPath = getPath('images/$key/spritemap.$ext', library);\r\n\t\t\tvar multiplePath = getPath('images/$key/1.$ext', library);\r\n\t\t\tif (atlasPath != null && OpenFlAssets.exists(atlasPath)) return atlasPath.substr(0, atlasPath.length - 14);\r\n\t\t\tif (multiplePath != null && OpenFlAssets.exists(multiplePath)) return multiplePath.substr(0, multiplePath.length - 6);\r\n\t\t}\r\n\t\treturn getPath('images/$key.$ext', library);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "script",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "isAssetsPath",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function script(key:String, ?library:String, isAssetsPath:Bool = false) {\r\n\t\tvar scriptPath = isAssetsPath ? key : getPath(key, library);\r\n\t\tif (!OpenFlAssets.exists(scriptPath)) {\r\n\t\t\tvar p:String;\r\n\t\t\tfor(ex in Script.scriptExtensions) {\r\n\t\t\t\tif (OpenFlAssets.exists(p = scriptPath + '.' + ex)) {\r\n\t\t\t\t\tscriptPath = p;\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn scriptPath;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "chart",
+			"args": [
+				{
+					"name": "song",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "variant",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function chart(song:String, ?difficulty:String, ?variant:String):String\r\n\t{\r\n\t\tdifficulty = (difficulty != null ? difficulty : Flags.DEFAULT_DIFFICULTY);\r\n\r\n\t\treturn getPath('songs/$song/charts/${variant != null ? variant + \"/\" : \"\"}$difficulty.json', null);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "character",
+			"args": [
+				{
+					"name": "character",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function character(character:String):String {\r\n\t\treturn getPath('data/characters/$character.xml', null);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFontName",
+			"args": [
+				{
+					"name": "font",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getFontName(font:String) {\r\n\t\treturn OpenFlAssets.exists(font, FONT) ? OpenFlAssets.getFont(font).fontName : font;\r\n\t}",
+			"doc": {
+				"text": "Gets the name of a registered font.",
+				"params": {
+					"font": "The font's path (if it's already passed as a font name, the same name will be returned)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "font",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function font(key:String) {\r\n\t\treturn getPath('fonts/$key');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "obj",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function obj(key:String) {\r\n\t\treturn getPath('models/$key.obj');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "dae",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function dae(key:String) {\r\n\t\treturn getPath('models/$key.dae');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "md2",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function md2(key:String) {\r\n\t\treturn getPath('models/$key.md2');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "md5",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function md5(key:String) {\r\n\t\treturn getPath('models/$key.md5');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "awd",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function awd(key:String) {\r\n\t\treturn getPath('models/$key.awd');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSparrowAtlas",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getSparrowAtlas(key:String, ?library:String, ?ext:String)\r\n\t\treturn FlxAtlasFrames.fromSparrow(image(key, library, ext), file('images/$key.xml', library));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnimateAtlasAlt",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "settings",
+					"type": "FlxAnimateSettings",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getAnimateAtlasAlt(key:String, ?settings:FlxAnimateSettings)\r\n\t\treturn FlxAnimateFrames.fromAnimate(key, null, null, null, false, settings);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSparrowAtlasAlt",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getSparrowAtlasAlt(key:String, ?ext:String)\r\n\t\treturn FlxAtlasFrames.fromSparrow('$key.${ext != null ? ext : Flags.IMAGE_EXT}', '$key.xml');",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPackerAtlas",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getPackerAtlas(key:String, ?library:String, ?ext:String)\r\n\t\treturn FlxAtlasFrames.fromSpriteSheetPacker(image(key, library, ext), file('images/$key.txt', library));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPackerAtlasAlt",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getPackerAtlasAlt(key:String, ?ext:String)\r\n\t\treturn FlxAtlasFrames.fromSpriteSheetPacker('$key.${ext != null ? ext : Flags.IMAGE_EXT}', '$key.txt');",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAsepriteAtlas",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getAsepriteAtlas(key:String, ?library:String, ?ext:String)\r\n\t\treturn FlxAtlasFrames.fromAseprite(image(key, library, ext), file('images/$key.json', library));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAsepriteAtlasAlt",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "inline static public function getAsepriteAtlasAlt(key:String, ?ext:String)\r\n\t\treturn FlxAtlasFrames.fromAseprite('$key.${ext != null ? ext : Flags.IMAGE_EXT}', '$key.json');",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAssetsRoot",
+			"args": [],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function getAssetsRoot():String {\r\n\t\treturn if (ModsFolder.currentModFolder != null) '${ModsFolder.modsPath}${ModsFolder.currentModFolder}';\r\n\t\t\telse assetsTree.rootDirectory;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFrames",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "assetsPath",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "animateSettings",
+					"type": "FlxAnimateSettings",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFrames(key:String, assetsPath:Bool = false, ?library:String, ?ext:String = null, ?animateSettings:FlxAnimateSettings) {\r\n\t\tif (tempFramesCache.exists(key)) {\r\n\t\t\tvar frames = tempFramesCache[key];\r\n\t\t\tif (frames != null && frames.parent != null && frames.parent.bitmap != null && frames.parent.bitmap.readable)\r\n\t\t\t\treturn frames;\r\n\t\t\telse\r\n\t\t\t\ttempFramesCache.remove(key);\r\n\t\t}\r\n\t\treturn tempFramesCache[key] = loadFrames(assetsPath ? key : Paths.image(key, library, true, ext), false, null, false, ext, animateSettings);\r\n\t}",
+			"doc": {
+				"text": "Gets frames at specified path.",
+				"params": {
+					"key": "Path to the frames",
+					"library": "(Additional) library to load the frames from."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "framesExists",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "checkAtlas",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "checkMulti",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "assetsPath",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "library",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function framesExists(key:String, checkAtlas:Bool = false, checkMulti:Bool = true, assetsPath:Bool = false, ?library:String) {\r\n\t\tvar path = assetsPath ? key : Paths.image(key, library, true);\r\n\t\tvar noExt = Path.withoutExtension(path);\r\n\t\tif(checkAtlas && Assets.exists('$noExt/Animation.json'))\r\n\t\t\treturn true;\r\n\t\tif(checkMulti && Assets.exists('$noExt/1.png'))\r\n\t\t\treturn true;\r\n\t\tif(Assets.exists('$noExt.xml'))\r\n\t\t\treturn true;\r\n\t\tif(Assets.exists('$noExt.txt'))\r\n\t\t\treturn true;\r\n\t\tif(Assets.exists('$noExt.json'))\r\n\t\t\treturn true;\r\n\t\treturn false;\r\n\t}",
+			"doc": {
+				"text": "Checks if the images needed for using getFrames() exist.",
+				"params": {
+					"key": "Path to the image",
+					"checkAtlas": "Whenever to check for the Animation.json file (used in FlxAnimate)",
+					"assetsPath": "Whenever to use the raw path or to pass it through Paths.image()",
+					"library": "(Additional) library to load the frames from."
+				},
+				"returns": "True if the images exist, false otherwise.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMultiFrames",
+			"args": [
+				{
+					"name": "sheets",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "unique",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				},
+				{
+					"name": "key",
+					"type": "String",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "animateSettings",
+					"type": "FlxAnimateSettings",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "FlxFramesCollection",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMultiFrames(sheets:Array<String>, ?unique:Bool = true, ?key:String = null, ?ext:String = null, ?animateSettings:FlxAnimateSettings):FlxFramesCollection {\r\n\t\t// TODO: cache properly\r\n\t\tif (sheets.length == 1) return loadFrames(sheets[0], unique, key, false, false, ext, animateSettings);\r\n\t\tif (key == null) key = 'combo/' + sheets.join(',');\r\n\t\tvar graphic = FlxG.bitmap.add(\"flixel/images/logo/default.png\", unique, key);\r\n\t\tvar sprFrames:FlxAtlasFrames = new FlxAtlasFrames(graphic);\r\n\t\ttry {\r\n\t\t\tfor (x => path in sheets) {\r\n\t\t\t\tvar noExt = haxe.io.Path.withoutExtension(Paths.image(path, null, true, ext));\r\n\t\t\t\t@:privateAccess\r\n\t\t\t\tvar newFrames = cast Paths.loadFrames(noExt, true, key + '_$path', false, false, ext, animateSettings);\r\n\t\t\t\tif (newFrames == null) {\r\n\t\t\t\t\tLogs.warn('There is no Bitmap asset for \"$noExt\". Skipping...');\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\t\t\t\tsprFrames = FlxAnimateFrames.combineAtlas(sprFrames, newFrames);\r\n\t\t\t}\r\n\t\t} catch(e:Dynamic) {\r\n\t\t\tLogs.error('Multisheet load error: ' + e.toString());\r\n\t\t}\r\n\t\treturn sprFrames;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFolderDirectories",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addPath",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFolderDirectories(key:String, addPath:Bool = false, source:AssetSource = BOTH):Array<String> {\r\n\t\tif (!key.endsWith(\"/\")) key += \"/\";\r\n\t\tvar content = assetsTree.getFolders('assets/$key', source);\r\n\t\tif (addPath) {\r\n\t\t\tfor(k=>e in content)\r\n\t\t\t\tcontent[k] = '$key$e';\r\n\t\t}\r\n\t\treturn content;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFolderContent",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addPath",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				},
+				{
+					"name": "noExtension",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function getFolderContent(key:String, addPath:Bool = false, source:AssetSource = BOTH, noExtension:Bool = false):Array<String> {\r\n\t\t// designed to work both on windows and web\r\n\t\tif (!key.endsWith(\"/\")) key += \"/\";\r\n\t\tvar content = assetsTree.getFiles('assets/$key', source);\r\n\t\tfor (k => e in content) {\r\n\t\t\tif (noExtension) e = Path.withoutExtension(e);\r\n\t\t\tcontent[k] = addPath ? '$key$e' : e;\r\n\t\t}\r\n\t\treturn content;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFilenameFromLibFile",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// Used in Script.hx\r\n\t@:noCompletion public static function getFilenameFromLibFile(path:String) {\r\n\t\tvar file = new haxe.io.Path(path);\r\n\t\tif(file.file.startsWith(\"LIB_\")) {\r\n\t\t\treturn file.dir + \".\" + file.ext;\r\n\t\t}\r\n\t\treturn path;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getLibFromLibFile",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noCompletion public static function getLibFromLibFile(path:String) {\r\n\t\tvar file = new haxe.io.Path(path);\r\n\t\tif(file.file.startsWith(\"LIB_\")) {\r\n\t\t\treturn file.file.substr(4);\r\n\t\t}\r\n\t\treturn \"\";\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		}
+	]
+}

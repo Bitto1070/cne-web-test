@@ -1,0 +1,150 @@
+{
+	"kind": "final class",
+	"name": "AlphabetComponent",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [
+		"@:structInit"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "refIndex",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:optional"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "outIndex",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:optional"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "anim",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "x",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "y",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "shouldRotate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angle",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sin",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cos",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scaleX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scaleY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipX",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipY",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hasColorMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorMode",
+			"type": "ColorMode",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

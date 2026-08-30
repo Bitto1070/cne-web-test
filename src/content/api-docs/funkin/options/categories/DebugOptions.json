@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "DebugOptions",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('DebugOptions.title', 'DebugOptions.desc', 'DebugOptions.');\r\n\r\n\t\t#if windows\r\n\t\tadd(new TextOption(getNameID(\"showConsole\"), getDescID(\"showConsole\"), () -> funkin.backend.utils.NativeAPI.allocConsole()));\r\n\t\t#end\r\n\t\tadd(new Checkbox(getNameID(\"editorsResizable\"), getDescID(\"editorsResizable\"), \"editorsResizable\"));\r\n\t\tadd(new Checkbox(getNameID(\"bypassEditorsResize\"), getDescID(\"bypassEditorsResize\"), \"bypassEditorsResize\"));\r\n\t\tadd(new Checkbox(getNameID(\"editorSFX\"), getDescID(\"editorSFX\"), \"editorSFX\"));\r\n\t\tadd(new Checkbox(getNameID(\"editorCharterPrettyPrint\"), getDescID(\"editorCharterPrettyPrint\"), \"editorCharterPrettyPrint\"));\r\n\t\tadd(new Checkbox(getNameID(\"editorCharacterPrettyPrint\"), getDescID(\"editorCharacterPrettyPrint\"), \"editorCharacterPrettyPrint\"));\r\n\t\tadd(new Checkbox(getNameID(\"editorStagePrettyPrint\"), getDescID(\"editorStagePrettyPrint\"), \"editorStagePrettyPrint\"));\r\n\t\tadd(new Checkbox(getNameID(\"charterSwapEventSides\"), getDescID(\"charterSwapEventSides\"), \"charterSwapEventSides\"));\r\n\t\tadd(new Checkbox(getNameID(\"intensiveBlur\"), getDescID(\"intensiveBlur\"), \"intensiveBlur\"));\r\n\t\tadd(new Checkbox(getNameID(\"charterAutoSaves\"), getDescID(\"charterAutoSaves\"), \"charterAutoSaves\"));\r\n\t\tadd(new NumOption(getNameID(\"charterAutoSaveTime\"), getDescID(\"charterAutoSaveTime\"), 60, 60*10, 1, \"charterAutoSaveTime\"));\r\n\t\tadd(new NumOption(getNameID(\"charterAutoSaveWarningTime\"), getDescID(\"charterAutoSaveWarningTime\"), 0, 15, 1, \"charterAutoSaveWarningTime\"));\r\n\t\tadd(new Checkbox(getNameID(\"charterAutoSavesSeparateFolder\"), getDescID(\"charterAutoSavesSeparateFolder\"), \"charterAutoSavesSeparateFolder\"));\r\n\t\tadd(new Checkbox(getNameID(\"songOffsetAffectEditors\"), getDescID(\"songOffsetAffectEditors\"), \"songOffsetAffectEditors\"));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

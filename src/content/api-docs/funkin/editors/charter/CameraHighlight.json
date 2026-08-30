@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "CameraHighlight",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "grid",
+					"type": "CharterBackdrop",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(grid:CharterBackdrop) {\r\n\t\tthis.grid = grid;\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function draw() {\r\n\t\tif (!Options.charterShowCameraHighlights || grid.strumLine == null) return;\r\n\r\n\t\t@:privateAccess\r\n\t\tvar minStep = CharterGridSeperatorBase.minStep;\r\n\t\t@:privateAccess\r\n\t\tvar maxStep = CharterGridSeperatorBase.maxStep;\r\n\t\t@:privateAccess\r\n\t\tvar strumLineID = Charter.instance.strumLines.isDragging ? Charter.instance.strumLines.__pastStrumlines.indexOf(grid.strumLine) : Charter.instance.gridBackdrops.members.indexOf(grid);\r\n\r\n\t\t//first default camera change\r\n\t\tif ((Charter.instance.cameraMovementChanges[0] == null || Charter.instance.cameraMovementChanges[0].step != 0) && strumLineID == 0) {\r\n\t\t\tvar endStep = Charter.instance.cameraMovementChanges[0] != null ? Charter.instance.cameraMovementChanges[0].step : Charter.instance.__endStep;\r\n\r\n\t\t\tif (endStep >= minStep) {\r\n\t\t\t\tsetupHighlight(0, endStep); super.draw();\r\n\t\t\t\tsetupLine(endStep); super.draw();\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t//update index if gone backwards\r\n\t\twhile(_currentCameraMovementIndex > 0) {\r\n\t\t\tif (Charter.instance.cameraMovementChanges[_currentCameraMovementIndex] == null || Charter.instance.cameraMovementChanges[_currentCameraMovementIndex].endStep >= minStep) {\r\n\t\t\t\t_currentCameraMovementIndex--;\r\n\t\t\t} else {\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar seenFirstVisible = false;\r\n\t\tfor (i in _currentCameraMovementIndex...Charter.instance.cameraMovementChanges.length) {\r\n\t\t\tvar change = Charter.instance.cameraMovementChanges[i];\r\n\t\t\tif (change.endStep >= minStep) {\r\n\t\t\t\tif (!seenFirstVisible) {\r\n\t\t\t\t\t_currentCameraMovementIndex = i; //remember the index for the next frame, so we dont need to loop through everything every time\r\n\t\t\t\t\tseenFirstVisible = true;\r\n\t\t\t\t}\r\n\t\t\t\tif (change.strumLineID == strumLineID) {\r\n\t\t\t\t\tsetupHighlight(change.step, change.endStep); super.draw();\r\n\t\t\t\t\tsetupLine(change.step); super.draw();\r\n\t\t\t\t\tsetupLine(change.endStep); super.draw();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tif (change.endStep > maxStep) break;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

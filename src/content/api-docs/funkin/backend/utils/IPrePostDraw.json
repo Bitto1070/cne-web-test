@@ -1,0 +1,31 @@
+{
+	"kind": "interface",
+	"name": "IPrePostDraw",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "preDraw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preDraw():Void;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "postDraw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function postDraw():Void;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

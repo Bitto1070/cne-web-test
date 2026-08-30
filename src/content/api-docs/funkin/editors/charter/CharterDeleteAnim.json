@@ -1,0 +1,98 @@
+{
+	"kind": "class",
+	"name": "CharterDeleteAnim",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "garbageIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "garbageCircle",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteNotes",
+			"type": "Array<{note:CharterNote, time:Float}>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\r\n\t\tsustainSpr.color = 0xFF630000; color = 0xFF605A5A;\r\n\t\tsnappedToGrid = selectable = autoAlpha = false;\r\n\t\t@:privateAccess __animSpeed = 1.25;\r\n\r\n\t\tgarbageIcon = new FlxSprite().loadGraphic(Paths.image(\"editors/deleter\"));\r\n\t\tgarbageIcon.color = 0xFF880000;\r\n\t\tgarbageIcon.cameras = [Charter.instance.uiCamera];\r\n\r\n\t\tgarbageCircle = new FlxSprite().loadGraphic(Paths.image(\"editors/deleter circle\"));\r\n\t\tgarbageCircle.color = 0xFF880000; garbageCircle.alpha = .6;\r\n\t\tgarbageCircle.cameras = [Charter.instance.uiCamera];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tfor (deleteData in deleteNotes) {\r\n\t\t\tdeleteData.time -= elapsed;\r\n\t\t\tif (deleteData.time < 0) deleteNotes.remove(deleteData);\r\n\t\t}\r\n\r\n\t\tif (FlxG.mouse.justPressedRight) __deletionTimer = .1;\r\n\t\t__deletionTimer -= elapsed;\r\n\r\n\t\t__garbageAlpha = FlxMath.lerp(__garbageAlpha, FlxG.mouse.pressedRight && __deletionTimer <= 0 ? 1 : 0, 1/10);\r\n\r\n\t\tFlxG.mouse.getWorldPosition(Charter.instance.uiCamera, __mousePos);\r\n\t\tif (FlxG.mouse.pressedRight && __deletionTimer <= 0) {\r\n\t\t\tgarbageIcon.setPosition(\r\n\t\t\t\t__mousePos.x + garbageIcon.width/2 + (.65*FlxG.random.float(-1, 1)) + 2,\r\n\t\t\t\t__mousePos.y - garbageIcon.height + (.65*FlxG.random.float(-1, 1)) - 8\r\n\t\t\t);\r\n\r\n\t\t\tgarbageCircle.setPosition(\r\n\t\t\t\t__mousePos.x - garbageCircle.width/2,\r\n\t\t\t\t(__mousePos.y - garbageCircle.height/2) + 2\r\n\t\t\t);\r\n\t\t}\r\n\r\n\t\tgarbageIcon.alpha = __garbageAlpha;\r\n\t\tgarbageCircle.alpha = __garbageAlpha*.6;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tfor (deleteData in deleteNotes) {\r\n\t\t\ty = deleteData.note.y + (deleteData.time>deleteTime*.5 ? (deleteData.time/deleteTime)*FlxG.random.float(-1.1, 1.1) : 0); // lunar when no shake :((\r\n\t\t\tx = deleteData.note.x + (deleteData.time>deleteTime*.5 ? (deleteData.time/deleteTime)*FlxG.random.float(-1.1, 1.1) : 0); // lunar when no shake :((\r\n\t\t\tangle = deleteData.note.angle; alpha = 1;\r\n\t\t\tanimation.curAnim.curFrame = 3;\r\n\r\n\t\t\tsustainSpr.scale.set(10, (40 * deleteData.note.susLength) + (height/2));\r\n\t\t\tsustainSpr.updateHitbox(); sustainSpr.follow(this, 15, 20);\r\n\t\t\tsustainSpr.exists = deleteData.note.susLength != 0; sustainSpr.alpha = .8;\r\n\r\n\t\t\ttype = deleteData.note.type;\r\n\t\t\ttypeAlpha = .4;\r\n\t\t\t//typeText.text = Std.string(deleteData.note.type);\r\n\t\t\t//typeText.exists = deleteData.note.type != 0; typeAlpha = .4;\r\n\t\t\t//typeText.follow(this, 20 - (typeText.frameWidth/2), 20 - (typeText.frameHeight/2));\r\n\r\n\t\t\tvar mult = FlxEase.quadInOut(deleteData.time/deleteTime);\r\n\r\n\t\t\tfor (member in [this, sustainSpr])\r\n\t\t\t\tmember.alpha *= mult;\r\n\t\t\ttypeAlpha *= mult;\r\n\r\n\t\t\tsuper.draw();\r\n\t\t}\r\n\r\n\t\tif (garbageIcon.alpha > 0) garbageIcon.draw();\r\n\t\tif (garbageCircle.alpha > 0) garbageCircle.draw();\r\n\t}\r\n\r\n\tpublic override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t__mousePos.put();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t__mousePos.put();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

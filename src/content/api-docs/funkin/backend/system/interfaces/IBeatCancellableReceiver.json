@@ -1,0 +1,18 @@
+{
+	"kind": "interface",
+	"name": "IBeatCancellableReceiver",
+	"pkg": "funkin.backend.system.interfaces",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "cancelConductorUpdate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

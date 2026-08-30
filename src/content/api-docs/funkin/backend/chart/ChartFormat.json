@@ -1,0 +1,46 @@
+{
+	"kind": "enum abstract",
+	"name": "ChartFormat",
+	"pkg": "funkin.backend.chart",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:to public function toString():String {\r\n\t\treturn switch(cast (this, ChartFormat)) {\r\n\t\t\tcase CODENAME: \"CODENAME\";\r\n\t\t\tcase LEGACY: \"LEGACY\";\r\n\t\t\tcase VSLICE: \"VSLICE\";\r\n\t\t\tcase PSYCH_NEW: \"PSYCH_NEW\";\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:to"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "fromString",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "def",
+					"type": "ChartFormat",
+					"optional": false,
+					"def": "ChartFormat.LEGACY"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fromString(str:String, def:ChartFormat = ChartFormat.LEGACY) {\r\n\t\tstr = str.toLowerCase();\r\n\t\tstr = StringTools.replace(str, \" \", \"\");\r\n\t\tstr = StringTools.replace(str, \"_\", \"\");\r\n\t\tstr = StringTools.replace(str, \".\", \"\");\r\n\r\n\t\tif(StringTools.startsWith(str, \"psychv1\") || StringTools.startsWith(str, \"psych1\"))\r\n\t\t\treturn PSYCH_NEW;\r\n\r\n\t\treturn switch(str) {\r\n\t\t\tcase \"codename\" | \"codenameengine\": CODENAME;\r\n\t\t\tcase \"newpsych\" | \"psychnew\": PSYCH_NEW;\r\n\t\t\tdefault: def;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

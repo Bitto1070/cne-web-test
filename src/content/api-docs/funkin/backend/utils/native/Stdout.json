@@ -1,0 +1,74 @@
+{
+	"kind": "class",
+	"name": "Stdout",
+	"pkg": "funkin.backend.utils.native",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "p",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "out",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(p:Dynamic, out) {\r\n\t\tthis.p = p;\r\n\t\tthis.out = out;\r\n\t\tbuf = haxe.io.Bytes.alloc(1);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "readByte",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function readByte() {\r\n\t\tif (readBytes(buf, 0, 1) == 0)\r\n\t\t\tthrow haxe.io.Error.Blocked;\r\n\t\treturn buf.get(0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "readBytes",
+			"args": [
+				{
+					"name": "str",
+					"type": "haxe.io.Bytes",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "pos",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "len",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function readBytes(str:haxe.io.Bytes, pos:Int, len:Int):Int {\r\n\t\tvar result:Int;\r\n\t\ttry {\r\n\t\t\tresult = out ? NativeProcess.process_stdout_read(p, str.getData(), pos, len) : NativeProcess.process_stderr_read(p, str.getData(), pos, len);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tthrow new haxe.io.Eof();\r\n\t\t}\r\n\t\tif (result == 0)\r\n\t\t\tthrow new haxe.io.Eof();\r\n\t\treturn result;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

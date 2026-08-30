@@ -1,0 +1,206 @@
+{
+	"kind": "final class",
+	"name": "DUser",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [
+		"@:noCustomClass"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "handle",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The username + discriminator if they have it",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "userId",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The user id, aka 860561967383445535",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "username",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The user's username",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "discriminator",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The #number from before discord changed to usernames only, if the user has changed to a username them its just a 0",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "avatar",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The user's avatar filename",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "globalName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The user's display name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bot",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If the user is a bot or not",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flags",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Idk check discord docs",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "premiumType",
+			"type": "NitroType",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If the user has nitro",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "initRaw",
+			"args": [
+				{
+					"name": "req",
+					"type": "cpp.RawConstPointer<DiscordUser>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#if DISCORD_RPC\r\n\tpublic static function initRaw(req:cpp.RawConstPointer<DiscordUser>)\r\n\t{\r\n\t\treturn init(cpp.ConstPointer.fromRaw(req).ptr);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [
+				{
+					"name": "userData",
+					"type": "cpp.Star<DiscordUser>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init(userData:cpp.Star<DiscordUser>)\r\n\t{\r\n\t\tvar d = new DUser();\r\n\t\td.userId = userData.userId;\r\n\t\td.username = userData.username;\r\n\t\td.discriminator = Std.parseInt(userData.discriminator);\r\n\t\td.avatar = userData.avatar;\r\n\t\td.globalName = userData.globalName;\r\n\t\td.bot = userData.bot;\r\n\t\td.flags = userData.flags;\r\n\t\td.premiumType = userData.premiumType;\r\n\r\n\t\tif (d.discriminator != 0)\r\n\t\t\td.handle = '${d.username}#${d.discriminator}';\r\n\t\telse\r\n\t\t\td.handle = '${d.username}';\r\n\t\treturn d;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAvatar",
+			"args": [
+				{
+					"name": "size",
+					"type": "Int",
+					"optional": false,
+					"def": "256"
+				}
+			],
+			"ret": "BitmapData",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getAvatar(size:Int = 256):BitmapData\r\n\t\treturn BitmapData.fromBytes(HttpUtil.requestBytes('https://cdn.discordapp.com/avatars/$userId/$avatar.png?size=$size'));",
+			"doc": {
+				"text": "Calling this function gets the BitmapData of the user",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

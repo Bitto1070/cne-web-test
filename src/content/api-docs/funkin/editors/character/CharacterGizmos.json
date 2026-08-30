@@ -1,0 +1,69 @@
+{
+	"kind": "class",
+	"name": "CharacterGizmos",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "boxGizmo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraGizmo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tsuper.draw();\r\n\r\n\t\tif (character == null) return;\r\n\r\n\t\tif (boxGizmo) drawHitbox();\r\n\t\tif (cameraGizmo) drawCamera();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawHitbox",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function drawHitbox() {\r\n\t\tfor (camera in cameras) {\r\n\t\t\t//if (character.animateAtlas != null) {\r\n\t\t\t\tvar bounds:FlxRect = cast character.extra.get(StageEditor.exID(\"bounds\"));\r\n\t\t\t\tcharacter._rect.copyFrom(bounds.getDefault(FlxRect.weak()));\r\n\r\n\t\t\t\tcharacter._rect.x -= character.cameras[0].viewMarginLeft + character.cameras[0].scroll.x;\r\n\t\t\t\tcharacter._rect.y -= character.cameras[0].viewMarginTop + character.cameras[0].scroll.y;\r\n\t\t\t/*} else if (character._matrix != null && character.frame != null) {\r\n\t\t\t\tcharacter._rect.set(\r\n\t\t\t\t\tcharacter._matrix.tx, character._matrix.ty, \r\n\t\t\t\t\tMath.abs(character.frame.frame.width * character._matrix.a), \r\n\t\t\t\t\tMath.abs(character.frame.frame.height * character._matrix.d)\r\n\t\t\t\t);\r\n\t\t\t\tif (character._matrix.a < 0) character._rect.x -= character._rect.width;\r\n\t\t\t\tif (character._matrix.d < 0) character._rect.y -= character._rect.height;\r\n\r\n\t\t\t\tcharacter._rect.offset(-camera.viewMarginLeft, -camera.viewMarginTop);\r\n\t\t\t}*/\r\n\r\n\t\t\tcharacter._rect.x *= character.cameras[0].zoom;\r\n\t\t\tcharacter._rect.y *= character.cameras[0].zoom;\r\n\t\t\tcharacter._rect.width *= character.cameras[0].zoom;\r\n\t\t\tcharacter._rect.height *= character.cameras[0].zoom;\r\n\r\n\t\t\tif (DrawUtil.line == null) DrawUtil.createDrawers();\r\n\t\t\tDrawUtil.line.camera = camera; DrawUtil.line.alpha = 0.85;\r\n\r\n\t\t\tDrawUtil.drawRect(character._rect, 1, 0xFF007B8F);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawCamera",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function drawCamera() {\r\n\t\tfor (camera in cameras) {\r\n\t\t\tvar camPos:FlxPoint = character.getCameraPosition();\r\n\t\t\tcamPos -= camera.scroll;\r\n\r\n\t\t\tif (DrawUtil.line == null) DrawUtil.createDrawers();\r\n\t\t\tDrawUtil.line.camera = camera; DrawUtil.line.alpha = 1;\r\n\r\n\t\t\tDrawUtil.drawLine(\r\n\t\t\t\tCoolUtil.pointToScreenPosition(FlxPoint.weak(camPos.x - 8, camPos.y), FlxG.camera, FlxPoint.weak()),\r\n\t\t\t\tCoolUtil.pointToScreenPosition(FlxPoint.weak(camPos.x + 8, camPos.y), FlxG.camera, FlxPoint.weak()),\r\n\t\t\t1, 0xFF00A0B9);\r\n\r\n\t\t\tDrawUtil.drawLine(\r\n\t\t\t\tCoolUtil.pointToScreenPosition(FlxPoint.weak(camPos.x, camPos.y - 8), FlxG.camera, FlxPoint.weak()),\r\n\t\t\t\tCoolUtil.pointToScreenPosition(FlxPoint.weak(camPos.x, camPos.y + 8), FlxG.camera, FlxPoint.weak()),\r\n\t\t\t1, 0xFF00A0B9);\r\n\r\n\t\t\tcamPos.put();\r\n\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

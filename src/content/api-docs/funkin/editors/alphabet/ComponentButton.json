@@ -1,0 +1,63 @@
+{
+	"kind": "class",
+	"name": "ComponentButton",
+	"pkg": "funkin.editors.alphabet",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "component",
+			"type": "AlphabetComponent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "component",
+					"type": "AlphabetComponent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(component:AlphabetComponent) {\r\n\t\tsuper(0, 0, component.anim, function() {\r\n\t\t\tAlphabetEditor.instance.curSelectedComponent = component;\r\n\t\t\tAlphabetEditor.instance.findOutline();\r\n\t\t\tAlphabetEditor.instance.infoWindow.button = this;\r\n\t\t\tAlphabetEditor.instance.infoWindow.updateInfo();\r\n\t\t}, 230, 50);\r\n\t\tthis.component = component;\r\n\r\n\t\tdeleteButton = new UIButton(bWidth - 32 - 10, 0, \"\", function() {\r\n\t\t\tvar data = AlphabetEditor.instance.curSelectedData;\r\n\r\n\t\t\tvar outlineDrop = (component.outIndex != null) ? 1 : 0;\r\n\t\t\tvar componentIndex = data.components.indexOf(component);\r\n\t\t\tfor (i in 0...data.components.length) {\r\n\t\t\t\tvar nextCompon = data.components[i];\r\n\t\t\t\tvar anim = AlphabetEditor.instance.bigLetter.text + i;\r\n\t\t\t\tAlphabetEditor.instance.bigLetter.animation.remove(anim);\r\n\t\t\t\tAlphabetEditor.instance.tape.animation.remove(anim);\r\n\r\n\t\t\t\tif (i > componentIndex && nextCompon.outIndex != null) {\r\n\t\t\t\t\t--data.components[nextCompon.outIndex].refIndex;\r\n\t\t\t\t\tnextCompon.outIndex -= outlineDrop;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (component.outIndex != null) {\r\n\t\t\t\tdata.components.splice(component.outIndex, 1);\r\n\t\t\t\t--data.startIndex;\r\n\t\t\t}\r\n\r\n\t\t\tdata.components.remove(component);\r\n\t\t\tAlphabetEditor.instance.curSelectedComponent = (AlphabetEditor.instance.curSelectedComponent == component) ? null : AlphabetEditor.instance.curSelectedComponent;\r\n\t\t\tAlphabetEditor.instance.infoWindow.button = (AlphabetEditor.instance.infoWindow.button == this) ? null : AlphabetEditor.instance.infoWindow.button;\r\n\t\t\tAlphabetEditor.instance.findOutline();\r\n\t\t\tAlphabetEditor.instance.infoWindow.updateInfo();\r\n\r\n\t\t\tAlphabetEditor.instance.componentList.remove(this);\r\n\t\t}, 32);\r\n\t\tdeleteButton.color = FlxColor.RED;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + (15/2), deleteButton.y + 8).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

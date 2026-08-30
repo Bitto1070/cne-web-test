@@ -1,0 +1,117 @@
+{
+	"kind": "class",
+	"name": "HiddenProcess",
+	"pkg": "funkin.backend.utils.native",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stdout",
+			"type": "haxe.io.Input",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stderr",
+			"type": "haxe.io.Input",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stdin",
+			"type": "haxe.io.Output",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "cmd",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<String>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "detached",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(cmd:String, ?args:Array<String>, ?detached:Bool):Void {\r\n\t\tif (detached)\r\n\t\t\tthrow \"Detached process is not supported on this platform\";\r\n\t\tp = try NativeProcess.process_run_with_show(cmd, args, 0) catch (e:Dynamic) throw \"Process creation failure : \" + cmd;\r\n\t\tstdin = new Stdin(p);\r\n\t\tstdout = new Stdout(p, true);\r\n\t\tstderr = new Stdout(p, false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPid",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getPid():Int {\r\n\t\treturn NativeProcess.process_pid(p);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exitCode",
+			"args": [
+				{
+					"name": "block",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Null<Int>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function exitCode(block:Bool = true):Null<Int> {\r\n\t\treturn NativeProcess.process_exit(p #if (haxe >= \"4.3.0\"), block #end);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function close():Void {\r\n\t\tNativeProcess.process_close(p);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "kill",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function kill():Void {\r\n\t\tNativeProcess.process_kill(p);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

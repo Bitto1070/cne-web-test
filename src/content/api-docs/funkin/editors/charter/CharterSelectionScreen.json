@@ -1,0 +1,185 @@
+{
+	"kind": "class",
+	"name": "CharterSelectionScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "freeplayList",
+			"type": "FreeplaySonglist",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSong",
+			"type": "ChartMetaData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "makeChartOption",
+			"args": [
+				{
+					"name": "d",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "v",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TextOption",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function makeChartOption(d:String, v:String, name:String):TextOption {\r\n\t\treturn new TextOption(d, getID('acceptDifficulty'), () -> FlxG.switchState(new Charter(name, d, v)));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "makeVariationOption",
+			"args": [
+				{
+					"name": "s",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TextOption",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function makeVariationOption(s:ChartMetaData):TextOption {\r\n\t\treturn new TextOption(s.variant, getID('acceptVariation'), \" >\", () -> openSongOption(s, false));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openSongOption",
+			"args": [
+				{
+					"name": "s",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "first",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function openSongOption(s:ChartMetaData, first = true) {\r\n\t\tcurSong = s;\r\n\r\n\t\tvar isVariant = s.variant != null && s.variant != '';\r\n\t\tvar screen = new EditorTreeMenuScreen((first || !isVariant) ? (s.name + (isVariant ? ' (${s.variant})' : '')) : s.variant, getID('selectDifficulty'));\r\n\r\n\t\tfor (d in s.difficulties) if (d != '') screen.add(makeChartOption(d, isVariant ? s.variant : null, s.name));\r\n\t\tif (s.difficulties.length > 0 && s.variants.length > 0) screen.add(new Separator()); // Create a separator only when there are both difficulty and variant options available.\r\n\t\tfor (v in s.variants) if (s.metas.get(v) != null) screen.add(makeVariationOption(s.metas.get(v)));\r\n\r\n\t\t#if sys\r\n\t\tscreen.insert(0, new NewOption(getID('newDifficulty'), getID('newDifficultyDesc'), () -> {\r\n\t\t\tparent.openSubState(new ChartCreationScreen(saveChart));\r\n\t\t}));\r\n\r\n\t\tif (!first) screen.curSelected = (s.difficulties.length + s.variants.length) > 0 ? 1 : 0;\r\n\t\telse {\r\n\t\t\tcast(screen.members[0], NewOption).itemHeight = 120;\r\n\t\t\tscreen.insert(1, new NewOption(getID('newVariation'), getID('newVariationDesc'), () -> {\r\n\t\t\t\tparent.openSubState(new VariationCreationScreen(s, saveSong));\r\n\t\t\t}));\r\n\t\t\tscreen.curSelected = (s.difficulties.length + s.variants.length) > 0 ? 2 : 1;\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\tparent.addMenu(screen);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "makeSongOption",
+			"args": [
+				{
+					"name": "s",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "IconOption",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function makeSongOption(s:ChartMetaData):IconOption {\r\n\t\tsongList.push(s.name.toLowerCase());\r\n\r\n\t\tvar opt = new IconOption(s.name, getID('acceptSong'), s.icon, () -> openSongOption(s, true));\r\n\t\topt.suffix = \" >\";\r\n\t\topt.editorFlashColor = s.color.getDefault(FlxColor.WHITE);\r\n\r\n\t\treturn opt;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('editor.chart.name', 'charterSelection.desc', 'charterSelection.', 'newSong', 'newSongDesc', #if sys () -> {\r\n\t\t\tparent.openSubState(new SongCreationScreen(saveSong));\r\n\t\t} #end);\r\n\t\tfreeplayList = FreeplaySonglist.get(false);\r\n\r\n\t\tfor (i => s in freeplayList.songs) add(makeSongOption(s));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveSong",
+			"args": [
+				{
+					"name": "creation",
+					"type": "SongCreationData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "String -> Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#if sys\r\n\tpublic function saveSong(creation:SongCreationData, ?callback:String -> Void) {\r\n\t\tvar variant = creation.meta.variant != null && creation.meta.variant != \"\" ? creation.meta.variant : null;\r\n\t\tif (variant != null && curSong != null ? curSong.metas.exists(variant) : songList.contains(creation.meta.name.toLowerCase())) {\r\n\t\t\tparent.openSubState(new UIWarningSubstate(TU.translate(\"chartCreation.warnings.song-exists-title\"), TU.translate(\"chartCreation.warnings.song-exists-body\"), [\r\n\t\t\t\t{label: TU.translate(\"editor.ok\"), color: 0xFFFF0000, onClick: (t) -> {}},\r\n\t\t\t]));\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tvar songFolder:String = '${Paths.getAssetsRoot()}/songs/${variant != null && curSong != null ? curSong.name : creation.meta.name}';\r\n\r\n\t\t#if sys\r\n\t\t// Make Directories\r\n\t\tCoolUtil.addMissingFolders(songFolder);\r\n\t\tsys.FileSystem.createDirectory('$songFolder/song');\r\n\t\tsys.FileSystem.createDirectory('$songFolder/charts');\r\n\r\n\t\t// Save Files\r\n\t\tvar instSuffix = creation.meta.instSuffix != null ? creation.meta.instSuffix : '', vocalsSuffix = creation.meta.vocalsSuffix != null ? creation.meta.vocalsSuffix : '';\r\n\t\tCoolUtil.safeSaveFile('$songFolder/meta${variant != null ? \"-\" + variant : \"\"}.json', Json.stringify(Chart.filterMetaForSaving(creation.meta), null, Flags.JSON_PRETTY_PRINT));\r\n\t\tif (creation.instBytes != null) sys.io.File.saveBytes('$songFolder/song/Inst$instSuffix.${Flags.SOUND_EXT}', creation.instBytes);\r\n\t\tif (creation.voicesBytes != null) sys.io.File.saveBytes('$songFolder/song/Voices$vocalsSuffix.${Flags.SOUND_EXT}', creation.voicesBytes);\r\n\r\n\t\tif (creation.playerVocals != null) sys.io.File.saveBytes('$songFolder/song/Voices-Player$vocalsSuffix.${Flags.SOUND_EXT}', creation.playerVocals);\r\n\t\tif (creation.oppVocals != null) sys.io.File.saveBytes('$songFolder/song/Voices-Opponent$vocalsSuffix.${Flags.SOUND_EXT}', creation.oppVocals);\r\n\t\t#end\r\n\r\n\t\tif (callback != null) callback(songFolder);\r\n\r\n\t\t// Add to List\r\n\t\tif (variant != null && curSong != null) {\r\n\t\t\tif (curSong.variants == null) curSong.variants = [];\r\n\t\t\tif (!curSong.variants.contains(variant)) curSong.variants.push(variant);\r\n\r\n\t\t\tcurSong.metas.set(variant, creation.meta);\r\n\r\n\t\t\tparent.tree.last().add(makeVariationOption(creation.meta));\r\n\r\n\t\t\tvar metaPath = '$songFolder/meta${curSong.variant != null && curSong.variant == \"\" ? \"-\" + curSong.variant : \"\"}.json';\r\n\t\t\tCoolUtil.safeSaveFile(metaPath, Chart.makeMetaSaveable(curSong));\r\n\t\t}\r\n\t\telse {\r\n\t\t\tfreeplayList.songs.insert(0, creation.meta);\r\n\t\t\tinsert(1, makeSongOption(creation.meta));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveChart",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "data",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveChart(name:String, data:ChartData) {\r\n\t\tif (curSong.difficulties.contains(name)) {\r\n\t\t\tparent.openSubState(new UIWarningSubstate(TU.translate(\"chartCreation.warnings.chart-exists-title\"), TU.translate(\"chartCreation.warnings.chart-exists-body\"), [\r\n\t\t\t\t{label: TU.translate(\"editor.ok\"), color: 0xFFFF0000, onClick: (t) -> {}},\r\n\t\t\t]));\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tvar songFolder:String = '${Paths.getAssetsRoot()}/songs/${curSong.name}';\r\n\r\n\t\t// Save Files\r\n\t\tCoolUtil.safeSaveFile('$songFolder/charts/${name}.json', Json.stringify(data, Flags.JSON_PRETTY_PRINT));\r\n\r\n\t\t// Add to List\r\n\t\tcurSong.difficulties.push(name);\r\n\r\n\t\tvar screen = parent.tree.last();\r\n\t\tvar idx = 0;\r\n\t\twhile (!(screen.members[idx] is Separator || idx >= screen.members.length)) idx++;\r\n\t\tscreen.insert(idx, makeChartOption(name, curSong.variant != null && curSong.variant != \"\" ? curSong.variant : null, curSong.name));\r\n\t\t// Add to Meta\r\n\t\tvar metaPath = '$songFolder/meta${curSong.variant != null && curSong.variant != \"\" ? \"-\" + curSong.variant : \"\"}.json';\r\n\t\tCoolUtil.safeSaveFile(metaPath, Chart.makeMetaSaveable(curSong));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

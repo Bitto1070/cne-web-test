@@ -1,0 +1,520 @@
+{
+	"kind": "final class",
+	"name": "MathUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "EULER",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "maxInt",
+			"args": [
+				{
+					"name": "...args",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function maxInt(...args:Int):Int {\r\n\t\tvar max = args[0];\r\n\t\tfor(i in 1...args.length) {\r\n\t\t\tvar arg = args[i];\r\n\t\t\tif(arg > max)\r\n\t\t\t\tmax = arg;\r\n\t\t}\r\n\t\treturn max;\r\n\t}",
+			"doc": {
+				"text": "Returns the maximum value in the arguments.",
+				"params": {
+					"args": "Array of values"
+				},
+				"returns": "The maximum value",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "minInt",
+			"args": [
+				{
+					"name": "...args",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function minInt(...args:Int):Int {\r\n\t\tvar min = args[0];\r\n\t\tfor(i in 1...args.length) {\r\n\t\t\tvar arg = args[i];\r\n\t\t\tif(arg < min)\r\n\t\t\t\tmin = arg;\r\n\t\t}\r\n\t\treturn min;\r\n\t}",
+			"doc": {
+				"text": "Returns the minimum value in the arguments.",
+				"params": {
+					"args": "Array of values"
+				},
+				"returns": "The minimum value",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "max",
+			"args": [
+				{
+					"name": "...args",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function max(...args:Float):Float {\r\n\t\tvar max = args[0];\r\n\t\tfor(i in 1...args.length) {\r\n\t\t\tvar arg = args[i];\r\n\t\t\tif(arg > max)\r\n\t\t\t\tmax = arg;\r\n\t\t}\r\n\t\treturn max;\r\n\t}",
+			"doc": {
+				"text": "Returns the maximum value in the arguments.\n\nNOTE: If you are using this in compile time, you should use `MathUtil.maxSmart` instead of this for better performance.",
+				"params": {
+					"args": "Array of values"
+				},
+				"returns": "The maximum value",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "min",
+			"args": [
+				{
+					"name": "...args",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function min(...args:Float):Float {\r\n\t\tvar min = args[0];\r\n\t\tfor(i in 1...args.length) {\r\n\t\t\tvar arg = args[i];\r\n\t\t\tif(arg < min)\r\n\t\t\t\tmin = arg;\r\n\t\t}\r\n\t\treturn min;\r\n\t}",
+			"doc": {
+				"text": "Returns the minimum value in the arguments.\n\nNOTE: If you are using this in compile time, you should use `MathUtil.minSmart` instead of this for better performance.",
+				"params": {
+					"args": "Array of values"
+				},
+				"returns": "The minimum value",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "lessThan",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "margin",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0000001"
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function lessThan(a:Float, b:Float, margin:Float = 0.0000001):Bool {\r\n\t\treturn a < b - margin;\r\n\t}",
+			"doc": {
+				"text": "Checks if a is less than b with considering a margin of error.",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"margin": "Float (Default: EPSILON)"
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "lessThanEqual",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "margin",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0000001"
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function lessThanEqual(a:Float, b:Float, margin:Float = 0.0000001):Bool {\r\n\t\treturn a <= b - margin;\r\n\t}",
+			"doc": {
+				"text": "Checks if a is less than or equally b with considering a margin of error.",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"margin": "Float (Default: EPSILON)"
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "greaterThan",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "margin",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0000001"
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function greaterThan(a:Float, b:Float, margin:Float = 0.0000001):Bool {\r\n\t\treturn a > b + margin;\r\n\t}",
+			"doc": {
+				"text": "Checks if a is greater than b with considering a margin of error.",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"margin": "Float (Default: EPSILON)"
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "greaterThanEqual",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "margin",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0000001"
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function greaterThanEqual(a:Float, b:Float, margin:Float = 0.0000001):Bool {\r\n\t\treturn a >= b + margin;\r\n\t}",
+			"doc": {
+				"text": "Checks if a is greater than or equally b with considering a margin of error.",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"margin": "Float (Default: EPSILON)"
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "equal",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "margin",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0000001"
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function equal(a:Float, b:Float, margin:Float = 0.0000001):Bool {\r\n\t\treturn Math.abs(a - b) <= margin;\r\n\t}",
+			"doc": {
+				"text": "Checks if a is approximately equal to b.",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"margin": "Float (Default: EPSILON)"
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "notEqual",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "margin",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0000001"
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function notEqual(a:Float, b:Float, margin:Float = 0.0000001):Bool {\r\n\t\treturn Math.abs(a - b) > margin;\r\n\t}",
+			"doc": {
+				"text": "Checks if a are not approximately equal to b.",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"margin": "Float (Default: EPSILON)"
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "smoothStep",
+			"args": [
+				{
+					"name": "edge0",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "edge1",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function smoothStep(edge0:Float, edge1:Float, x:Float):Float {\r\n\t\tvar t = (x - edge0) / (edge1 - edge0);\r\n\t\tvar clamped = t < 0.0 ? 0.0 : (t > 1.0 ? 1.0 : t);\r\n\t\treturn clamped * clamped * (3.0 - 2.0 * clamped);\r\n\t}",
+			"doc": {
+				"text": "",
+				"params": {
+					"edge0": "Float",
+					"edge1": "Float",
+					"x": "Float"
+				},
+				"returns": "Float",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "inverseLerp",
+			"args": [
+				{
+					"name": "a",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "b",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "v",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function inverseLerp(a:Float, b:Float, v:Float):Float {\r\n\t\treturn (v - a) / (b - a);\r\n\t}",
+			"doc": {
+				"text": "",
+				"params": {
+					"a": "Float",
+					"b": "Float",
+					"v": "Float"
+				},
+				"returns": "Float",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fract",
+			"args": [
+				{
+					"name": "v",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fract(v:Float):Float {\r\n\t\treturn v - Math.floor(v);\r\n\t}",
+			"doc": {
+				"text": "",
+				"params": {
+					"v": "Float"
+				},
+				"returns": "Float",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "maxSmart",
+			"args": [
+				{
+					"name": "..._args",
+					"type": "Expr",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Expr",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:dox(hide) public static macro function maxSmart(..._args:Expr):Expr {\r\n\t\treturn genericMinMaxSmart(_args.toArray(), \"Math.max\");\r\n\t}",
+			"doc": {
+				"text": "Shortcut to `Math.max` but with infinite amount of arguments\n\nMight not preserve the order of arguments, please test this.\n\nDont use this in hscript, it doesnt work, it only works on compile time",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "minSmart",
+			"args": [
+				{
+					"name": "..._args",
+					"type": "Expr",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Expr",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:dox(hide) public static macro function minSmart(..._args:Expr):Expr {\r\n\t\treturn genericMinMaxSmart(_args.toArray(), \"Math.min\");\r\n\t}",
+			"doc": {
+				"text": "Shortcut to `Math.min` but with infinite amount of arguments\n\nMight not preserve the order of arguments, please test this.\n\nDont use this in hscript, it doesnt work, it only works on compile time",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:dox(hide)"
+			]
+		}
+	]
+}

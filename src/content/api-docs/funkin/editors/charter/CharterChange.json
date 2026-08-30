@@ -1,0 +1,8 @@
+{
+	"kind": "enum",
+	"name": "CharterChange",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

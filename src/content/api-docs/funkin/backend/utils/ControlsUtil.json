@@ -1,0 +1,211 @@
+{
+	"kind": "class",
+	"name": "ControlsUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "initCustomControl",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function initCustomControl(controls:Controls, name:String) {\r\n\t\tif (controls.byName.exists(name)) return;\r\n\r\n\t\tcontrols.byName.set(name, new FlxActionDigital(name));\r\n\t\tcontrols.byName.set(name+\"_P\", new FlxActionDigital(name+\"_P\"));\r\n\t\tcontrols.byName.set(name+\"_R\", new FlxActionDigital(name+\"_R\"));\r\n\t\tstoredCustomControls.push(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addKeysToCustomControl",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keys",
+					"type": "Array<FlxKey>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function addKeysToCustomControl(controls:Controls, name:String, keys:Array<FlxKey>) {\r\n\t\tif (!controls.byName.exists(name)) return;\r\n\r\n\t\tvar pressed:FlxActionDigital = controls.byName.get(name);\r\n\t\tif (pressed != null) Controls.addKeys(pressed, keys, PRESSED);\r\n\r\n\t\tvar justPressed:FlxActionDigital = controls.byName.get(name+\"_P\");\r\n\t\tif (justPressed != null) Controls.addKeys(justPressed, keys, JUST_PRESSED);\r\n\r\n\t\tvar justReleased:FlxActionDigital = controls.byName.get(name+\"_R\");\r\n\t\tif (justReleased != null) Controls.addKeys(justReleased, keys, JUST_RELEASED);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeKeysFromCustomControl",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keys",
+					"type": "Array<FlxKey>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function removeKeysFromCustomControl(controls:Controls, name:String, keys:Array<FlxKey>) {\r\n\t\tif (!controls.byName.exists(name)) return;\r\n\r\n\t\tvar pressed:FlxActionDigital = controls.byName.get(name); \r\n\t\tif (pressed != null) Controls.removeKeys(pressed, keys);\r\n\r\n\t\tvar justPressed:FlxActionDigital = controls.byName.get(name+\"_P\"); \r\n\t\tif (justPressed != null) Controls.removeKeys(justPressed, keys);\r\n\r\n\t\tvar justReleased:FlxActionDigital = controls.byName.get(name+\"_R\"); \r\n\t\tif (justReleased != null) Controls.removeKeys(justReleased, keys);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetCustomControls",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function resetCustomControls() {\r\n\t\tremoveCustomControls(PlayerSettings.solo.controls);\r\n\t\tremoveCustomControls(PlayerSettings.player1.controls);\r\n\t\tremoveCustomControls(PlayerSettings.player2.controls);\r\n\t\tstoredCustomControls = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getControl",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FlxActionDigital",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getControl(controls:Controls, name:String) : FlxActionDigital {\r\n\t\treturn controls.byName.get(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getJustPressed",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getJustPressed(controls:Controls, name:String) {\r\n\t\treturn checkControl(controls, name + \"_P\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getJustReleased",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getJustReleased(controls:Controls, name:String) {\r\n\t\treturn checkControl(controls, name + \"_R\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPressed",
+			"args": [
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getPressed(controls:Controls, name:String) {\r\n\t\treturn checkControl(controls, name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadCustomControls",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadCustomControls() {\r\n\t\tvar xmlPath = Paths.xml(\"config/controls\");\r\n\t\tfor(source in [funkin.backend.assets.AssetSource.SOURCE, funkin.backend.assets.AssetSource.MODS]) {\r\n\t\t\tif (Paths.assetsTree.existsSpecific(xmlPath, \"TEXT\", source)) {\r\n\t\t\t\tvar access:Access = null;\r\n\t\t\t\ttry {\r\n\t\t\t\t\taccess = new Access(Xml.parse(Paths.assetsTree.getSpecificAsset(xmlPath, \"TEXT\", source)).firstElement());\r\n\t\t\t\t} catch(e) {\r\n\t\t\t\t\tLogs.trace('Error while parsing controls.xml: ${Std.string(e)}', ERROR);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (access != null) {\r\n\t\t\t\t\tparseControlsXml(access);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

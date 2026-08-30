@@ -1,0 +1,25 @@
+{
+	"kind": "final class",
+	"name": "Linux",
+	"pkg": "funkin.backend.utils.native",
+	"doc": null,
+	"meta": [
+		"@:cppFileCode(\"#include <stdio.h>\")",
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getTotalRam",
+			"args": [],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function getTotalRam():Float\r\n\t{\r\n\t\treturn 0;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\tFILE *meminfo = fopen(\"/proc/meminfo\", \"r\");\r\n\r\n\t\tif(meminfo == NULL)\r\n\t\t\treturn -1;\r\n\r\n\t\tchar line[256];\r\n\t\twhile(fgets(line, sizeof(line), meminfo))\r\n\t\t{\r\n\t\t\tint ram;\r\n\t\t\tif(sscanf(line, \"MemTotal: %d kB\", &ram) == 1)\r\n\t\t\t{\r\n\t\t\t\tfclose(meminfo);\r\n\t\t\t\treturn (ram / 1024);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfclose(meminfo);\r\n\t\treturn -1;\r\n\t')"
+			]
+		}
+	]
+}

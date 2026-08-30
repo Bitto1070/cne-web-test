@@ -1,0 +1,896 @@
+{
+	"kind": "class",
+	"name": "Character",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [
+		"@:allow(funkin.desktop.editors.CharacterEditor)",
+		"@:allow(funkin.game.StrumLine)",
+		"@:allow(funkin.game.PlayState)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "isPlayer",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curCharacter",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sprite",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastHit",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "holdTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playerOffsets",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "icon",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconColor",
+			"type": "Null<FlxColor>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameOverCharacter",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultAimFPS",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "centeredCamera",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "globalOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "extraOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scripts",
+			"type": "ScriptPack",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xmlImportedScripts",
+			"type": "Array<XMLImportedScriptInfo>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "Script",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareInfos",
+			"args": [
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function prepareInfos(node:Access)\r\n\t\treturn XMLImportedScriptInfo.prepareInfos(node, scripts, (infos) -> xmlImportedScripts.push(infos));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "idleSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stunned",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "character",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "isPlayer",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "switchAnims",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "disableScripts",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, ?character:String, isPlayer:Bool = false, switchAnims:Bool = true, disableScripts:Bool = false)\r\n\t{\r\n\t\tsuper(x, y);\r\n\r\n\t\tanimOffsets = new Map<String, FlxPoint>();\r\n\t\tcurCharacter = character != null ? character : Flags.DEFAULT_CHARACTER;\r\n\t\tthis.isPlayer = isPlayer;\r\n\t\t__switchAnims = switchAnims;\r\n\r\n\t\tantialiasing = true;\r\n\r\n\t\txml = getXMLFromCharName(this);\r\n\r\n\t\tif(!disableScripts)\r\n\t\t\tscript = Script.create(Paths.script(Path.withoutExtension(Paths.xml('characters/$curCharacter')), null, true));\r\n\t\tif (script == null)\r\n\t\t\tscript = new DummyScript(curCharacter);\r\n\r\n\t\tscript.load();\r\n\r\n\t\tscripts.call(\"create\");\r\n\t\tbuildCharacter(xml);\r\n\t\tscripts.call(\"postCreate\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixChar",
+			"args": [
+				{
+					"name": "switchAnims",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "autoInterval",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function fixChar(switchAnims:Bool = false, autoInterval:Bool = false) {\r\n\t\tif ((isDanceLeftDanceRight = hasAnimation(\"danceLeft\") && hasAnimation(\"danceRight\")) && autoInterval)\r\n\t\t\tbeatInterval = 1;\r\n\t\t__autoInterval = autoInterval;\r\n\r\n\t\t// character is flipped\r\n\t\tif (isPlayer != playerOffsets && switchAnims)\r\n\t\t\tswapLeftRightAnimations();\r\n\r\n\t\tif (isPlayer) flipX = !flipX;\r\n\t\t__baseFlipped = flipX;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "swapLeftRightAnimations",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function swapLeftRightAnimations() {\r\n\t\t// Find all \"alternate\" poses\r\n\t\tvar variants = ['']; // Pre-fill with empty string\r\n\t\tvar pose = 'singRIGHT'; // Any \"sing\" animation string could work, really\r\n\t\tfor (a in xml.nodes.anim) {\r\n\t\t\tif (a.att.name != pose && StringTools.startsWith(a.att.name, pose)) {\r\n\t\t\t\tvariants.push(a.att.name.substring(pose.length));\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfor (i in variants) {\r\n\t\t\tCoolUtil.swapAnims(animation, 'singLEFT$i', 'singRIGHT$i');\r\n\t\t\tswitchOffset('singLEFT$i', 'singRIGHT$i');\r\n\t\t}\r\n\r\n\t\t__swappedLeftRightAnims = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "dance",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function dance() {\r\n\t\tif(debugMode) return;\r\n\r\n\t\tvar event = EventManager.get(DanceEvent).recycle(danced);\r\n\t\tscripts.call(\"onDance\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tif (isDanceLeftDanceRight)\r\n\t\t\tplayAnim(((danced = !danced) ? 'danceLeft' : 'danceRight') + idleSuffix, DANCE);\r\n\t\telse\r\n\t\t\tplayAnim('idle' + idleSuffix, DANCE);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "tryDance",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function tryDance() {\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscripts.call(\"onTryDance\", [event]);\r\n\t\tif (event.cancelled)\r\n\t\t\treturn;\r\n\r\n\t\tswitch (lastAnimContext) {\r\n\t\t\tcase SING | MISS:\r\n\t\t\t\tif (lastHit + (Conductor.stepCrochet * holdTime) < Conductor.songPosition)\r\n\t\t\t\t\tdance();\r\n\t\t\tcase DANCE:\r\n\t\t\t\tdance();\r\n\t\t\tcase LOCK:\r\n\t\t\t\tif (getAnimName() == null)\r\n\t\t\t\t\tdance();\r\n\t\t\tdefault:\r\n\t\t\t\tif (getAnimName() == null || isAnimFinished())\r\n\t\t\t\t\tdance();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "danceOnBeat",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the character should dance on beat or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function beatHit(curBeat:Int) {\r\n\t\tscripts.call(\"beatHit\", [curBeat]);\r\n\r\n\t\tif (skipNegativeBeats && curBeat < 0) return;\r\n\t\tif (danceOnBeat && (curBeat + beatOffset) % (beatInterval * CoolUtil.maxInt(Math.floor(4 / Conductor.stepsPerBeat), 1)) == 0 && !__lockAnimThisFrame)\r\n\t\t\ttryDance();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "measureHit",
+			"args": [
+				{
+					"name": "curMeasure",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function measureHit(curMeasure:Int)\r\n\t\tscripts.call(\"measureHit\", [curMeasure]);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curStep",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function stepHit(curStep:Int)\r\n\t\tscripts.call(\"stepHit\", [curStep]);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getScreenBounds",
+			"args": [
+				{
+					"name": "newRect",
+					"type": "FlxRect",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "FlxRect",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getScreenBounds(?newRect:FlxRect, ?camera:FlxCamera):FlxRect {\r\n\t\tif (isFlippedOffsets()) {\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t\tvar bounds:FlxRect = super.getScreenBounds(newRect, camera);\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t\treturn bounds;\r\n\t\t}\r\n\t\treturn super.getScreenBounds(newRect, camera);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isOnScreen",
+			"args": [
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function isOnScreen(?camera:FlxCamera):Bool {\r\n\t\tif (debugMode) return true;\r\n\t\treturn super.isOnScreen(camera);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isFlippedOffsets",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function isFlippedOffsets()\r\n\t\treturn debugMode ? false : (isPlayer != playerOffsets) != (flipX != __baseFlipped);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preDraw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preDraw() {\r\n\t\tif (!ghostDraw) {\r\n\t\t\tx += extraOffset.x;\r\n\t\t\ty += extraOffset.y;\r\n\t\t}\r\n\r\n\t\tif (__reversePreDrawProcedure = isFlippedOffsets()) {\r\n\t\t\t__reverseDrawProcedure = true;\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "postDraw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function postDraw() {\r\n\t\tif (__reversePreDrawProcedure) {\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t\t__reverseDrawProcedure = false;\r\n\t\t}\r\n\r\n\t\tif (!ghostDraw) {\r\n\t\t\tx -= extraOffset.x;\r\n\t\t\ty -= extraOffset.y;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostDraw",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tvar e = EventManager.get(DrawEvent).recycle();\r\n\t\tscripts.call(\"draw\", [e]);\r\n\r\n\t\tpreDraw();\r\n\t\tsuper.draw();\r\n\t\tpostDraw();\r\n\r\n\t\tscripts.call(\"postDraw\", [e]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "singAnims",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSingAnim",
+			"args": [
+				{
+					"name": "direction",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getSingAnim(direction:Int, suffix:String = \"\"):String\r\n\t\treturn singAnims[direction % singAnims.length] + suffix;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playSingAnim",
+			"args": [
+				{
+					"name": "direction",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "Context",
+					"type": "PlayAnimContext",
+					"optional": false,
+					"def": "SING"
+				},
+				{
+					"name": "Force",
+					"type": "Null<Bool>",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "Reversed",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Frame",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function playSingAnim(direction:Int, suffix:String = \"\", Context:PlayAnimContext = SING, ?Force:Null<Bool> = null, Reversed:Bool = false, Frame:Int = 0)\r\n\t{\r\n\t\tvar event = EventManager.get(DirectionAnimEvent).recycle(getSingAnim(direction, suffix), direction, suffix, Context, Reversed, Frame, Force);\r\n\t\tscripts.call(\"onPlaySingAnim\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tplaySingAnimUnsafe(event.direction, hasAnimation(event.animName) ? event.suffix : \"\", event.context, event.force, event.reversed, event.frame);\r\n\t}",
+			"doc": {
+				"text": "Like `playSingAnimUnsafe` but checks if the character has the animation with the suffix part, otherwise it plays the animation without the suffix part.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playSingAnimUnsafe",
+			"args": [
+				{
+					"name": "direction",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "Context",
+					"type": "PlayAnimContext",
+					"optional": false,
+					"def": "SING"
+				},
+				{
+					"name": "Force",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "Reversed",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Frame",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function playSingAnimUnsafe(direction:Int, suffix:String = \"\", Context:PlayAnimContext = SING, Force:Bool = true, Reversed:Bool = false, Frame:Int = 0) {\r\n\t\tvar event = EventManager.get(DirectionAnimEvent).recycle(getSingAnim(direction, suffix), direction, suffix, Context, Reversed, Frame, Force);\r\n\t\tscripts.call(\"playSingAnimUnsafe\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tplayAnim(event.animName, event.force, event.context, event.reversed, event.frame);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playAnim",
+			"args": [
+				{
+					"name": "AnimName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Force",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "Context",
+					"type": "PlayAnimContext",
+					"optional": false,
+					"def": "NONE"
+				},
+				{
+					"name": "Reversed",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Frame",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function playAnim(AnimName:String, ?Force:Bool, Context:PlayAnimContext = NONE, Reversed:Bool = false, Frame:Int = 0) {\r\n\t\tvar event = EventManager.get(PlayAnimEvent).recycle(AnimName, Force, Reversed, Frame, Context);\r\n\t\tscripts.call(\"onPlayAnim\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.playAnim(event.animName, event.force, event.context, event.reverse, event.startingFrame);\r\n\r\n\t\toffset.set((isPlayer != playerOffsets) ? globalOffset.x : -globalOffset.x, -globalOffset.y);\r\n\t\tif (event.context == SING || event.context == MISS)\r\n\t\t\tlastHit = Conductor.songPosition;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getCameraPosition",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getCameraPosition() {\r\n\t\tvar midpoint:FlxPoint = centeredCamera ? getMidpoint() : getPosition();\r\n\t\tvar event = EventManager.get(PointEvent).recycle(\r\n\t\t\tmidpoint.x + (isPlayer ? -100 : 150) + globalOffset.x + cameraOffset.x,\r\n\t\t\tmidpoint.y - 100 + globalOffset.y + cameraOffset.y);\r\n\t\tscripts.call(\"onGetCamPos\", [event]);\r\n\r\n\t\tmidpoint.put();\r\n\t\treturn new FlxPoint(event.x, event.y);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tif(scripts != null) {\r\n\t\t\tscripts.call('destroy');\r\n\t\t\tscripts.destroy();\r\n\t\t}\r\n\t\tsuper.destroy();\r\n\r\n\t\tcameraOffset.put();\r\n\t\tglobalOffset.put();\r\n\t\textraOffset.put();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beforeTrailCache",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "`\r\n\tpublic dynamic function beforeTrailCache()\r\n\t\tif (isFlippedOffsets()) {\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t\t__reverseTrailProcedure = true;\r\n\t\t}\r\n\t\r\n\tpublic dynamic function afterTrailCache()\r\n\t\tif (__reverseTrailProcedure) {\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t\t__reverseTrailProcedure = false;\r\n\t\t}\r\n\r\n\tpublic function applyXML(xml:Access) { // just for now till i remake the dumb editor\r\n\t\tgameOverCharacter = Character.FALLBACK_DEAD_CHARACTER;\r\n\t\tcameraOffset.set(0, 0);\r\n\t\tglobalOffset.set(0, 0);\r\n\t\tplayerOffsets = false;\r\n\t\tflipX = false;\r\n\t\tholdTime = 4;\r\n\t\ticonColor = null;\r\n\r\n\t\tanimation.destroyAnimations();\r\n\t\tanimDatas.clear();\r\n\r\n\t\t__baseFlipped = false;\r\n\t\tbuildCharacter(xml);\r\n\t}\r\n\r\n\tpublic function buildCharacter(xml:Access) {\r\n\t\tfor(node in xml.elements)\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\tif (!XMLImportedScriptInfo.shouldLoadBefore(node)) continue;\r\n\t\t\t\t\tprepareInfos(node);\r\n\t\t\t}\r\n\r\n\t\txml = scripts.event(\"onCharacterXMLParsed\", EventManager.get(CharacterXMLEvent).recycle(this, xml)).xml;\r\n\r\n\t\tname = sprite = curCharacter;\r\n\t\tspriteAnimType = BEAT;\r\n\t\tthis.xml = xml; // Modders wassup :D\r\n\r\n\t\tif (xml.x.exists(\"isPlayer\")) playerOffsets = (xml.x.get(\"isPlayer\") == \"true\");\r\n\t\tif (xml.x.exists(\"x\")) globalOffset.x = Std.parseFloat(xml.x.get(\"x\"));\r\n\t\tif (xml.x.exists(\"y\")) globalOffset.y = Std.parseFloat(xml.x.get(\"y\"));\r\n\t\tif (xml.x.exists(\"gameOverChar\")) gameOverCharacter = xml.x.get(\"gameOverChar\");\r\n\t\tif (xml.x.exists(\"defFps\")) defaultAimFPS = Std.parseFloat(xml.x.get(\"defFps\"));\r\n\t\tif (xml.x.exists(\"camx\")) cameraOffset.x = Std.parseFloat(xml.x.get(\"camx\"));\r\n\t\tif (xml.x.exists(\"camy\")) cameraOffset.y = Std.parseFloat(xml.x.get(\"camy\"));\r\n\t\tif (xml.x.exists(\"holdTime\")) holdTime = Std.parseFloat(xml.x.get(\"holdTime\")).getDefaultFloat(4);\r\n\t\tif (xml.x.exists(\"flipX\")) flipX = (xml.x.get(\"flipX\") == \"true\");\r\n\t\tif (xml.x.exists(\"icon\")) icon = xml.x.get(\"icon\");\r\n\t\tif (xml.x.exists(\"color\")) iconColor = FlxColor.fromString(xml.x.get(\"color\"));\r\n\t\tif (xml.x.exists(\"scale\")) {\r\n\t\t\tvar scale:Float = Std.parseFloat(xml.x.get(\"scale\")).getDefaultFloat(1);\r\n\t\t\tthis.scale.set(scale, scale);\r\n\t\t\tupdateHitbox();\r\n\t\t}\r\n\t\tif (xml.x.exists(\"antialiasing\")) antialiasing = (xml.x.get(\"antialiasing\") == \"true\");\r\n\t\tif (xml.x.exists(\"applyStageMatrix\")) applyStageMatrix = (xml.x.get(\"applyStageMatrix\") == \"true\");\r\n\t\tif (xml.x.exists(\"postStageMatrixApply\")) postStageMatrixApply = (xml.x.get(\"postStageMatrixApply\") == \"true\");\r\n\t\tif (xml.x.exists(\"sprite\")) sprite = xml.x.get(\"sprite\");\r\n\t\tif (xml.x.exists(\"swfMode\")) animateSettings.swfMode = (xml.x.get(\"swfMode\") == \"true\");\r\n\t\tif (xml.x.exists(\"cacheOnLoad\")) animateSettings.cacheOnLoad = (xml.x.get(\"cacheOnLoad\") == \"true\");\r\n\t\tif (xml.x.exists(\"filterQuality\")) {\r\n\t\t\tvar val = xml.x.get(\"filterQuality\");\r\n\t\t\tvar qualityInt = Std.parseInt(val);\r\n\t\t\tif (qualityInt != null) {\r\n\t\t\t\tanimateSettings.filterQuality = cast(qualityInt, FilterQuality);\r\n\t\t\t} else {\r\n\t\t\t\tvar values = [\"high\", \"medium\", \"low\", \"rudy\"];\r\n\t\t\t\tvar index = values.indexOf(val.toLowerCase());\r\n\t\t\t\tif (index > -1)\r\n\t\t\t\t\tanimateSettings.filterQuality = cast(index, FilterQuality);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar hasInterval:Bool = xml.x.exists(\"interval\");\r\n\t\tif (hasInterval) beatInterval = Std.parseInt(xml.x.get(\"interval\"));\r\n\r\n\t\tXMLUtil.appendSpriteSheetsFromXML(this, xml, 'characters/');\r\n\t\t\r\n\t\tif (xml.x.exists(\"centercam\")) centeredCamera = (xml.x.get(\"centercam\") == \"true\");\r\n\t\telse if (Flags.USE_LEGACY_CENTER_CAM) centeredCamera = true;\r\n\t\telse centeredCamera = !isAnimate;\r\n\t\t\r\n\t\tfor(node in xml.elements) {\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"anim\":\t\r\n\t\t\t\t\tif (defaultAimFPS != 24){\r\n\t\t\t\t\t\tif (!node.x.exists(\"fps\")) {\r\n\t\t\t\t\t\t\tnode.x.set('fps', Std.string(defaultAimFPS));\r\n\t\t\t\t\t\t} \r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tXMLUtil.addXMLAnimation(this, node);\r\n\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\tif (XMLImportedScriptInfo.shouldLoadBefore(node)) continue;\r\n\t\t\t\t\tprepareInfos(node);\r\n\t\t\t\tdefault:\r\n\t\t\t\t\t// nothing\r\n\t\t\t}\r\n\r\n\t\t\tscripts.event(\"onCharacterNodeParsed\", EventManager.get(CharacterNodeEvent).recycle(this, node, node.name));\r\n\t\t}\r\n\r\n\t\tfor (attribute in xml.x.attributes())\r\n\t\t\tif (!characterProperties.contains(attribute)) \r\n\t\t\t\textra[attribute] = xml.x.get(attribute);\r\n\r\n\t\tfixChar(__switchAnims, !hasInterval);\r\n\t\tdance();\r\n\r\n\t\tfor (info in xmlImportedScripts) if (info.shortLived) {\r\n\t\t\tvar script = info.getScript();\r\n\t\t\tif (script == null) continue;\r\n\r\n\t\t\tscripts.remove(script);\r\n\t\t\tscript.destroy();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic static var characterProperties:Array<String> = [\r\n\t\t\"x\", \"y\", \"sprite\", \"scale\", \"antialiasing\",\r\n\t\t\"flipX\", \"camx\", \"camy\", \"centercam\", \"isPlayer\", \"icon\",\r\n\t\t\"color\", \"gameOverChar\", \"holdTime\", \"applyStageMatrix\",\r\n\t\t\"postStageMatrixApply\", \"defFps\"\r\n\t];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "afterTrailCache",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function afterTrailCache()\r\n\t\tif (__reverseTrailProcedure) {\r\n\t\t\tflipX = !flipX;\r\n\t\t\tscale.x *= -1;\r\n\t\t\t__reverseTrailProcedure = false;\r\n\t\t}\r\n\r\n\tpublic function applyXML(xml:Access) { // just for now till i remake the dumb editor\r\n\t\tgameOverCharacter = Character.FALLBACK_DEAD_CHARACTER;\r\n\t\tcameraOffset.set(0, 0);\r\n\t\tglobalOffset.set(0, 0);\r\n\t\tplayerOffsets = false;\r\n\t\tflipX = false;\r\n\t\tholdTime = 4;\r\n\t\ticonColor = null;\r\n\r\n\t\tanimation.destroyAnimations();\r\n\t\tanimDatas.clear();\r\n\r\n\t\t__baseFlipped = false;\r\n\t\tbuildCharacter(xml);\r\n\t}\r\n\r\n\tpublic function buildCharacter(xml:Access) {\r\n\t\tfor(node in xml.elements)\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\tif (!XMLImportedScriptInfo.shouldLoadBefore(node)) continue;\r\n\t\t\t\t\tprepareInfos(node);\r\n\t\t\t}\r\n\r\n\t\txml = scripts.event(\"onCharacterXMLParsed\", EventManager.get(CharacterXMLEvent).recycle(this, xml)).xml;\r\n\r\n\t\tname = sprite = curCharacter;\r\n\t\tspriteAnimType = BEAT;\r\n\t\tthis.xml = xml; // Modders wassup :D\r\n\r\n\t\tif (xml.x.exists(\"isPlayer\")) playerOffsets = (xml.x.get(\"isPlayer\") == \"true\");\r\n\t\tif (xml.x.exists(\"x\")) globalOffset.x = Std.parseFloat(xml.x.get(\"x\"));\r\n\t\tif (xml.x.exists(\"y\")) globalOffset.y = Std.parseFloat(xml.x.get(\"y\"));\r\n\t\tif (xml.x.exists(\"gameOverChar\")) gameOverCharacter = xml.x.get(\"gameOverChar\");\r\n\t\tif (xml.x.exists(\"defFps\")) defaultAimFPS = Std.parseFloat(xml.x.get(\"defFps\"));\r\n\t\tif (xml.x.exists(\"camx\")) cameraOffset.x = Std.parseFloat(xml.x.get(\"camx\"));\r\n\t\tif (xml.x.exists(\"camy\")) cameraOffset.y = Std.parseFloat(xml.x.get(\"camy\"));\r\n\t\tif (xml.x.exists(\"holdTime\")) holdTime = Std.parseFloat(xml.x.get(\"holdTime\")).getDefaultFloat(4);\r\n\t\tif (xml.x.exists(\"flipX\")) flipX = (xml.x.get(\"flipX\") == \"true\");\r\n\t\tif (xml.x.exists(\"icon\")) icon = xml.x.get(\"icon\");\r\n\t\tif (xml.x.exists(\"color\")) iconColor = FlxColor.fromString(xml.x.get(\"color\"));\r\n\t\tif (xml.x.exists(\"scale\")) {\r\n\t\t\tvar scale:Float = Std.parseFloat(xml.x.get(\"scale\")).getDefaultFloat(1);\r\n\t\t\tthis.scale.set(scale, scale);\r\n\t\t\tupdateHitbox();\r\n\t\t}\r\n\t\tif (xml.x.exists(\"antialiasing\")) antialiasing = (xml.x.get(\"antialiasing\") == \"true\");\r\n\t\tif (xml.x.exists(\"applyStageMatrix\")) applyStageMatrix = (xml.x.get(\"applyStageMatrix\") == \"true\");\r\n\t\tif (xml.x.exists(\"postStageMatrixApply\")) postStageMatrixApply = (xml.x.get(\"postStageMatrixApply\") == \"true\");\r\n\t\tif (xml.x.exists(\"sprite\")) sprite = xml.x.get(\"sprite\");\r\n\t\tif (xml.x.exists(\"swfMode\")) animateSettings.swfMode = (xml.x.get(\"swfMode\") == \"true\");\r\n\t\tif (xml.x.exists(\"cacheOnLoad\")) animateSettings.cacheOnLoad = (xml.x.get(\"cacheOnLoad\") == \"true\");\r\n\t\tif (xml.x.exists(\"filterQuality\")) {\r\n\t\t\tvar val = xml.x.get(\"filterQuality\");\r\n\t\t\tvar qualityInt = Std.parseInt(val);\r\n\t\t\tif (qualityInt != null) {\r\n\t\t\t\tanimateSettings.filterQuality = cast(qualityInt, FilterQuality);\r\n\t\t\t} else {\r\n\t\t\t\tvar values = [\"high\", \"medium\", \"low\", \"rudy\"];\r\n\t\t\t\tvar index = values.indexOf(val.toLowerCase());\r\n\t\t\t\tif (index > -1)\r\n\t\t\t\t\tanimateSettings.filterQuality = cast(index, FilterQuality);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar hasInterval:Bool = xml.x.exists(\"interval\");\r\n\t\tif (hasInterval) beatInterval = Std.parseInt(xml.x.get(\"interval\"));\r\n\r\n\t\tXMLUtil.appendSpriteSheetsFromXML(this, xml, 'characters/');\r\n\t\t\r\n\t\tif (xml.x.exists(\"centercam\")) centeredCamera = (xml.x.get(\"centercam\") == \"true\");\r\n\t\telse if (Flags.USE_LEGACY_CENTER_CAM) centeredCamera = true;\r\n\t\telse centeredCamera = !isAnimate;\r\n\t\t\r\n\t\tfor(node in xml.elements) {\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"anim\":\t\r\n\t\t\t\t\tif (defaultAimFPS != 24){\r\n\t\t\t\t\t\tif (!node.x.exists(\"fps\")) {\r\n\t\t\t\t\t\t\tnode.x.set('fps', Std.string(defaultAimFPS));\r\n\t\t\t\t\t\t} \r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tXMLUtil.addXMLAnimation(this, node);\r\n\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\tif (XMLImportedScriptInfo.shouldLoadBefore(node)) continue;\r\n\t\t\t\t\tprepareInfos(node);\r\n\t\t\t\tdefault:\r\n\t\t\t\t\t// nothing\r\n\t\t\t}\r\n\r\n\t\t\tscripts.event(\"onCharacterNodeParsed\", EventManager.get(CharacterNodeEvent).recycle(this, node, node.name));\r\n\t\t}\r\n\r\n\t\tfor (attribute in xml.x.attributes())\r\n\t\t\tif (!characterProperties.contains(attribute)) \r\n\t\t\t\textra[attribute] = xml.x.get(attribute);\r\n\r\n\t\tfixChar(__switchAnims, !hasInterval);\r\n\t\tdance();\r\n\r\n\t\tfor (info in xmlImportedScripts) if (info.shortLived) {\r\n\t\t\tvar script = info.getScript();\r\n\t\t\tif (script == null) continue;\r\n\r\n\t\t\tscripts.remove(script);\r\n\t\t\tscript.destroy();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic static var characterProperties:Array<String> = [\r\n\t\t\"x\", \"y\", \"sprite\", \"scale\", \"antialiasing\",\r\n\t\t\"flipX\", \"camx\", \"camy\", \"centercam\", \"isPlayer\", \"icon\",\r\n\t\t\"color\", \"gameOverChar\", \"holdTime\", \"applyStageMatrix\",\r\n\t\t\"postStageMatrixApply\", \"defFps\"\r\n\t];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "applyXML",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function applyXML(xml:Access) { // just for now till i remake the dumb editor\r\n\t\tgameOverCharacter = Character.FALLBACK_DEAD_CHARACTER;\r\n\t\tcameraOffset.set(0, 0);\r\n\t\tglobalOffset.set(0, 0);\r\n\t\tplayerOffsets = false;\r\n\t\tflipX = false;\r\n\t\tholdTime = 4;\r\n\t\ticonColor = null;\r\n\r\n\t\tanimation.destroyAnimations();\r\n\t\tanimDatas.clear();\r\n\r\n\t\t__baseFlipped = false;\r\n\t\tbuildCharacter(xml);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildCharacter",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function buildCharacter(xml:Access) {\r\n\t\tfor(node in xml.elements)\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\tif (!XMLImportedScriptInfo.shouldLoadBefore(node)) continue;\r\n\t\t\t\t\tprepareInfos(node);\r\n\t\t\t}\r\n\r\n\t\txml = scripts.event(\"onCharacterXMLParsed\", EventManager.get(CharacterXMLEvent).recycle(this, xml)).xml;\r\n\r\n\t\tname = sprite = curCharacter;\r\n\t\tspriteAnimType = BEAT;\r\n\t\tthis.xml = xml; // Modders wassup :D\r\n\r\n\t\tif (xml.x.exists(\"isPlayer\")) playerOffsets = (xml.x.get(\"isPlayer\") == \"true\");\r\n\t\tif (xml.x.exists(\"x\")) globalOffset.x = Std.parseFloat(xml.x.get(\"x\"));\r\n\t\tif (xml.x.exists(\"y\")) globalOffset.y = Std.parseFloat(xml.x.get(\"y\"));\r\n\t\tif (xml.x.exists(\"gameOverChar\")) gameOverCharacter = xml.x.get(\"gameOverChar\");\r\n\t\tif (xml.x.exists(\"defFps\")) defaultAimFPS = Std.parseFloat(xml.x.get(\"defFps\"));\r\n\t\tif (xml.x.exists(\"camx\")) cameraOffset.x = Std.parseFloat(xml.x.get(\"camx\"));\r\n\t\tif (xml.x.exists(\"camy\")) cameraOffset.y = Std.parseFloat(xml.x.get(\"camy\"));\r\n\t\tif (xml.x.exists(\"holdTime\")) holdTime = Std.parseFloat(xml.x.get(\"holdTime\")).getDefaultFloat(4);\r\n\t\tif (xml.x.exists(\"flipX\")) flipX = (xml.x.get(\"flipX\") == \"true\");\r\n\t\tif (xml.x.exists(\"icon\")) icon = xml.x.get(\"icon\");\r\n\t\tif (xml.x.exists(\"color\")) iconColor = FlxColor.fromString(xml.x.get(\"color\"));\r\n\t\tif (xml.x.exists(\"scale\")) {\r\n\t\t\tvar scale:Float = Std.parseFloat(xml.x.get(\"scale\")).getDefaultFloat(1);\r\n\t\t\tthis.scale.set(scale, scale);\r\n\t\t\tupdateHitbox();\r\n\t\t}\r\n\t\tif (xml.x.exists(\"antialiasing\")) antialiasing = (xml.x.get(\"antialiasing\") == \"true\");\r\n\t\tif (xml.x.exists(\"applyStageMatrix\")) applyStageMatrix = (xml.x.get(\"applyStageMatrix\") == \"true\");\r\n\t\tif (xml.x.exists(\"postStageMatrixApply\")) postStageMatrixApply = (xml.x.get(\"postStageMatrixApply\") == \"true\");\r\n\t\tif (xml.x.exists(\"sprite\")) sprite = xml.x.get(\"sprite\");\r\n\t\tif (xml.x.exists(\"swfMode\")) animateSettings.swfMode = (xml.x.get(\"swfMode\") == \"true\");\r\n\t\tif (xml.x.exists(\"cacheOnLoad\")) animateSettings.cacheOnLoad = (xml.x.get(\"cacheOnLoad\") == \"true\");\r\n\t\tif (xml.x.exists(\"filterQuality\")) {\r\n\t\t\tvar val = xml.x.get(\"filterQuality\");\r\n\t\t\tvar qualityInt = Std.parseInt(val);\r\n\t\t\tif (qualityInt != null) {\r\n\t\t\t\tanimateSettings.filterQuality = cast(qualityInt, FilterQuality);\r\n\t\t\t} else {\r\n\t\t\t\tvar values = [\"high\", \"medium\", \"low\", \"rudy\"];\r\n\t\t\t\tvar index = values.indexOf(val.toLowerCase());\r\n\t\t\t\tif (index > -1)\r\n\t\t\t\t\tanimateSettings.filterQuality = cast(index, FilterQuality);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar hasInterval:Bool = xml.x.exists(\"interval\");\r\n\t\tif (hasInterval) beatInterval = Std.parseInt(xml.x.get(\"interval\"));\r\n\r\n\t\tXMLUtil.appendSpriteSheetsFromXML(this, xml, 'characters/');\r\n\t\t\r\n\t\tif (xml.x.exists(\"centercam\")) centeredCamera = (xml.x.get(\"centercam\") == \"true\");\r\n\t\telse if (Flags.USE_LEGACY_CENTER_CAM) centeredCamera = true;\r\n\t\telse centeredCamera = !isAnimate;\r\n\t\t\r\n\t\tfor(node in xml.elements) {\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"anim\":\t\r\n\t\t\t\t\tif (defaultAimFPS != 24){\r\n\t\t\t\t\t\tif (!node.x.exists(\"fps\")) {\r\n\t\t\t\t\t\t\tnode.x.set('fps', Std.string(defaultAimFPS));\r\n\t\t\t\t\t\t} \r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tXMLUtil.addXMLAnimation(this, node);\r\n\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\tif (XMLImportedScriptInfo.shouldLoadBefore(node)) continue;\r\n\t\t\t\t\tprepareInfos(node);\r\n\t\t\t\tdefault:\r\n\t\t\t\t\t// nothing\r\n\t\t\t}\r\n\r\n\t\t\tscripts.event(\"onCharacterNodeParsed\", EventManager.get(CharacterNodeEvent).recycle(this, node, node.name));\r\n\t\t}\r\n\r\n\t\tfor (attribute in xml.x.attributes())\r\n\t\t\tif (!characterProperties.contains(attribute)) \r\n\t\t\t\textra[attribute] = xml.x.get(attribute);\r\n\r\n\t\tfixChar(__switchAnims, !hasInterval);\r\n\t\tdance();\r\n\r\n\t\tfor (info in xmlImportedScripts) if (info.shortLived) {\r\n\t\t\tvar script = info.getScript();\r\n\t\t\tif (script == null) continue;\r\n\r\n\t\t\tscripts.remove(script);\r\n\t\t\tscript.destroy();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterProperties",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterAnimProperties",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildXML",
+			"args": [
+				{
+					"name": "animsOrder",
+					"type": "Array<String>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Xml",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function buildXML(?animsOrder:Array<String>):Xml {\r\n\t\tvar xml:Xml = Xml.createElement(\"character\");\r\n\t\txml.attributeOrder = characterProperties.copy();\r\n\r\n\t\tif (globalOffset.x != 0) xml.set(\"x\", Std.string(FlxMath.roundDecimal(globalOffset.x, 2)));\r\n\t\tif (globalOffset.y != 0) xml.set(\"y\", Std.string(FlxMath.roundDecimal(globalOffset.y, 2)));\r\n\r\n\t\tif (cameraOffset.x != 0) xml.set(\"camx\", Std.string(FlxMath.roundDecimal(cameraOffset.x, 2)));\r\n\t\tif (cameraOffset.y != 0) xml.set(\"camy\", Std.string(FlxMath.roundDecimal(cameraOffset.y, 2)));\r\n\t\tif (centeredCamera != !isAnimate || Flags.USE_LEGACY_CENTER_CAM) xml.set(\"centercam\", centeredCamera ? \"true\" : \"false\");\r\n\r\n\t\tif (holdTime != 4) xml.set(\"holdTime\", Std.string(FlxMath.roundDecimal(holdTime, 4)));\r\n\r\n\t\tvar realFlipped:Bool = isPlayer ? !__baseFlipped : __baseFlipped;\r\n\t\tif (realFlipped) xml.set(\"flipX\", \"true\");\r\n\t\tif (icon != curCharacter) xml.set(\"icon\", getIcon());\r\n\r\n\t\tif (gameOverCharacter != Character.FALLBACK_DEAD_CHARACTER) xml.set(\"gameOverChar\", gameOverCharacter);\r\n\t\tif (iconColor != null) xml.set(\"color\", iconColor.toWebString());\r\n\t\tif (defaultAimFPS != 24) xml.set(\"defFps\", Std.string(defaultAimFPS));\r\n\r\n\t\tif (sprite != curCharacter) xml.set(\"sprite\", sprite);\r\n\t\tif (scale.x != 1) xml.set(\"scale\", Std.string(FlxMath.roundDecimal(scale.x, 4)));\r\n\t\tif (!antialiasing) xml.set(\"antialiasing\", antialiasing == true ? \"true\" : \"false\");\r\n\r\n\t\tif (isPlayer) xml.set(\"isPlayer\", isPlayer == true ? \"true\" : \"false\");\r\n\t\tif (isAnimate) {\r\n\t\t\txml.set(\"applyStageMatrix\", applyStageMatrix ? \"true\" : \"false\");\r\n\t\t\tif (postStageMatrixApply != false || Flags.USE_LEGACY_FLXANIMATE_STAGE_MATRIX)\r\n\t\t\t\txml.set(\"postStageMatrixApply\", postStageMatrixApply ? \"true\" : \"false\");\r\n\t\t}\r\n\r\n\t\tvar anims:Array<AnimData> = [];\r\n\t\tif (animsOrder != null) {\r\n\t\t\tfor (name in animsOrder)\r\n\t\t\t\tif (animDatas.exists(name)) anims.push(animDatas.get(name));\r\n\t\t} else\r\n\t\t\tanims = Lambda.array(animDatas);\r\n\r\n\t\tfor (anim in anims) {\r\n\t\t\tvar animXml:Xml = Xml.createElement('anim');\r\n\t\t\tanimXml.attributeOrder = characterAnimProperties;\r\n\r\n\t\t\tanimXml.set(\"name\", anim.name);\r\n\t\t\tanimXml.set(\"anim\", anim.anim);\r\n\t\t\tif (anim.loop) animXml.set(\"loop\", Std.string(anim.loop));\r\n\t\t\tif (FlxMath.roundDecimal(anim.fps, 2) != defaultAimFPS) animXml.set(\"fps\", Std.string(FlxMath.roundDecimal(anim.fps, 2)));\r\n\r\n\t\t\tvar offset:FlxPoint = getAnimOffset(anim.name);\r\n\t\t\tif (FlxMath.roundDecimal(offset.x, 2) != 0) animXml.set(\"x\", Std.string(FlxMath.roundDecimal(offset.x, 2)));\r\n\t\t\tif (FlxMath.roundDecimal(offset.y, 2) != 0) animXml.set(\"y\", Std.string(FlxMath.roundDecimal(offset.y, 2)));\r\n\t\t\toffset.putWeak();\r\n\r\n\t\t\tif (anim.indices.length > 0)\r\n\t\t\t\tanimXml.set(\"indices\", CoolUtil.formatNumberRange(anim.indices));\r\n\r\n\t\t\tif (anim.label)\r\n\t\t\t\tanimXml.set(\"label\", \"true\");\r\n\r\n\t\t\txml.addChild(animXml);\r\n\t\t}\r\n\r\n\t\tfor (name => val in extra)\r\n\t\t\tif (!xml.attributeOrder.contains(name)) {\r\n\t\t\t\txml.attributeOrder.push(name);\r\n\t\t\t\txml.set(name, Std.string(val));\r\n\t\t\t}\r\n\r\n\t\tthis.xml = new Access(xml);\r\n\r\n\t\treturn xml;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getIcon",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getIcon()\r\n\t\treturn (icon != null) ? icon : curCharacter;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnimOrder",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getAnimOrder()\r\n\t\treturn [for(a in xml.nodes.anim) if(a.has.name) a.att.name];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "danceInterval",
+			"type": "Int",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "FALLBACK_CHARACTER",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "FALLBACK_DEAD_CHARACTER",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getXMLFromCharName",
+			"args": [
+				{
+					"name": "character",
+					"type": "OneOfTwo<String, Character>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Access",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// ---- end of Backwards compat ----\r\n\r\n\r\n\tpublic static function getXMLFromCharName(character:OneOfTwo<String, Character>):Access {\r\n\t\tvar char:Character = null;\r\n\t\tif (character is Character) {\r\n\t\t\tchar = cast character;\r\n\t\t\tcharacter = char.curCharacter;\r\n\t\t}\r\n\r\n\t\tvar xml:Access = null;\r\n\t\twhile (true) {\r\n\t\t\tvar xmlPath:String = Paths.xml('characters/$character');\r\n\t\t\tif (!Assets.exists(xmlPath)) {\r\n\t\t\t\tcharacter = FALLBACK_CHARACTER;\r\n\t\t\t\tif (char != null)\r\n\t\t\t\t\tchar.curCharacter = character;\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\r\n\t\t\tvar plainXML:String = Assets.getText(xmlPath);\r\n\t\t\ttry {\r\n\t\t\t\tvar charXML:Xml = Xml.parse(plainXML).firstElement();\r\n\t\t\t\tif (charXML == null) throw new Exception(\"Missing \\\"character\\\" node in XML.\");\r\n\t\t\t\txml = new Access(charXML);\r\n\t\t\t} catch (e) {\r\n\t\t\t\tLogs.trace('Error while loading character ${character}: ${e}', ERROR);\r\n\r\n\t\t\t\tcharacter = FALLBACK_CHARACTER;\r\n\t\t\t\tif (char != null)\r\n\t\t\t\t\tchar.curCharacter = character;\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tbreak;\r\n\t\t}\r\n\t\treturn xml;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getIconFromCharName",
+			"args": [
+				{
+					"name": "character",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "defaultIcon",
+					"type": "String",
+					"optional": true,
+					"def": "null"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getIconFromCharName(?character:String, ?defaultIcon:String = null) {\r\n\t\tif(character == null) return Flags.DEFAULT_HEALTH_ICON;\r\n\t\tif(defaultIcon == null) defaultIcon = character;\r\n\t\tvar icon:String = defaultIcon;\r\n\r\n\t\tvar xml:Access = getXMLFromCharName(character);\r\n\t\tif (xml != null && xml.x.exists(\"icon\")) icon = xml.x.get(\"icon\");\r\n\r\n\t\treturn icon;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getList",
+			"args": [
+				{
+					"name": "mods",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "includeFolders",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": "'data/characters/'"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getList(?mods:Bool = false, includeFolders:Bool = false, folder:String = 'data/characters/'):Array<String> {\r\n\t\tvar list:Array<String> = [];\r\n\t\tif(includeFolders) {\r\n\t\t\tfor (path in Paths.getFolderDirectories(folder, true, mods ? MODS : BOTH)) {\r\n\t\t\t\tif(!path.endsWith(\"/\")) path += \"/\";\r\n\t\t\t\tlist.push(path);\r\n\t\t\t}\r\n\t\t}\r\n\t\tfor (path in Paths.getFolderContent(folder, true, mods ? MODS : BOTH))\r\n\t\t\tif (Path.extension(path) == \"xml\")\r\n\t\t\t\tlist.push(CoolUtil.getFilename(path));\r\n\t\treturn list;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,351 @@
+{
+	"kind": "class",
+	"name": "TreeMenu",
+	"pkg": "funkin.options",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "onMenuClosed",
+			"type": "FlxTypedSignal<TreeMenuScreen->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onMenuChanged",
+			"type": "FlxTypedSignal<TreeMenuScreen->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tree",
+			"type": "Array<TreeMenuScreen>",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "treeLength",
+			"type": "Int",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "previousMenus",
+			"type": "Array<TreeMenuScreen>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "destroyMenus",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "exitCallback",
+			"type": "TreeMenu->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "titleLabel",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "descLabel",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bgLabel",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "exitCallback",
+					"type": "TreeMenu->Void",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "scriptsAllowed",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "scriptName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?exitCallback:TreeMenu->Void,\r\n\t\tscriptsAllowed:Bool = true, ?scriptName:String)\r\n\t{\r\n\t\tsuper(scriptsAllowed, scriptName);\r\n\t\tthis.exitCallback = exitCallback;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateMenuPositions",
+			"args": [
+				{
+					"name": "fromIndex",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "cameraScroll",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateMenuPositions(fromIndex:Int = 0, cameraScroll = false) {\r\n\t\tvar last = tree[fromIndex - 1], menu:TreeMenuScreen;\r\n\t\twhile (fromIndex < treeLength) if ((menu = tree[fromIndex++]) != null) {\r\n\t\t\tmenu.x = last == null ? 0 : last.x + Math.max(FlxG.width, last.width);\r\n\t\t\t(last = menu).parent = this;\r\n\t\t}\r\n\r\n\t\tif (cameraScroll && last != null) {\r\n\t\t\tif (menuChangeTween != null && menuChangeTween.active) menuChangeTween.cancel();\r\n\t\t\tFlxG.camera.scroll.x = last.x;\r\n\r\n\t\t\tfor (menu in tree) if (menu != null) menu.transitioning = false;\r\n\t\t\tfor (menu in previousMenus) if (menu != null) menu.transitioning = false;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateLabels",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateLabels() {\r\n\t\tvar s = \"\", last = tree.last();\r\n\t\tfor (menu in tree) if (menu != null) s += menu.name + \" > \";\r\n\r\n\t\ttitleLabel.text = s;\r\n\t\tdescLabel.y = titleLabel.y + titleLabel.height + 2;\r\n\r\n\t\tupdateDesc();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateDesc",
+			"args": [
+				{
+					"name": "customText",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateDesc(?customText:String) {\r\n\t\tvar last = tree.last();\r\n\r\n\t\tdescLabel.text = last.desc;\r\n\t\tif (customText != null && customText.length > 0) descLabel.text += \"\\n\" + customText;\r\n\t\telse if (last.curSelected >= 0 && last.curSelected < last.length && last.members[last.curSelected] is ITreeOption)\r\n\t\t\tdescLabel.text += \"\\n\" + cast(last.members[last.curSelected], ITreeOption).desc;\r\n\r\n\t\tbgLabel.scale.set(FlxG.width, descLabel.y + descLabel.height + 2);\r\n\t\tbgLabel.updateHitbox();\r\n\r\n\t\tFramerate.offset.y = bgLabel.height + 2;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addMenu",
+			"args": [
+				{
+					"name": "menu",
+					"type": "TreeMenuScreen",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TreeMenuScreen",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addMenu(menu:TreeMenuScreen):TreeMenuScreen {\r\n\t\tif (menu == null) return null;\r\n\t\tif (tree.indexOf(menu) != -1) return menu;\r\n\r\n\t\ttree.push(menu);\r\n\t\tif (!__treeCreated) return menu;\r\n\r\n\t\tmenu.parent = this;\r\n\t\ttreeLength++;\r\n\r\n\t\tvar prev = tree[treeLength - 2];\r\n\t\tmenu.x = prev == null ? 0 : prev.x + Math.max(FlxG.width, prev.width);\r\n\r\n\t\tdestroyPreviousMenus();\r\n\t\tmenuChanged();\r\n\t\tmenu.inputEnabled = true;\r\n\t\tif (prev != null) prev.inputEnabled = false;\r\n\r\n\t\treturn menu;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "insertMenu",
+			"args": [
+				{
+					"name": "position",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "menu",
+					"type": "TreeMenuScreen",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TreeMenuScreen",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function insertMenu(position:Int, menu:TreeMenuScreen):TreeMenuScreen {\r\n\t\tif (menu == null) return null;\r\n\t\tif (tree.indexOf(menu) != -1) return menu;\r\n\r\n\t\tif (position < 0) position = treeLength - ((-position - 1) % treeLength);\r\n\r\n\t\ttree.insert(position, menu);\r\n\t\tif (!__treeCreated) return menu;\r\n\r\n\t\tmenu.parent = this;\r\n\r\n\t\tvar lastChanged = position >= treeLength++;\r\n\t\tupdateMenuPositions(position, !lastChanged);\r\n\r\n\t\tif (lastChanged) {\r\n\t\t\tdestroyPreviousMenus();\r\n\t\t\tmenuChanged();\r\n\t\t\tmenu.inputEnabled = true;\r\n\t\t\tif (treeLength > 0) tree[treeLength - 2].inputEnabled = false;\r\n\t\t}\r\n\r\n\t\treturn menu;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "popMenu",
+			"args": [],
+			"ret": "TreeMenuScreen",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function popMenu():TreeMenuScreen\r\n\t\treturn removeMenuPosition(treeLength - 1);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeMenu",
+			"args": [
+				{
+					"name": "menu",
+					"type": "TreeMenuScreen",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TreeMenuScreen",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function removeMenu(menu:TreeMenuScreen):TreeMenuScreen\r\n\t\treturn if (menu == null) null;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeMenuPosition",
+			"args": [
+				{
+					"name": "position",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TreeMenuScreen",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function removeMenuPosition(position:Int):TreeMenuScreen {\r\n\t\tif (position < 0 || position >= treeLength || treeLength == 0) return null;\r\n\r\n\t\ttree[position] = tree[tree.length - 1];\r\n\t\tvar menu = tree.pop();\r\n\t\tmenu.parent = null;\r\n\r\n\t\tif (!__treeCreated) return menu;\r\n\r\n\t\tpreviousMenus.push(menu);\r\n\t\tif (position == --treeLength) {\r\n\t\t\tmenuChanged();\r\n\t\t\tmenu.inputEnabled = false;\r\n\t\t\tif (treeLength > 0) tree[treeLength - 1].inputEnabled = true;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tupdateMenuPositions(position, true);\r\n\t\t\tupdateLabels();\r\n\t\t}\r\n\r\n\t\tonMenuClosed.dispatch(menu);\r\n\t\treturn menu;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "menuChanged",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function menuChanged() {\r\n\t\tif (treeLength == 0) exit();\r\n\t\telse {\r\n\t\t\tupdateLabels();\r\n\r\n\t\t\tif (menuChangeTween != null && menuChangeTween.active) menuChangeTween.cancel();\r\n\t\t\tmenuChangeTween = FlxTween.tween(FlxG.camera.scroll, {x: tree.last().x}, 1.5, {ease: menuTransitionEase, onComplete: (t) -> {\r\n\t\t\t\tfor (menu in tree) if (menu != null) menu.transitioning = false;\r\n\t\t\t\tfor (menu in previousMenus) if (menu != null) menu.transitioning = false;\r\n\t\t\t}});\r\n\r\n\t\t\tfor (menu in tree) if (menu != null) menu.transitioning = true;\r\n\t\t}\r\n\r\n\t\tfor (menu in previousMenus) if (menu != null) menu.transitioning = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadStrings",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reloadStrings() {\r\n\t\tfor (menu in tree) if (menu != null) menu.reloadStrings();\r\n\t\tupdateLabels();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroyPreviousMenus",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function destroyPreviousMenus() {\r\n\t\tfor (menu in previousMenus) menu.destroy();\r\n\t\tpreviousMenus.resize(0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function exit() {\r\n\t\tif (exitCallback != null) return exitCallback(this);\r\n\r\n\t\tFlxG.switchState(new funkin.menus.MainMenuState());\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateAll",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateAll(elapsed:Float) {\r\n\t\tfor (menu in tree) if (menu != null && menu.active && menu.exists) menu.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "menuTransitionEase",
+			"args": [
+				{
+					"name": "e",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function menuTransitionEase(e:Float) return FlxEase.quintInOut(FlxEase.cubeOut(e));",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

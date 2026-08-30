@@ -1,0 +1,102 @@
+{
+	"kind": "class",
+	"name": "TurboBasic",
+	"pkg": "funkin.backend",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "DEFAULT_DELAY",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_INTERVAL",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "delay",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "interval",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "activated",
+			"type": "Bool",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pressed",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "allPress",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "delay",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "interval",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "allPress",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?delay:Float, ?interval:Float, allPress = false) {\r\n\t\tsuper();\r\n\t\tthis.delay = delay != null ? delay : DEFAULT_DELAY;\r\n\t\tthis.interval = interval != null ? interval : DEFAULT_INTERVAL;\r\n\t\tthis.allPress = allPress;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

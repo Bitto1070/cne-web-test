@@ -1,0 +1,109 @@
+{
+	"kind": "class",
+	"name": "MultiFramesCollection",
+	"pkg": "funkin.backend.assets",
+	"doc": {
+		"text": "Base class for all frame collections.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "parentedFrames",
+			"type": "Array<FlxFramesCollection>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "parent",
+					"type": "FlxGraphic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "border",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(parent:FlxGraphic, ?border:FlxPoint)\r\n\t{\r\n\t\tsuper(parent, USER(\"MULTI\"), border);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "findFrame",
+			"args": [
+				{
+					"name": "graphic",
+					"type": "FlxGraphic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "border",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "MultiFramesCollection",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function findFrame(graphic:FlxGraphic, ?border:FlxPoint):MultiFramesCollection\r\n\t{\r\n\t\tif (border == null)\r\n\t\t\tborder = FlxPoint.weak();\r\n\r\n\t\tvar atlasFrames:Array<MultiFramesCollection> = cast graphic.getFramesCollections(USER(\"MULTI\"));\r\n\r\n\t\tfor (atlas in atlasFrames)\r\n\t\t\tif (atlas.border.equals(border))\r\n\t\t\t\treturn atlas;\r\n\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Returns the `FlxAtlasFrame` of the specified `FlxGraphic` object.\n\n         Could be `null` if `FlxGraphic` doesn't have it yet.",
+				"params": {
+					"graphic": "`FlxGraphic` object to find the `FlxAtlasFrames` collection for."
+				},
+				"returns": "`FlxAtlasFrames` collection for the specified `FlxGraphic` object",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addFrames",
+			"args": [
+				{
+					"name": "collection",
+					"type": "FlxFramesCollection",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addFrames(collection:FlxFramesCollection) {\r\n\t\tif (collection == null || collection.frames == null) return;\r\n\r\n\t\tcollection.parent.incrementUseCount();\r\n\t\tparentedFrames.push(collection);\r\n\r\n\t\tfor(f in collection.frames) {\r\n\t\t\tif (f != null) {\r\n\t\t\t\tpushFrame(f);\r\n\t\t\t\tf.parent = collection.parent;\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy():Void\r\n\t{\r\n\t\tif(parentedFrames != null) {\r\n\t\t\tfor(collection in parentedFrames) {\r\n\t\t\t\tif(collection != null)\r\n\t\t\t\t\tcollection.parent.decrementUseCount();\r\n\t\t\t}\r\n\t\t\tparentedFrames = null;\r\n\t\t}\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

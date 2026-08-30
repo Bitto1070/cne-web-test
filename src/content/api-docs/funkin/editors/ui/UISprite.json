@@ -1,0 +1,218 @@
+{
+	"kind": "class",
+	"name": "UISprite",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [
+		"@:allow(funkin.editors.ui.UIState)",
+		"@:allow(funkin.editors.ui.UIUtil)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "members",
+			"type": "Array<FlxBasic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hovered",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hoveredByChild",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pressed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canBeHovered",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hoverCallback",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cursor",
+			"type": "CodeCursor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "focused",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "autoAlpha",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\thovered = false;\r\n\t\tpressed = false;\r\n\t\thoveredByChild = false;\r\n\r\n\t\tsuper.update(elapsed);\r\n\t\tif (selectable)\r\n\t\t\tupdateButton();\r\n\r\n\t\t@:privateAccess {\r\n\t\t\t__oldDefCams = FlxCamera._defaultCameras;\r\n\t\t\tFlxCamera._defaultCameras = cameras;\r\n\r\n\t\t\tfor(m in members)\r\n\t\t\t\tif(m.exists && m.active)\r\n\t\t\t\t\tm.update(elapsed);\r\n\r\n\t\t\tFlxCamera._defaultCameras = __oldDefCams;\r\n\t\t}\r\n\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tdrawSuper();\r\n\t\tdrawMembers();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "drawSuper",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function drawSuper() {\r\n\t\tsuper.draw();\r\n\t\t__lastDrawCameras = cameras.copy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawMembers",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function drawMembers() {\r\n\t\t@:privateAccess {\r\n\t\t\t__oldDefCams = FlxCamera._defaultCameras;\r\n\t\t\tFlxCamera._defaultCameras = cameras;\r\n\r\n\t\t\tfor(m in members)\r\n\t\t\t\tif(m.exists && m.visible)\r\n\t\t\t\t\tm.draw();\r\n\r\n\t\t\tFlxCamera._defaultCameras = __oldDefCams;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tmembers = FlxDestroyUtil.destroyArray(members);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateButton",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateButton() {\r\n\t\tif(canBeHovered)\r\n\t\t\tupdateButtonHandler();\r\n\t\telse {\r\n\t\t\tif(FlxG.mouse.pressed) {\r\n\t\t\t\tupdateButtonHandler();\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButtonHandler",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateButtonHandler() {\r\n\t\tUIState.state.updateButtonHandler(this, onHovered);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onHovered",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onHovered() {\r\n\t\thovered = true;\r\n\t\tif (FlxG.mouse.pressed)\r\n\t\t\tpressed = true;\r\n\t\tif (hoverCallback != null)\r\n\t\t\thoverCallback();\r\n\t}",
+			"doc": {
+				"text": "Called whenever the sprite is being hovered by the mouse.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateSpriteRect",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateSpriteRect() {\r\n\t\t__rect.set(x, y, width, height);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

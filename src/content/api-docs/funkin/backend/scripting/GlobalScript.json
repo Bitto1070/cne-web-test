@@ -1,0 +1,138 @@
+{
+	"kind": "class",
+	"name": "GlobalScript",
+	"pkg": "funkin.backend.scripting",
+	"doc": {
+		"text": "Class for THE Global Script, aka script that runs in the background at all times.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "scripts",
+			"type": "ScriptPack",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tif(initialized) return;\r\n\t\tinitialized = true;\r\n\t\t#if MOD_SUPPORT\r\n\t\tModsFolder.onModSwitch.add(onModSwitch);\r\n\t\t#end\r\n\r\n\t\tConductor.onBeatHit.add(beatHit);\r\n\t\tConductor.onStepHit.add(stepHit);\r\n\r\n\t\tFlxG.signals.focusGained.add(function() {\r\n\t\t\tcall(\"focusGained\");\r\n\t\t});\r\n\t\tFlxG.signals.focusLost.add(function() {\r\n\t\t\tcall(\"focusLost\");\r\n\t\t});\r\n\t\tFlxG.signals.gameResized.add(function(w:Int, h:Int) {\r\n\t\t\tcall(\"gameResized\", [w, h]);\r\n\t\t});\r\n\t\tFlxG.signals.postDraw.add(function() {\r\n\t\t\tcall(\"postDraw\");\r\n\t\t});\r\n\t\tFlxG.signals.postGameReset.add(function() {\r\n\t\t\tcall(\"postGameReset\");\r\n\t\t});\r\n\t\tFlxG.signals.postGameStart.add(function() {\r\n\t\t\tcall(\"postGameStart\");\r\n\t\t});\r\n\t\tFlxG.signals.postStateSwitch.add(function() {\r\n\t\t\tcall(\"postStateSwitch\");\r\n\t\t});\r\n\t\tFlxG.signals.postUpdate.add(function() {\r\n\t\t\tcall(\"postUpdate\", [FlxG.elapsed]);\r\n\r\n\t\t\tif (reloading) {\r\n\t\t\t\treloading = false;\r\n\t\t\t\tMusicBeatState.ALLOW_DEV_RELOAD = _lastAllow_Reload;\r\n\t\t\t}\r\n\t\t});\r\n\t\tFlxG.signals.preDraw.add(function() {\r\n\t\t\tcall(\"preDraw\");\r\n\t\t});\r\n\t\tFlxG.signals.preGameReset.add(function() {\r\n\t\t\tcall(\"preGameReset\");\r\n\t\t});\r\n\t\tFlxG.signals.preGameStart.add(function() {\r\n\t\t\tcall(\"preGameStart\");\r\n\t\t});\r\n\t\tFlxG.signals.preStateCreate.add(function(state:FlxState) {\r\n\t\t\tcall(\"preStateCreate\", [state]);\r\n\t\t});\r\n\t\tFlxG.signals.preStateSwitch.add(function() {\r\n\t\t\tcall(\"preStateSwitch\");\r\n\r\n\t\t\tvar stateName = Type.getClassName(Type.getClass(@:privateAccess FlxG.game._requestedState));\r\n\t\t\tstateName = stateName.substring(stateName.lastIndexOf(\".\") + 1);\r\n\t\t\tif (Flags.MOD_REDIRECT_STATES.exists(stateName)) {\r\n\t\t\t\t@:privateAccess {\r\n\t\t\t\t\tvar classFromString = Type.resolveClass(Flags.MOD_REDIRECT_STATES.get(stateName));\r\n\t\t\t\t\tif (classFromString != null) FlxG.game._requestedState = Type.createInstance(classFromString, []);\r\n\t\t\t\t\telse FlxG.game._requestedState = new funkin.backend.scripting.ModState(Flags.MOD_REDIRECT_STATES.get(stateName));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t});\r\n\r\n\t\tFlxG.signals.preUpdate.add(function() {\r\n\t\t\tcall(\"preUpdate\", [FlxG.elapsed]);\r\n\t\t\tcall(\"update\", [FlxG.elapsed]);\r\n\r\n\t\t\tif (FlxG.keys.pressed.SHIFT) {\r\n\t\t\t\t// If we want, we could just make reseting GlobalScript it's own keybind, but for now this works.\r\n\t\t\t\tif (PlayerSettings.solo.controls.DEV_RELOAD) {\r\n\t\t\t\t\treloading = true;\r\n\t\t\t\t\tLogs.trace(\"Reloading Global Scripts...\", INFO, YELLOW);\r\n\r\n\t\t\t\t\t// yeah its a bit messy, sorry. This just prevents actually reloading the actual state.\r\n\t\t\t\t\t_lastAllow_Reload = MusicBeatState.ALLOW_DEV_RELOAD;\r\n\t\t\t\t\tMusicBeatState.ALLOW_DEV_RELOAD = false;\r\n\r\n\t\t\t\t\t// Would be better to just re-initalize GlobalScript so there aren't any lose ends.\r\n\t\t\t\t\tonModSwitch(#if MOD_SUPPORT ModsFolder.currentModFolder #else null #end);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onModSwitch",
+			"args": [
+				{
+					"name": "newMod",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function onModSwitch(newMod:String) {\r\n\t\tdestroy();\r\n\t\tscripts = new ScriptPack(\"GlobalScript\");\r\n\t\tfor (lib in funkin.backend.assets.ModsFolder.getLoadedModsLibs()) {\r\n\t\t\tvar modName = lib.modName;\r\n\t\t\tvar path = Paths.script('data/global/LIB_$modName');\r\n\t\t\tvar script = Script.create(path);\r\n\t\t\tif (script is DummyScript) continue;\r\n\t\t\tscript.remappedNames.set(script.fileName, '$modName:${script.fileName}');\r\n\t\t\t// so you can get the current mod's library in GloablScript :)\r\n\t\t\t// you should not make this a static variable then all scripts will try to reference the 1 static variable, which will be overwritten :yoikes:\r\n\t\t\tscript.set(\"MOD_LIBRARY\", lib);\r\n\t\t\tscripts.add(script);\r\n\t\t\tscript.load();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "event",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function event<T:CancellableEvent>(name:String, event:T):T {\r\n\t\tif (scripts != null)\r\n\t\t\tscripts.event(name, event);\r\n\t\treturn event;\r\n\t}\r\n\r\n\tpublic static inline function call(name:String, ?args:Array<Dynamic>)\r\n\t\tif (scripts != null) scripts.call(name, args);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "call",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function call(name:String, ?args:Array<Dynamic>)\r\n\t\tif (scripts != null) scripts.call(name, args);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function beatHit(curBeat:Int)\r\n\t\tcall(\"beatHit\", [curBeat]);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curStep",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function stepHit(curStep:Int)\r\n\t\tcall(\"stepHit\", [curStep]);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function destroy() if (scripts != null) {\r\n\t\tcall(\"destroy\");\r\n\t\tscripts = FlxDestroyUtil.destroy(scripts);\r\n\t}\r\n}\r\n#end",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

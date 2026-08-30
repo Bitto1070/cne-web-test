@@ -1,0 +1,31 @@
+{
+	"kind": "class",
+	"name": "AxisGizmo",
+	"pkg": "funkin.editors.extra",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tsuper.draw();\r\n\r\n\t\tfor (camera in cameras) {\r\n\t\t\tif (DrawUtil.line == null) DrawUtil.createDrawers();\r\n\t\t\tDrawUtil.line.camera = camera; DrawUtil.line.alpha = 0.85;\r\n\r\n\t\t\tCoolUtil.pointToScreenPosition(FlxPoint.weak(), FlxG.camera, _worldPos);\r\n\t\t\t// Stole these colors directly from godot >:D -luanr\r\n\t\t\tDrawUtil.drawLine(\r\n\t\t\t\tFlxPoint.weak(_worldPos.x, 0), \r\n\t\t\t\tFlxPoint.weak(_worldPos.x, camera.height), \r\n\t\t\t1, 0xFF76BC02);\r\n\r\n\t\t\tDrawUtil.drawLine(\r\n\t\t\t\tFlxPoint.weak(0, _worldPos.y), \r\n\t\t\t\tFlxPoint.weak(camera.width, _worldPos.y),\r\n\t\t\t1, 0xFFD72C47);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t_worldPos.put();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

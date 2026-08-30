@@ -1,0 +1,110 @@
+{
+	"kind": "class",
+	"name": "ParamFormatInfo",
+	"pkg": "funkin.backend.utils.translations",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "strings",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "indexes",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(str:String) {\r\n\t\tvar i = 0;\r\n\r\n\t\twhile (i < str.length) {\r\n\t\t\tvar fi = str.indexOf(\"{\", i); // search from the start of i\r\n\r\n\t\t\tif (fi == -1) {\r\n\t\t\t\t// if there are no more parameters, just add the rest of the string\r\n\t\t\t\tthis.strings.push(str.substring(i));\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\r\n\t\t\tvar fe = str.indexOf(\"}\", fi);\r\n\r\n\t\t\tthis.strings.push(str.substring(i, fi));\r\n\t\t\tthis.indexes.push(Std.parseInt(str.substring(fi+1, fe)));\r\n\t\t\ti = fe + 1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isValid",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function isValid(str:String):Bool {\r\n\t\tvar fi = new ParamFormatInfo(str);\r\n\t\treturn fi.indexes.length > 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "returnOnlyIfValid",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "IFormatInfo",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function returnOnlyIfValid(str:String):IFormatInfo {\r\n\t\tvar fi = new ParamFormatInfo(str);\r\n\t\treturn fi.indexes.length > 0 ? fi : null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "format",
+			"args": [
+				{
+					"name": "params",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function format(params:Array<Dynamic>):String {\r\n\t\tif (params == null) params = [];\r\n\r\n\t\tvar lenStr = strings.length;\r\n\t\tvar lenInd = indexes.length;\r\n\r\n\t\tvar arr = new haxe.ds.Vector<String>(lenStr + ((lenStr < lenInd) ? lenStr : lenInd));\r\n\t\tvar i = 0;\r\n\t\tfor (idx=>s in strings) {\r\n\t\t\tarr[i++] = s;\r\n\t\t\tif (idx < lenInd)\r\n\t\t\t\tarr[i++] = Std.string(params[indexes[idx]]);\r\n\t\t}\r\n\t\treturn arr.join(\"\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\treturn 'ParamFormatInfo([${strings.join(\", \")}] [${indexes.join(\", \")}])';\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

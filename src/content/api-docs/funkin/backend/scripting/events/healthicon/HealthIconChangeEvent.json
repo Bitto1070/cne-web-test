@@ -1,0 +1,39 @@
+{
+	"kind": "final class",
+	"name": "HealthIconChangeEvent",
+	"pkg": "funkin.backend.scripting.events.healthicon",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "anim",
+			"type": "OneOfTwo<String, Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Animation State",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthIcon",
+			"type": "funkin.game.HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The health icon",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

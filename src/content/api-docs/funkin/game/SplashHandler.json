@@ -1,0 +1,107 @@
+{
+	"kind": "class",
+	"name": "SplashHandler",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "grpMap",
+			"type": "Map<String, SplashGroup>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Map containing all of the splashes group.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSplashGroup",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSplashGroup(name:String) {\r\n\t\tif (!grpMap.exists(name)) {\r\n\t\t\tvar grp = new SplashGroup(Paths.xml('splashes/$name'));\r\n\t\t\tgrpMap.set(name, grp);\r\n\t\t}\r\n\t\treturn grpMap.get(name);\r\n\t}",
+			"doc": {
+				"text": "Returns a group of splashes, and creates it if it doesn't exist.",
+				"params": {
+					"path": "Path to the splashes XML (`Paths.xml('splashes/splash')`)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tfor(grp in grpMap)\r\n\t\t\tgrp.destroy();\r\n\t\tgrpMap = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tsuper.draw();\r\n\t\tif (_firstDraw != (_firstDraw = false))\r\n\t\t\tfor(grp in grpMap)\r\n\t\t\t\tgrp.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "showSplash",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "strum",
+					"type": "Strum",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function showSplash(name:String, strum:Strum) {\r\n\t\t__grp = getSplashGroup(name);\r\n\r\n\t\tvar event = EventManager.get(SplashShowEvent).recycle(name, __grp.showOnStrum(strum), strum, __grp);\r\n\t\tevent = PlayState.instance.gameAndCharsEvent(\"onSplashShown\", event);\r\n\r\n\t\tif (!event.cancelled)\r\n\t\t\tadd(event.splash);\r\n\r\n\t\t// max 8 rendered splashes\r\n\t\twhile(members.length > Flags.MAX_SPLASHES)\r\n\t\t\tremove(members[0], true);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,421 @@
+{
+	"kind": "final class",
+	"name": "XMLUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Class made to make XML parsing easier.\nUsed in Stage.hx, Character.hx, and more.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "applyXMLProperty",
+			"args": [
+				{
+					"name": "object",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "property",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ErrorCode",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function applyXMLProperty(object:Dynamic, property:Access):ErrorCode {\r\n\t\tif (!property.has.name || !property.has.type || !property.has.value) {\r\n\t\t\tLogs.warn('Failed to apply XML property: XML Element is missing name, type, or value attributes.');\r\n\t\t\treturn MISSING_PROPERTY;\r\n\t\t}\r\n\r\n\t\tvar keys = property.att.name.split(\".\");\r\n\t\tvar o = object;\r\n\t\tvar isPath = false;\r\n\t\twhile(keys.length > 1) {\r\n\t\t\tisPath = true;\r\n\t\t\to = Reflect.getProperty(o, keys.shift());\r\n\t\t\t// TODO: support arrays\r\n\t\t}\r\n\r\n\t\tvar value:Dynamic = switch(property.att.type.toLowerCase()) {\r\n\t\t\tcase \"f\" | \"float\" | \"number\":\t\t\tStd.parseFloat(property.att.value);\r\n\t\t\tcase \"i\" | \"int\" | \"integer\":\t\t\tStd.parseInt(property.att.value);\r\n\t\t\tcase \"c\" | \"color\":\t\t\t\t\t\tFlxColor.fromString(property.att.value);\r\n\t\t\tcase \"s\" | \"string\" | \"str\" | \"text\":\tproperty.att.value;\r\n\t\t\tcase \"b\" | \"bool\" | \"boolean\":\t\t\tproperty.att.value.toLowerCase() == \"true\";\r\n\t\t\tdefault:\t\t\t\t\t\t\t\treturn TYPE_INCORRECT;\r\n\t\t}\r\n\t\tif (value == null) return VALUE_NULL;\r\n\r\n\t\tif (object is IXMLEvents) {\r\n\t\t\tcast(object, IXMLEvents).onPropertySet(property.att.name, value);\r\n\t\t}\r\n\r\n\t\ttry {\r\n\t\t\tReflect.setProperty(o, keys[0], value);\r\n\t\t} catch(e) {\r\n\t\t\tvar str = 'Failed to apply XML property: $e on ${Type.getClass(object)}';\r\n\t\t\tif(isPath) {\r\n\t\t\t\tstr += ' (Path: ${property.att.name})';\r\n\t\t\t}\r\n\t\t\tLogs.warn(str);\r\n\t\t\treturn REFLECT_ERROR;\r\n\t\t}\r\n\t\treturn OK;\r\n\t}",
+			"doc": {
+				"text": "Applies a property XML node to an object.\nThe format for the XML is as follows:\n```xml\n<!-- float -->\n<property name=\"name\" type=\"float\" value=\"value\" />\n<property name=\"name\" type=\"number\" value=\"value\" />\n<property name=\"name\" type=\"f\" value=\"value\" />\n<!-- string -->\n<property name=\"name\" type=\"string\" value=\"value\" />\n<property name=\"name\" type=\"str\" value=\"value\" />\n<property name=\"name\" type=\"text\" value=\"value\" />\n<property name=\"name\" type=\"s\" value=\"value\" />\n<!-- int -->\n<property name=\"name\" type=\"int\" value=\"value\" />\n<property name=\"name\" type=\"integer\" value=\"value\" />\n<property name=\"name\" type=\"i\" value=\"value\" />\n<!-- bool -->\n<property name=\"name\" type=\"bool\" value=\"value\" />\n<property name=\"name\" type=\"boolean\" value=\"value\" />\n<property name=\"name\" type=\"b\" value=\"value\" />\n<!-- color -->\n<property name=\"name\" type=\"color\" value=\"value\" />\n<property name=\"name\" type=\"c\" value=\"value\" />\n```",
+				"params": {
+					"object": "Object to which the xml property will be applied",
+					"property": "`property` node."
+				},
+				"returns": "Error code (0 = OK, 1 = FAILED, 2 = MISSING_PROPERTY, 3 = TYPE_INCORRECT, 4 = VALUE_NULL, 5 = REFLECT_ERROR)",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "appendSpriteSheetsFromXML",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentFolder",
+					"type": "String",
+					"optional": true,
+					"def": "''"
+				}
+			],
+			"ret": "FlxFramesCollection",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function appendSpriteSheetsFromXML(spr:FunkinSprite, node:Access, ?parentFolder:String = ''):FlxFramesCollection {\r\n\t\tif (spr == null) return null;\r\n\t\tvar defaultPath = '$parentFolder${node.getAtt(\"sprite\").getDefault(spr.name)}';\r\n\t\tif (!node.hasNode.spritesheet && !node.hasNode.sheet) {\r\n\t\t\tspr.loadSprite(Paths.image(defaultPath, null, true));\r\n\t\t\treturn spr.frames;\r\n\t\t}\r\n\t\tvar seenSheets:Array<String> = [defaultPath];\r\n\t\tfor (n in node.elements) {\r\n\t\t\tif (n.name != 'spritesheet' && n.name != 'sheet') continue;\r\n\t\t\tvar path = n.x.get('path') ?? n.x.firstChild()?.nodeValue?.trim();\r\n\t\t\tif (path == null) {\r\n\t\t\t\tLogs.warn('Spritesheet node is missing text content or the path attribute. Skipping...');\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tif (seenSheets.contains(path)) {\r\n\t\t\t\tLogs.warn('Spritesheet \"${Paths.image(path)}\" was already added. Skipping...');\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tif (!Paths.framesExists(path, true)) {\r\n\t\t\t\tLogs.warn('Could not find a BitmapData asset with ID \"${Paths.image(path)}\". Skipping...');\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tseenSheets.push(path);\r\n\t\t}\r\n\t\treturn spr.frames = Paths.getMultiFrames(seenSheets, false, null, null, spr.animateSettings);\r\n\t}",
+			"doc": {
+				"text": "Loads multiple sheets into 1 sprite,\nfor every `<spritesheet>characters/bf</spritesheet>` there is.\n(Can also be spelled as `<sheet/>`, or `<spritesheet path=\"characters/bf\" />`)",
+				"params": {
+					"spr": "The sprite",
+					"node": "The XML node",
+					"parentFolder": "The parent folder"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadSpriteFromXML",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentFolder",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "defaultAnimType",
+					"type": "XMLAnimType",
+					"optional": false,
+					"def": "BEAT"
+				},
+				{
+					"name": "loadGraphic",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "FunkinSprite",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadSpriteFromXML(spr:FunkinSprite, node:Access, parentFolder:String = \"\", defaultAnimType:XMLAnimType = BEAT, loadGraphic:Bool = true):FunkinSprite {\r\n\t\tif (parentFolder == null) parentFolder = \"\";\r\n\r\n\t\tspr.name = node.getAtt(\"name\");\r\n\t\tspr.antialiasing = true;\r\n\t\tif (loadGraphic) {\r\n\t\t\tappendSpriteSheetsFromXML(spr, node, parentFolder);\r\n\t\t}\r\n\t\tspr.spriteAnimType = defaultAnimType;\r\n\t\tif (node.has.type) {\r\n\t\t\tspr.spriteAnimType = XMLAnimType.fromString(node.att.type, spr.spriteAnimType);\r\n\t\t}\r\n\r\n\t\tif (node.has.applyStageMatrix) spr.applyStageMatrix = node.att.applyStageMatrix == \"true\";\r\n\t\tif (node.has.useRenderTexture) spr.useRenderTexture = node.att.useRenderTexture == \"true\";\r\n\t\t\r\n\t\tif(node.has.x) {\r\n\t\t\tvar x:Null<Float> = Std.parseFloat(node.att.x);\r\n\t\t\tif (x.isNotNull()) spr.x = x;\r\n\t\t}\r\n\t\tif(node.has.y) {\r\n\t\t\tvar y:Null<Float> = Std.parseFloat(node.att.y);\r\n\t\t\tif (y.isNotNull()) spr.y = y;\r\n\t\t}\r\n\t\tif (node.has.scroll) {\r\n\t\t\tvar scroll:Null<Float> = Std.parseFloat(node.att.scroll);\r\n\t\t\tif (scroll.isNotNull()) spr.scrollFactor.set(scroll, scroll);\r\n\t\t}\r\n\t\tif (node.has.scrollx) {\r\n\t\t\tvar scroll:Null<Float> = Std.parseFloat(node.att.scrollx);\r\n\t\t\tif (scroll.isNotNull()) spr.scrollFactor.x = scroll;\r\n\t\t}\r\n\t\tif (node.has.scrolly) {\r\n\t\t\tvar scroll:Null<Float> = Std.parseFloat(node.att.scrolly);\r\n\t\t\tif (scroll.isNotNull()) spr.scrollFactor.y = scroll;\r\n\t\t}\r\n\t\tif (node.has.skewx) {\r\n\t\t\tvar skew:Null<Float> = Std.parseFloat(node.att.skewx);\r\n\t\t\tif (skew.isNotNull()) spr.skew.x = skew;\r\n\t\t}\r\n\t\tif (node.has.skewy) {\r\n\t\t\tvar skew:Null<Float> = Std.parseFloat(node.att.skewy);\r\n\t\t\tif (skew.isNotNull()) spr.skew.y = skew;\r\n\t\t}\r\n\t\tif (node.has.antialiasing) spr.antialiasing = node.att.antialiasing == \"true\";\r\n\t\tif (node.has.width) {\r\n\t\t\tvar width:Null<Float> = Std.parseFloat(node.att.width);\r\n\t\t\tif (width.isNotNull()) spr.width = width;\r\n\t\t}\r\n\t\tif (node.has.height) {\r\n\t\t\tvar height:Null<Float> = Std.parseFloat(node.att.height);\r\n\t\t\tif (height.isNotNull()) spr.height = height;\r\n\t\t}\r\n\t\tif (node.has.scale) {\r\n\t\t\tvar scale:Null<Float> = Std.parseFloat(node.att.scale);\r\n\t\t\tif (scale.isNotNull()) spr.scale.set(scale, scale);\r\n\t\t}\r\n\t\tif (node.has.scalex) {\r\n\t\t\tvar scale:Null<Float> = Std.parseFloat(node.att.scalex);\r\n\t\t\tif (scale.isNotNull()) spr.scale.x = scale;\r\n\t\t}\r\n\t\tif (node.has.scaley) {\r\n\t\t\tvar scale:Null<Float> = Std.parseFloat(node.att.scaley);\r\n\t\t\tif (scale.isNotNull()) spr.scale.y = scale;\r\n\t\t}\r\n\t\tif (node.has.graphicSize) {\r\n\t\t\tvar graphicSize:Null<Int> = Std.parseInt(node.att.graphicSize);\r\n\t\t\tif (graphicSize.isNotNull()) spr.setGraphicSize(graphicSize, graphicSize);\r\n\t\t}\r\n\t\tif (node.has.graphicSizex) {\r\n\t\t\tvar graphicSizex:Null<Int> = Std.parseInt(node.att.graphicSizex);\r\n\t\t\tif (graphicSizex.isNotNull()) spr.setGraphicSize(graphicSizex);\r\n\t\t}\r\n\t\tif (node.has.graphicSizey) {\r\n\t\t\tvar graphicSizey:Null<Int> = Std.parseInt(node.att.graphicSizey);\r\n\t\t\tif (graphicSizey.isNotNull()) spr.setGraphicSize(0, graphicSizey);\r\n\t\t}\r\n\t\tif (node.has.flipX) spr.flipX = node.att.flipX == \"true\";\r\n\t\tif (node.has.flipY) spr.flipY = node.att.flipY == \"true\";\r\n\t\tif (node.has.updateHitbox && node.att.updateHitbox == \"true\") spr.updateHitbox();\r\n\r\n\t\tif (node.has.zoomfactor)\r\n\t\t\tspr.zoomFactor = Std.parseFloat(node.getAtt(\"zoomfactor\")).getDefaultFloat(spr.zoomFactor);\r\n\r\n\t\tif (node.has.alpha)\r\n\t\t\tspr.alpha = Std.parseFloat(node.getAtt(\"alpha\")).getDefaultFloat(spr.alpha);\r\n\r\n\t\tif(node.has.color)\r\n\t\t\tspr.color = FlxColor.fromString(node.getAtt(\"color\")).getDefault(0xFFFFFFFF);\r\n\r\n\t\t// no need to getDefault here ? since null blend acts like normal blend\r\n\t\t@:privateAccess if(node.has.blend)\r\n\t\t\tspr.blend = BlendMode.fromString(node.getAtt(\"blend\"));\r\n\r\n\t\tif(node.has.angle)\r\n\t\t\tspr.angle = Std.parseFloat(node.getAtt(\"angle\")).getDefault(spr.angle);\r\n\r\n\t\tif (node.has.playOnCountdown)\r\n\t\t\tspr.skipNegativeBeats = node.att.playOnCountdown == \"true\";\r\n\t\tif (node.has.beatInterval)\r\n\t\t\tspr.beatInterval = Std.parseInt(node.att.beatInterval);\r\n\t\tif (node.has.interval)\r\n\t\t\tspr.beatInterval = Std.parseInt(node.att.interval);\r\n\t\tif (node.has.beatOffset)\r\n\t\t\tspr.beatOffset = Std.parseInt(node.att.beatOffset);\r\n\r\n\t\tif(node.hasNode.anim) {\r\n\t\t\tfor(anim in node.nodes.anim)\r\n\t\t\t\taddXMLAnimation(spr, anim);\r\n\t\t} else if (spr.frames != null && spr.frames.frames != null) {\r\n\t\t\taddAnimToSprite(spr, {\r\n\t\t\t\tname: \"idle\",\r\n\t\t\t\tanim: null,\r\n\t\t\t\tfps: 24,\r\n\t\t\t\tloop: spr.spriteAnimType == LOOP,\r\n\t\t\t\tanimType: spr.spriteAnimType,\r\n\t\t\t\tx: 0,\r\n\t\t\t\ty: 0,\r\n\t\t\t\tindices: [for(i in 0...spr.frames.frames.length) i],\r\n\t\t\t\tlabel: false\r\n\t\t\t});\r\n\t\t}\r\n\r\n\t\treturn spr;\r\n\t}",
+			"doc": {
+				"text": "Sets the properties of a sprite based on a XML node.",
+				"params": {
+					"spr": "The sprite",
+					"node": "The XML node",
+					"parentFolder": "The parent folder",
+					"defaultAnimType": "The default animation type"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createSpriteFromXML",
+			"args": [
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentFolder",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "defaultAnimType",
+					"type": "XMLAnimType",
+					"optional": false,
+					"def": "BEAT"
+				},
+				{
+					"name": "cl",
+					"type": "Class<FunkinSprite>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "loadGraphic",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "FunkinSprite",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function createSpriteFromXML(node:Access, parentFolder:String = \"\", defaultAnimType:XMLAnimType = BEAT, ?cl:Class<FunkinSprite>, ?args:Array<Dynamic>, loadGraphic:Bool = true):FunkinSprite {\r\n\t\tif(cl == null) cl = FunkinSprite;\r\n\t\tif(args == null) args = [];\r\n\t\treturn loadSpriteFromXML(Type.createInstance(cl, args), node, parentFolder, defaultAnimType, loadGraphic);\r\n\t}",
+			"doc": {
+				"text": "Creates a new sprite based on a XML node.",
+				"params": {
+					"node": "The XML node",
+					"parentFolder": "The parent folder",
+					"defaultAnimType": "The default animation type",
+					"cl": "The class to create (advanced)",
+					"args": "The arguments to pass to the class (advanced)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "extractAnimFromXML",
+			"args": [
+				{
+					"name": "anim",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animType",
+					"type": "XMLAnimType",
+					"optional": false,
+					"def": "NONE"
+				},
+				{
+					"name": "loop",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "AnimData",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function extractAnimFromXML(anim:Access, animType:XMLAnimType = NONE, loop:Bool = false):AnimData {\r\n\t\tvar animData:AnimData = {\r\n\t\t\tname: null,\r\n\t\t\tanim: null,\r\n\t\t\tfps: 24,\r\n\t\t\tloop: loop,\r\n\t\t\tanimType: animType,\r\n\t\t\tx: 0,\r\n\t\t\ty: 0,\r\n\t\t\tindices: [],\r\n\t\t\tlabel: false\r\n\t\t};\r\n\r\n\t\tif (anim.has.name) animData.name = anim.att.name;\r\n\t\tif (anim.has.type) animData.animType = XMLAnimType.fromString(anim.att.type, animData.animType);\r\n\t\tif (anim.has.anim) animData.anim = anim.att.anim;\r\n\t\tif (anim.has.fps) animData.fps = Std.parseFloat(anim.att.fps).getDefaultFloat(animData.fps);\r\n\t\tif (anim.has.x) animData.x = Std.parseFloat(anim.att.x).getDefaultFloat(animData.x);\r\n\t\tif (anim.has.y) animData.y = Std.parseFloat(anim.att.y).getDefaultFloat(animData.y);\r\n\t\tif (anim.has.loop) animData.loop = anim.att.loop == \"true\";\r\n\t\tif (anim.has.forced) animData.forced = anim.att.forced == \"true\";\r\n\t\tif (anim.has.indices) animData.indices = CoolUtil.parseNumberRange(anim.att.indices);\r\n\t\tif (anim.has.label) animData.label = anim.att.label == \"true\";\r\n\t\tif (anim.has.isAnimate) animData.isAnimate = anim.att.isAnimate == \"true\";\r\n\r\n\t\treturn animData;\r\n\t}",
+			"doc": {
+				"text": "Extracts an animation from an XML node.",
+				"params": {
+					"anim": "The animation node",
+					"animType": "The animation type",
+					"loop": "Whether the animation should loop"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addXMLAnimation",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "anim",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "loop",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "ErrorCode",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function addXMLAnimation(sprite:FlxSprite, anim:Access, loop:Bool = false):ErrorCode {\r\n\t\tvar animType:XMLAnimType = NONE;\r\n\t\tif (sprite is FunkinSprite) {\r\n\t\t\tanimType = cast(sprite, FunkinSprite).spriteAnimType;\r\n\t\t}\r\n\r\n\t\treturn addAnimToSprite(sprite, extractAnimFromXML(anim, animType, loop));\r\n\t}",
+			"doc": {
+				"text": "Adds an XML animation to `sprite`.",
+				"params": {
+					"sprite": "Destination sprite",
+					"anim": "Animation (Must be a `anim` XML node)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addAnimToSprite",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animData",
+					"type": "AnimData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ErrorCode",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function addAnimToSprite(sprite:FlxSprite, animData:AnimData):ErrorCode {\r\n\t\tif (animData.name != null) {\r\n\t\t\tif (animData.fps <= 0 #if web || animData.fps == null #end) animData.fps = 24;\r\n\r\n\t\t\tif ((sprite.frames is FlxAnimateFrames) == (animData.isAnimate ?? true)) {\r\n\t\t\t\tif(animData.anim == null)\r\n\t\t\t\t\treturn MISSING_PROPERTY;\r\n\r\n\t\t\t\tvar animateAnim = cast(sprite, FunkinSprite).anim;\r\n\r\n\t\t\t\tif (animData.label) {\r\n\t\t\t\t\tif (animData.indices != null && animData.indices.length > 0)\r\n\t\t\t\t\t\tanimateAnim.addByFrameLabelIndices(animData.name, animData.anim, animData.indices, animData.fps, animData.loop);\r\n\t\t\t\t\telse\r\n\t\t\t\t\t\tanimateAnim.addByFrameLabel(animData.name, animData.anim, animData.fps, animData.loop);\r\n\t\t\t\t} else {\r\n\t\t\t\t\tif (animData.indices != null && animData.indices.length > 0)\r\n\t\t\t\t\t\tanimateAnim.addBySymbolIndices(animData.name, animData.anim, animData.indices, animData.fps, animData.loop);\r\n\t\t\t\t\telse\r\n\t\t\t\t\t\tanimateAnim.addBySymbol(animData.name, animData.anim, animData.fps, animData.loop);\r\n\t\t\t\t}\r\n\t\t\t} else {\r\n\t\t\t\tif (animData.indices != null && animData.indices.length > 0) {\r\n\t\t\t\t\tif (animData.anim == null)\r\n\t\t\t\t\t\tsprite.animation.add(animData.name, animData.indices, animData.fps, animData.loop);\r\n\t\t\t\t\telse\r\n\t\t\t\t\t\tsprite.animation.addByIndices(animData.name, animData.anim, animData.indices, \"\", animData.fps, animData.loop);\r\n\t\t\t\t} else\r\n\t\t\t\t\tsprite.animation.addByPrefix(animData.name, animData.anim, animData.fps, animData.loop);\r\n\t\t\t}\r\n\r\n\t\t\tif (sprite is IOffsetCompatible)\r\n\t\t\t\tcast(sprite, IOffsetCompatible).addOffset(animData.name, animData.x, animData.y);\r\n\r\n\t\t\tif (sprite is FunkinSprite) {\r\n\t\t\t\tvar xmlSpr:FunkinSprite = cast sprite;\r\n\t\t\t\tvar name = animData.name;\r\n\t\t\t\tswitch(animData.animType) {\r\n\t\t\t\t\tcase BEAT:\r\n\t\t\t\t\t\txmlSpr.beatAnims.push({\r\n\t\t\t\t\t\t\tname: name,\r\n\t\t\t\t\t\t\tforced: animData.forced.getDefault(defaultForcedCheck(name, xmlSpr))\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\tcase LOOP:\r\n\t\t\t\t\t\txmlSpr.playAnim(name, animData.forced.getDefault(defaultForcedCheck(name, xmlSpr)));\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t\t\t// nothing\r\n\t\t\t\t}\r\n\t\t\t\txmlSpr.animDatas.set(name, animData);\r\n\t\t\t}\r\n\t\t\treturn OK;\r\n\t\t}\r\n\t\treturn MISSING_PROPERTY;\r\n\t}",
+			"doc": {
+				"text": "Adds an animation to a sprite.",
+				"params": {
+					"sprite": "The sprite",
+					"animData": "The animation data (gotten from `extractAnimFromXML`)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "defaultForcedCheck",
+			"args": [
+				{
+					"name": "animName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sprite",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function defaultForcedCheck(animName:String, sprite:FunkinSprite):Bool\r\n\t\treturn sprite is Character && (animName.startsWith(\"idle\") || animName.startsWith(\"danceLeft\") || animName.startsWith(\"danceRight\")) ? false : sprite.spriteAnimType == BEAT;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixXMLText",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function fixXMLText(text:String) {\r\n\t\tvar v:String;\r\n\t\treturn [for(l in text.split(\"\\n\")) if ((v = l.trim()) != \"\") v].join(\"\\n\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixSpacingInNode",
+			"args": [
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Access",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fixSpacingInNode(node:Access):Access {\r\n\t\tvar arr = Lambda.array(node.x);\r\n\t\tfor(i => n in arr) {\r\n\t\t\tif(n.nodeType == PCData) {\r\n\t\t\t\tif(i == 0) n.nodeValue = n.nodeValue.ltrim();\r\n\t\t\t\tif(i == arr.length - 1) n.nodeValue = n.nodeValue.rtrim();\r\n\t\t\t\tif(n.nodeValue.contains(\"\\n\")) {\r\n\t\t\t\t\tvar a = n.nodeValue.split(\"\\n\");\r\n\t\t\t\t\tn.nodeValue = [for(i => x in a) i == 0 ? x.rtrim() : i == arr.length - 1 ? x.ltrim() : x.trim()].join(\"\\n\");\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn node;\r\n\t}",
+			"doc": {
+				"text": "Trims and removes spacing from the nodeValue in the XML\n\nWARNING: will edit directly the node!",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTextFormats",
+			"args": [
+				{
+					"name": "_node",
+					"type": "OneOfTwo<Xml, Access>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "currentFormat",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "null"
+				},
+				{
+					"name": "parsedSegments",
+					"type": "Array<TextFormat>",
+					"optional": false,
+					"def": "null"
+				}
+			],
+			"ret": "Array<TextFormat>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTextFormats(_node:OneOfTwo<Xml, Access>, currentFormat:Dynamic = null, parsedSegments:Array<TextFormat> = null):Array<TextFormat> {\r\n\t\tvar node:Xml = cast _node;\r\n\t\tif (currentFormat == null)\r\n\t\t\tcurrentFormat = {};\r\n\t\tif (parsedSegments == null)\r\n\t\t\tparsedSegments = [];\r\n\r\n\t\tfor (child in node) {\r\n\t\t\tswitch (child.nodeType) {\r\n\t\t\t\tcase Element:\r\n\t\t\t\t\tif (child.nodeName == \"format\") {\r\n\t\t\t\t\t\tvar format:Dynamic = Reflect.copy(currentFormat);\r\n\t\t\t\t\t\t@:privateAccess for (key => name in child.attributeMap) {\r\n\t\t\t\t\t\t\tReflect.setField(format, key, name);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tgetTextFormats(child, format, parsedSegments);\r\n\t\t\t\t\t}\r\n\t\t\t\tcase PCData:\r\n\t\t\t\t\tparsedSegments.push({ text: child.nodeValue, format: Reflect.copy(currentFormat) });\r\n\t\t\t\tdefault:\r\n\t\t\t\t\t// Ignore other node types\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn parsedSegments;\r\n\t}",
+			"doc": {
+				"text": "Gets the text formats from an XML node.\nThe format for the XML is as follows:\n```xml\n<text>Hello <format color=\"#FF0000\">World</format></text>\n```",
+				"params": {
+					"_node": "The XML node",
+					"currentFormat": "The current format",
+					"parsedSegments": "The parsed segments"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

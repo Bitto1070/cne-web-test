@@ -1,0 +1,69 @@
+{
+	"kind": "final class",
+	"name": "WeekSelectEvent",
+	"pkg": "funkin.backend.scripting.events.menu.storymenu",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "week",
+			"type": "WeekData",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Week that is going to be selected",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficulty",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The difficulty that has been selected",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weekID",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "At which emplacement the week is. Goes from 0 to the number of weeks - 1.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficultyID",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "At which emplacement the difficulty is. Goes from 0 to the number of weeks - 1.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

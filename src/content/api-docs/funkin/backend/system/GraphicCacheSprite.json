@@ -1,0 +1,130 @@
+{
+	"kind": "class",
+	"name": "GraphicCacheSprite",
+	"pkg": "funkin.backend.system",
+	"doc": {
+		"text": "Dummy FlxSprite that allows you to cache FlxGraphics, and immediately send them to GPU memory.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "cachedGraphics",
+			"type": "Array<FlxGraphic>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all of the graphics cached by this sprite.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "nonRenderedCachedGraphics",
+			"type": "Array<FlxGraphic>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all of the non rendered (not sent to GPU) cached graphics.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function new() {\r\n\t\tsuper();\r\n\t\talpha = 0.00001;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cache",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function cache(path:String) {\r\n\t\tcacheGraphic(FlxG.bitmap.add(path));\r\n\t}",
+			"doc": {
+				"text": "Caches a graphic at specified path.",
+				"params": {
+					"path": "Path to the graphic."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cacheGraphic",
+			"args": [
+				{
+					"name": "graphic",
+					"type": "FlxGraphic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function cacheGraphic(graphic:FlxGraphic) {\r\n\t\tif (graphic == null) return;\r\n\r\n\t\t// make their useCount one time higher to prevent them from auto being cleared from cache\r\n\t\tgraphic.incrementUseCount();\r\n\t\tgraphic.destroyOnNoUse = false;\r\n\t\tcachedGraphics.push(graphic);\r\n\t\tnonRenderedCachedGraphics.push(graphic);\r\n\t}",
+			"doc": {
+				"text": "Caches a graphic.",
+				"params": {
+					"graphic": "The FlxGraphic"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tfor(g in cachedGraphics) {\r\n\t\t\tg.destroyOnNoUse = true;\r\n\t\t\tg.decrementUseCount();\r\n\t\t}\r\n\t\tgraphic = null;\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\twhile (nonRenderedCachedGraphics.length > 0) {\r\n\t\t\tloadGraphic(nonRenderedCachedGraphics.shift());\r\n\t\t\tdrawComplex(FlxG.camera);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

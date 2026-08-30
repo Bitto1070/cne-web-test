@@ -1,0 +1,65 @@
+{
+	"kind": "class",
+	"name": "StrFormatInfo",
+	"pkg": "funkin.backend.utils.translations",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "string",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(str:String) {\r\n\t\tthis.string = str;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "format",
+			"args": [
+				{
+					"name": "params",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function format(params:Array<Dynamic>):String {\r\n\t\treturn string;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\treturn \"StrFormatInfo(\" + string + \")\";\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

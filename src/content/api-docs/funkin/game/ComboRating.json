@@ -1,0 +1,81 @@
+{
+	"kind": "final class",
+	"name": "ComboRating",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "percent",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rating",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "color",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "maxMisses",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "percent",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "rating",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "misses",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// Float since it could be Math.POSITIVE_INFINITY  - Nex\r\n\r\n\tpublic function new(?percent:Float, ?rating:String, ?color:FlxColor, ?misses:Float) {\r\n\t\tmaxMisses = misses == null || Math.isNaN(misses) ? Math.POSITIVE_INFINITY : misses;\r\n\t\tthis.percent = percent;\r\n\t\tthis.rating = TranslationUtil.get('game.rating.$rating', rating);\r\n\t\tthis.color = color;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

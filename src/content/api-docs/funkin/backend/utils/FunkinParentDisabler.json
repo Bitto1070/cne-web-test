@@ -1,0 +1,74 @@
+{
+	"kind": "class",
+	"name": "FunkinParentDisabler",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "FlxBasic allowing you to disable those elements from the parent state while this substate is opened\n- Tweens\n- Camera Movement\n- Timers\n- Sounds\n\nTo use, add `add(new FunkinParentDisabler());` after `super.create();` in your `create` function.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "replaceUponDestroy",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "restoreUponDestroy",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(replaceUponDestroy:Bool = false, restoreUponDestroy:Bool = true) {\r\n\t\tsuper();\r\n\t\t__replaceUponDestroy = replaceUponDestroy;\r\n\t\t__restoreUponDestroy = restoreUponDestroy;\r\n\t\t@:privateAccess {\r\n\t\t\t// tweens\r\n\t\t\t__tweens = FlxTween.globalManager._tweens.copy();\r\n\t\t\tFlxTween.globalManager._tweens = [];\r\n\r\n\t\t\t// timers\r\n\t\t\t__timers = FlxTimer.globalManager._timers.copy();\r\n\t\t\tFlxTimer.globalManager._timers = [];\r\n\r\n\t\t\t// cameras\r\n\t\t\t__cameras = [for(c in FlxG.cameras.list) if (!c.paused) c];\r\n\t\t\tfor(c in __cameras) c.paused = true;\r\n\r\n\t\t\t// sounds\r\n\t\t\t__sounds = [for(s in FlxG.sound.list) if (s.playing && !s.persist) s];\r\n\t\t\tfor(s in __sounds) s.pause();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reset() {\r\n\t\t__tweens = [];\r\n\t\t__cameras = [];\r\n\t\t__timers = [];\r\n\t\t__sounds = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t@:privateAccess {\r\n\t\t\tif (!__restoreUponDestroy) {\r\n\t\t\t\tfor(t in __tweens) { t.cancel(); t.destroy(); };\r\n\t\t\t\tfor(t in __timers) { t.cancel(); t.destroy(); };\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t\tif (__replaceUponDestroy) {\r\n\t\t\t\tFlxTween.globalManager._tweens = __tweens;\r\n\t\t\t\tFlxTimer.globalManager._timers = __timers;\r\n\t\t\t} else {\r\n\t\t\t\tfor(t in __tweens) FlxTween.globalManager._tweens.push(t);\r\n\t\t\t\tfor(t in __timers) FlxTimer.globalManager._timers.push(t);\r\n\t\t\t}\r\n\t\t\tfor(c in __cameras) c.paused = false;\r\n\t\t\tfor(s in __sounds) s.play();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

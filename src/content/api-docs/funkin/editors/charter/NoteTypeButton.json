@@ -1,0 +1,120 @@
+{
+	"kind": "class",
+	"name": "NoteTypeButton",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "IDText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textBox",
+			"type": "UIAutoCompleteTextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "noteID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "suggestList",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UIButtonList<NoteTypeButton>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, name:String, noteID:Int, suggestList:Array<String>, parent:UIButtonList<NoteTypeButton>) {\r\n\t\tsuper(x, y, '', null, Std.int(parent.buttonSize.x), Std.int(parent.buttonSize.y));\r\n\t\tautoAlpha = false;\r\n\r\n\t\tmembers.push(IDText = new UIText(10, 10, 0, '${noteID}.'));\r\n\r\n\t\tupdateNote(name);\r\n\r\n\t\tmembers.push(textBox = new UIAutoCompleteTextBox(IDText.x + 10, 10, name, 200-4));\r\n\t\ttextBox.suggestItems = [for(script in (suggestList)) Path.withoutExtension(script)];\r\n\t\ttextBox.onChange = function(noteType:String) {\r\n\t\t\tupdateNote(noteType);\r\n\t\t};\r\n\t\ttextBox.antialiasing = true;\r\n\r\n\t\tdeleteButton = new UIButton(textBox.x + textBox.label.width + 10, textBox.y, null, function () {\r\n\t\t\tparent.remove(this);\r\n\t\t}, 32);\r\n\t\tdeleteButton.color = 0xFFFF0000;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + (15/2), deleteButton.y + 8).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateNote",
+			"args": [
+				{
+					"name": "notetype",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateNote(notetype:String) {\r\n\t\tif (noteSpr == null) members.push(noteSpr = new FlxSprite());\r\n\r\n\t\tvar path:String = 'game/notes/default';\r\n\t\tif (Assets.exists(Paths.image('game/notes/${notetype}')))\r\n\t\t\tpath = 'game/notes/${notetype}';\r\n\r\n\t\tnoteSpr.frames = Paths.getFrames(path);\r\n\t\tnoteSpr.animation.addByPrefix('scroll', 'green0');\r\n\t\tnoteSpr.animation.play(\"scroll\");\r\n\t\tnoteSpr.updateHitbox(); /*noteSpr.angle = 20;*/\r\n\t\tnoteSpr.setGraphicSize(34, 34);\r\n\t\tnoteSpr.updateHitbox(); noteSpr.antialiasing = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

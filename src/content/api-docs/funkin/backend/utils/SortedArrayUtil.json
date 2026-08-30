@@ -1,0 +1,77 @@
+{
+	"kind": "final class",
+	"name": "SortedArrayUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Tools to work with sorted arrays, in a more efficient way.\n\nDISCLAIMER: All types of utils only usable in a sorted array.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "binarySearch",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function binarySearch<T>(array:Array<T>, val:Float, getVal:T->Float):Int {\r\n\t\tif (array.length <= 0) return 0; // if the array is empty, it should be equal to zero (the beginning)\r\n\t\tif (getVal(array[0]) > val) return 0; // in case its the minimum\r\n\t\tif (getVal(array[array.length-1]) < val) return array.length; // in case its the maximum\r\n\r\n\t\t// binary search\r\n\t\tvar iMin:Int = 0;\r\n\t\tvar iMax:Int = array.length-1;\r\n\r\n\t\tvar i:Int = 0;\r\n\t\tvar mid:Float;\r\n\t\twhile(iMin <= iMax) {\r\n\t\t\ti = Math.floor(iMin + (iMax - iMin) / 2);\r\n\t\t\tmid = getVal(array[i]);\r\n\t\t\tif (mid < val)\r\n\t\t\t\tiMin = i+1\r\n\t\t\telse if (mid > val)\r\n\t\t\t\tiMax = i-1;\r\n\t\t\telse {\r\n\t\t\t\tiMin = i;\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn iMin;\r\n\t}\r\n\r\n\t/**\r\n\t * Adds to a sorted array, using binary search.\r\n\t * @param array Array to add to\r\n\t * @param val Value to add\r\n\t * @param getVal Function that returns the value that needs to be sorted\r\n\t */\r\n\tpublic static inline function addSorted<T>(array:Array<T>, val:T, getVal:T->Float) {\r\n\t\tif (val != null)\r\n\t\t\tarray.insert(binarySearch(array, getVal(val), getVal), val);\r\n\t}\r\n\r\n\t/**\r\n\t * Removes from a sorted array, using binary search.\r\n\t * @param array Array to remove from\r\n\t * @param val Value to remove\r\n\t * @param getVal Function that returns the value that needs to be sorted\r\n\t */\r\n\tpublic static inline function removeSorted<T>(array:Array<T>, val:T, getVal:T->Float) {\r\n\t\tvar index = binarySearch(array, getVal(val), getVal);\r\n\t\tif (index != -1)\r\n\t\t\tarray.splice(index, 1);\r\n\t}\r\n}",
+			"doc": {
+				"text": "Gets the index of a possible new element of an Array of T using an efficient algorithm.",
+				"params": {
+					"array": "Array of T to check in",
+					"getVal": "Function that returns the position value of T"
+				},
+				"returns": "The index of the element",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addSorted",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function addSorted<T>(array:Array<T>, val:T, getVal:T->Float) {\r\n\t\tif (val != null)\r\n\t\t\tarray.insert(binarySearch(array, getVal(val), getVal), val);\r\n\t}\r\n\r\n\t/**\r\n\t * Removes from a sorted array, using binary search.\r\n\t * @param array Array to remove from\r\n\t * @param val Value to remove\r\n\t * @param getVal Function that returns the value that needs to be sorted\r\n\t */\r\n\tpublic static inline function removeSorted<T>(array:Array<T>, val:T, getVal:T->Float) {\r\n\t\tvar index = binarySearch(array, getVal(val), getVal);\r\n\t\tif (index != -1)\r\n\t\t\tarray.splice(index, 1);\r\n\t}\r\n}",
+			"doc": {
+				"text": "Adds to a sorted array, using binary search.",
+				"params": {
+					"array": "Array to add to",
+					"val": "Value to add",
+					"getVal": "Function that returns the value that needs to be sorted"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeSorted",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function removeSorted<T>(array:Array<T>, val:T, getVal:T->Float) {\r\n\t\tvar index = binarySearch(array, getVal(val), getVal);\r\n\t\tif (index != -1)\r\n\t\t\tarray.splice(index, 1);\r\n\t}\r\n}",
+			"doc": {
+				"text": "Removes from a sorted array, using binary search.",
+				"params": {
+					"array": "Array to remove from",
+					"val": "Value to remove",
+					"getVal": "Function that returns the value that needs to be sorted"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

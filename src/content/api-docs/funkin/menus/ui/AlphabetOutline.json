@@ -1,0 +1,38 @@
+{
+	"kind": "final class",
+	"name": "AlphabetOutline",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [
+		"@:structInit"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "anim",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "x",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "y",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

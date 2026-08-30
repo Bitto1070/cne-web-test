@@ -1,0 +1,1789 @@
+{
+	"kind": "class",
+	"name": "Flags",
+	"pkg": "funkin.backend.system",
+	"doc": {
+		"text": "A class that reads the `flags.ini` file, allowing to read settable Flags (customs too).",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:build(funkin.backend.system.macros.FlagMacro.build())"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "overridenFlags",
+			"type": "Map<String, Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "addonFlags",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:bypass"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "CURRENT_API_VERSION",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ALLOWED_ZIP_EXTENSIONS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_NAME",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_DESCRIPTION",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_AUTHOR",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_API_VERSION",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "MOD_DOWNLOAD_LINK",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_DEPENDENCIES",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_ICON32",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "MOD_ICON24",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "MOD_ICON16",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "MOD_ICON",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_DISCORD_CLIENT_ID",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_DISCORD_LOGO_KEY",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_DISCORD_LOGO_TEXT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MOD_REDIRECT_STATES",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SAVE_PATH",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "SAVE_NAME",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "COMMIT_NUMBER",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "COMMIT_HASH",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "COMMIT_MESSAGE",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "WINDOW_TITLE_USE_MOD_NAME",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "TITLE",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "VERSION",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "VERSION_MESSAGE",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "REPO_NAME",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "REPO_OWNER",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "REPO_URL",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOUND_EXT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Preferred sound extension for the game's audio files.\nCurrently is set to `mp3` for web targets, and `ogg` for other targets.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VIDEO_EXT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "IMAGE_EXT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_DISCORD_LOGO_KEY",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_DISCORD_CLIENT_ID",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_DISCORD_LOGO_TEXT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARACTER",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.Character.FALLBACK_CHARACTER)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GIRLFRIEND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_OPPONENT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_DIFFICULTY",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.PlayState.difficulty)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_STAGE",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_SCROLL_SPEED",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_HEALTH_ICON",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SONGS_LIST_MOD_MODE",
+			"type": "Allow<\"prepend\", \"override\", \"append\">",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "WEEKS_LIST_MOD_MODE",
+			"type": "Allow<\"prepend\", \"override\", \"append\">",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_LANGUAGE",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_LANGUAGE_NAME",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "BLACKLISTED_LANGUAGES",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "**NOTICE:** This will only contain the id of the language, not the full name.\nIf you blacklist the default language, you will need to change DEFAULT_LANGUAGE and DEFAULT_LANGUAGE_NAME.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "WHITELISTED_LANGUAGES",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "**NOTICE:** This will only contain the id of the language, not the full name.\nIf this list is not empty, the languages listed will be the only ones able to be used.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_BPM",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_BEATS_PER_MEASURE",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_STEPS_PER_BEAT",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_LOOP_TIME",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ICONS_AUTOPOSITION",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_SOUND_TIME_SCALED_PITCH",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "USE_FLXTRAIL_FRAMES",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "SUPPORTED_CHART_RUNTIME_FORMATS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SUPPORTED_CHART_FORMATS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VSLICE_SONG_METADATA_VERSION",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VSLICE_SONG_CHART_DATA_VERSION",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VSLICE_DEFAULT_NOTE_STYLE",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VSLICE_DEFAULT_ALBUM_ID",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VSLICE_DEFAULT_PREVIEW_START",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VSLICE_DEFAULT_PREVIEW_END",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_COLOR",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Default background colors for songs or more without bg color",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_WEEK_COLOR",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_COOP_ALLOWED",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_OPPONENT_MODE_ALLOWED",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_COOP_MODE",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.PlayState.coopMode)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_OPPONENT_MODE",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.PlayState.opponentMode)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "EARLY_HIT_WINDOW_RANGE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "LATE_HIT_WINDOW_RANGE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SHITS_BREAK_COMBO",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "USE_LEGACY_TIMING",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_NOTE_MS_LIMIT",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_NOTE_SCALE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MODCHART_HOLD_SUBDIVISIONS",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SUSTAINS_AS_ONE_NOTE",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "USE_LEGACY_CENTER_CAM",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "USE_LEGACY_FLXANIMATE_STAGE_MATRIX",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GAMEOVER_CHARACTER",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.Character.FALLBACK_DEAD_CHARACTER)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAM_ZOOM_INTERVAL",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAM_ZOOM_OFFSET",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAM_ZOOM_STRENGTH",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAM_ZOOM",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_HUD_ZOOM",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_ZOOM",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_ZOOM_LERP",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MAX_CAMERA_ZOOM_MULT",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "USE_CAM_ZOOM_MULT",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAM_ZOOM_MULT",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_HUD_ZOOM_MULT",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAM_ZOOM_LERP",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_HUD_ZOOM_LERP",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_FONT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_FONT_SIZE",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_ALT_ANIM_SUFFIX",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_PAUSE_ITEMS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CUTSCENE_PAUSE_ITEMS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GITAROO",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "GITAROO_CHANCE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MUTE_VOCALS_ON_MISS",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MAX_HEALTH",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_HEALTH",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_ICONBOP",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "BOP_ICON_SCALE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ICON_DEFAULT_SCALE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ICON_OFFSET",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ICON_LERP",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_INTRO_LENGTH",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_INTRO_SPRITES",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MAX_SPLASHES",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "STUNNED_TIME",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "PIXEL_ART_SCALE",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.PlayState.daPixelZoom)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_COMBO_GROUP_MAX_SIZE",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_STRUM_AMOUNT",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CAMERA_FOLLOW_SPEED",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "VOCAL_OFFSET_VIOLATION_THRESHOLD",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MAIN_DEVS_COLOR",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MIN_CONTRIBUTIONS_COLOR",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "UNDO_PREFIX",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "JSON_PRETTY_PRINT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DISABLE_EDITORS",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DISABLE_WARNING_SCREEN",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DISABLE_TRANSITIONS",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DISABLE_LANGUAGES",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DISABLE_AUTOUPDATER",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_TRANSITION_SCRIPT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.backend.MusicBeatTransition.script)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_PAUSE_SCRIPT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.menus.PauseSubState.script)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GAMEOVER_SCRIPT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.game.GameOverSubstate.script)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "URL_WIKI",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "URL_EDITOR_FALLBACK",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "URL_FNF_ITCH",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MENU_MUSIC",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Default audio paths",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_PAUSE_MENU_MUSIC",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GAMEOVER_MUSIC",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MISS_SOUNDS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_INTRO_SOUNDS",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GAMEOVERSFX_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GAMEOVEREND_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MENU_SCROLL_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MENU_CONFIRM_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MENU_CANCEL_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_MENU_VOLUME_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_CHECKBOXCHECKED_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_CHECKBOXUNCHECKED_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_WARNING_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_AUTOSAVE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_BUTTONCLICK_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_CLICK_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_COPY_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_CUT_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_DELETE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_OFFSETDRAG_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_PASTE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_REDO_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_SAVE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_TEXTREMOVE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_TEXTTYPE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_UNDO_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_WINDOWAPPEAR_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_WINDOWCLOSE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_EDITOR_DROPDOWNAPPEAR_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_HITSOUND_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_METRONOME_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_NOTEDELETE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_NOTEPLACE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_SCROLL_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_SNAPPINGCHANGE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_STRUMLOCK_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_STRUMUNLOCK_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_SUSTAINADD_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARTER_SUSTAINDELETE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARACTER_GHOSTDISABLE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_CHARACTER_GHOSTENABLE_SOUND",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_GLSL_VERSION",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:lazy"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "USER_AGENT",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:also(funkin.backend.utils.HttpUtil.userAgent)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "customFlags",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Flags that Codename couldn't recognize as it's own defaults (they can only be `string`! due to them being unparsed).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:bypass"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "loadFromData",
+			"args": [
+				{
+					"name": "flags",
+					"type": "Map<String, String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "data",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadFromData(flags:Map<String, String>, data:String) {\r\n\t\tif (!(data.length > 0)) return;\r\n\t\tvar res = IniUtil.parseString(data);\r\n\r\n\t\tfor (name => section in res) {\r\n\t\t\tswitch (name) {\r\n\t\t\t\tcase \"Common\": for (key => value in section) flags[\"MOD_\" + key] = value;\r\n\t\t\t\tcase \"Discord\": for (key => value in section) flags[\"MOD_DISCORD_\" + key] = value;\r\n\t\t\t\tcase \"Flags\": for (key => value in section) flags[key] = value;\r\n\t\t\t\tcase \"StateRedirects.force\": for (key => value in section) MOD_REDIRECT_STATES.set(key, value);\r\n\t\t\t\tcase \"StateRedirects\": for (key => value in section) if (!MOD_REDIRECT_STATES.exists(key)) MOD_REDIRECT_STATES.set(key, value);\r\n\t\t\t\tcase \"Global\": // do nothing\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tif (Std.isOfType(Reflect.field(Flags, name), haxe.ds.StringMap)) Reflect.setProperty(Flags, name, section);\r\n\t\t\t\t\telse trace('Invalid section $name');\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadFromDatas",
+			"args": [
+				{
+					"name": "datas",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Map<String, String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadFromDatas(datas:Array<String>):Map<String, String> {\r\n\t\tvar flags:Map<String, String> = [];\r\n\t\tfor (data in datas) {\r\n\t\t\tif (data != null)\r\n\t\t\t\tloadFromData(flags, data);\r\n\t\t}\r\n\t\tloadPost();\r\n\t\treturn flags;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseFlags",
+			"args": [
+				{
+					"name": "flags",
+					"type": "Map<String, String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseFlags(flags:Map<String, String>) {\r\n\t\tvar parsed:Bool;\r\n\t\tfor (name => value in flags) switch (name) {\r\n\t\t\tcase \"MOD_API_VERSION\":\r\n\t\t\t\tvar version = Std.parseInt(value) ?? CURRENT_API_VERSION;\r\n\t\t\t\tif (version > MOD_API_VERSION || MOD_API_VERSION == null) MOD_API_VERSION = version;\r\n\t\t\tdefault:\r\n\t\t\t\tif (!(parsed = parse(name, value))) customFlags.set(name, value);\r\n\t\t\t\tif (!overridenFlags.exists(name)) overridenFlags.set(name, parsed);\r\n\t\t}\r\n\t\t#if MODCHARTING_FEATURES\r\n\t\tOptions.modchartingHoldSubdivisions = DEFAULT_MODCHART_HOLD_SUBDIVISIONS;\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "load",
+			"args": [
+				{
+					"name": "libs",
+					"type": "Array<LimeAssetLibrary>",
+					"optional": true,
+					"def": "null"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function load(?libs:Array<LimeAssetLibrary> = null) {\r\n\t\tif (libs == null) {\r\n\t\t\tlibs = Paths.assetsTree.libraries.copy();\r\n\t\t\tlibs.reverse();\r\n\t\t}\r\n\t\tfor(lib in libs) {\r\n\t\t\tvar l = lib;\r\n\t\t\tif (l is openfl.utils.AssetLibrary) {\r\n\t\t\t\t@:privateAccess\r\n\t\t\t\tl = cast(l, openfl.utils.AssetLibrary).__proxy;\r\n\t\t\t}\r\n\t\t\tif(lib is funkin.backend.assets.TranslatedAssetLibrary) {\r\n\t\t\t\t// skip translations since it would be useless, if you wanna modify it set the flags inside of global.hx\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\r\n\t\t\tif (l is IModsAssetLibrary) {\r\n\t\t\t\tvar flagsTxt = \"\";\r\n\t\t\t\tif (l.exists(Paths.ini(\"config/modpack\"), AssetType.TEXT))\r\n\t\t\t\t\tflagsTxt = l.getAsset(Paths.ini(\"config/modpack\"), AssetType.TEXT);\r\n\t\t\t\tif (cast(l, IModsAssetLibrary).modName == \"assets\") continue;\r\n\t\t\t\tif (cast(l, IModsAssetLibrary).modName == \"source\") continue;\r\n\r\n\t\t\t\tif (cast(l, IModsAssetLibrary).modName == ModsFolder.currentModFolder) {\r\n\t\t\t\t\tvar flags:Map<String, String> = [];\r\n\t\t\t\t\tloadFromData(flags, flagsTxt);\r\n\t\t\t\t\tparseFlags(flags);\r\n\t\t\t\t}\r\n\t\t\t\telse {\r\n\t\t\t\t\tvar flags:Map<String, String> = [];\r\n\t\t\t\t\tloadFromData(flags, flagsTxt);\r\n\t\t\t\t\taddonFlags.set(cast(l, IModsAssetLibrary).modName.toLowerCase().replace(\" \", \"\").trim(), flags);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\telse {\r\n\t\t\t\tvar flagsTxt = \"\";\r\n\t\t\t\tif (l.exists(Paths.getPath(\"data/config/flags.ini\"), AssetType.TEXT))\r\n\t\t\t\t\tflagsTxt = l.getAsset(Paths.getPath(\"data/config/flags.ini\"), AssetType.TEXT);\r\n\t\t\t\tvar flags:Map<String, String> = [];\r\n\t\t\t\tloadFromData(flags, flagsTxt);\r\n\t\t\t\tparseFlags(flags);\r\n\t\t\t}\r\n\t\t}\r\n\t\tloadPost();\r\n\t}",
+			"doc": {
+				"text": "Loads the flags from the assets.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

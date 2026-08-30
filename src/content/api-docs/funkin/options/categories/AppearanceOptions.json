@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "AppearanceOptions",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('optionsTree.appearance-name', 'optionsTree.appearance-desc', 'AppearanceOptions.');\r\n\r\n\t\tadd(framerateOption = new NumOption(getNameID('framerate'), getDescID('framerate'),\r\n\t\t\t30, Options.maxFrameRate + 1, 1,\r\n\t\t\t'framerate', __changeFPS\r\n\t\t));\r\n\t\tif (framerateOption.currentValue > Options.maxFrameRate) {\r\n\t\t\t__changeFPS(framerateOption.currentValue);\r\n\t\t}\r\n\t\tadd(new Checkbox(getNameID('flashingMenu'), getDescID('flashingMenu'), 'flashingMenu'));\r\n\t\tadd(new Checkbox(getNameID('colorHealthBar'), getDescID('colorHealthBar'), 'colorHealthBar'));\r\n\t\tadd(new Checkbox(getNameID('week6PixelPerfect'), getDescID('week6PixelPerfect'), 'week6PixelPerfect'));\r\n\r\n\t\tadd(new Separator());\r\n\t\tadd(new TextOption('optionsMenu.advanced', 'optionsTree.appearance.advanced-desc', ' >', () ->\r\n\t\t\tparent.addMenu(new AdvancedAppearanceOptions())));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

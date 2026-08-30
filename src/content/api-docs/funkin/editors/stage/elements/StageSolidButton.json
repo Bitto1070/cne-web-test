@@ -1,0 +1,56 @@
+{
+	"kind": "class",
+	"name": "StageSolidButton",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sprite",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float,y:Float, sprite:FunkinSprite, xml:Access) {\r\n\t\tsuper(x,y, sprite, xml);\r\n\t\tcolor = 0xFFD9FF50;\r\n\t\thasAdvancedEdit = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onEdit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onEdit() {\r\n\t\tif(!FlxG.keys.pressed.SHIFT) {\r\n\t\t\tFlxG.state.openSubState(new StageSpriteEditScreen(this, \"layouts/stage/solidEditScreen\"));\r\n\t\t} else {\r\n\t\t\tFlxG.state.openSubState(new StageXMLEditScreen(this.xml, updateInfo, \"Solid\"));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,290 @@
+{
+	"kind": "class",
+	"name": "TranslatedAssetLibrary",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "libName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "basePath",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "prefix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forLibrary",
+			"type": "IModsAssetLibrary",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "langFolder",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "lib",
+					"type": "IModsAssetLibrary",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "langFolder",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(lib:IModsAssetLibrary, ?langFolder:String) {\r\n\t\tsuper();\r\n\t\tthis.forLibrary = lib;\r\n\t\tthis.langFolder = langFolder;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "formatPath",
+			"args": [
+				{
+					"name": "mainPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function formatPath(mainPath:String, ?asset:String):String {\r\n\t\tif(!mainPath.endsWith('/')) mainPath += '/';\r\n\t\treturn mainPath + getAssetPath() + (asset == null ? \"\" : asset);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAudioBuffer",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AudioBuffer",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getAudioBuffer(id:String):AudioBuffer\r\n\t{\r\n\t\t// TODO: rewrite this, once it works\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = cast(lib, AssetLibrary).getAudioBuffer(formatPath(lib.prefix, id));\r\n\t\t\tif(val != null) return val;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBytes",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bytes",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getBytes(id:String):Bytes\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = cast(lib, AssetLibrary).getBytes(formatPath(lib.prefix, id));\r\n\t\t\tif(val != null) return val;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getText",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getText(id:String):String\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = cast(lib, AssetLibrary).getText(formatPath(lib.prefix, id));\r\n\t\t\tif(val != null) return val;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Font",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getFont(id:String):Font\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = cast(lib, AssetLibrary).getFont(formatPath(lib.prefix, id));\r\n\t\t\tif(val != null) return val;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getImage",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Image",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getImage(id:String):Image\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = cast(lib, AssetLibrary).getImage(formatPath(lib.prefix, id));\r\n\t\t\tif(val != null) return val;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPath",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPath(id:String):String\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = cast(lib, AssetLibrary).getPath(formatPath(lib.prefix, id));\r\n\t\t\tif(val != null) return val;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "_parsedAsset",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFiles",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// Theres no need to actually make this work  - Nex\r\n\r\n\tpublic function getFiles(folder:String):Array<String>\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = lib.getFiles(formatPath(lib.prefix, folder));\r\n\t\t\tif(val != null && val.length > 0) return val;\r\n\t\t}\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFolders",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getFolders(folder:String):Array<String>\r\n\t{\r\n\t\tvar libs = [forLibrary];\r\n\t\tfor(lib in libs) {\r\n\t\t\tif(!(lib is AssetLibrary)) continue;\r\n\t\t\tvar val = lib.getFolders(formatPath(lib.prefix, folder));\r\n\t\t\tif(val != null && val.length > 0) return val;\r\n\t\t}\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic override function exists(id:String, type:String):Bool\r\n\t{\r\n\t\tfor(lib in ModsFolder.getLoadedModsLibs(true)) if(lib is AssetLibrary && cast(lib, AssetLibrary).exists(formatPath(lib.prefix, id), type)) return true;\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

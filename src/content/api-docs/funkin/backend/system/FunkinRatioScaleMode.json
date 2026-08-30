@@ -1,0 +1,68 @@
+{
+	"kind": "class",
+	"name": "FunkinRatioScaleMode",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "width",
+			"type": "Null<Int>",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:isVar"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "height",
+			"type": "Null<Int>",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:isVar"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateGameSize",
+			"args": [
+				{
+					"name": "Width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateGameSize(Width:Int, Height:Int):Void\r\n\t{\r\n\t\tvar ratio:Float = width / height;\r\n\t\tvar realRatio:Float = Width / Height;\r\n\r\n\t\tvar scaleY:Bool = realRatio < ratio;\r\n\t\tif (fillScreen)\r\n\t\t{\r\n\t\t\tscaleY = !scaleY;\r\n\t\t}\r\n\r\n\t\tif (scaleY)\r\n\t\t{\r\n\t\t\tgameSize.x = Width;\r\n\t\t\tgameSize.y = Math.floor(gameSize.x / ratio);\r\n\t\t}\r\n\t\telse\r\n\t\t{\r\n\t\t\tgameSize.y = Height;\r\n\t\t\tgameSize.x = Math.floor(gameSize.y * ratio);\r\n\t\t}\r\n\r\n\t\t@:privateAccess {\r\n\r\n\t\t\tfor(c in FlxG.cameras.list) {\r\n\t\t\t\tif (c.width == FlxG.width && c.height == FlxG.height) {\r\n\t\t\t\t\tc.width = width;\r\n\t\t\t\t\tc.height = height;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tFlxG.width = width;\r\n\t\t\tFlxG.height = height;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetSize",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function resetSize() {\r\n\t\twidth = null;\r\n\t\theight = null;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

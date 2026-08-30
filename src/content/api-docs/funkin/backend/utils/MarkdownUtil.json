@@ -1,0 +1,175 @@
+{
+	"kind": "final class",
+	"name": "MarkdownUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "applyMarkdownText",
+			"args": [
+				{
+					"name": "text",
+					"type": "FlxText",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function applyMarkdownText(text:FlxText, str:String) {\r\n\t\ttext.textField.htmlText = Markdown.markdownToHtml(prepareMarkdown(str));\r\n\t\tvar changes:Array<FlxTextFormatMarkerPair> = [\r\n\t\t\tcreateAdvancedMarkerPair(\"{title}\", 0xFFFFFFFF, text.size * 2, false, true, true),\r\n\t\t\tcreateAdvancedMarkerPair(\"{subtitle}\", 0xFFFFFFFF, text.size * 1.5, false, true, true),\r\n\t\t\tcreateAdvancedMarkerPair(\"{subsubtitle}\", 0xFFFFFFFF, text.size * 1.25, false, true, true),\r\n\t\t\tcreateAdvancedMarkerPair(\"{ident1}\", 0xFFFFFFFF, null, false, false, false, text.size * 2, true),\r\n\t\t\tcreateAdvancedMarkerPair(\"{ident2}\", 0xFFFFFFFF, null, false, false, false, text.size * 4, true),\r\n\t\t\tcreateAdvancedMarkerPair(\"{ident3}\", 0xFFFFFFFF, null, false, false, false, text.size * 6, true),\r\n\t\t\tcreateAdvancedMarkerPair(\"{ident4}\", 0xFFFFFFFF, null, false, false, false, text.size * 8, true),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFFFF00, false, true), \"{o}\"),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFF0000, false, true), \"{r}\"),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFF00FF08, false, true), \"{g}\"),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFF7D7D7D, false, true), \"{gray}\"),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFFFFFF, false, true, 0xFF222222), \"{italic}\"),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFFFFFF, false, true, 0xFF666666), \"{bold}\"),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(0xFFFFFFFF, false, true, 0xFF888888), \"{bold-italic}\"),\r\n\t\t];\r\n\r\n\t\ttext.applyMarkup(\r\n\t\t\tparseWarnings(text.textField.text),\r\n\t\t\tchanges\r\n\t\t);\r\n\t\t@:privateAccess {\r\n\t\t\t// hacky fix for the text cutting when bigger text formats are used\r\n\t\t\ttext._regen = true;\r\n\t\t\ttext.regenGraphic();\r\n\t\t\ttext._regen = true;\r\n\t\t\ttext.regenGraphic();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createAdvancedMarkerPair",
+			"args": [
+				{
+					"name": "marker",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "bold",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "italic",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "underline",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "blockIndent",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "bullet",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function createAdvancedMarkerPair(marker:String, color:FlxColor, size:Null<Float>, bold:Bool = false, italic:Bool = false, ?underline:Bool = false, ?blockIndent:Int, ?bullet:Bool) {\r\n\t\t@:privateAccess {\r\n\t\t\tvar format = new FlxTextFormat(color, bold, italic);\r\n\t\t\tformat.format.size = size == null ? null : Std.int(size);\r\n\t\t\tformat.format.underline = underline;\r\n\t\t\tformat.format.blockIndent = blockIndent;\r\n\t\t\tformat.format.bullet = bullet;\r\n\t\t\treturn new FlxTextFormatMarkerPair(format, marker);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "parseWarnings",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseWarnings(text:String) {\r\n\t\ttext = text.replace(\"&nbsp;\", \" \");\r\n\t\ttext = parseEmote(text, \"⚠\", \"{o}(!)\", \"{o}\");\r\n\t\ttext = parseEmote(text, \"❌\", \"{r}(X)\", \"{r}\");\r\n\t\ttext = parseEmote(text, \"✔\", \"{g}(+)\", \"{g}\");\r\n\t\treturn text;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "prepareMarkdown",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function prepareMarkdown(text:String) {\r\n\t\ttext = \"\\n\" + text;\r\n\t\ttext = parseEmote(text, \"\\n- \",             \"\\n{ident1}&nbsp;&nbsp;• \",             \"{ident1}\");\r\n\t\ttext = parseEmote(text, \"\\n    - \",         \"\\n{ident2}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• \",         \"{ident2}\");\r\n\t\ttext = parseEmote(text, \"\\n        - \",     \"\\n{ident3}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• \",     \"{ident3}\");\r\n\t\ttext = parseEmote(text, \"\\n            - \", \"\\n{ident4}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• \", \"{ident4}\");\r\n\t\ttext = parseEmote(text, \"\\n> \",             \"\\n{gray}\",                 \"{gray}\");\r\n\t\ttext = parseEmote(text, \"\\n### \",           \"\\n{subsubtitle}\",          \"{subsubtitle}\");\r\n\t\ttext = parseEmote(text, \"\\n## \",            \"\\n{subtitle}\",             \"{subtitle}\");\r\n\t\ttext = parseEmote(text, \"\\n# \",             \"\\n{title}\",                \"{title}\");\r\n\t\ttext = parseEmote(text, \"***\",              \"{bold-italic}\",            \"{bold-italic}\",    \"***\");\r\n\t\ttext = parseEmote(text, \"**\",               \"{bold}\",                   \"{bold}\",           \"**\");\r\n\t\ttext = parseEmote(text, \"*\",                \"{italic}\",                 \"{italic}\",         \"*\");\r\n\t\ttext = parseEmote(text, \"_\",                \"{italic}\",                 \"{italic}\",         \"*\");\r\n\t\ttext = parseEmote(text, \"__\",               \"{bold}\",                   \"{bold}\",           \"*\");\r\n\t\ttext.substr(\"\\n\".length);\r\n\t\treturn text;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseEmote",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "emote",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "beginning",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "end",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "emoteEnd",
+					"type": "String",
+					"optional": false,
+					"def": "\"\\n\""
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseEmote(text:String, emote:String, beginning:String, end:String, emoteEnd:String = \"\\n\") {\r\n\t\tvar index:Int;\r\n\t\twhile((index = text.indexOf(emote)) >= 0) {\r\n\t\t\tvar nextIndex = text.indexOf(emoteEnd, index + emote.length);\r\n\t\t\tif (nextIndex < 0)\r\n\t\t\t\tnextIndex = text.length;\r\n\t\t\ttext = text.substr(0, index) + beginning + text.substring(index + emote.length, nextIndex) + end + (emote == emoteEnd ? \"\" : emoteEnd) + text.substring(nextIndex + emoteEnd.length);\r\n\t\t}\r\n\t\treturn text;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

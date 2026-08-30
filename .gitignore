@@ -25,8 +25,3 @@ pnpm-debug.log*
 
 # shortcut file for "npm run dev" (im lazy)
 run.bat
-
-# generated jsons (would be too much space)
-# there should be e better way to include them in source
-# cus how will github pages guess
-src/content/api-docs/*

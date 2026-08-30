@@ -1,0 +1,96 @@
+{
+	"kind": "class",
+	"name": "UIWindow",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "titleSpr",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "collapsable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "content",
+			"type": "FlxTypedGroup<FlxBasic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "title",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function new(x:Float, y:Float, w:Int, h:Int, ?title:String) {\r\n\t\tsuper(x, y, w, h,  \"editors/ui/normal-popup\");\r\n\r\n\t\tif(title != null && title.length != 0) {\r\n\t\t\tmembers.push(titleSpr = new UIText(x + 25, y, bWidth - 50, title, 15, -1));\r\n\t\t\ttitleSpr.y = y + ((30 - titleSpr.height) / 2);\r\n\t\t}\r\n\r\n\t\tcontent = new FlxTypedGroup<FlxBasic>();\r\n\t\tmembers.push(content);\r\n\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_WINDOWAPPEAR_SOUND);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tcursor = ARROW;\r\n\r\n\t\tif(collapsable) {\r\n\t\t\t__rect.set(x, y, bWidth, topHeight);\r\n\r\n\t\t\tif(UIState.state.isOverlapping(this, __rect)) {\r\n\t\t\t\tcursor = CLICK;\r\n\t\t\t\tif(FlxG.mouse.justPressed) {\r\n\t\t\t\t\tcontent.exists = !content.exists;\r\n\t\t\t\t\tdrawMiddle = !drawMiddle;\r\n\t\t\t\t\tdrawBottom = !drawBottom;\r\n\t\t\t\t}\r\n\t\t\t} else {\r\n\t\t\t\tif(!content.exists) {\r\n\t\t\t\t\tcursor = null;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t__rect.x = x;\r\n\t\t__rect.width = bWidth;\r\n\t\tif(content.exists) {\r\n\t\t\t__rect.y = y+topHeight;\r\n\t\t\t__rect.height = bHeight-topHeight;\r\n\t\t}\r\n\t\thovered = content.exists && UIState.state.isOverlapping(this, __rect);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,31 @@
+{
+	"kind": "enum abstract",
+	"name": "StageEditorEdge",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\treturn switch(cast this) {\r\n\t\t\tcase NONE: \"NONE\";\r\n\t\t\tcase TOP_LEFT: \"TOP_LEFT\";\r\n\t\t\tcase TOP_MIDDLE: \"TOP_MIDDLE\";\r\n\t\t\tcase TOP_RIGHT: \"TOP_RIGHT\";\r\n\t\t\tcase MIDDLE_LEFT: \"MIDDLE_LEFT\";\r\n\t\t\t//case MIDDLE_MIDDLE: \"MIDDLE_MIDDLE\";\r\n\t\t\tcase MIDDLE_RIGHT: \"MIDDLE_RIGHT\";\r\n\t\t\tcase BOTTOM_LEFT: \"BOTTOM_LEFT\";\r\n\t\t\tcase BOTTOM_MIDDLE: \"BOTTOM_MIDDLE\";\r\n\t\t\tcase BOTTOM_RIGHT: \"BOTTOM_RIGHT\";\r\n\t\t\tcase CENTER_CIRCLE: \"CENTER_CIRCLE\";\r\n\t\t\tcase ROTATE_CIRCLE: \"ROTATE_CIRCLE\";\r\n\t\t\tcase ROTATE_CORNER: \"ROTATE_CORNER\";\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toInt",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toInt():Int {\r\n\t\treturn switch(cast this) {\r\n\t\t\tcase NONE: -1;\r\n\t\t\tcase TOP_LEFT: 0;\r\n\t\t\tcase TOP_MIDDLE: 1;\r\n\t\t\tcase TOP_RIGHT: 2;\r\n\t\t\tcase MIDDLE_LEFT: 3;\r\n\r\n\t\t\tcase MIDDLE_RIGHT: 4;\r\n\t\t\tcase BOTTOM_LEFT: 5;\r\n\t\t\tcase BOTTOM_MIDDLE: 6;\r\n\t\t\tcase BOTTOM_RIGHT: 7;\r\n\t\t\tcase CENTER_CIRCLE: 8;\r\n\t\t\tcase ROTATE_CIRCLE: 9;\r\n\t\t\tcase ROTATE_CORNER: 10;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

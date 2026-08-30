@@ -13,10 +13,13 @@ import InlineCode from '../../components/InlineCode.astro';
 This usually means the game failed to start. The reasons for this could be:
 
 - Non-ASCII characters on the file path (example: `C:\Users\Niña\`)
-- File path being too long
+- File path being too long (maximum ~250 characters)
 - Running the game inside an archive (like `.zip` files) or on a cloud folder (like Onedrive)
 
-The solution is to move the folder somewhere else on the disk.
+The solution for these is to move the folder somewhere else on the disk.
+
+Another cause may be outdated graphics drivers, as GLSL version had to be updated a bit starting in 1.1.0...
+unfortunately this is the thing that makes new blend modes work, so...
 
 <br/>
 
@@ -87,14 +90,16 @@ Change the strumline X position of the second strumline to be 0.75 in the Chart 
 ### Entering Story Mode crashes the game
 
 Getting a `Null Object Reference` error in Story Mode means you have no weeks loaded.
-Verify that your `data/weeks/weeks.txt` has actual existing written to it, and that it isnt blank or if the first week listed does not exist.
+Verify that your `data/weeks/weeks.txt` has actual existing weeks written to it, and that it isn't blank or if the first week listed does not exist.
+
+This is due to it force-grabbing the first week on the list's difficulties for some reason.
 
 <br/>
 
 ### Setting a sprite's `velocity` / `acceleration` does nothing
 
-If using a `FunkinSprite` instance on a script, the `moves` field is `false` by default. This will remove physics logic for optimization reasons.
-To re-enable them just set <InlineCode lang='haxe' code={'yourSprite.moves'}/> to `true`.
+If using a `FunkinSprite` instance on a script, the `moves` field is <code class="token keyword">false</code> by default. This will remove physics logic for optimization reasons.
+To re-enable them just set <InlineCode lang='haxe' code={'yourSprite.moves = true;'}/>.
 
 If using a stage XML, using a <InlineCode lang='xml' code={'<property type="float" name="velocity.x" value="?"/>'}/> node should enable `moves` automatically.
 - This applies for `velocity.x`, `velocity.y`, `acceleration.x` and `acceleration.y`.
@@ -109,9 +114,9 @@ They are both technically still a WIP, so expect lots of instability. Right now 
 
 ### Strum rotation also moves notes
 
-Set <InlineCode lang='haxe' code={'strum.noteAngle'}/> to 0.
+Set <InlineCode lang='haxe' code={'strum.noteAngle = 0;'}/>. Shrimple.
 
-The default value for this property is `null` for both notes and strums, which in turn will copy the regular `angle` property as the default.
+The default value for this property is <code class="token keyword">null</code> for both notes and strums, which in turn will copy the regular `angle` property as the default.
 
 <br/>
 
@@ -120,9 +125,9 @@ The default value for this property is `null` for both notes and strums, which i
 There's multiple causes for this, most common ones include:
 - **Animations were inside a folder in the FLA:** You need to specify the folder where they come from, as it is technicaly also part of the animation symbol name.
 
-- **Every symbol is misplaced horrendously:** *Layer parenting is not supported.*
+- **Every symbol is misplaced horrendously:** <u>*Layer parenting is not supported.*</u>
 
-- **Some symbols are not showing:** Verify that they are actual symbols and not something like groups, it is unknown if they are supported or not.
+- **Some symbols are not showing:** Verify that they are actual symbols and not something like groups or drawing objects, it is unknown if they are supported or not.
 
 <br/>
 
@@ -149,3 +154,33 @@ For example, <InlineCode lang='xml' code={'<stage folder="stages/philly">'}/> wo
 
 - **Using the whole absolute path relative to your drive (`C:/Users/USER/.../(codename folder)/mods/---/images/stages/philly/`)**: ??????????????????
 </details>
+
+<br/>
+
+### FlxBar doesn't work correctly / crashes the game
+
+Do **NOT** use `this` as the parent of the bar. `this` would point to the current script's **parent object** (usually <InlineCode lang='haxe' code={'PlayState.instance'}/>).
+Since it would expect a hardcoded variable to be named `variable` in this example, it will not work.
+
+The simple solution is to use a data structure:
+
+```haxe
+var barData = {
+    variable: 0,
+}
+
+bar = new FlxBar(x, y, FlxBarFillDirection.LEFT_TO_RIGHT, 400, 20,
+        barData, // The change was changing `this` to `barData`
+        "variable");
+
+barData.variable = 50;
+```
+
+<br/>
+
+### `FlxBar: max cannot be less than or equal to min` when importing a song audio file
+<p style="margin-top: -2.3em;">
+PLEASE verify that your file is an actual `.ogg` file with actual `.ogg` encoding.
+Renaming a file to `.ogg` will <span style="font-size: 3em; font-weight: bolder; font-style: italic; color: #f00; text-shadow: 0px 0px 5px #f00;">NOT</span>work,
+as the file contents of the previous audio format are still there.
+</p>

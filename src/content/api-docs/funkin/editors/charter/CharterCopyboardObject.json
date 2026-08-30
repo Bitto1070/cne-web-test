@@ -1,0 +1,8 @@
+{
+	"kind": "enum",
+	"name": "CharterCopyboardObject",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

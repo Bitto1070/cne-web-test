@@ -1,0 +1,136 @@
+{
+	"kind": "class",
+	"name": "SysZip",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Class that extends Reader allowing you to load ZIP entries without blowing your RAM up!!\n~~Half of the code is taken from haxe libraries btw~~ Reworked by ItsLJcool to actually work for zip files.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "entries",
+			"type": "List<SysZipEntry>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openFromFile",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function openFromFile(path:String) { return new SysZip(path); }",
+			"doc": {
+				"text": "Opens a zip from a specified path.",
+				"params": {
+					"path": "Path to the zip file. (With the extension)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(path:String) {\r\n\t\tthis.filePath = path;\r\n\t\tfileInput = File.read(path, true);\r\n\r\n\t\tupdateEntries(); // automatic but if you feel like you don't want it to be automatic, you can remove this.\r\n\t}",
+			"doc": {
+				"text": "Creates a new SysZip from a specified path.",
+				"params": {
+					"path": "Path to the zip file. (With the extension)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "unzipEntry",
+			"args": [
+				{
+					"name": "f",
+					"type": "SysZipEntry",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bytes",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function unzipEntry(f:SysZipEntry):Bytes {\r\n\t\tif (f.fileSize <= 0) return Bytes.alloc(0);\r\n\t\t\r\n\t\tfileInput.seek(f.seekPos, SeekBegin);\r\n\t\tvar data = fileInput.read(f.compressedSize);\r\n\t\t\r\n\t\tif (!f.compressed) return data;\r\n\r\n\t\tvar c = new haxe.zip.Uncompress(-15);\r\n\t\tvar s = Bytes.alloc(f.fileSize);\r\n\t\tvar r = c.execute(data, 0, s, 0);\r\n\t\tc.close();\r\n\r\n\t\tif (!r.done || r.read != data.length || r.write != f.fileSize) throw 'Invalid compressed data for ${f.fileName} | ${f.compressedSize} -> ${f.fileSize}';\r\n\t\treturn s;\r\n\t}",
+			"doc": {
+				"text": "Unzips and returns all of the data present in an entry.",
+				"params": {
+					"f": "Entry to read from."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateEntries",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateEntries() {\r\n\t\tif (entries.length > 0) {\r\n\t\t\tentries.clear();\r\n\t\t\tentries = new List();\r\n\t\t}\r\n\t\t\r\n\t\t// --- locate End of Central Directory (EOCD) ---\r\n\t\tvar fileSize:Int = sys.FileSystem.stat(this.filePath).size; // probably need a better way to check the size of the file.\r\n\t\tvar scanSize:Int = (65535 < fileSize) ? 65535 : fileSize;\r\n\t\t\r\n\t\t// It seems this usually ends up being 0 anyways, but for cases where it might not be?? I'd just make sure. but Someone do some digging I don't know if this required.\r\n\t\tfileInput.seek(fileSize - scanSize, SeekBegin);\r\n\t\t\r\n\t\tvar buf = fileInput.read(scanSize);\r\n\t\tvar b = new haxe.io.BytesInput(buf);\r\n\t\t// I LOVE USING MAGIC NUMBERS AND FORGETTING WHAT THEY DO 🔥🔥🔥🔥🔥🔥\r\n\t\tb.position = (buf.length - 22) + 16; // offset to start of central directory\r\n\r\n\t\t// --- read central directory ---\r\n\t\tfileInput.seek(b.readInt32(), SeekBegin);\r\n\t\twhile (true) {\r\n\t\t\tif (fileInput.readInt32() != 0x02014b50) break; // central dir file header signature\r\n\r\n\t\t\tfileInput.seek(6, SeekCur); // version/flags\r\n\t\t\tvar compression_method = fileInput.readUInt16();\r\n\t\t\tfileInput.seek(8, SeekCur); // time/date + CRC32 (4, 4)\r\n\t\t\tvar compressed_size = fileInput.readInt32();\r\n\t\t\tvar uncompressed_size = fileInput.readInt32();\r\n\t\t\tvar nameLen = fileInput.readUInt16();\r\n\t\t\tvar extraLen = fileInput.readUInt16();\r\n\t\t\tvar commentLen = fileInput.readUInt16();\r\n\t\t\tfileInput.seek(8, SeekCur); // skip disk number/start attrs\r\n\t\t\tvar localHeaderOffset = fileInput.readInt32();\r\n\r\n\t\t\tvar name = fileInput.read(nameLen).toString();\r\n\r\n\t\t\t// skip central directory extra/comment\r\n\t\t\tfileInput.seek(extraLen + commentLen, SeekCur);\r\n\r\n\t\t\t// --- compute correct seekPos using local header ---\r\n\t\t\tvar curPos = fileInput.tell();\r\n\t\t\t// I also forgor what the `+ 26` is for, so uh my b chat\r\n\t\t\tfileInput.seek(localHeaderOffset + 26, SeekBegin);\r\n\t\t\tvar localNameLen = fileInput.readUInt16();\r\n\t\t\tvar localExtraLen = fileInput.readUInt16();\r\n\t\t\tfileInput.seek(curPos, SeekBegin);\r\n\r\n\t\t\t// I completely forgot that we don't really need to log the FOLDER of the content because we only care about where the contents are.\r\n\t\t\t// the folders are labled as 0 bytes anyways so this will save on storing non-required data.\r\n\t\t\tif (name.endsWith(\"/\")) continue;\r\n\r\n\t\t\tvar zipEntry:SysZipEntry = {\r\n\t\t\t\tfileName: name,\r\n\t\t\t\tfileSize: uncompressed_size,\r\n\t\t\t\t// I don't remember what the `+ 30` is for, but probably to offset something\r\n\t\t\t\tseekPos: (localHeaderOffset + 30 + localNameLen + localExtraLen),\r\n\t\t\t\tcompressedSize: compressed_size,\r\n\t\t\t\tcompressed: (compression_method == 8),\r\n\t\t\t};\r\n\t\t\tentries.add(zipEntry);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Updates the `entries` list with the current contents of the zip file.\nThis is done when the zip is read from SysZip the first time, but if you REALLY need to re-update the entries, you can call this again.\n\nNote: Calling this function will hold up the game as it has to read the ENTIRE zip, so if it's large like 1GiB or more, it might take a second or more.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "dispose",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function dispose() {\r\n\t\tif (fileInput != null) fileInput.close();\r\n\t}",
+			"doc": {
+				"text": "calling `dispose` doesn't actually kill the class, you can still access the entries.\ndisposing of SysZip will free the compressed file from being used by the engine.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

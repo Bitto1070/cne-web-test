@@ -1,0 +1,30 @@
+{
+	"kind": "final class",
+	"name": "DialogueNextLineEvent",
+	"pkg": "funkin.backend.scripting.events.dialogue",
+	"doc": {
+		"text": "CANCEL this event to prevent continuing with the next dialogue.\n\n**NOTE**: To access the current, past or next lines, use `curLine`, `lastLine` or also `dialogueLines` in the `DialogueCutscene` class (they're globals and can be accessed at any time as long as the Dialogue Cutscene is active)!",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "playFirst",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If the dialogue has just been opened.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,27 @@
+{
+	"kind": "final class",
+	"name": "CommandLineHandler",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "parseCommandLine",
+			"args": [
+				{
+					"name": "cmd",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseCommandLine(cmd:Array<String>) {\r\n\t\tvar i:Int = 0;\r\n\t\twhile(i < cmd.length) {\r\n\t\t\tswitch(cmd[i]) {\r\n\t\t\t\tcase null:\r\n\t\t\t\t\tbreak;\r\n\t\t\t\tcase \"-h\" | \"-help\" | \"help\":\r\n\t\t\t\t\tSys.println(\"-- Codename Engine Command Line help --\");\r\n\t\t\t\t\tSys.println(\"-help                | Show this help\");\r\n\t\t\t\t\t#if MOD_SUPPORT\r\n\t\t\t\t\tSys.println(\"-mod [mod name]      | Load a specific mod\");\r\n\t\t\t\t\tSys.println(\"-modfolder [path]    | Sets the mod folder path\");\r\n\t\t\t\t\tSys.println(\"-addonsfolder [path] | Sets the addons folder path\");\r\n\t\t\t\t\t#end\r\n\t\t\t\t\tSys.println(\"-nocolor             | Disables colors in the terminal\");\r\n\t\t\t\t\tSys.println(\"-nogpubitmap         | Forces GPU only bitmaps off\");\r\n\t\t\t\t\tSys.println(\"-nocwdfix            | Turns off automatic working directory fix\");\r\n\t\t\t\t\tSys.exit(0);\r\n\t\t\t\t#if MOD_SUPPORT\r\n\t\t\t\tcase \"-m\" | \"-mod\" | \"-currentmod\":\r\n\t\t\t\t\ti++;\r\n\t\t\t\t\tvar arg = cmd[i];\r\n\t\t\t\t\tif (arg == null) {\r\n\t\t\t\t\t\tSys.println(\"[ERROR] You need to specify the mod name\");\r\n\t\t\t\t\t\tSys.exit(1);\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tMain.modToLoad = arg.trim();\r\n\t\t\t\t\t}\r\n\t\t\t\tcase \"-modfolder\":\r\n\t\t\t\t\ti++;\r\n\t\t\t\t\tvar arg = cmd[i];\r\n\t\t\t\t\tif (arg == null) {\r\n\t\t\t\t\t\tSys.println(\"[ERROR] You need to specify the mod folder path\");\r\n\t\t\t\t\t\tSys.exit(1);\r\n\t\t\t\t\t} else if (FileSystem.exists(arg)) {\r\n\t\t\t\t\t\tfunkin.backend.assets.ModsFolder.modsPath = arg;\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tSys.println('[ERROR] Mod folder at \"${arg}\" does not exist.');\r\n\t\t\t\t\t\tSys.exit(1);\r\n\t\t\t\t\t}\r\n\t\t\t\tcase \"-addonsfolder\":\r\n\t\t\t\t\ti++;\r\n\t\t\t\t\tvar arg = cmd[i];\r\n\t\t\t\t\tif (arg == null) {\r\n\t\t\t\t\t\tSys.println(\"[ERROR] You need to specify the addon folder path\");\r\n\t\t\t\t\t\tSys.exit(1);\r\n\t\t\t\t\t} else if (FileSystem.exists(arg)) {\r\n\t\t\t\t\t\tfunkin.backend.assets.ModsFolder.addonsPath = arg;\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tSys.println('[ERROR] Addons folder at \"${arg}\" does not exist.');\r\n\t\t\t\t\t\tSys.exit(1);\r\n\t\t\t\t\t}\r\n\t\t\t\t#end\r\n\t\t\t\tcase \"-nocolor\":\r\n\t\t\t\t\tMain.noTerminalColor = true;\r\n\t\t\t\tcase \"-nogpubitmap\":\r\n\t\t\t\t\tMain.forceGPUOnlyBitmapsOff = true;\r\n\t\t\t\tcase \"-nocwdfix\":\r\n\t\t\t\t\tMain.noCwdFix = true;\r\n\t\t\t\tcase \"-livereload\":\r\n\t\t\t\t\t// do nothing\r\n\t\t\t\tcase \"-v\" | \"-verbose\" | \"--verbose\":\r\n\t\t\t\t\tMain.verbose = true;\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tSys.println(\"Unknown command\");\r\n\t\t\t}\r\n\t\t\ti++;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

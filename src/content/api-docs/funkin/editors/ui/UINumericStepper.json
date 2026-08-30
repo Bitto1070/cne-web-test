@@ -1,0 +1,126 @@
+{
+	"kind": "class",
+	"name": "UINumericStepper",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "value",
+			"type": "Float",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "precision",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "min",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "max",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "precision",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "min",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "max",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": "180"
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": "32"
+				},
+				{
+					"name": "small",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, value:Float = 0, step:Float = 1, precision:Int = 0, ?min:Float, ?max:Float, w:Int = 180, h:Int = 32, small:Bool = false) {\r\n\t\tsuper(x, y, \"\", w - h, h, false, small);\r\n\r\n\t\tonChange = __onChange;\r\n\r\n\t\tthis.precision = precision;\r\n\t\tthis.min = min;\r\n\t\tthis.max = max;\r\n\t\tthis.step = step;\r\n\r\n\t\tset_value(value);\r\n\r\n\t\t// TODO: add stepper buttons\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

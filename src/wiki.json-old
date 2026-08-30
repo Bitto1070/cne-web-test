@@ -1,0 +1,43 @@
+[
+    ["index", "Home"],
+    ["differences", "Differences between other FNF engines"],
+    ["usage", "How does one use the engine? <span style='color: #d4b528;'>(Needs Links)</span>"],
+    ["faq", "<span style='color: #43a1aa;'>FAQ</span>"],
+    ["troubleshooting", "Troubleshooting - <span style='color: #32e53a;'>(Updated)</span>"],
+    ["modding", "Modding The Engine - <span style='color: #d4b528;'>(33% Complete)</span>", [
+        ["config", "Configuration - <span style='color: #32e53a;'>(Complete)</span>"],
+        ["libraries", "OpenFL's AssetLibrary - <span style='color: #32e53a;'>(Complete)</span>"],
+        ["scripting", "Scriping (Softcoding) - <span style='color: #d4b528;'>(20% Complete)</span>", [
+            ["features", "Features / Examples - <span style='color: #d4b528;'>TODO</span>"],
+            ["style", "Formatting, and Basic Syntax - <span style='color: #d4b528;'>TODO</span>"],
+            ["cancellables", "Event Callbacks - <span style='color: #d4b528;'>TODO</span>"],
+            ["playstate", "PlayState Interaction - <span style='color: #d4b528;'>TODO</span>"],
+            ["states", "Custom States / SubStates - <span style='color: #d4b528;'>(Semi-Complete)</span>"],
+            ["events", "Custom Events / Notetypes - <span style='color: #d4b528;'>(Semi-Complete)</span>"],
+            ["global", "Global Script - <span style='color: #32e53a;'>(Complete)</span>"],
+            ["classes", "Custom Classes - <span style='color: #32e53a;'>(Complete)</span>"]
+        ]],
+        ["editors", "Editors - UNFINISHED", [
+            ["chart", "Chart Editor - <span style='color: #32e53a;'>(Complete)</span>"],
+            ["character", "Character Editor - <span style='color: #d4b528;'>TODO</span>"],
+            ["stage", "Stage Editor - <span style='color: #e1491e;'>Waiting on Stage-Rewrite!</span>"],
+            ["alphabet", "Alphabet Editor - <span style='color: #d4b528;'>TODO</span>"],
+            ["custom", "Custom Editors??? - <span style='color: #d4b528;'>TODO</span>"]
+        ]],
+        ["videos", "Videos & Cutscenes using HxVLC - UNFINISHED", [
+			["video_cutscene", "Video Cutscenes - <span style='color: #d4b528;'>TODO</span>"]
+		]],
+        ["advanced", "Advanced Topics - UNFINISHED", [
+            ["shaders", "Shaders - <span style='color: #32e53a;'>(Updated)</span>"],
+            ["ndll", "NDLLS - <span style='color: #d4b528;'>TODO</span>"],
+            ["3d", "3D Rendering <span style='color: #489fb7;'>(WIP)</span>"]
+        ]]
+    ]],
+    ["tutorials", "Manual File Making for Nerds", [
+        ["stages", "Stage XMLs"],
+        ["weeks", "Making Weeks"]
+    ]],
+    ["source", "Source Modding - <span style='color: #32e53a;'>(Complete)</span>", [
+        ["init", "Initalization - <span style='color: #32e53a;'>(Complete)</span>"]
+    ]]
+]

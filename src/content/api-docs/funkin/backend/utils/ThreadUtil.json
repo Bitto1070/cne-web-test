@@ -1,0 +1,69 @@
+{
+	"kind": "final class",
+	"name": "ThreadUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "createSafe",
+			"args": [
+				{
+					"name": "func",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "autoRestart",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Thread",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function createSafe(func:Void->Void, autoRestart:Bool = false):Thread {\r\n\t\t#if (target.threaded)\r\n\t\ttry {\r\n\t\t\treturn if (autoRestart) Thread.create(() -> {\r\n\t\t\t\tvar restart = true;\r\n\t\t\t\twhile (restart) try {\r\n\t\t\t\t\tfunc();\r\n\t\t\t\t\trestart = false;\r\n\t\t\t\t}\r\n\t\t\t\tcatch (e) error(e.details());\r\n\t\t\t})\r\n\t\t\telse Thread.create(() -> {\r\n\t\t\t\ttry {func();}\r\n\t\t\t\tcatch (e) error(e.details());\r\n\t\t\t});\r\n\t\t}\r\n\t\tcatch (e) error(\"Failed to safely create a thread: \" + e.details());\r\n\t\t#end\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Creates a new Thread with an error handler.",
+				"params": {
+					"func": "Function to execute",
+					"autoRestart": "Whenever the thread should auto restart itself after crashing."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "maxThreads",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "execAsync",
+			"args": [
+				{
+					"name": "func",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic static function execAsync(func:Void->Void) {\r\n\t\tif (func == null) return;\r\n\r\n\t\t#if (ALLOW_MULTITHREADING && !macro)\r\n\t\t__pendingExecs.add(func);\r\n\t\tif (__threadUsed >= __threads.length) {\r\n\t\t\tif (__threads.length == maxThreads) return;\r\n\r\n\t\t\t__threadMutex.acquire();\r\n\t\t\ttry {\r\n\t\t\t\tvar thread = Thread.create(__threadExecAsync);\r\n\t\t\t\t__threads.push(thread);\r\n\t\t\t}\r\n\t\t\tcatch (e) Logs.warn(e.details());\r\n\t\t\t__threadMutex.release();\r\n\t\t}\r\n\t\t#else\r\n\t\tfunc();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

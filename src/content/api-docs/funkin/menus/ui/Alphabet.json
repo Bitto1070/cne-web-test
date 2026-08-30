@@ -1,0 +1,187 @@
+{
+	"kind": "class",
+	"name": "Alphabet",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [
+		"@:allow(funkin.editors.alphabet.AlphabetEditor)",
+		"@:allow(funkin.editors.alphabet.AlphabetMainDataScreen)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "effects",
+			"type": "Array<RegionEffect>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "text",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textWidth",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:isVar"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "textHeight",
+			"type": "Float",
+			"access": "get, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "alignment",
+			"type": "AlphabetAlignment",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forceCase",
+			"type": "CaseMode",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "originOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "font",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "renderMode",
+			"type": "AlphabetRenderMode",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "targetY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isMenuItem",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "itemHeight",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "text",
+					"type": "String",
+					"optional": true,
+					"def": "\"\""
+				},
+				{
+					"name": "font",
+					"type": "OneOfTwo<String, Bool>",
+					"optional": true,
+					"def": "\"normal\""
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?x:Float, ?y:Float, ?text:String = \"\", ?font:OneOfTwo<String, Bool> = \"normal\") {\r\n\t\tsuper(x, y);\r\n\t\tthis.text = text;\r\n\t\tif (font != \"<SKIP>\")\r\n\t\t\tthis.font = (font is String) ? font : ((font == true) ? \"bold\" : \"normal\"); // == true just in case\r\n\t\tthis.__renderData = new AlphabetRenderData(this);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildXML",
+			"args": [],
+			"ret": "Xml",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function buildXML():Xml {\r\n\t\tvar xml = Xml.createElement(\"alphabetFont\");\r\n\t\txml.set(\"fps\", Std.string(fps));\r\n\t\txml.set(\"advance\", Std.string(defaultAdvance));\r\n\t\txml.set(\"lineGap\", Std.string(lineGap));\r\n\t\txml.set(\"forceCasing\", [\"none\", \"upper\", \"lower\"][forceCase]);\r\n\t\txml.set(\"colorMode\", [\"tint\", \"offsets\", \"none\"][colorMode]);\r\n\t\txml.set(\"antialiasing\", antialiasing ? \"true\" : \"false\");\r\n\r\n\t\txml.attributeOrder = alphabetProperties;\r\n\r\n\t\tfor (sheet in sheets) {\r\n\t\t\tvar sheetNode = Xml.createElement(\"spritesheet\");\r\n\t\t\tsheetNode.addChild(Xml.createPCData(sheet));\r\n\t\t\txml.addChild(sheetNode);\r\n\t\t}\r\n\r\n\t\tfor (i in 0...3) {\r\n\t\t\tif (defaults[i] == null) continue;\r\n\r\n\t\t\tvar compon = defaults[i].components[0];\r\n\t\t\tvar node = Xml.createElement(\"defaultAnim\");\r\n\t\t\tnode.addChild(Xml.createPCData(compon.anim));\r\n\t\t\tif (i != 0)\r\n\t\t\t\tnode.set(\"casing\", [\"upper\", \"lower\"][i - 1]);\r\n\r\n\t\t\tif (compon.scaleX != 1.0 || compon.scaleY != 1.0) {\r\n\t\t\t\tnode.set(\"scaleX\", Std.string(compon.scaleX));\r\n\t\t\t\tnode.set(\"scaleY\", Std.string(compon.scaleY));\r\n\t\t\t}\r\n\t\t\tif (compon.flipX || compon.flipY) {\r\n\t\t\t\tnode.set(\"flipX\", Std.string(compon.flipX));\r\n\t\t\t\tnode.set(\"flipY\", Std.string(compon.flipY));\r\n\t\t\t}\r\n\t\t\tif (compon.angle != 0.0)\r\n\t\t\t\tnode.set(\"angle\", Std.string(compon.angle));\r\n\r\n\t\t\tnode.attributeOrder = componentProperties;\r\n\t\t\txml.addChild(node);\r\n\t\t}\r\n\r\n\t\tfor (let in manualLetters) {\r\n\t\t\tvar data = fastGetData(let);\r\n\t\t\tvar node = Xml.createElement(data.components.length - data.startIndex > 1 ? \"composite\" : \"anim\");\r\n\t\t\tnode.set(\"char\", let);\r\n\t\t\tif (!data.advanceEmpty)\r\n\t\t\t\tnode.set(\"advance\", Std.string(data.advance));\r\n\r\n\t\t\tfor (i in data.startIndex...data.components.length) {\r\n\t\t\t\tvar compon = data.components[i];\r\n\t\t\t\tvar cNode:Xml = node;\r\n\r\n\t\t\t\tif (data.components.length - data.startIndex > 1) {\r\n\t\t\t\t\tcNode = Xml.createElement(\"component\");\r\n\t\t\t\t\tcNode.set(\"anim\", compon.anim);\r\n\t\t\t\t\tnode.addChild(cNode);\r\n\t\t\t\t} else\r\n\t\t\t\t\tcNode.addChild(Xml.createPCData(compon.anim));\r\n\r\n\t\t\t\tif (compon.x != 0.0 || compon.y != 0.0) {\r\n\t\t\t\t\tcNode.set(\"x\", Std.string(-compon.x));\r\n\t\t\t\t\tcNode.set(\"y\", Std.string(compon.y));\r\n\t\t\t\t}\r\n\t\t\t\tif (compon.scaleX != 1.0 || compon.scaleY != 1.0) {\r\n\t\t\t\t\tcNode.set(\"scaleX\", Std.string(compon.scaleX));\r\n\t\t\t\t\tcNode.set(\"scaleY\", Std.string(compon.scaleY));\r\n\t\t\t\t}\r\n\t\t\t\tif (compon.flipX || compon.flipY) {\r\n\t\t\t\t\tcNode.set(\"flipX\", Std.string(compon.flipX));\r\n\t\t\t\t\tcNode.set(\"flipY\", Std.string(compon.flipY));\r\n\t\t\t\t}\r\n\t\t\t\tif (compon.angle != 0.0)\r\n\t\t\t\t\tcNode.set(\"angle\", Std.string(compon.angle));\r\n\t\t\t\tif (compon.hasColorMode)\r\n\t\t\t\t\tcNode.set(\"colorMode\", [\"tint\", \"offsets\", \"none\"][compon.colorMode]);\r\n\r\n\t\t\t\tif (compon.outIndex != null) {\r\n\t\t\t\t\tvar outline = data.components[compon.outIndex];\r\n\r\n\t\t\t\t\tcNode.set(\"hasOutline\", \"true\");\r\n\t\t\t\t\tcNode.set(\"outline\", outline.anim);\r\n\t\t\t\t\tif (outline.x != 0.0 || outline.y != 0.0) {\r\n\t\t\t\t\t\tcNode.set(\"outlineX\", Std.string(outline.x));\r\n\t\t\t\t\t\tcNode.set(\"outlineY\", Std.string(outline.y));\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\tcNode.attributeOrder = componentProperties;\r\n\t\t\t}\r\n\r\n\t\t\tnode.attributeOrder = componentProperties;\r\n\t\t\txml.addChild(node);\r\n\t\t}\r\n\r\n\t\treturn xml;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "copyData",
+			"args": [
+				{
+					"name": "from",
+					"type": "Alphabet",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function copyData(from:Alphabet) {\r\n\t\tif (from.font == this.font) return;\r\n\r\n\t\t__queueResize = true;\r\n\t\t@:bypassAccessor @:bypassAccessor this.font = from.font; // double bypass in case haxe gets finicky\r\n\t\tthis.frames = from.frames;\r\n\t\tthis.antialiasing = from.antialiasing;\r\n\t\tthis.fps = from.fps;\r\n\t\tthis.defaultAdvance = from.defaultAdvance;\r\n\t\tthis.lineGap = from.lineGap;\r\n\t\tthis.forceCase = from.forceCase;\r\n\t\tthis.colorMode = from.colorMode;\r\n\t\tthis.letterData = from.letterData;\r\n\t\tthis.defaults = from.defaults;\r\n\t\tthis.loaded = from.loaded;\r\n\t\tthis.sheets = from.sheets;\r\n\t\tthis.manualLetters = from.manualLetters;\r\n\t\tthis.failedLetters = from.failedLetters;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,73 @@
+{
+	"kind": "class",
+	"name": "CharterNoteHoverer",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "showHoverer",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\r\n\t\tsnappedToGrid = selectable = autoAlpha = false; visible = sustainSpr.visible = false;\r\n\t\t@:privateAccess __animSpeed = 1.25; typeVisible = false; alpha = 0.4;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) @:privateAccess {\r\n\t\tFlxG.mouse.getWorldPosition(FlxG.camera, __mousePos);\r\n\r\n\t\tswitch (Charter.instance.gridActionType) {\r\n\t\t\tcase NONE:\r\n\t\t\t\tvar inBoundsY:Bool = (__mousePos.y > 0 && __mousePos.y < (Charter.instance.__endStep)*40);\r\n\t\t\t\tif ((__mousePos.x > 0 && __mousePos.x < Charter.instance.strumLines.totalKeyCount * 40 && inBoundsY) && showHoverer) {\r\n\t\t\t\t\tstep = CoolUtil.bound(FlxG.keys.pressed.SHIFT ? ((__mousePos.y-20) / 40) : Charter.instance.quantStep(__mousePos.y/40), 0, Charter.instance.__endStep-1);\r\n\t\t\t\t\tid = Math.floor(__mousePos.x / 40); y = step * 40; x = id * 40; visible = true; sustainSpr.visible = typeVisible = false;\r\n\t\t\t\t\tangle = switch(animation.curAnim.curFrame = ((id - Charter.instance.strumLines.getStrumlineFromID(id).startingID) % 4)) {\r\n\t\t\t\t\t\tcase 0: -90;\r\n\t\t\t\t\t\tcase 1: 180;\r\n\t\t\t\t\t\tcase 2: 0;\r\n\t\t\t\t\t\tcase 3: 90;\r\n\t\t\t\t\t\tdefault: 0; // how is that even possible\r\n\t\t\t\t\t};\r\n\t\t\t\t} else\r\n\t\t\t\t\tvisible = false;\r\n\t\t\tcase NOTE_DRAG:\r\n\t\t\t\tvisible = sustainSpr.visible = typeVisible = true; __doAnim = false;\r\n\t\t\tdefault:\r\n\t\t\t\tvisible = sustainSpr.visible = typeVisible = false; __doAnim = false;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() @:privateAccess {\r\n\t\tswitch (Charter.instance.gridActionType) {\r\n\t\t\tcase NONE:\r\n\t\t\t\tsuper.draw();\r\n\t\t\tcase NOTE_DRAG:\r\n\t\t\t\tif (Charter.instance.gridActionType == NOTE_DRAG) {\r\n\t\t\t\t\tvar verticalChange:Float = (__mousePos.y - Charter.instance.dragStartPos.y) / 40;\r\n\t\t\t\t\tvar horizontalChange:Int = CoolUtil.floorInt((__mousePos.x - (Std.int(Charter.instance.dragStartPos.x / 40) * 40)) / 40);\r\n\r\n\t\t\t\t\tfor (s in Charter.selection) {\r\n\t\t\t\t\t\tif (s != null && s.draggable && s is CharterNote) {\r\n\t\t\t\t\t\t\tvar draggingNote:CharterNote = cast s;\r\n\t\t\t\t\t\t\ty = (draggingNote.step + verticalChange);\r\n\t\t\t\t\t\t\tif (!FlxG.keys.pressed.SHIFT)\r\n\t\t\t\t\t\t\t\ty -= ((draggingNote.step + verticalChange)\r\n\t\t\t\t\t\t\t\t\t- Charter.instance.quantStepRounded(draggingNote.step+verticalChange, verticalChange > 0 ? 0.35 : 0.65));\r\n\t\t\t\t\t\t\ty *= 40;\r\n\t\t\t\t\t\t\tvar newID:Int = CoolUtil.boundInt(draggingNote.fullID + horizontalChange, 0, Charter.instance.strumLines.totalKeyCount-1);\r\n\t\t\t\t\t\t\tx = (id=newID) * 40; y = CoolUtil.bound(y, 0, (Charter.instance.__endStep*40) - height);\r\n\r\n\t\t\t\t\t\t\tangle = switch(animation.curAnim.curFrame = (draggingNote.id % 4)) {\r\n\t\t\t\t\t\t\t\tcase 0: -90;\r\n\t\t\t\t\t\t\t\tcase 1: 180;\r\n\t\t\t\t\t\t\t\tcase 2: 0;\r\n\t\t\t\t\t\t\t\tcase 3: 90;\r\n\t\t\t\t\t\t\t\tdefault: 0; // how is that even possible\r\n\t\t\t\t\t\t\t};\r\n\r\n\t\t\t\t\t\t\tsustainSpr.scale.set(10, (40 * draggingNote.susLength) + (height/2));\r\n\t\t\t\t\t\t\tsustainSpr.color = CharterNote.colors[animation.curAnim.curFrame];\r\n\t\t\t\t\t\t\tsustainSpr.updateHitbox(); sustainSpr.alpha = alpha; sustainSpr.follow(this, 15, 20);\r\n\t\t\t\t\t\t\tsustainSpr.exists = draggingNote.susLength != 0;\r\n\r\n\t\t\t\t\t\t\ttype = draggingNote.type;\r\n\t\t\t\t\t\t\t//typeText.text = Std.string(draggingNote.type);\r\n\t\t\t\t\t\t\t//typeText.exists = draggingNote.type != 0;\r\n\t\t\t\t\t\t\ttypeText.follow(this, 20 - (typeText.frameWidth/2), 20 - (typeText.frameHeight/2));\r\n\r\n\t\t\t\t\t\t\tsuper.draw();\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tdefault: // do nothing\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t__mousePos.put();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tswitch (Charter.instance.gridActionType) {\r\n\t\t\tcase NONE:\r\n\t\t\t\tsuper.draw();\r\n\t\t\tcase NOTE_DRAG:\r\n\t\t\t\tif (Charter.instance.gridActionType == NOTE_DRAG) {\r\n\t\t\t\t\tvar verticalChange:Float = (__mousePos.y - Charter.instance.dragStartPos.y) / 40;\r\n\t\t\t\t\tvar horizontalChange:Int = CoolUtil.floorInt((__mousePos.x - (Std.int(Charter.instance.dragStartPos.x / 40) * 40)) / 40);\r\n\r\n\t\t\t\t\tfor (s in Charter.selection) {\r\n\t\t\t\t\t\tif (s != null && s.draggable && s is CharterNote) {\r\n\t\t\t\t\t\t\tvar draggingNote:CharterNote = cast s;\r\n\t\t\t\t\t\t\ty = (draggingNote.step + verticalChange);\r\n\t\t\t\t\t\t\tif (!FlxG.keys.pressed.SHIFT)\r\n\t\t\t\t\t\t\t\ty -= ((draggingNote.step + verticalChange)\r\n\t\t\t\t\t\t\t\t\t- Charter.instance.quantStepRounded(draggingNote.step+verticalChange, verticalChange > 0 ? 0.35 : 0.65));\r\n\t\t\t\t\t\t\ty *= 40;\r\n\t\t\t\t\t\t\tvar newID:Int = CoolUtil.boundInt(draggingNote.fullID + horizontalChange, 0, Charter.instance.strumLines.totalKeyCount-1);\r\n\t\t\t\t\t\t\tx = (id=newID) * 40; y = CoolUtil.bound(y, 0, (Charter.instance.__endStep*40) - height);\r\n\r\n\t\t\t\t\t\t\tangle = switch(animation.curAnim.curFrame = (draggingNote.id % 4)) {\r\n\t\t\t\t\t\t\t\tcase 0: -90;\r\n\t\t\t\t\t\t\t\tcase 1: 180;\r\n\t\t\t\t\t\t\t\tcase 2: 0;\r\n\t\t\t\t\t\t\t\tcase 3: 90;\r\n\t\t\t\t\t\t\t\tdefault: 0; // how is that even possible\r\n\t\t\t\t\t\t\t};\r\n\r\n\t\t\t\t\t\t\tsustainSpr.scale.set(10, (40 * draggingNote.susLength) + (height/2));\r\n\t\t\t\t\t\t\tsustainSpr.color = CharterNote.colors[animation.curAnim.curFrame];\r\n\t\t\t\t\t\t\tsustainSpr.updateHitbox(); sustainSpr.alpha = alpha; sustainSpr.follow(this, 15, 20);\r\n\t\t\t\t\t\t\tsustainSpr.exists = draggingNote.susLength != 0;\r\n\r\n\t\t\t\t\t\t\ttype = draggingNote.type;\r\n\t\t\t\t\t\t\t//typeText.text = Std.string(draggingNote.type);\r\n\t\t\t\t\t\t\t//typeText.exists = draggingNote.type != 0;\r\n\t\t\t\t\t\t\ttypeText.follow(this, 20 - (typeText.frameWidth/2), 20 - (typeText.frameHeight/2));\r\n\r\n\t\t\t\t\t\t\tsuper.draw();\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tdefault: // do nothing\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t__mousePos.put();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\t__mousePos.put();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

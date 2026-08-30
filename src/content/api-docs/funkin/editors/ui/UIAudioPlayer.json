@@ -1,0 +1,185 @@
+{
+	"kind": "class",
+	"name": "UIAudioPlayer",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "sound",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bytes",
+			"type": "Bytes",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playingSprite",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "timeText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "timeBar",
+			"type": "FlxBar",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "timeBarPlayer",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "timeBarSpr",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "volumeIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "volumeBar",
+			"type": "FlxBar",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "volumeBarSpr",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "bytes",
+					"type": "Bytes",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, bytes:Bytes) {\r\n\t\tsound = FlxG.sound.load(Sound.fromAudioBuffer(AudioBuffer.fromBytes(bytes)));\r\n\r\n\t\tsuper(x, y, null, () -> {\r\n\t\t\tif (sound.playing) sound.pause();\r\n\t\t\telse sound.play(sound.time + 1 >= sound.length ? 0 : sound.time);\r\n\t\t}, 58 - 16, 58 - 16);\r\n\r\n\t\tplayingSprite = new FlxSprite(x + ((58 - 16)/2) - 8, y + ((58 - 16)/2) - 8).loadGraphic(Paths.image('editors/ui/audio-buttons'), true, 16, 16);\r\n\t\tplayingSprite.animation.add(\"paused\", [0]);\r\n\t\tplayingSprite.animation.add(\"playing\", [1]);\r\n\t\tplayingSprite.antialiasing = false;\r\n\t\tplayingSprite.updateHitbox();\r\n\t\tmembers.push(playingSprite);\r\n\r\n\t\ttimeText = new UIText(x + bWidth + 8, y + 4, 0, \"\", 12);\r\n\t\ttimeText.alignment = RIGHT;\r\n\t\tmembers.push(timeText);\r\n\r\n\t\ttimeBar = new FlxBar(x + bWidth + 8, y + (58 - 16) - ((58 - 16)/3) - 4, LEFT_TO_RIGHT, 202, Std.int((58 - 16)/3), sound, \"time\", 0, sound.length);\r\n\t\ttimeBar.createImageBar(Paths.image('editors/ui/audio-time-empty'), Paths.image('editors/ui/audio-time-full'));\r\n\t\ttimeBar.numDivisions = timeBar.barWidth;\r\n\t\ttimeBar.unbounded = true;\r\n\t\tmembers.push(timeBar);\r\n\r\n\t\ttimeBarPlayer = new FlxSprite(timeBar.x, timeBar.y).loadGraphic(Paths.image('editors/ui/audio-time-empty'));\r\n\t\ttimeBarPlayer.colorTransform.color = 0x440364;\r\n\t\ttimeBarPlayer.scale.y = (timeBarPlayer.frameHeight + 2) / timeBarPlayer.frameHeight;\r\n\t\ttimeBarPlayer.pixelPerfectRender = true;\r\n\t\tmembers.push(timeBarPlayer);\r\n\r\n\t\ttimeBarSpr = cast new UISprite(timeBar.x, timeBar.y).makeSolid(timeBar.barWidth, timeBar.barHeight, 0x00FFFFFF);\r\n\t\ttimeBarSpr.cursor = CLICK;\r\n\t\tmembers.push(timeBarSpr);\r\n\r\n\t\tvolumeBar = new FlxBar(timeBar.x + timeBar.barWidth - 56, y + 6, LEFT_TO_RIGHT, 56, 10, sound, \"volume\", 0, 1);\r\n\t\tvolumeBar.createImageBar(Paths.image('editors/ui/audio-volume-empty'), Paths.image('editors/ui/audio-volume-full'));\r\n\t\tvolumeBar.numDivisions = volumeBar.barWidth;\r\n\t\tvolumeBar.unbounded = true;\r\n\t\tmembers.push(volumeBar);\r\n\r\n\t\tvolumeBarSpr = cast new UISprite(volumeBar.x, volumeBar.y).makeSolid(volumeBar.barWidth, volumeBar.barHeight, 0x00FFFFFF);\r\n\t\tvolumeBarSpr.cursor = CLICK;\r\n\t\tmembers.push(volumeBarSpr);\r\n\r\n\t\tvolumeIcon = new FlxSprite(volumeBar.x - 12 - 8, volumeBar.y-1).loadGraphic(Paths.image('editors/ui/audio-icon'));\r\n\t\tvolumeIcon.antialiasing = false;\r\n\t\tmembers.push(volumeIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggingObj",
+			"type": "FlxBar",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "wasPlaying",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "nextPlayerColor",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (sound != null) {\r\n\t\t\tplayingSprite.animation.play(sound.playing ? \"playing\" : \"paused\");\r\n\t\t\ttimeText.text = '${FlxStringUtil.formatTime(sound.time/1000, true)} / ${FlxStringUtil.formatTime(sound.length/1000)}';\r\n\r\n\t\t\tif(timeBarPlayer.rawClipRect == null)\r\n\t\t\t\ttimeBarPlayer.rawClipRect = new FlxRect(0, 0, timeBarPlayer.frameWidth, timeBarPlayer.frameHeight);\r\n\r\n\t\t\ttimeBarPlayer.rawClipRect.x = timeBarPlayer.frameWidth * (sound.time/sound.length);\r\n\t\t\ttimeBarPlayer.rawClipRect.width = 2;\r\n\r\n\t\t\ttimeBarPlayer.rawClipRect = timeBarPlayer.rawClipRect;\r\n\r\n\t\t\tnextPlayerColor = sound.playing ? 0x732D95 : 0x440364;\r\n\t\t\ttimeBarPlayer.colorTransform.color = FlxColor.interpolate(timeBarPlayer.colorTransform.color, nextPlayerColor, 1/14);\r\n\t\t}\r\n\r\n\t\tvar mousePos = FlxG.mouse.getScreenPosition(__lastDrawCameras[0], FlxPoint.get());\r\n\r\n\t\tfor (sprite in [timeBar, volumeBar]) {\r\n\t\t\tif (!selectable) continue;\r\n\r\n\t\t\tvar spritePos:FlxPoint = sprite.getScreenPosition(FlxPoint.get(), __lastDrawCameras[0]);\r\n\r\n\t\t\tif (((mousePos.x > spritePos.x) && (mousePos.x < spritePos.x + sprite.barWidth))\r\n\t\t\t\t&& ((mousePos.y > spritePos.y) && (mousePos.y < spritePos.y + sprite.barHeight))) {\r\n\r\n\t\t\t\tif (FlxG.mouse.justPressed) {\r\n\t\t\t\t\tif ((draggingObj = sprite) == timeBar && (wasPlaying = sound.playing)) sound.pause();\r\n\t\t\t\t}\r\n\t\t\t\tif (FlxG.mouse.pressed) {\r\n\t\t\t\t\tif (draggingObj == timeBar)\r\n\t\t\t\t\t\tsound.time = FlxMath.remapToRange(mousePos.x - spritePos.x, 0, timeBar.barWidth, 0, sound.length);\r\n\t\t\t\t\telse if (draggingObj == volumeBar)\r\n\t\t\t\t\t\tsound.volume = FlxMath.remapToRange(mousePos.x - spritePos.x, 0, volumeBar.barWidth, 0, 1);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tspritePos.put();\r\n\t\t}\r\n\t\tmousePos.put();\r\n\r\n\t\tif (FlxG.mouse.released) {\r\n\t\t\tif (draggingObj == timeBar && wasPlaying) {\r\n\t\t\t\tsound.play();\r\n\t\t\t\twasPlaying = false;\r\n\t\t\t}\r\n\t\t\tdraggingObj = null;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\r\n\t\tsound.stop();\r\n\t\t@:privateAccess sound.reset();\r\n\t\tbytes = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

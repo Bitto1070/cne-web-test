@@ -1,0 +1,204 @@
+{
+	"kind": "class",
+	"name": "StageSpriteButton",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "sprite",
+			"type": "FunkinSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sprite",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float,y:Float, sprite:FunkinSprite, xml:Access) {\r\n\t\tthis.sprite = sprite;\r\n\t\tsuper(x,y, xml);\r\n\r\n\t\t//color = 0xFFD9FF50;\r\n\r\n\t\thasAdvancedEdit = true;\r\n\r\n\t\tupdateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateInfo() {\r\n\t\tsprite.visible = !isHidden;\r\n\t\tsuper.updateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSprite",
+			"args": [],
+			"ret": "FunkinSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getSprite():FunkinSprite {\r\n\t\treturn sprite;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaults",
+			"args": [],
+			"ret": "Map<String, Dynamic>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function getDefaults():Map<String, Dynamic> {\r\n\t\treturn [\r\n\t\t\t\"scale\" => 1,\r\n\t\t\t\"scroll\" => 1,\r\n\t\t\t\"zoomfactor\" => 1,\r\n\t\t\t\"updateHitbox\" => false,\r\n\t\t\t\"antialiasing\" => true,\r\n\t\t\t\"alpha\" => 1,\r\n\t\t\t\"angle\" => 0,\r\n\t\t\t\"skew\" => 0,\r\n\t\t\t\"type\" => \"loop\",\r\n\t\t\t\"beatOffset\" => 0,\r\n\t\t\t\"beatInterval\" => 2,\r\n\t\t\t\"interval\" => 2,\r\n\t\t\t\"flipX\" => false,\r\n\t\t\t\"flipY\" => false\r\n\t\t];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPointAttributes",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function getPointAttributes():Array<String> {\r\n\t\treturn [\"scale\", \"scroll\", \"skew\"];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAttributeOrder",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function getAttributeOrder():Array<String> {\r\n\t\treturn [\r\n\t\t\t\"name\",\r\n\t\t\t\"sprite\",\r\n\t\t\t\"x\",\r\n\t\t\t\"y\",\r\n\t\t\t\"scale\",\r\n\t\t\t\"scalex\",\r\n\t\t\t\"scaley\",\r\n\t\t\t\"updateHitbox\",\r\n\t\t\t\"scroll\",\r\n\t\t\t\"scrollx\",\r\n\t\t\t\"scrolly\",\r\n\t\t\t\"zoomfactor\",\r\n\t\t\t\"antialiasing\",\r\n\t\t\t\"alpha\",\r\n\t\t\t\"blend\",\r\n\t\t\t\"angle\",\r\n\t\t\t\"skewx\",\r\n\t\t\t\"skewy\",\r\n\t\t\t\"color\",\r\n\t\t\t\"flipX\",\r\n\t\t\t\"flipY\",\r\n\t\t\t\"width\",\r\n\t\t\t\"height\",\r\n\t\t\t\"graphicSize\",\r\n\t\t\t\"graphicSizex\",\r\n\t\t\t\"graphicSizey\",\r\n\t\t\t\"beatInterval\",\r\n\t\t\t\"interval\",\r\n\t\t\t\"beatOffset\",\r\n\t\t\t\"playOnCountdown\"\r\n\t\t];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSelect",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onSelect() {\r\n\t\tStageEditor.instance.selectSprite(sprite);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onVisiblityToggle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onVisiblityToggle() {\r\n\t\tisHidden = !isHidden;\r\n\t\tupdateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onEdit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onEdit() {\r\n\t\tif(!FlxG.keys.pressed.SHIFT) {\r\n\t\t\tFlxG.state.openSubState(new StageSpriteEditScreen(this));\r\n\t\t} else {\r\n\t\t\tFlxG.state.openSubState(new StageXMLEditScreen(this.xml, updateInfo, \"Sprite\"));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onDelete",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onDelete() {\r\n\t\tsprite.destroy();\r\n\t\txml.x.parent.removeChild(xml.x);\r\n\t\tStageEditor.instance.stage.stageSprites.remove(sprite.name);\r\n\t\tStageEditor.instance.xmlMap.remove(sprite);\r\n\t\tStageEditor.instance.stageSpritesWindow.remove(this);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getName",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getName():String {\r\n\t\treturn xml.att.name;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPos",
+			"args": [],
+			"ret": "FlxPoint",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPos():FlxPoint {\r\n\t\treturn FlxPoint.get(sprite.x, sprite.y);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updatePos() {\r\n\t\tsuper.updatePos();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"kind": "enum abstract",
+	"name": "ErrorCode",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [
+		"@:dox(hide)"
+	],
+	"fields": []
+}

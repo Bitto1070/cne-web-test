@@ -1,0 +1,24 @@
+{
+	"kind": "class",
+	"name": "DefinesMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "defines",
+			"type": "Map<String, Dynamic>",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the defined values",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

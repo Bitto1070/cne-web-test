@@ -1,0 +1,145 @@
+{
+	"kind": "class",
+	"name": "UIContextMenuOptionSpr",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "label",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "labelKeybind",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "icon",
+			"type": "UIContextMenuOptionIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "option",
+			"type": "UIContextMenuOption",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "optionType",
+			"type": "UIContextMenuOptionType",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "slider",
+			"type": "UISlider",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "option",
+					"type": "UIContextMenuOption",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UIContextMenu",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, option:UIContextMenuOption, parent:UIContextMenu) {\r\n\t\tlabel = new UIText(20, 2, 0, option.label);\r\n\t\tthis.option = option;\r\n\t\tthis.parent = parent;\r\n\r\n\t\tvar w:Int = label.frameWidth + 22;\r\n\t\tvar h:Int = label.frameHeight;\r\n\r\n\t\tif (option.childs != null) optionType = SUBMENU;\r\n\t\tif (option.slider != null) optionType = SLIDER;\r\n\r\n\t\tswitch(optionType) {\r\n\r\n\t\t\tcase SUBMENU:\r\n\t\t\t\tlabelKeybind = new UIText(label.x + label.frameWidth + 10, 2, 0, \">\");\r\n\t\t\tcase SLIDER:\r\n\t\t\t\tlabelKeybind = new UIText(label.x + label.frameWidth + 10, 2, 0, \"\");\r\n\t\t\t\t//slider needs to be created after so that it can match the menu width (when not on the same line)\r\n\t\t\t\tif (option.slider.sameLine != null && option.slider.sameLine) {\r\n\t\t\t\t\tvar sliderWidth = option.slider.width != null ? Std.int(option.slider.width) : 120;\r\n\t\t\t\t\tw += 120 + slider.barWidth;\r\n\t\t\t\t} else {\r\n\t\t\t\t\th *= 2;\t\r\n\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\tdefault:\r\n\t\t\t\tif (option.keybinds == null) {\r\n\t\t\t\t\tif (option.keybind != null) {\r\n\t\t\t\t\t\toption.keybinds = [option.keybind];\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (option.keybinds != null || option.keybindText != null) {\r\n\t\t\t\t\tvar text = if(option.keybindText == null) {\r\n\t\t\t\t\t\tvar textKeys:Array<String> = [];\r\n\t\t\t\t\t\tfor (o in option.keybinds[0]) {\r\n\t\t\t\t\t\t\tif (Std.int(o) > 0) {\r\n\t\t\t\t\t\t\t\ttextKeys.push(o.toUIString());\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\ttextKeys.join(\"+\");\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\toption.keybindText;\r\n\t\t\t\t\t}\r\n\t\t\t\t\tlabelKeybind = new UIText(label.x + label.frameWidth + 10, 2, 0, text);\r\n\t\t\t\t\tlabelKeybind.alpha = 0.75;\r\n\r\n\t\t\t\t\tw = Std.int(labelKeybind.x + labelKeybind.frameWidth + 10);\r\n\t\t\t\t}\r\n\t\t}\r\n\r\n\t\tsuper(x, y, w, h, 'editors/ui/menu-item');\r\n\t\tif (option.color != null) this.color = option.color;\r\n\r\n\t\tmembers.push(label);\r\n\t\tupdateIcon();\r\n\r\n\t\tif (labelKeybind != null)\r\n\t\t\tmembers.push(labelKeybind);\t\t\t\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "postCreate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "//Called after all options are created and the context menu width/height is final\r\n\tpublic function postCreate() {\r\n\t\tswitch(optionType) {\r\n\t\t\tcase SLIDER:\r\n\r\n\t\t\t\tvar sliderWidth = bWidth-50;\r\n\t\t\t\tif (option.slider.sameLine != null && option.slider.sameLine) {\r\n\t\t\t\t\toption.slider.width != null ? Std.int(option.slider.width) : 120;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tslider = new UISlider(0, 0, sliderWidth, option.slider.value, \r\n\t\t\t\t\t[{start: option.slider.min, end: option.slider.max, size: option.slider.max-option.slider.min}], false);\r\n\r\n\t\t\t\tslider.onChange = function(v) {\r\n\t\t\t\t\toption.slider.value = v;\r\n\t\t\t\t\tif (option.slider.onChange != null) option.slider.onChange(option);\r\n\t\t\t\t\tupdateIcon(); //check if icon has changed\r\n\t\t\t\t\t@:privateAccess\r\n\t\t\t\t\tlabelKeybind.text = '${CoolUtil.quantize(slider.__barProgress * 100, 1)}%';\r\n\t\t\t\t};\r\n\t\t\t\tslider.value = option.slider.value;\r\n\r\n\t\t\t\tif (option.slider.showValues == null || !option.slider.showValues) {\r\n\t\t\t\t\tslider.startText.visible = false;\r\n\t\t\t\t\tslider.endText.visible = false;\r\n\t\t\t\t\tslider.valueStepper.visible = false;\r\n\t\t\t\t\tslider.valueStepper.selectable = false;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tmembers.push(slider);\r\n\t\t\tcase SUBMENU:\r\n\r\n\t\t\tdefault:\r\n\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\talpha = option.color == null ? (hovered ? 1 : 0) : 1;\r\n\t\tif (option.color != null) color = hovered ? option.color.getLightened(.4) : option.color;\r\n\r\n\t\tlabel.follow(this, 20, 2);\r\n\t\tif (icon != null)\r\n\t\t\ticon.follow(this, 0, 0);\r\n\t\tif (labelKeybind != null)\r\n\t\t\tlabelKeybind.follow(this, bWidth - 10 - labelKeybind.frameWidth, 2);\r\n\t\tif (slider != null) {\r\n\t\t\tif (option.slider.sameLine != null && option.slider.sameLine) {\r\n\t\t\t\tslider.follow(this, bWidth - 18 - slider.barWidth - (slider.endText.visible ? slider.endText.width : 0), 5);\r\n\t\t\t} else {\r\n\t\t\t\tslider.follow(this, 20, 5 + label.frameHeight);\r\n\t\t\t}\r\n\t\t}\r\n\t\tsuper.draw();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "onHovered",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onHovered() {\r\n\t\tsuper.onHovered();\r\n\r\n\t\tparent.lastHoveredOptionIndex = parent.contextMenuOptions.indexOf(this);\r\n\r\n\t\tswitch(optionType) {\r\n\t\t\tcase SUBMENU:\r\n\t\t\t\tparent.openChildContextMenu(this);\r\n\t\t\tcase SLIDER:\r\n\t\t\t\t\r\n\t\t\tdefault:\r\n\t\t\t\tif (FlxG.mouse.justReleased)\r\n\t\t\t\t\tparent.select(option);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateIcon",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateIcon() {\r\n\t\tvar currentIcon = option.icon != null ? option.icon : 0;\r\n\r\n\t\tif (icon == null && currentIcon > 0) {\r\n\t\t\tmembers.push(icon = new UIContextMenuOptionIcon(option));\r\n\t\t}\r\n\t\tif (icon != null) {\r\n\t\t\ticon.updateIconState(currentIcon);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

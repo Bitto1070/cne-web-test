@@ -1,0 +1,271 @@
+{
+	"kind": "class",
+	"name": "CharacterAnimsWindow",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "CharacterGhost",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayWindowSprite",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayWindowGraphic",
+			"type": "FlxGraphic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayAnimsFramesList",
+			"type": "Map<String, DisplayAnimFrameEntry>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animButtons",
+			"type": "Map<String, CharacterAnimButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animsList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "character",
+					"type": "CharacterGhost",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, character:CharacterGhost) {\r\n\t\tsuper(x, y, Std.int(500-16), 419, null, FlxPoint.get(Std.int(500-16-32), 208));\r\n\t\tthis.character = character;\r\n\r\n\t\tcameraSpacing = 0;\r\n\t\tframes = Paths.getFrames('editors/ui/inputbox');\r\n\r\n\t\tbuttonCameras.pixelPerfectRender = true;\r\n\r\n\t\tif (Assets.exists(Paths.image('characters/${character.sprite}')))\r\n\t\t\tdisplayWindowGraphic = FlxG.bitmap.add(Assets.getBitmapData(Paths.image('characters/${character.sprite}'), true, false));\r\n\r\n\t\tdisplayWindowSprite = new FlxSprite();\r\n\t\tdisplayWindowSprite.loadGraphicFromSprite(character);\r\n\t\tdisplayWindowSprite.antialiasing = character.antialiasing;\r\n\t\tdisplayWindowSprite.flipX = character.flipX;\r\n\r\n\t\talpha = 0.7;\r\n\r\n\t\tfor (anim in character.getAnimOrder())\r\n\t\t\taddAnimation(character.animDatas.get(anim), -1, false);\r\n\t\taddButton.callback = generateAnimation;\r\n\r\n\t\tsetAnimAutoComplete(CoolUtil.getAnimsListFromSprite(character));\r\n\r\n\t\tnextscrollY = 0;\r\n\t\t// dragCallback = (button:CharacterAnimButton, oldID:Int, newID:Int) -> {}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghosts",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tvar __oldMoving:CharacterAnimButton = curMoving;\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (curMoving != null && __oldMoving == null) \r\n\t\t\t__movingAnimOldOrder = curMoving.ID;\r\n\r\n\t\tif (curMoving == null && __oldMoving != null)\r\n\t\t\tif (__movingAnimOldOrder != __oldMoving.ID) \r\n\t\t\t\tCharacterEditor.undos.addToUndo(CAnimEditOrder(__movingAnimOldOrder, __oldMoving.ID));\r\n\t\t\r\n\r\n\t\tanimsList = [for (button in buttons) button.anim];\r\n\t\tcharacter.ghosts = ghosts;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildAnimDisplay",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "anim",
+					"type": "AnimData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function buildAnimDisplay(name:String, anim:AnimData) @:privateAccess {\r\n\t\tvar anim:FlxAnimation = character.animation._animations[anim.name];\r\n\t\tif (anim == null) return;\r\n\r\n\t\tif (character.isAnimate) {\r\n\t\t\tvar renderTex = character.generateRenderTextureForAnim(name);\r\n\t\t\tvar frame = renderTex.graphic.imageFrame.frame;\r\n\r\n\t\t\tdisplayAnimsFramesList.set(name, {\r\n\t\t\t\tframe: frame,\r\n\t\t\t\tscale: 104/Math.max(frame.frame.width, frame.frame.height),\r\n\t\t\t\trenderTexture: renderTex\r\n\t\t\t});\r\n\t\t} else {\r\n\t\t\tvar frameIndex:Int = anim.frames.getDefault([0])[0];\r\n\t\t\tvar frame:FlxFrame = displayWindowSprite.frames.frames[frameIndex];\r\n\t\r\n\t\t\tvar frameRect:Rectangle = new Rectangle(frame.offset.x, frame.offset.y, frame.sourceSize.x, frame.sourceSize.y);\r\n\t\t\tvar animBounds:Rectangle = displayWindowGraphic != null ? displayWindowGraphic.bitmap.bounds(frameRect) : frameRect;\r\n\t\r\n\t\t\tdisplayAnimsFramesList.set(name, {\r\n\t\t\t\tframe: character.frames.frames[anim.frames.getDefault([0])[0]],\r\n\t\t\t\tscale: 104/Math.max(animBounds.width, animBounds.height),\r\n\t\t\t\trenderTexture: null\r\n\t\t\t});\r\n\t\t}\r\n\r\n\t}\r\n\r\n\tpublic function removeAnimDisplay(name:String) {\r\n\t\tif (displayAnimsFramesList.exists(name))\r\n\t\t\tdisplayAnimsFramesList[name].renderTexture?.destroy();\r\n\t\tdisplayAnimsFramesList.remove(name);\r\n\t}\r\n\r\n\tpublic function clearDisplayAnims() {\r\n\t\tfor(k=>e in displayAnimsFramesList)\r\n\t\t\te.renderTexture?.destroy();\r\n\t\tdisplayAnimsFramesList.clear();\r\n\t}\r\n\r\n\tpublic function deleteAnimation(button:CharacterAnimButton, addToUndo:Bool = true) {\r\n\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_DELETE_SOUND);\r\n\t\tif (buttons.members.length <= 1) return;\r\n\t\tif (character.getAnimName() == button.anim)\r\n\t\t\t@:privateAccess CharacterEditor.instance._animation_down(null);\r\n\r\n\t\tcharacter.ghosts.remove(button.anim);\r\n\t\tcharacter.removeAnimation(button.anim);\r\n\t\tif (character.animOffsets.exists(button.anim)) character.animOffsets.remove(button.anim);\r\n\t\tif (character.animDatas.exists(button.anim)) character.animDatas.remove(button.anim);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimDelete(button.ID, button.data));\r\n\t\tremove(button); button.destroy();\r\n\t}\r\n\r\n\tpublic function generateAnimation() {\r\n\t\tvar newAnim = TU.translate(\"characterEditor.characterAnim.defaultAnimName\");\r\n\t\tvar animName:String = newAnim;\r\n\t\tvar animNames:Array<String> = character.getNameList();\r\n\r\n\t\tvar newAnimCount:Int = 0;\r\n\t\twhile (animNames.indexOf(animName) != -1) {\r\n            newAnimCount++;\r\n            animName = '$newAnim - $newAnimCount';\r\n        }\r\n\r\n\t\tif (__autoCompleteAnims.length <= 0)\r\n\t\t\tsetAnimAutoComplete(CoolUtil.getAnimsListFromSprite(character));\r\n\r\n\t\tvar animData:AnimData = {\r\n\t\t\tname: animName,\r\n\t\t\tanim: __autoCompleteAnims[0],\r\n\t\t\tfps: character.defaultAimFPS, loop: false,\r\n\t\t\tx: 0, y: 0,\r\n\t\t\tindices: [],\r\n\t\t\tanimType: NONE,\r\n\t\t\tlabel: false\r\n\t\t};\r\n\t\taddAnimation(animData);\r\n\t}\r\n\r\n\tpublic function addAnimation(animData:AnimData, animID:Int = -1, addToUndo:Bool = true) @:privateAccess {\r\n\t\tXMLUtil.addAnimToSprite(character, animData);\r\n\r\n\t\tvar newButton:CharacterAnimButton = new CharacterAnimButton(0, 0, animData, this);\r\n\t\tnewButton.alpha = 0.25; animButtons.set(animData.name, newButton);\r\n\t\tnewButton.animTextBox.suggestItems = __autoCompleteAnims;\r\n\r\n\t\tif (animID == -1) add(newButton);\r\n\t\telse insert(newButton, animID);\r\n\r\n\t\tif (newButton.valid)\r\n\t\t\tbuildAnimDisplay(animData.name, animData);\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimCreate(newButton.ID, newButton.data));\r\n\r\n\t\tvar nextButtonY:Float = 0;\r\n\t\tfor (buttonID in 0...newButton.ID)\r\n\t\t\tnextButtonY += buttons.members[buttonID].bHeight + buttonOffset.y;\r\n\t\tnextscrollY = nextButtonY;\r\n\t}\r\n\r\n\t@:noCompletion var __autoCompleteAnims:Array<String> = [];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeAnimDisplay",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function removeAnimDisplay(name:String) {\r\n\t\tif (displayAnimsFramesList.exists(name))\r\n\t\t\tdisplayAnimsFramesList[name].renderTexture?.destroy();\r\n\t\tdisplayAnimsFramesList.remove(name);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "clearDisplayAnims",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function clearDisplayAnims() {\r\n\t\tfor(k=>e in displayAnimsFramesList)\r\n\t\t\te.renderTexture?.destroy();\r\n\t\tdisplayAnimsFramesList.clear();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteAnimation",
+			"args": [
+				{
+					"name": "button",
+					"type": "CharacterAnimButton",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function deleteAnimation(button:CharacterAnimButton, addToUndo:Bool = true) {\r\n\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_DELETE_SOUND);\r\n\t\tif (buttons.members.length <= 1) return;\r\n\t\tif (character.getAnimName() == button.anim)\r\n\t\t\t@:privateAccess CharacterEditor.instance._animation_down(null);\r\n\r\n\t\tcharacter.ghosts.remove(button.anim);\r\n\t\tcharacter.removeAnimation(button.anim);\r\n\t\tif (character.animOffsets.exists(button.anim)) character.animOffsets.remove(button.anim);\r\n\t\tif (character.animDatas.exists(button.anim)) character.animDatas.remove(button.anim);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimDelete(button.ID, button.data));\r\n\t\tremove(button); button.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generateAnimation",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function generateAnimation() {\r\n\t\tvar newAnim = TU.translate(\"characterEditor.characterAnim.defaultAnimName\");\r\n\t\tvar animName:String = newAnim;\r\n\t\tvar animNames:Array<String> = character.getNameList();\r\n\r\n\t\tvar newAnimCount:Int = 0;\r\n\t\twhile (animNames.indexOf(animName) != -1) {\r\n            newAnimCount++;\r\n            animName = '$newAnim - $newAnimCount';\r\n        }\r\n\r\n\t\tif (__autoCompleteAnims.length <= 0)\r\n\t\t\tsetAnimAutoComplete(CoolUtil.getAnimsListFromSprite(character));\r\n\r\n\t\tvar animData:AnimData = {\r\n\t\t\tname: animName,\r\n\t\t\tanim: __autoCompleteAnims[0],\r\n\t\t\tfps: character.defaultAimFPS, loop: false,\r\n\t\t\tx: 0, y: 0,\r\n\t\t\tindices: [],\r\n\t\t\tanimType: NONE,\r\n\t\t\tlabel: false\r\n\t\t};\r\n\t\taddAnimation(animData);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "addAnimation",
+			"args": [
+				{
+					"name": "animData",
+					"type": "AnimData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animID",
+					"type": "Int",
+					"optional": false,
+					"def": "-1"
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addAnimation(animData:AnimData, animID:Int = -1, addToUndo:Bool = true) @:privateAccess {\r\n\t\tXMLUtil.addAnimToSprite(character, animData);\r\n\r\n\t\tvar newButton:CharacterAnimButton = new CharacterAnimButton(0, 0, animData, this);\r\n\t\tnewButton.alpha = 0.25; animButtons.set(animData.name, newButton);\r\n\t\tnewButton.animTextBox.suggestItems = __autoCompleteAnims;\r\n\r\n\t\tif (animID == -1) add(newButton);\r\n\t\telse insert(newButton, animID);\r\n\r\n\t\tif (newButton.valid)\r\n\t\t\tbuildAnimDisplay(animData.name, animData);\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimCreate(newButton.ID, newButton.data));\r\n\r\n\t\tvar nextButtonY:Float = 0;\r\n\t\tfor (buttonID in 0...newButton.ID)\r\n\t\t\tnextButtonY += buttons.members[buttonID].bHeight + buttonOffset.y;\r\n\t\tnextscrollY = nextButtonY;\r\n\t}\r\n\r\n\t@:noCompletion var __autoCompleteAnims:Array<String> = [];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setAnimAutoComplete",
+			"args": [
+				{
+					"name": "anims",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function setAnimAutoComplete(anims:Array<String>) {\r\n\t\t__autoCompleteAnims = anims.copy();\r\n\t\tfor (button in buttons)\r\n\t\t\tbutton.animTextBox.suggestItems = __autoCompleteAnims;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "findValid",
+			"args": [],
+			"ret": "Null<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function findValid():Null<String> {\r\n\t\tfor (button in buttons) if (button.valid) return button.anim;\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

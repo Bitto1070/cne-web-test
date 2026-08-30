@@ -1,0 +1,84 @@
+{
+	"kind": "class",
+	"name": "HitWindowData",
+	"pkg": "funkin.game.scoring",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getWindows",
+			"args": [
+				{
+					"name": "preset",
+					"type": "WindowPreset",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "StringMap<Float>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getWindows(preset:WindowPreset):StringMap<Float>\r\n\t{\r\n\t\tvar map = new StringMap<Float>();\r\n\r\n\t\tswitch (preset) {\r\n\t\t\t// Old Codename, really forgiving inputs (hard to get bad ratings)\r\n\t\t\tcase CNE_CLASSIC:\r\n\t\t\t\tmap.set(\"sick\", 50.0);\r\n\t\t\t\tmap.set(\"good\", 187.5);\r\n\t\t\t\tmap.set(\"bad\", 225.0);\r\n\t\t\t\tmap.set(\"shit\", 250.0);\r\n\t\t\t// Week 7\r\n\t\t\tcase FNF_CLASSIC:\r\n\t\t\t\tmap.set(\"sick\", 33.334);\r\n\t\t\t\tmap.set(\"good\", 125.0025);\r\n\t\t\t\tmap.set(\"bad\", 150.003);\r\n\t\t\t\tmap.set(\"shit\", 166.67);\r\n\t\t\t// V-Slice\r\n\t\t\tcase FNF_VSLICE:\r\n\t\t\t\tmap.set(\"sick\", 45.0);\r\n\t\t\t\tmap.set(\"good\", 90.0);\r\n\t\t\t\tmap.set(\"bad\", 135.4);\r\n\t\t\t\tmap.set(\"shit\", 180.0);\r\n\t\t\t// Default, taken from Etterna\r\n\t\t\tcase _:\r\n\t\t\t\tmap.set(\"sick\", 37.8);\r\n\t\t\t\tmap.set(\"good\", 75.6);\r\n\t\t\t\tmap.set(\"bad\", 113.4);\r\n\t\t\t\tmap.set(\"shit\", 180.0);\r\n\t\t}\r\n\r\n\t\treturn map;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "JUDGE_SCALES",
+			"type": "Array<Float>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "scaleWindows",
+			"args": [
+				{
+					"name": "windows",
+					"type": "StringMap<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "StringMap<Float>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function scaleWindows(windows:StringMap<Float>, scale:Float):StringMap<Float>\r\n\t{\r\n\t\tvar scaled = new StringMap<Float>();\r\n\t\tfor (k in windows.keys())\r\n\t\t\tscaled.set(k, windows.get(k) * scale);\r\n\t\treturn scaled;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "offsetWindows",
+			"args": [
+				{
+					"name": "windows",
+					"type": "StringMap<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "offset",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "StringMap<Float>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function offsetWindows(windows:StringMap<Float>, offset:Float):StringMap<Float>\r\n\t{\r\n\t\tvar adjusted = new StringMap<Float>();\r\n\t\tfor (k in windows.keys())\r\n\t\t\tadjusted.set(k, windows.get(k) + offset);\r\n\t\treturn adjusted;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

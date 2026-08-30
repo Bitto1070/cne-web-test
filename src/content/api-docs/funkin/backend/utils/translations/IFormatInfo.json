@@ -1,0 +1,27 @@
+{
+	"kind": "interface",
+	"name": "IFormatInfo",
+	"pkg": "funkin.backend.utils.translations",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "format",
+			"args": [
+				{
+					"name": "params",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function format(params:Array<Dynamic>):String;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

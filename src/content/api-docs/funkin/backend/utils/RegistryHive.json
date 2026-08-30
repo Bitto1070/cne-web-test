@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "RegistryHive",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

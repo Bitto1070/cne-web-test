@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "NitroType",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

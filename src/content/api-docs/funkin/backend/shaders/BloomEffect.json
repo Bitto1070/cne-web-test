@@ -1,0 +1,246 @@
+{
+	"kind": "class",
+	"name": "BloomEffect",
+	"pkg": "funkin.backend.shaders",
+	"doc": {
+		"text": "This BloomEffect was modified by heihua based on openfl.filters.BlurFilter.\n\tThe BloomEffect class applies a bloom/glow visual effect to display objects.\n\tA bloom effect extracts bright areas from an image, blurs them, and combines\n\tthem back to create a glowing halo around bright objects. This effect is\n\tcommonly used to simulate intense light, emissive materials, or to add a\n\tdreamy, atmospheric quality to scenes.\n\n\tThe effect consists of three stages:\n\t1. Extraction - Bright pixels above a threshold are extracted\n\t2. Blurring - The extracted bright areas are blurred horizontally and vertically\n\t3. Combination - The blurred result is blended back with the original image",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:noCustomClass"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "blurX",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Values that are a power of 2 (such as 2, 4, 8, 16 and 32) are optimized to render\n\t\tmore quickly than other values.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blurY",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Values that are a power of 2 (such as 2, 4, 8, 16 and 32) are optimized to render\n\t\tmore quickly than other values.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "quality",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The downscaling factor for bloom rendering. Higher values significantly reduce\n\t\tGPU performance cost, but setting values too high may cause noticeable flickering.\n\t\tRecommended range is 8-24.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strength",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The intensity of the bloom effect. Higher values produce more pronounced bloom.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "threshold",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The brightness threshold for bloom extraction. Pixels brighter than this value\n\t\twill contribute to the bloom effect. Value range is 0.0 to 1.0.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "smoothness",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The smoothness of the threshold transition in blur shader.\n\t\tHigher values create a smoother transition for brightness correction.\n\t\tValue range is 0.0 to 1.0. Default is 0.1.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "extension",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Enables extended rendering area to avoid edge artifacts. Enabling this option\n\t\twill increase performance cost. Generally not required when rendering to camera.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "useLowQualityExtract",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Low-quality pixel sampling mode. Disabling it significantly reduces screen flickering,\n\t\twith minimal performance impact on desktop platforms but a higher\n\t\tperformance cost on non-desktop platforms.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weights",
+			"type": "Array<Float>",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The weights for calculating brightness (RGB to grayscale).\n\t\tOrder: [Red, Green, Blue]. Default is [0.2126, 0.7152, 0.0722].",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blendMode",
+			"type": "BlendMode",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The blend mode used when combining the bloom with the original image.\n\t\tBlendMode currently supports: (BlendMode.ADD, BlendMode.ALPHA, BlendMode.HARDLIGHT,\n\t\tBlendMode.LIGHTEN, BlendMode.MULTIPLY, BlendMode.OVERLAY, BlendMode.SCREEN,\n\t\tBlendMode.COLORDODGE, BlendMode.SOFTLIGHT).\n\t\tDefault is BlendMode.ADD.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "blurX",
+					"type": "Float",
+					"optional": false,
+					"def": "50"
+				},
+				{
+					"name": "blurY",
+					"type": "Float",
+					"optional": false,
+					"def": "50"
+				},
+				{
+					"name": "quality",
+					"type": "Float",
+					"optional": false,
+					"def": "8"
+				},
+				{
+					"name": "strength",
+					"type": "Float",
+					"optional": false,
+					"def": "0.6"
+				},
+				{
+					"name": "threshold",
+					"type": "Float",
+					"optional": false,
+					"def": "0.6"
+				},
+				{
+					"name": "smoothness",
+					"type": "Float",
+					"optional": false,
+					"def": "0.1"
+				},
+				{
+					"name": "useLowQualityExtract",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(blurX:Float = 50, blurY:Float = 50, quality:Float = 8, strength:Float = 0.6, threshold:Float = 0.6, smoothness:Float = 0.1, useLowQualityExtract:Bool = true)\r\n\t{\r\n\t\tsuper();\r\n\r\n\t\tif (__blurShader == null) __blurShader = new BlurShader();\r\n\t\tif (__combineShader == null) __combineShader = new CombineShader();\r\n\t\tif (__extractShader == null) __extractShader = new ExtractShader();\r\n\t\tif (__extractLowShader == null) __extractLowShader = new ExtractLowShader();\r\n\r\n\t\tthis.blurX = blurX;\r\n\t\tthis.blurY = blurY;\r\n\t\tthis.quality = quality;\r\n\t\tthis.strength = strength;\r\n\t\tthis.threshold = threshold;\r\n\t\tthis.smoothness = smoothness;\r\n\t\tthis.extension = false;\r\n\t\tthis.useLowQualityExtract = useLowQualityExtract;\r\n\t\tthis.weights = [0.2126, 0.7152, 0.0722];\r\n\t\tthis.blendMode = BlendMode.ADD;\r\n\r\n\t\t__needSecondBitmapData = true;\r\n\t\t__preserveObject = true;\r\n\t\t__renderDirty = true;\r\n\t}",
+			"doc": {
+				"text": "Initializes the bloom filter with the specified parameters.\n\n\t\t\t\t\t\t GPU cost but may cause flickering if too high).\n\t\t\t\t\t\t\t\t\tpotentially more flickering.",
+				"params": {
+					"blurX": "The amount to blur horizontally.",
+					"blurY": "The amount to blur vertically.",
+					"quality": "The downscaling factor for bloom rendering (higher values reduce",
+					"strength": "The intensity of the bloom effect.",
+					"threshold": "The brightness threshold for bloom extraction (0.0 to 1.0).",
+					"smoothness": "The smoothness of threshold transition in blur (0.0 to 1.0).",
+					"useLowQualityExtract": "Enables performance-optimized extraction with"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clone",
+			"args": [],
+			"ret": "BitmapFilter",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function clone():BitmapFilter\r\n\t{\r\n\t\tvar cloned = new BloomEffect(__blurX, __blurY, __quality, __strength, __threshold, __smoothness, __useLowQualityExtract);\r\n\t\tcloned.weights = __weights != null ? __weights.copy() : [0.2126, 0.7152, 0.0722];\r\n\t\tcloned.blendMode = __blendMode;\r\n\t\treturn cloned;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

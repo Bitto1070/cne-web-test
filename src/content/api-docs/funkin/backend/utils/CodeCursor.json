@@ -1,0 +1,36 @@
+{
+	"kind": "enum abstract",
+	"name": "CodeCursor",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "toOpenFL",
+			"args": [],
+			"ret": "MouseCursor",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:to public function toOpenFL():MouseCursor {\r\n\t\treturn @:privateAccess switch(cast this) {\r\n\t\t\tcase ARROW: MouseCursor.ARROW;\r\n\t\t\tcase CROSSHAIR: MouseCursor.__CROSSHAIR;\r\n\t\t\tcase CLICK: MouseCursor.BUTTON;\r\n\t\t\tcase IBEAM: MouseCursor.IBEAM;\r\n\t\t\tcase MOVE: MouseCursor.__MOVE;\r\n\t\t\tcase HAND: MouseCursor.HAND;\r\n\t\t\tcase DRAG: MouseCursor.HAND;\r\n\t\t\tcase DRAG_OPEN: MouseCursor.ARROW; // Could be HAND, but it might be better to use ARROW since on windows it would be weird to have the dragging cursor\r\n\t\t\tcase WAIT: MouseCursor.__WAIT;\r\n\t\t\tcase WAIT_ARROW: MouseCursor.__WAIT_ARROW;\r\n\r\n\t\t\tcase DISABLED: MouseCursor.ARROW;\r\n\r\n\t\t\tcase RESIZE_TR: MouseCursor.__RESIZE_NESW;\r\n\t\t\tcase RESIZE_BL: MouseCursor.__RESIZE_NESW;\r\n\t\t\tcase RESIZE_TL: MouseCursor.__RESIZE_NWSE;\r\n\t\t\tcase RESIZE_BR: MouseCursor.__RESIZE_NWSE;\r\n\t\t\tcase RESIZE_H: MouseCursor.__RESIZE_WE;\r\n\t\t\tcase RESIZE_V: MouseCursor.__RESIZE_NS;\r\n\r\n\t\t\tcase RESIZE_T: MouseCursor.__RESIZE_NS;\r\n\t\t\tcase RESIZE_B: MouseCursor.__RESIZE_NS;\r\n\t\t\tcase RESIZE_L: MouseCursor.__RESIZE_WE;\r\n\t\t\tcase RESIZE_R: MouseCursor.__RESIZE_WE;\r\n\r\n\t\t\tcase RESIZE_TLBR: MouseCursor.__RESIZE_NWSE;\r\n\t\t\tcase RESIZE_TRBL: MouseCursor.__RESIZE_NESW;\r\n\t\t\tcase CUSTOM: MouseCursor.__CUSTOM;\r\n\t\t\t//default: ARROW;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:to"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "toInt",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:to public function toInt():Int {\r\n\t\treturn switch(cast this) {\r\n\t\t\tcase ARROW: 0;\r\n\t\t\tcase CROSSHAIR: 1;\r\n\t\t\tcase CLICK: 2;\r\n\t\t\tcase IBEAM: 3;\r\n\t\t\tcase MOVE: 4;\r\n\t\t\tcase HAND: 5;\r\n\t\t\tcase DRAG: 6;\r\n\t\t\tcase DRAG_OPEN: 7;\r\n\t\t\tcase WAIT: 8;\r\n\t\t\tcase WAIT_ARROW: 9;\r\n\r\n\t\t\tcase DISABLED: 10;\r\n\r\n\t\t\tcase RESIZE_TR: 11;\r\n\t\t\tcase RESIZE_BL: 12;\r\n\t\t\tcase RESIZE_TL: 13;\r\n\t\t\tcase RESIZE_BR: 14;\r\n\t\t\tcase RESIZE_H: 15;\r\n\t\t\tcase RESIZE_V: 16;\r\n\r\n\t\t\tcase RESIZE_T: 17;\r\n\t\t\tcase RESIZE_B: 18;\r\n\t\t\tcase RESIZE_L: 19;\r\n\t\t\tcase RESIZE_R: 20;\r\n\r\n\t\t\tcase RESIZE_TLBR: 21;\r\n\t\t\tcase RESIZE_TRBL: 22;\r\n\r\n\t\t\tcase CUSTOM: -1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:to"
+			]
+		}
+	]
+}

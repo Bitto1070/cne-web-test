@@ -1,0 +1,259 @@
+{
+	"kind": "class",
+	"name": "GlyphInfoWindow",
+	"pkg": "funkin.editors.alphabet",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "prefixBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "yBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scaleXBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scaleYBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angleBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorModeDrop",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipXBox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipYBox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineTitle",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineSep",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineCheck",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineBoxTitle",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineOffTitle",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineXBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineYBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "targetPercent",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlinePercent",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineAlphaMults",
+			"type": "Array<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineItems",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "initialY",
+			"type": "Array<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "button",
+			"type": "ComponentButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tvar width = 360;\r\n\t\tvar height = 255;\r\n\t\tvar margin = 15;\r\n\t\tvar itemMargin = 15; // there was already a buncha variables so i thought why not follow\r\n\t\tvar labelOffset = 24;\r\n\t\tsuper(FlxG.width - width - margin, FlxG.height - height - margin, width, height, \"Glyph Info\");\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String) {\r\n\t\t\tvar title = new UIText(ui.x, ui.y - labelOffset, 0, text);\r\n\t\t\tmembers.push(title);\r\n\t\t\treturn title;\r\n\t\t}\r\n\r\n\t\tprefixBox = new UITextBox(x + itemMargin, y + itemMargin + labelOffset * 2, \"\", 330);\r\n\t\tprefixBox.onChange = function(val) {\r\n\t\t\tif (button != null)\r\n\t\t\t\tbutton.field.text = val;\r\n\r\n\t\t\tvar index = data.components.indexOf(compon);\r\n\t\t\tcompon.anim = val;\r\n\t\t\tvar anim = AlphabetEditor.instance.bigLetter.text + Std.string(index);\r\n\t\t\tAlphabetEditor.instance.bigLetter.animation.remove(anim);\r\n\t\t\tAlphabetEditor.instance.tape.animation.remove(anim);\r\n\t\t\tAlphabetEditor.instance.checkForFailed();\r\n\t\t}\r\n\t\tmembers.push(prefixBox);\r\n\t\taddLabelOn(prefixBox, \"Animation Prefix\");\r\n\r\n\t\txBox = new UINumericStepper(prefixBox.x, prefixBox.y + prefixBox.bHeight + itemMargin + labelOffset, 0, 1, 2, null, null, 80);\r\n\t\txBox.onChange = valueSet.bind(xBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tcompon.x = -val;\r\n\t\t});\r\n\t\tmembers.push(xBox);\r\n\r\n\t\tmembers.push(new UIText(xBox.x + xBox.bWidth - 2, xBox.y + 9, 0, \",\", 22));\r\n\r\n\t\tyBox = new UINumericStepper(xBox.x + xBox.bWidth + itemMargin, xBox.y, 0, 1, 2, null, null, 80);\r\n\t\tyBox.onChange = valueSet.bind(yBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tcompon.y = val;\r\n\t\t});\r\n\t\tmembers.push(yBox);\r\n\t\taddLabelOn(xBox, \"Offset (x,y)\");\r\n\r\n\t\tscaleXBox = new UINumericStepper(yBox.x + yBox.bWidth + itemMargin * 2, yBox.y, 1, 0.1, 2, null, null, 80);\r\n\t\tscaleXBox.onChange = valueSet.bind(scaleXBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tcompon.scaleX = val;\r\n\t\t\tif (outlineCheck.checked)\r\n\t\t\t\tdata.components[compon.outIndex].scaleX = val;\r\n\t\t});\r\n\t\tmembers.push(scaleXBox);\r\n\r\n\t\tmembers.push(new UIText(scaleXBox.x + scaleXBox.bWidth - 2, scaleXBox.y + 9, 0, \",\", 22));\r\n\r\n\t\tscaleYBox = new UINumericStepper(scaleXBox.x + scaleXBox.bWidth + itemMargin, scaleXBox.y, 1, 0.1, 2, null, null, 80);\r\n\t\tscaleYBox.onChange = valueSet.bind(scaleYBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tcompon.scaleY = val;\r\n\t\t\tif (outlineCheck.checked)\r\n\t\t\t\tdata.components[compon.outIndex].scaleY = val;\r\n\t\t});\r\n\t\tmembers.push(scaleYBox);\r\n\t\taddLabelOn(scaleXBox, \"Scale (x,y)\");\r\n\r\n\t\tangleBox = new UINumericStepper(scaleYBox.x + scaleYBox.bWidth + itemMargin * 2, scaleYBox.y, 0, 1, 2, null, null, 80);\r\n\t\tangleBox.onChange = valueSet.bind(angleBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tcompon.shouldRotate = val != 0;\r\n\t\t\tcompon.angle = val;\r\n\t\t\tcompon.cos = Math.cos(val * FlxAngle.TO_RAD);\r\n\t\t\tcompon.sin = Math.sin(val * FlxAngle.TO_RAD);\r\n\r\n\t\t\tif (outlineCheck.checked) {\r\n\t\t\t\tdata.components[compon.outIndex].shouldRotate = compon.shouldRotate;\r\n\t\t\t\tdata.components[compon.outIndex].angle = compon.angle;\r\n\t\t\t\tdata.components[compon.outIndex].cos = compon.cos;\r\n\t\t\t\tdata.components[compon.outIndex].sin = compon.sin;\r\n\t\t\t}\r\n\t\t});\r\n\t\tmembers.push(angleBox);\r\n\t\taddLabelOn(angleBox, \"Angle\");\r\n\r\n\t\tcolorModeDrop = new UIDropDown(xBox.x, xBox.y + xBox.bHeight + itemMargin + labelOffset, 145, 32, [\"TINT\", \"OFFSETS\", \"NONE\"]);\r\n\t\tcolorModeDrop.onChange = function(mode) {\r\n\t\t\tcompon.colorMode = mode;\r\n\t\t\t@:privateAccess compon.hasColorMode = mode != AlphabetEditor.instance.tape.colorMode;\r\n\t\t\tif (outlineCheck.checked) {\r\n\t\t\t\tdata.components[compon.outIndex].colorMode = mode;\r\n\t\t\t\t@:privateAccess data.components[compon.outIndex].hasColorMode = compon.hasColorMode;\r\n\t\t\t}\r\n\t\t};\r\n\t\tmembers.push(colorModeDrop);\r\n\t\taddLabelOn(colorModeDrop, \"Color Mode\");\r\n\r\n\t\toutlineCheck = new UICheckbox(colorModeDrop.x + colorModeDrop.bWidth + itemMargin * 2, colorModeDrop.y + 10, \"Use Outline?\");\r\n\t\toutlineCheck.onChecked = function(val) {\r\n\t\t\ttargetPercent = val ? 1 : 0;\r\n\r\n\t\t\tfor (i in 0...data.components.length) {\r\n\t\t\t\tvar anim = AlphabetEditor.instance.bigLetter.text + i;\r\n\t\t\t\tAlphabetEditor.instance.bigLetter.animation.remove(anim);\r\n\t\t\t\tAlphabetEditor.instance.tape.animation.remove(anim);\r\n\t\t\t}\r\n\r\n\t\t\tif (val) {\r\n\t\t\t\tcompon.outIndex = AlphabetEditor.instance.outlineIdx;\r\n\t\t\t\t\r\n\t\t\t\tvar newOutline:AlphabetComponent = {\r\n\t\t\t\t\trefIndex: data.components.indexOf(compon) - data.startIndex,\r\n\t\t\t\t\tanim: outlineBox.label.text,\r\n\r\n\t\t\t\t\tx: outlineXBox.value,\r\n\t\t\t\t\ty: outlineYBox.value,\r\n\t\t\t\t\tscaleX: compon.scaleX,\r\n\t\t\t\t\tscaleY: compon.scaleY,\r\n\r\n\t\t\t\t\tshouldRotate: compon.shouldRotate,\r\n\t\t\t\t\tangle: compon.angle,\r\n\t\t\t\t\tcos: compon.cos,\r\n\t\t\t\t\tsin: compon.sin,\r\n\t\t\t\t\t\r\n\t\t\t\t\tflipX: compon.flipX,\r\n\t\t\t\t\tflipY: compon.flipY,\r\n\r\n\t\t\t\t\thasColorMode: compon.hasColorMode,\r\n\t\t\t\t\tcolorMode: compon.colorMode\r\n\t\t\t\t};\r\n\r\n\t\t\t\tdata.components.insert(AlphabetEditor.instance.outlineIdx, newOutline);\r\n\t\t\t\t++AlphabetEditor.instance.outlineIdx;\r\n\t\t\t\t++data.startIndex;\r\n\t\t\t} else {\r\n\t\t\t\tvar toRemove = compon.outIndex;\r\n\t\t\t\tcompon.outIndex = null;\r\n\t\t\t\tfor (i in data.startIndex...data.components.length) {\r\n\t\t\t\t\tfinal component = data.components[i];\r\n\t\t\t\t\tif (component.outIndex != null && component.outIndex >= toRemove)\r\n\t\t\t\t\t\t--component.outIndex;\r\n\t\t\t\t}\r\n\t\t\t\tdata.components.splice(toRemove, 1);\r\n\t\t\t\t--AlphabetEditor.instance.outlineIdx;\r\n\t\t\t\t--data.startIndex;\r\n\t\t\t}\r\n\t\t}\r\n\t\tmembers.push(outlineCheck);\r\n\t\t\r\n\t\tflipXBox = new UICheckbox(outlineCheck.x, outlineCheck.y - outlineCheck.height - 8, \"Flip X?\");\r\n\t\tflipXBox.onChecked = function(check:Bool) {\r\n\t\t\tcompon.flipX = check;\r\n\t\t\tif (outlineCheck.checked)\r\n\t\t\t\tdata.components[compon.outIndex].flipX = check;\r\n\t\t}\r\n\t\tmembers.push(flipXBox);\r\n\r\n\t\tflipYBox = new UICheckbox(flipXBox.x + flipXBox.width + itemMargin * 5, flipXBox.y, \"Flip Y?\");\r\n\t\tflipYBox.onChecked = function(check:Bool) {\r\n\t\t\tcompon.flipY = check;\r\n\t\t\tif (outlineCheck.checked)\r\n\t\t\t\tdata.components[compon.outIndex].flipY = check;\r\n\t\t}\r\n\t\tmembers.push(flipYBox);\r\n\r\n\t\toutlineTitle = new UIText(colorModeDrop.x, colorModeDrop.y + colorModeDrop.bHeight + itemMargin, 0, \"Outline Data\");\r\n\t\tmembers.push(outlineTitle);\r\n\t\toutlineSep = new UISprite(x + itemMargin, colorModeDrop.y + colorModeDrop.bHeight + itemMargin + 19);\r\n\t\toutlineSep.makeSolid(width - itemMargin * 2, 1, 0x40FFFFFF);\r\n\t\tmembers.push(outlineSep);\r\n\r\n\t\toutlineBox = new UITextBox(colorModeDrop.x, colorModeDrop.y + colorModeDrop.bHeight + itemMargin + labelOffset * 2 + 3, \"\", 190);\r\n\t\toutlineBox.onChange = function(val) {\r\n\t\t\tdata.components[compon.outIndex].anim = val;\r\n\t\t\tvar anim = AlphabetEditor.instance.bigLetter.text + Std.string(compon.outIndex);\r\n\t\t\tAlphabetEditor.instance.bigLetter.animation.remove(anim);\r\n\t\t\tAlphabetEditor.instance.tape.animation.remove(anim);\r\n\t\t\tAlphabetEditor.instance.checkForFailed();\r\n\t\t}\r\n\t\tmembers.push(outlineBox);\r\n\t\toutlineBoxTitle = addLabelOn(outlineBox, \"Prefix\");\r\n\r\n\t\toutlineXBox = new UINumericStepper(outlineBox.x + outlineBox.bWidth + itemMargin * 2, outlineBox.y, 0, 1, 2, null, null, 80);\r\n\t\toutlineXBox.onChange = valueSet.bind(outlineXBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tif (outlineCheck.checked)\r\n\t\t\t\tdata.components[compon.outIndex].x = val;\r\n\t\t});\r\n\t\tmembers.push(outlineXBox);\r\n\r\n\t\tmembers.push(new UIText(outlineXBox.x + outlineXBox.bWidth - 2, outlineXBox.y + 9, 0, \",\", 22));\r\n\r\n\t\toutlineYBox = new UINumericStepper(outlineXBox.x + outlineXBox.bWidth + itemMargin, outlineXBox.y, 0, 1, 2, null, null, 80);\r\n\t\toutlineYBox.onChange = valueSet.bind(outlineYBox, function(val) { // kinda dumb but blame cne ui\r\n\t\t\tif (outlineCheck.checked)\r\n\t\t\t\tdata.components[compon.outIndex].y = val;\r\n\t\t});\r\n\t\tmembers.push(outlineYBox);\r\n\t\toutlineOffTitle = addLabelOn(outlineXBox, \"Offset (x,y)\");\r\n\r\n\t\tfor (mem in members) {\r\n\t\t\tif (mem is FlxObject)\r\n\t\t\t\tinitialY.push(cast (mem, FlxObject).y);\r\n\t\t}\r\n\t\toutlineAlphaMults = [1.0, 0.9, 0.5, 0.15, 0.15, 0.5, 0.15, 0.15, 0.15, 0.15];\r\n\t\toutlineItems = [outlineTitle, outlineSep, outlineBoxTitle, outlineBox, outlineBox.label, outlineOffTitle, outlineXBox, outlineXBox.label, outlineYBox, outlineYBox.label];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\toutlinePercent = FlxMath.lerp(outlinePercent, targetPercent, elapsed * 10);\r\n\t\tbHeight = Std.int(255 + 105 * outlinePercent);\r\n\t\ty = FlxG.height - bHeight - 30;\r\n\r\n\t\tfor (i in 0...outlineItems.length)\r\n\t\t\toutlineItems[i].alpha = outlinePercent * FlxMath.lerp(outlineAlphaMults[i], 1, outlinePercent * outlinePercent) * alpha;\r\n\t\t\r\n\t\tvar yIdxOff = 0;\r\n\t\tfor (i in 0...members.length) {\r\n\t\t\tif (members[i] is FlxObject)\r\n\t\t\t\tcast (members[i], FlxObject).y = initialY[i - yIdxOff] - (bHeight - 255);\r\n\t\t\telse\r\n\t\t\t\t++yIdxOff;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateInfo() {\r\n\t\tvar com = compon;\r\n\t\tif (com == null) {\r\n\t\t\tfor (item in members) {\r\n\t\t\t\tif (item is UISprite)\r\n\t\t\t\t\tcast(item, UISprite).selectable = false;\r\n\t\t\t}\r\n\t\t\tcolorModeDrop.dropButton.selectable = false;\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tprefixBox.label.text = com.anim;\r\n\t\txBox.value = -com.x;\r\n\t\tyBox.value = com.y;\r\n\t\tscaleXBox.value = com.scaleX;\r\n\t\tscaleYBox.value = com.scaleY;\r\n\t\tangleBox.value = com.angle;\r\n\t\t@:privateAccess colorModeDrop.index = com.hasColorMode ? com.colorMode : AlphabetEditor.instance.tape.colorMode;\r\n\t\t@:privateAccess colorModeDrop.label.text = colorModeDrop.options[colorModeDrop.index];\r\n\t\tflipXBox.checked = com.flipX;\r\n\t\tflipYBox.checked = com.flipY;\r\n\r\n\t\toutlineCheck.checked = com.outIndex != null;\r\n\t\toutlineBox.label.text = \"\";\r\n\t\toutlineXBox.value = 0;\r\n\t\toutlineYBox.value = 0;\r\n\t\ttargetPercent = 0;\r\n\t\tif (com.outIndex != null) {\r\n\t\t\tvar out = data.components[com.outIndex];\r\n\t\t\toutlineBox.label.text = out.anim;\r\n\t\t\toutlineXBox.value = out.x;\r\n\t\t\toutlineYBox.value = out.y;\r\n\t\t\ttargetPercent = 1;\r\n\t\t}\r\n\t\t\r\n\t\tfor (item in [prefixBox, scaleXBox, scaleYBox, angleBox, flipXBox, flipYBox])\r\n\t\t\titem.selectable = true;\r\n\t\tfor (item in [xBox, yBox, colorModeDrop, outlineCheck, outlineBox, outlineXBox, outlineYBox])\r\n\t\t\titem.selectable = !data.isDefault;\r\n\t\tcolorModeDrop.dropButton.selectable = colorModeDrop.selectable;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

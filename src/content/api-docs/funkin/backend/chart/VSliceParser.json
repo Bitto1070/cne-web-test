@@ -1,0 +1,183 @@
+{
+	"kind": "class",
+	"name": "VSliceParser",
+	"pkg": "funkin.backend.chart",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "parse",
+			"args": [
+				{
+					"name": "metaData",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "chartData",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "resultMeta",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "resultCharts",
+					"type": "Array<ChartDataWithInfo>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "songID",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parse(metaData:Dynamic, chartData:Dynamic, resultMeta:ChartMetaData, resultCharts:Array<ChartDataWithInfo>, ?songID:String) {\r\n\t\tvar metaData:SwagMetadata = metaData;\r\n\t\tvar chartData:NewSwagSong = chartData;\r\n\r\n\t\tparseMeta(metaData, resultMeta, songID);\r\n\r\n\t\tfor (diff in Reflect.fields(chartData.notes))\r\n\t\t{\r\n\t\t\tvar base:ChartData = {\r\n\t\t\t\tstrumLines: [],\r\n\t\t\t\tnoteTypes: [],\r\n\t\t\t\tevents: [],\r\n\t\t\t\tmeta: {name: null},\r\n\t\t\t\tscrollSpeed: Reflect.field(chartData.scrollSpeed, diff),\r\n\t\t\t\tstage: Flags.DEFAULT_STAGE,\r\n\t\t\t\tcodenameChart: true\r\n\t\t\t};\r\n\t\t\tparseChart(Reflect.field(chartData.notes, diff), metaData, chartData.events, base, resultMeta);\r\n\t\t\tresultCharts.push({diffName: diff, chart: base});\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseChart",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "metaData",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "events",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "resultMeta",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseChart(data:Dynamic, metaData:Dynamic, events:Dynamic, result:ChartData, resultMeta:ChartMetaData) {\r\n\t\t// vslice chart parsing\r\n\t\tvar data:Array<SwagNote> = data;\r\n\t\tvar metadata:SwagMetadata = metaData;\r\n\t\tvar events:Array<SwagEvent> = events;\r\n\r\n\t\tresult.stage = metadata.playData.stage;\r\n\r\n\t\tvar p2isGF:Bool = false;\r\n\t\tresult.strumLines.push({\r\n\t\t\tcharacters: [metadata.playData.characters.opponent],\r\n\t\t\ttype: 0,\r\n\t\t\tposition: (p2isGF = metadata.playData.characters.opponent.startsWith(\"gf\")) ? \"girlfriend\" : \"dad\",\r\n\t\t\tnotes: [],\r\n\t\t\tvocalsSuffix: '-${metadata.playData.characters.opponent}${resultMeta.vocalsSuffix != null ? resultMeta.vocalsSuffix : \"\"}'\r\n\t\t});\r\n\t\tresult.strumLines.push({\r\n\t\t\tcharacters: [metadata.playData.characters.player],\r\n\t\t\ttype: 1,\r\n\t\t\tposition: \"boyfriend\",\r\n\t\t\tnotes: [],\r\n\t\t\tvocalsSuffix: '-${metadata.playData.characters.player}${resultMeta.vocalsSuffix != null ? resultMeta.vocalsSuffix : \"\"}'\r\n\t\t});\r\n\t\tvar gfName = metadata.playData.characters.girlfriend;\r\n\t\tif (!p2isGF && gfName != \"none\") {\r\n\t\t\tresult.strumLines.push({\r\n\t\t\t\tcharacters: [gfName],\r\n\t\t\t\ttype: 2,\r\n\t\t\t\tposition: \"girlfriend\",\r\n\t\t\t\tnotes: [],\r\n\t\t\t\tvisible: false,\r\n\t\t\t});\r\n\t\t}\r\n\r\n\t\tvar timeChanges = metadata.timeChanges;\r\n\t\tresult.meta.bpm = timeChanges[0].bpm;\r\n\t\tresult.meta.needsVoices = false;\r\n\r\n\t\tfor (note in data)\r\n\t\t{\r\n\t\t\tvar daNoteType:Null<Int> = null;\r\n\t\t\tif (note.k != null)\r\n\t\t\t\tdaNoteType = Chart.addNoteType(result, note.k == \"alt\" ? \"Alt Anim Note\" : note.k);  // they hardcoded \"alt\" for converting old charts BUT THEN WHY THE HELL WOULD YOU CALL \"MOM\" THE NOTE KIND IN WEEK5 GRAHHH  - Nex\r\n\r\n\t\t\tvar daNoteData:Int = Std.int(note.d % 8);\r\n\t\t\tvar isMustHit:Bool = Math.floor(daNoteData / 4) == 0;\r\n\r\n\t\t\tresult.strumLines[isMustHit ? 1 : 0].notes.push({\r\n\t\t\t\ttime: note.t,\r\n\t\t\t\tid: daNoteData % 4,\r\n\t\t\t\ttype: daNoteType,\r\n\t\t\t\tsLen: note.l\r\n\t\t\t});\r\n\t\t}\r\n\r\n\t\tvar curBPM = result.meta.bpm;\r\n\t\tfor (i in 1...timeChanges.length)  // starting from 1 on purpose  - Nex\r\n\t\t{\r\n\t\t\tvar curChange = timeChanges[i];\r\n\t\t\tif (curBPM != curChange.bpm)\r\n\t\t\t{\r\n\t\t\t\tcurBPM = curChange.bpm;\r\n\t\t\t\tresult.events.push({\r\n\t\t\t\t\ttime: curChange.t,\r\n\t\t\t\t\tname: \"BPM Change\",\r\n\t\t\t\t\tparams: [curBPM]\r\n\t\t\t\t});\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfor (event in events)\r\n\t\t{\r\n\t\t\tvar values = event.v;\r\n\t\t\tswitch (event.e)\r\n\t\t\t{\r\n\t\t\t\tcase \"FocusCamera\":\r\n\t\t\t\t\tvar isPosOnly = false;\r\n\t\t\t\t\tvar arr:Array<Dynamic> = [switch(values is Int ? values : values.char) {\r\n\t\t\t\t\t\t// more cases here in the future if they add em? (i hope not)  - Nex\r\n\t\t\t\t\t\tcase 0: 1;\r\n\t\t\t\t\t\tcase 1: 0;\r\n\t\t\t\t\t\tcase -1:\r\n\t\t\t\t\t\t\tisPosOnly = true;\r\n\t\t\t\t\t\t\t-1;\r\n\t\t\t\t\t\tdefault: 2;\r\n\t\t\t\t\t}];\r\n\t\t\t\t\tif (values.ease != \"CLASSIC\" && values.ease != null) {\r\n\t\t\t\t\t\tif (values.ease == \"INSTANT\") arr = arr.concat([false]);\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\tvar cneEase = parseEase(values.ease);\r\n\t\t\t\t\t\t\tarr = arr.concat([true, values.duration == null ? 4 : values.duration, cneEase[0], cneEase[1]]);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tif (isPosOnly || ((values.x != null && values.x != 0) || (values.y != null && values.y != 0))) {\r\n\t\t\t\t\t\tvar useNull = arr.length <= 2;\r\n\t\t\t\t\t\tresult.events.push({\r\n\t\t\t\t\t\t\ttime: event.t,\r\n\t\t\t\t\t\t\tname: \"Camera Position\",\r\n\t\t\t\t\t\t\tparams: [values.x, values.y, useNull ? null : arr[1], useNull ? null : arr[2], useNull ? null : arr[3], useNull ? null : arr[4], true]\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t}\r\n\t\t\t\t\tif (!isPosOnly) result.events.push({\r\n\t\t\t\t\t\ttime: event.t,\r\n\t\t\t\t\t\tname: \"Camera Movement\",\r\n\t\t\t\t\t\tparams: arr\r\n\t\t\t\t\t});\r\n\t\t\t\tcase \"PlayAnimation\":\r\n\t\t\t\t\tresult.events.push({\r\n\t\t\t\t\t\ttime: event.t,\r\n\t\t\t\t\t\tname: \"Play Animation\",\r\n\t\t\t\t\t\tparams: [switch(values.target) {\r\n\t\t\t\t\t\t\tcase 'boyfriend' | 'bf' | 'player': 1;\r\n\t\t\t\t\t\t\tcase 'dad' | 'opponent': 0;\r\n\t\t\t\t\t\t\tdefault /*case 'girlfriend' | 'gf'*/: 2;  // usually the default should be the stage prop but we dont have that sooo  - Nex\r\n\t\t\t\t\t\t}, values.anim, values.force == null ? false : values.force]\r\n\t\t\t\t\t});\r\n\t\t\t\tcase \"ScrollSpeed\":\r\n\t\t\t\t\tvar cneEase = values.ease == null || values.ease == \"INSTANT\" ? [\"linear\", null] : parseEase(values.ease);\r\n\t\t\t\t\tresult.events.push({\r\n\t\t\t\t\t\ttime: event.t,\r\n\t\t\t\t\t\tname: \"Scroll Speed Change\",  // we dont support the strumline value and also i will put the whole ease name into a single parameter since it works anyways  - Nex\r\n\t\t\t\t\t\tparams: [values.ease != \"INSTANT\", values.scroll == null ? 1 : values.scroll, values.duration == null ? 4 : values.duration, cneEase[0], cneEase[1], values.absolute != true]\r\n\t\t\t\t\t});\r\n\t\t\t\tcase \"SetCameraBop\":\r\n\t\t\t\t\tresult.events.push({\r\n\t\t\t\t\t\ttime: event.t,\r\n\t\t\t\t\t\tname: \"Camera Modulo Change\",\r\n\t\t\t\t\t\tparams: [values.rate == null ? 4 : values.rate, values.intensity == null ? 1 : values.intensity]\r\n\t\t\t\t\t});\r\n\t\t\t\tcase \"ZoomCamera\":\r\n\t\t\t\t\tvar cneEase = values.ease == null || values.ease == \"INSTANT\" ? [\"linear\", null] : parseEase(values.ease);\r\n\t\t\t\t\tresult.events.push({\r\n\t\t\t\t\t\ttime: event.t,\r\n\t\t\t\t\t\tname: \"Camera Zoom\",  // we dont support the direct mode since welp, its kind of useless here  - Nex\r\n\t\t\t\t\t\tparams: [values.ease != \"INSTANT\", values.zoom == null ? 1 : values.zoom, \"camGame\", values.duration == null ? 4 : values.duration, cneEase[0], cneEase[1], values.mode, false]\r\n\t\t\t\t\t});\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseMeta",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "songID",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseMeta(data:Dynamic, result:ChartMetaData, ?songID:String) {\r\n\t\tvar data:SwagMetadata = data;\r\n\t\tvar songName = data.songName;\r\n\t\tvar songID:String = songID == null ? songName.toLowerCase().replace(\" \", \"-\") : songID;\r\n\t\tvar firstTimeChange:SwagTimeChange = data.timeChanges[0];\r\n\r\n\t\tresult.bpm = firstTimeChange.bpm.getDefault(Flags.DEFAULT_BPM);\r\n\t\tresult.beatsPerMeasure = firstTimeChange.n.getDefault(Flags.DEFAULT_BEATS_PER_MEASURE);\r\n\t\tresult.stepsPerBeat = firstTimeChange.d.getDefault(Flags.DEFAULT_STEPS_PER_BEAT);\r\n\t\tresult.displayName = songName;\r\n\t\tresult.difficulties = data.playData.difficulties.copy();\r\n\t\tif (data.playData.songVariations != null) result.variants = data.playData.songVariations.copy();\r\n\r\n\t\tif (result.customValues == null) result.customValues = {};\r\n\t\tresult.customValues.artist = data.artist;\r\n\t\tif (data.charter != null) result.customValues.charter = data.charter;\r\n\t\tfor (field in Reflect.fields(data.playData)) if (field != \"difficulties\" && field != \"songVariations\" && field != \"characters\" && field != \"stage\")\r\n\t\t\tReflect.setProperty(result.customValues, field, Reflect.getProperty(data.playData, field));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "encodeMeta",
+			"args": [
+				{
+					"name": "meta",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "SwagMetadata",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function encodeMeta(meta:ChartMetaData, ?chart:ChartData):SwagMetadata {\r\n\t\tvar addVars:Dynamic = meta.customValues;\r\n\t\tvar defStage:String = addVars.stage != null ? addVars.stage : Flags.DEFAULT_STAGE;\r\n\t\tvar defChars:SwagCharactersList = addVars.characters != null ? addVars.characters : {player: Flags.DEFAULT_CHARACTER, girlfriend: Flags.DEFAULT_GIRLFRIEND, opponent: Flags.DEFAULT_OPPONENT, playerVocals: [], opponentVocals: [], instrumental: '', altInstrumentals: []};\r\n\t\tvar defTimeCh:Array<SwagTimeChange>;\r\n\r\n\t\tif (addVars.timeChanges != null && addVars.timeChanges.length > 0) {\r\n\t\t\tdefTimeCh = addVars.timeChanges;\r\n\t\t\tdefTimeCh[0].bpm = meta.bpm;\r\n\t\t}\r\n\t\telse defTimeCh = [{bpm: meta.bpm, t: -1}];\r\n\r\n\t\tif (chart != null) {\r\n\t\t\tdefStage = chart.stage;\r\n\r\n\t\t\tvar done:Array<Bool> = [false, false, false];\r\n\t\t\tfor (strumLine in chart.strumLines) switch (strumLine.type) {\r\n\t\t\t\tcase OPPONENT:\r\n\t\t\t\t\tif (!done[0]) {\r\n\t\t\t\t\t\tdone[0] = true;\r\n\t\t\t\t\t\tdefChars.opponent = strumLine.characters.getDefault([defChars.opponent])[0];\r\n\t\t\t\t\t}\r\n\t\t\t\tcase PLAYER:\r\n\t\t\t\t\tif (!done[1]) {\r\n\t\t\t\t\t\tdone[1] = true;\r\n\t\t\t\t\t\tdefChars.player = strumLine.characters.getDefault([defChars.player])[0];\r\n\t\t\t\t\t}\r\n\t\t\t\tcase ADDITIONAL:\r\n\t\t\t\t\tif (!done[3]) {\r\n\t\t\t\t\t\tdone[3] = true;\r\n\t\t\t\t\t\tdefChars.girlfriend = strumLine.characters.getDefault([defChars.girlfriend])[0];\r\n\t\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar result:SwagMetadata = {\r\n\t\t\tsongName: meta.name,\r\n\t\t\ttimeFormat: MILLISECONDS,\r\n\t\t\tartist: \"\",\r\n\t\t\ttimeChanges: defTimeCh,\r\n\t\t\tlooped: false,\r\n\t\t\tgeneratedBy: 'V-Slice Chart Importer (Codename Engine)',\r\n\t\t\tversion: Flags.VSLICE_SONG_METADATA_VERSION,\r\n\t\t\tplayData: {\r\n\t\t\t\tstage: defStage,\r\n\t\t\t\tcharacters: defChars,\r\n\t\t\t\tsongVariations: addVars.songVariations != null ? [for (i in 0...addVars.songVariations.length) {meta.difficulties.remove(addVars.songVariations[i]); addVars.songVariations[i];}] : [],\r\n\t\t\t\tdifficulties: meta.difficulties,\r\n\t\t\t\tnoteStyle: addVars.noteStyle != null ? addVars.noteStyle : Flags.VSLICE_DEFAULT_NOTE_STYLE,\r\n\t\t\t\talbum: addVars.album != null ? addVars.album : Flags.VSLICE_DEFAULT_ALBUM_ID,\r\n\t\t\t\tpreviewStart: addVars.previewStart != null ? addVars.previewStart : Flags.VSLICE_DEFAULT_PREVIEW_START,\r\n    \t\t\tpreviewEnd: addVars.previewEnd != null ? addVars.previewEnd : Flags.VSLICE_DEFAULT_PREVIEW_END\r\n\t\t\t},\r\n\t\t};\r\n\r\n\t\treturn result;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "encodeChart",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "NewSwagSong",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function encodeChart(chart:ChartData):NewSwagSong {\r\n\t\t// TO DO\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseEase",
+			"args": [
+				{
+					"name": "vsliceEase",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseEase(vsliceEase:String):Array<String> {\r\n\t\tfor (key in ['InOut', 'In', 'Out']) if (vsliceEase.endsWith(key)) return [vsliceEase.substr(0, vsliceEase.length - key.length), key];\r\n\t\treturn [vsliceEase];\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

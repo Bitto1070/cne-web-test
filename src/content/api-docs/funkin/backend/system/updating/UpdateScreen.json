@@ -1,0 +1,146 @@
+{
+	"kind": "class",
+	"name": "UpdateScreen",
+	"pkg": "funkin.backend.system.updating",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "updater",
+			"type": "AsyncUpdater",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "progressBar",
+			"type": "FlxBar",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bf",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "done",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "elapsedTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lerpSpeed",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "overSound",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "generalProgress",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "partProgress",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rainbowShader",
+			"type": "CustomShader",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "check",
+					"type": "UpdateCheckCallback",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(check:UpdateCheckCallback) {\r\n\t\tsuper(false);\r\n\t\tupdater = new AsyncUpdater(check.updates);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tprogressBar = new FlxBar(0, FlxG.height - 75, LEFT_TO_RIGHT, FlxG.width, 75);\r\n\t\tprogressBar.createGradientBar([0xFF000000], [0xFF000000, 0xFF111111, 0xFF222222, 0xFF444444, 0xFF888888, -1], 1, 90);\r\n\t\tprogressBar.setRange(0, 4);\r\n\t\tadd(progressBar);\r\n\r\n\t\tbf = new FlxSprite();\r\n\t\tbf.antialiasing = true;\r\n\t\tbf.frames = Paths.getFrames(\"menus/update/bf\");\r\n\t\tbf.animation.addByPrefix(\"loading\", \"\", 0, false);\r\n\t\tbf.animation.addByPrefix(\"loading-anim\", \"\", 24, false);\r\n\t\tbf.animation.play(\"loading\");\r\n\t\tbf.screenCenter();\r\n\t\tadd(bf);\r\n\r\n\t\tpartProgress = new FunkinText(0, progressBar.y, FlxG.width, \"-\\n-\", 20);\r\n\t\tpartProgress.y -= partProgress.height;\r\n\t\tpartProgress.alignment = CENTER;\r\n\t\tadd(partProgress);\r\n\r\n\t\tgeneralProgress = new FunkinText(0, partProgress.y - 10, FlxG.width, \"\", 32);\r\n\t\tgeneralProgress.y -= generalProgress.height;\r\n\t\tgeneralProgress.alignment = CENTER;\r\n\t\tadd(generalProgress);\r\n\r\n\t\toverSound = FlxG.sound.load(Paths.sound(Flags.DEFAULT_GAMEOVEREND_SOUND));\r\n\r\n\t\tupdater.execute();\r\n\r\n\t\tFlxG.camera.addShader(rainbowShader = new CustomShader(\"engine/updaterShader\"));\r\n\r\n\t\tDiscordUtil.call(\"onMenuLoaded\", [\"Update Screen\"]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\telapsedTime += elapsed;\r\n\t\trainbowShader.hset(\"elapsed\", elapsedTime / 3);\r\n\t\trainbowShader.hset(\"strength\", (elapsedTime >= 3) ? 1 : Math.sqrt(elapsedTime / 3));\r\n\r\n\t\tprogressBar.y = FlxG.height - (65 + (Math.sin(elapsedTime * Math.PI / 2) * 10));\r\n\r\n\t\tif (done) return;\r\n\r\n\t\tvar prog = updater.progress;\r\n\t\tlerpSpeed = lerp(lerpSpeed, prog.downloadSpeed, 0.0625);\r\n\t\tswitch(prog.step) {\r\n\t\t\tcase PREPARING:\r\n\t\t\t\tprogressBar.value = 0;\r\n\t\t\t\tgeneralProgress.text = TU.translate(\"updateScreen.general-1\") + \" (1/4)\";\r\n\t\t\t\tpartProgress.text = TU.translate(\"updateScreen.part-1\");\r\n\t\t\tcase DOWNLOADING_ASSETS:\r\n\t\t\t\tprogressBar.value = 1 + ((prog.curFile-1+(prog.bytesLoaded/prog.bytesTotal)) / prog.files);\r\n\t\t\t\tgeneralProgress.text = TU.translate(\"updateScreen.general-2\") + \" (2/4)\";\r\n\t\t\t\tpartProgress.text = TU.translate(\"updateScreen.part-2\", [prog.curFileName]) + '\\n(${prog.curFile+1}/${prog.files} | ${CoolUtil.getSizeString(prog.bytesLoaded)} / ${CoolUtil.getSizeString(prog.bytesTotal)} | ${CoolUtil.getSizeString(lerpSpeed)}/s)';\r\n\t\t\tcase DOWNLOADING_EXECUTABLE:\r\n\t\t\t\tprogressBar.value = 2 + (prog.bytesLoaded/prog.bytesTotal);\r\n\t\t\t\tgeneralProgress.text = TU.translate(\"updateScreen.general-3\") + \" (3/4)\";\r\n\t\t\t\tpartProgress.text = TU.translate(\"updateScreen.part-3\", [prog.curFileName]) + '\\n(${CoolUtil.getSizeString(prog.bytesLoaded)} / ${CoolUtil.getSizeString(prog.bytesTotal)} | ${CoolUtil.getSizeString(lerpSpeed)}/s)';\r\n\t\t\tcase INSTALLING:\r\n\t\t\t\tprogressBar.value = 3 + ((prog.curFile-1+(prog.curZipProgress.curFile/prog.curZipProgress.fileCount))/prog.files);\r\n\t\t\t\tgeneralProgress.text = TU.translate(\"updateScreen.general-4\") + \" (4/4)\";\r\n\t\t\t\tpartProgress.text = TU.translate(\"updateScreen.part-4\", [prog.curFileName]) + '\\n(${prog.curFile}/${prog.files})';\r\n\t\t}\r\n\t\tvar rect = new FlxRect(0, (1 - (progressBar.value / 4)) * bf.frameHeight, bf.frameWidth, 0);\r\n\t\trect.height = bf.frameHeight - rect.y;\r\n\r\n\t\tbf.clipRect = rect;\r\n\t\tbf.alpha = (progressBar.value / 4) * FlxG.random.float(0.70, 0.80);\r\n\t\tif (done = prog.done) {\r\n\t\t\t// update is done, play bf's anim\r\n\t\t\tFlxG.sound.music.stop();\r\n\t\t\toverSound.play();\r\n\r\n\t\t\tremove(generalProgress);\r\n\t\t\tremove(partProgress);\r\n\t\t\tgeneralProgress = FlxDestroyUtil.destroy(generalProgress);\r\n\t\t\tpartProgress = FlxDestroyUtil.destroy(partProgress);\r\n\r\n\t\t\tbf.animation.curAnim.frameRate = 24;\r\n\t\t\tbf.animation.play(\"loading-anim\", true, false, 1);\r\n\t\t\tbf.alpha = 1;\r\n\r\n\t\t\tFlxG.camera.fade(0xFF000000, overSound.length / 1000, false, function() {\r\n\t\t\t\tif (updater.executableReplaced) {\r\n\t\t\t\t\t#if windows\r\n\t\t\t\t\t// the executable has been replaced, restart the game entirely\r\n\t\t\t\t\tSys.command('start /B ${AsyncUpdater.executableName}');\r\n\t\t\t\t\t#else\r\n\t\t\t\t\t// We have to make the new executable allowed to execute\r\n\t\t\t\t\t// before we can execute it!\r\n\t\t\t\t\tSys.command('chmod +x ./${AsyncUpdater.executableName} && ./${AsyncUpdater.executableName}');\r\n\t\t\t\t\t#end\r\n\t\t\t\t\topenfl.system.System.exit(0);\r\n\t\t\t\t} else {\r\n\t\t\t\t\t// assets update, switch back to TitleState.\r\n\t\t\t\t\tFlxG.switchState(new TitleState());\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t\tbf.clipRect = null;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

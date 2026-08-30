@@ -1,0 +1,763 @@
+{
+	"kind": "class",
+	"name": "FunkinSprite",
+	"pkg": "funkin.backend",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "extra",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spriteAnimType",
+			"type": "XMLAnimType",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatAnims",
+			"type": "Array<BeatAnim>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "zoomFactor",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angleFactor",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "debugMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animDatas",
+			"type": "Map<String, AnimData>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "zoomFactorEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angleFactorEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animateAtlas",
+			"type": "FunkinSprite",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "globalCurFrame",
+			"type": "Int",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatInterval",
+			"type": "Int",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": {
+				"text": "ODD interval -> not aligned to beats\nEVEN interval -> aligned to beats",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatOffset",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "skipNegativeBeats",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animateSettings",
+			"type": "FlxAnimateSettings",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "X",
+					"type": "Float",
+					"optional": true,
+					"def": "0"
+				},
+				{
+					"name": "Y",
+					"type": "Float",
+					"optional": true,
+					"def": "0"
+				},
+				{
+					"name": "SimpleGraphic",
+					"type": "FlxGraphicAsset",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?X:Float = 0, ?Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset)\r\n\t{\r\n\t\tsuper(X, Y);\r\n\r\n\t\tif (SimpleGraphic != null)\r\n\t\t{\r\n\t\t\tif (SimpleGraphic is String)\r\n\t\t\t\tloadSprite(cast SimpleGraphic);\r\n\t\t\telse\r\n\t\t\t\tloadGraphic(SimpleGraphic);\r\n\t\t}\r\n\r\n\t\tmoves = false;\r\n\t\tapplyStageMatrix = true;\r\n\t\tpostStageMatrixApply = Flags.USE_LEGACY_FLXANIMATE_STAGE_MATRIX;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "copyFrom",
+			"args": [
+				{
+					"name": "source",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FunkinSprite",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function copyFrom(source:FlxSprite):FunkinSprite\r\n\t{\r\n\t\tvar spr = new FunkinSprite();\r\n\t\tvar casted:FunkinSprite = null;\r\n\t\tif (source is FunkinSprite)\r\n\t\t\tcasted = cast source;\r\n\r\n\t\t@:privateAccess {\r\n\t\t\tspr.setPosition(source.x, source.y);\r\n\t\t\tspr.frames = source.frames;\r\n\t\t\tspr.animation.copyFrom(source.animation);\r\n\t\t\tspr.visible = source.visible;\r\n\t\t\tspr.alpha = source.alpha;\r\n\t\t\tspr.antialiasing = source.antialiasing;\r\n\t\t\tspr.scale.set(source.scale.x, source.scale.y);\r\n\t\t\tspr.scrollFactor.set(source.scrollFactor.x, source.scrollFactor.y);\r\n\r\n\t\t\tif (casted != null) {\r\n\t\t\t\tspr.skew.set(casted.skew.x, casted.skew.y);\r\n\t\t\t\tspr.animOffsets = casted.animOffsets.copy();\r\n\t\t\t\tspr.zoomFactor = casted.zoomFactor;\r\n\t\t\t\tspr.angleFactor = casted.angleFactor;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn spr;\r\n\t}",
+			"doc": {
+				"text": "Gets the graphics and copies other properties from another sprite (Works both for `FlxSprite` and `FunkinSprite`!).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float)\r\n\t{\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\t// hate how it looks like but hey at least its optimized and fast  - Nex\r\n\t\tif (!debugMode && isAnimFinished()) {\r\n\t\t\tvar name = getAnimName() + '-loop';\r\n\t\t\tif (hasAnim(name))\r\n\t\t\t\tplayAnim(name, null, lastAnimContext);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "loadSprite",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Unique",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Key",
+					"type": "String",
+					"optional": false,
+					"def": "null"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadSprite(path:String, Unique:Bool = false, Key:String = null)\r\n\t{\r\n\t\tvar noExt = Path.withoutExtension(path);\r\n\t\tframes = Paths.getFrames(path, true, null, null, animateSettings);\r\n\t\treturn this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onPropertySet",
+			"args": [
+				{
+					"name": "property",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onPropertySet(property:String, value:Dynamic) {\r\n\t\tif (property.startsWith(\"velocity\") || property.startsWith(\"acceleration\"))\r\n\t\t\tmoves = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function beatHit(curBeat:Int)\r\n\t{\r\n\t\tif(!animEnabled) return;\r\n\t\tif (lastAnimContext != LOCK && beatAnims.length > 0 && (curBeat + beatOffset) % beatInterval == 0)\r\n\t\t{\r\n\t\t\t// TODO: find a solution without countedBeat\r\n\t\t\tvar anim = beatAnims[FlxMath.wrap(countedBeat++, 0, beatAnims.length - 1)];\r\n\t\t\tif (anim.name != null && anim.name != \"null\" && anim.name != \"none\")\r\n\t\t\t\tplayAnim(anim.name, anim.forced);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function stepHit(curBeat:Int)\r\n\t{\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "measureHit",
+			"args": [
+				{
+					"name": "curMeasure",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function measureHit(curMeasure:Int)\r\n\t{\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\t// re-implementing the `onDraw` functionality from `FlxSprite` since `FlxAnimate` didn't have this, so we have to add it back in ourselves\r\n\t    if (this.isAnimate && this.__drawOverrided) {\r\n\t        this.__drawOverrided = false;\r\n\t        this.onDraw(this);\r\n\t        this.__drawOverrided = true;\r\n\t\t\treturn;\r\n\t    }\r\n\t    super.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// ANIMATE ATLAS DRAWING\r\n\t#if REGION\r\n\tpublic override function destroy()\r\n\t{\r\n\t\tif (animOffsets != null) {\r\n\t\t\tfor (key in animOffsets.keys()) {\r\n\t\t\t\tfinal point = animOffsets[key];\r\n\t\t\t\tanimOffsets.remove(key);\r\n\t\t\t\tif (point != null)\r\n\t\t\t\t\tpoint.put();\r\n\t\t\t}\r\n\t\t\tanimOffsets = null;\r\n\t\t}\r\n\t\tsuper.destroy();\r\n\r\n\t\t_rect2 = FlxDestroyUtil.put(_rect2);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animOffsets",
+			"type": "Map<String, FlxPoint>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addOffset",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addOffset(name:String, x:Float = 0, y:Float = 0)\r\n\t{\r\n\t\tanimOffsets[name] = FlxPoint.get(x, y);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "switchOffset",
+			"args": [
+				{
+					"name": "anim1",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "anim2",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function switchOffset(anim1:String, anim2:String)\r\n\t{\r\n\t\tvar old = animOffsets[anim1];\r\n\t\tanimOffsets[anim1] = animOffsets[anim2];\r\n\t\tanimOffsets[anim2] = old;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastAnimContext",
+			"type": "PlayAnimContext",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playAnim",
+			"args": [
+				{
+					"name": "AnimName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Force",
+					"type": "Null<Bool>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "Context",
+					"type": "PlayAnimContext",
+					"optional": false,
+					"def": "NONE"
+				},
+				{
+					"name": "Reversed",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Frame",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function playAnim(AnimName:String, ?Force:Null<Bool>, Context:PlayAnimContext = NONE, Reversed:Bool = false, Frame:Int = 0):Void\r\n\t{\r\n\t\tif (AnimName == null || (!hasAnim(AnimName) && !debugMode))\r\n\t\t\treturn;\r\n\r\n\t\tif (Force == null) {\r\n\t\t\tvar anim = animDatas.get(AnimName);\r\n\t\t\tForce = anim != null && anim.forced;\r\n\t\t}\r\n\r\n\t\tanimation.play(AnimName, Force, Reversed, Frame);\r\n\r\n\t\tvar daOffset = getAnimOffset(AnimName);\r\n\t\tframeOffset.set(daOffset.x, daOffset.y);\r\n\t\tdaOffset.putWeak();\r\n\r\n\t\tlastAnimContext = Context;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addAnim",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "frameRate",
+					"type": "Float",
+					"optional": false,
+					"def": "24"
+				},
+				{
+					"name": "looped",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "forced",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "indices",
+					"type": "Array<Int>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "animType",
+					"type": "XMLAnimType",
+					"optional": false,
+					"def": "NONE"
+				},
+				{
+					"name": "animateAtlasLabel",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function addAnim(name:String, prefix:String, frameRate:Float = 24, ?looped:Bool, ?forced:Bool, ?indices:Array<Int>, x:Float = 0, y:Float = 0, animType:XMLAnimType = NONE, animateAtlasLabel:Bool = false)\r\n\t{\r\n\t\treturn XMLUtil.addAnimToSprite(this, {\r\n\t\t\tname: name,\r\n\t\t\tanim: prefix,\r\n\t\t\tfps: frameRate,\r\n\t\t\tloop: looped == null ? animType == LOOP : looped,\r\n\t\t\tanimType: animType,\r\n\t\t\tx: x,\r\n\t\t\ty: y,\r\n\t\t\tindices: indices,\r\n\t\t\tforced: forced,\r\n\t\t\tlabel: animateAtlasLabel\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeAnim",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function removeAnim(name:String) {\r\n\t\tanimation.remove(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnim",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "OneOfTwo<FlxAnimation, FlxAnimateAnimation>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getAnim(name:String):OneOfTwo<FlxAnimation, FlxAnimateAnimation> {\r\n\t\treturn animation.getByName(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnimOffset",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getAnimOffset(name:String)\r\n\t{\r\n\t\tif (animOffsets.exists(name))\r\n\t\t\treturn animOffsets[name];\r\n\t\treturn FlxPoint.weak(0, 0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasAnim",
+			"args": [
+				{
+					"name": "AnimName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function hasAnim(AnimName:String):Bool\r\n\t\treturn animation.exists(AnimName);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnimName",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getAnimName()\r\n\t\treturn animation.name;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isAnimReversed",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function isAnimReversed():Bool\r\n\t\treturn animation.curAnim?.reversed ?? false;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getNameList",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getNameList():Array<String>\r\n\t\treturn animation.getNameList();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stopAnim",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function stopAnim()\r\n\t\tanimation.stop();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isAnimFinished",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function isAnimFinished()\r\n\t\treturn animation.curAnim?.finished ?? true;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isAnimAtEnd",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function isAnimAtEnd()\r\n\t\treturn animation.curAnim?.isAtEnd ?? false;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasAnimation",
+			"args": [
+				{
+					"name": "AnimName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "// Backwards compat (the names used to be all different and it sucked, please lets use the same format in the future)  - Nex\r\n\t@:dox(hide) public inline function hasAnimation(AnimName:String) return hasAnim(AnimName);",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "removeAnimation",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:dox(hide) public inline function removeAnimation(name:String) return removeAnim(name);",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "stopAnimation",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:dox(hide) public inline function stopAnimation() return stopAnim();",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "get_animateAtlas",
+			"args": [],
+			"ret": "FunkinSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:noCompletion\r\n\t@:deprecated(\"`FunkinSprite.animateAtlas` is deprecated, just use `FunkinSprite` instead\")\r\n\tpublic function get_animateAtlas():FunkinSprite\r\n    \treturn isAnimate ? this : null;",
+			"doc": null,
+			"meta": [
+				"@:noCompletion",
+				"@:deprecated(\"`FunkinSprite.animateAtlas` is deprecated, just use `FunkinSprite` instead\")"
+			]
+		}
+	]
+}

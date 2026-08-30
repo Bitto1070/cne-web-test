@@ -1,0 +1,111 @@
+{
+	"kind": "class",
+	"name": "UICompactColorwheel",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "curColor",
+			"type": "Null<FlxColor>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curColorString",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hue",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new (x:Float, y:Float, ?color:Int) {\r\n\t\tsuper(x, y, Std.int((12.5 * 3) + 116), Std.int((12.5 * 2) + (16)), 'editors/ui/inputbox');\r\n\r\n\t\tcurColor = cast color;\r\n\t\thue = curColor.hue;\r\n\r\n\t\tcolorSlider = new FlxSprite(x + 12.5, y + 12.5).makeGraphic(100, 16, FlxColor.TRANSPARENT);\r\n\t\tcolorSlider.drawRoundRect(0, 0, 100, 16, 10, 10, FlxColor.WHITE);\r\n\r\n\t\tcolorSlider.pixels.lock();\r\n\t\tfor (pixelx in 0...Std.int(colorSlider.width)) {\r\n\t\t\tvar color:Int = FlxColor.fromHSB(pixelx / (colorSlider.width-1) * 360, 1, 1);\r\n\t\t\tfor (pixely in 0...Std.int(colorSlider.height))\r\n\t\t\t\tif (colorSlider.pixels.getPixel32(pixelx, pixely) != FlxColor.TRANSPARENT) colorSlider.pixels.setPixel32(pixelx, pixely, color);\r\n\t\t}\r\n\t\tcolorSlider.pixels.unlock();\r\n\r\n\t\twhiteColorButton = new UIButton(colorSlider.x + colorSlider.width + 12.5, colorSlider.y, null, () -> {\r\n\t\t\tsetColor(FlxColor.WHITE);\r\n\t\t}, 16, 16);\r\n\t\twhiteColorButton.colorTransform.color = FlxColor.WHITE;\r\n\r\n\t\tcolorSliderSelector = new UIColorWheelSelector(colorSlider.x, colorSlider.y);\r\n\r\n\t\tcolorSlider.antialiasing = true;\r\n\r\n\t\tfor (item in [colorSlider, colorSliderSelector, whiteColorButton])\r\n\t\t\tmembers.push(item);\r\n\r\n\t\tupdateColor(false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateColor",
+			"args": [
+				{
+					"name": "checkChanged",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateColor(checkChanged:Bool = true) {\r\n\t\tif(checkChanged) colorChanged = true;\r\n\t\tsetColor(FlxColor.fromHSB(hue, 1, 1));\r\n\r\n\t\tupdateColorSliderPickerSelector();\r\n\t\tcurColorString = curColor.toWebString();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorChanged",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tvar mousePos = FlxG.mouse.getScreenPosition(__lastDrawCameras[0], FlxPoint.get());\r\n\t\tif (hovered && FlxG.mouse.justPressed) {\r\n\t\t\tfor (sprite in [colorSlider]) {\r\n\t\t\t\tvar spritePos:FlxPoint = sprite.getScreenPosition(FlxPoint.get(), __lastDrawCameras[0]);\r\n\t\t\t\tif (FlxMath.inBounds(mousePos.x, spritePos.x - (hitBoxExtenstion/2), spritePos.x - (hitBoxExtenstion/2) + (sprite.width + hitBoxExtenstion)) && FlxMath.inBounds(mousePos.y, spritePos.y - (hitBoxExtenstion/2), spritePos.y - (hitBoxExtenstion/2) + (sprite.height + hitBoxExtenstion))) {\r\n\t\t\t\t\tselectedSprite = sprite;\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (selectedSprite != null) {\r\n\t\t\tvar spritePos:FlxPoint = selectedSprite.getScreenPosition(FlxPoint.get(), __lastDrawCameras[0]);\r\n\t\t\tmousePos -= FlxPoint.weak(spritePos.x, spritePos.y);\r\n\t\t\tmousePos.set(CoolUtil.bound(mousePos.x, 0, selectedSprite.width), CoolUtil.bound(mousePos.y, 0, selectedSprite.height));\r\n\r\n\t\t\tif (selectedSprite == colorSlider) updateColorSliderMouse(mousePos);\r\n\t\t\tupdateColor();\r\n\t\t\tspritePos.put();\r\n\r\n\t\t\tif (FlxG.mouse.justReleased) selectedSprite = null;\r\n\t\t}\r\n\t\tmousePos.put();\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

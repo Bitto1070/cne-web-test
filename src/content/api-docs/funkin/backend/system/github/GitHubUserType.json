@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "GitHubUserType",
+	"pkg": "funkin.backend.system.github",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

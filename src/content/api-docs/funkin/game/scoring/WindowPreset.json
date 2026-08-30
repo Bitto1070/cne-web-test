@@ -1,0 +1,20 @@
+{
+	"kind": "enum abstract",
+	"name": "WindowPreset",
+	"pkg": "funkin.game.scoring",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String\r\n\t{\r\n\t\treturn switch (cast this : WindowPreset)\r\n\t\t{\r\n\t\t\tcase CNE_CLASSIC: \"Codename (Classic)\";\r\n\t\t\tcase FNF_CLASSIC: \"Funkin' (Week 7)\";\r\n\t\t\tcase FNF_VSLICE: \"Funkin' (V-Slice)\";\r\n\t\t\tcase _: \"Default\";\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

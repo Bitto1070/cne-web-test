@@ -1,0 +1,174 @@
+{
+	"kind": "class",
+	"name": "FunkinSoundTray",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "callsUpdate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "callsPostUpdate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new()\r\n\t{\r\n\t\tscript = Script.create(Paths.script('data/soundTray'));\r\n\t\tscript.setParent(this);\r\n\t\tscript.load();\r\n\r\n\t\tscript.call(\"create\");\r\n\t\tsuper();\r\n\r\n\t\tFlxSoundTray.volumeChangeSFX = Paths.sound('menu/volume');\r\n\t\tFlxSoundTray.volumeUpChangeSFX = null;\r\n\t\tFlxSoundTray.volumeDownChangeSFX = null;\r\n\t\tFlxSoundTray.volumeMaxChangeSFX = null;\r\n\t\ttext.setTextFormat(new TextFormat(Paths.font(\"vcr.ttf\")));\r\n\r\n\t\tscript.call(\"postCreate\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadText",
+			"args": [
+				{
+					"name": "checkIfNull",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "reloadDefaultTextFormat",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "displayTxt",
+					"type": "String",
+					"optional": false,
+					"def": "\"VOLUME\""
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": "16"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function reloadText(checkIfNull:Bool = true, reloadDefaultTextFormat:Bool = true, displayTxt:String = \"VOLUME\", y:Float = 16)\r\n\t{\r\n\t\tvar event = EventManager.get(SoundTrayTextEvent).recycle(checkIfNull, reloadDefaultTextFormat, displayTxt, y);\r\n\t\tscript.call(\"reloadText\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.reloadText(event.checkIfNull, event.reloadDefaultTextFormat, event.displayTxt, event.y);\r\n\t\tscript.call(\"postReloadText\", [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadDtf",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function reloadDtf()\r\n\t{\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscript.call(\"reloadDtf\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.reloadDtf();\r\n\t\tscript.call(\"postReloadDtf\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "regenerateBarsArray",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function regenerateBarsArray()\r\n\t{\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscript.call(\"regenerateBarsArray\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.regenerateBarsArray();\r\n\t\tscript.call(\"postRegenerateBarsArray\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "regenerateBars",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function regenerateBars()\r\n\t{\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscript.call(\"regenerateBars\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.regenerateBars();\r\n\t\tscript.call(\"postRegenerateBars\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float)\r\n\t{\r\n\t\tif (callsUpdate) script.call(\"update\", [elapsed]);\r\n\t\tsuper.update(elapsed);\r\n\t\tif (callsPostUpdate) script.call(\"postUpdate\", [elapsed]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveSoundPreferences",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function saveSoundPreferences()\r\n\t{\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscript.call(\"saveSoundPreferences\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.saveSoundPreferences();\r\n\t\tscript.call(\"postSaveSoundPreferences\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "show",
+			"args": [
+				{
+					"name": "up",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function show(up:Bool = false)\r\n\t{\r\n\t\tvar event = EventManager.get(SoundTrayShowEvent).recycle(up);\r\n\t\tscript.call(\"show\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.show(event.up);\r\n\t\tscript.call(\"postShow\", [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "screenCenter",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function screenCenter()\r\n\t{\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscript.call(\"screenCenter\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.screenCenter();\r\n\t\tscript.call(\"postScreenCenter\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

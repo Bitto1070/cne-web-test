@@ -1,0 +1,197 @@
+{
+	"kind": "class",
+	"name": "VideoCutscene",
+	"pkg": "funkin.game.cutscenes",
+	"doc": {
+		"text": "Substate made for video cutscenes. To use it in a scripted cutscene, call `startVideo`.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "subtitles",
+			"type": "Array<CutsceneSubtitle>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic function new(path:String, callback:Void->Void) {\r\n\t\tsuper(callback, false);\r\n\t\tlocalPath = Assets.getPath(this.path = path);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\t// TODO: get vlc to stop autoloading those goddamn subtitles (use different file ext??)\r\n\r\n\t\t#if VIDEO_CUTSCENES\r\n\t\tcutsceneCamera = new FlxCamera();\r\n\t\tcutsceneCamera.bgColor = 0;\r\n\t\tFlxG.cameras.add(cutsceneCamera, false);\r\n\r\n\t\tparseSubtitles();\r\n\r\n\t\tadd(video);\r\n\t\tvideo.antialiasing = true;\r\n\t\tvideo.bitmap.onEndReached.add(close);\r\n\t\tvideo.bitmap.onFormatSetup.add(function() if (video.bitmap != null && video.bitmap.bitmapData != null) {\r\n\t\t\tfinal width = video.bitmap.bitmapData.width;\r\n\t\t\tfinal height = video.bitmap.bitmapData.height;\r\n\t\t\tfinal scale:Float = Math.min(FlxG.width / width, FlxG.height / height);\r\n\t\t\tvideo.setGraphicSize(width * scale, height * scale);\r\n\t\t\tvideo.updateHitbox();\r\n\t\t\tvideo.screenCenter();\r\n\t\t});\r\n\r\n\t\t//cover = new FlxSprite(0, FlxG.height * 0.85).makeSolid(FlxG.width + 50, FlxG.height + 50, 0xFF000000);\r\n\t\t//cover.scrollFactor.set(0, 0);\r\n\t\t//cover.screenCenter();\r\n\t\t//add(cover);\r\n\r\n\t\tbg = new FlxSprite(0, FlxG.height * 0.85).makeGraphic(1, 1, 0xFF000000);\r\n\t\tbg.alpha = 0.5;\r\n\t\tbg.visible = false;\r\n\r\n\t\tsubtitle = new FunkinText(0, FlxG.height * 0.875, 0, \"\", 20);\r\n\t\tsubtitle.alignment = CENTER;\r\n\t\tsubtitle.visible = false;\r\n\r\n\t\ttext = new FunkinText(10, 10, Std.int(FlxG.width / 2), \"Loading video...\");\r\n\t\ttext.cameras = [cutsceneCamera];\r\n\t\ttext.visible = false;\r\n\t\t@:privateAccess\r\n\t\ttext.regenGraphic();\r\n\t\tadd(text);\r\n\r\n\t\tloadingBackdrop = new FlxBackdrop(text.graphic, X);\r\n\t\tloadingBackdrop.y = FlxG.height - 20 - loadingBackdrop.height;\r\n\t\tloadingBackdrop.velocity.x = 70;\r\n\t\tloadingBackdrop.cameras = [cutsceneCamera];\r\n\t\tadd(loadingBackdrop);\r\n\r\n\t\tloadingBackdrop.alpha = 0;\r\n\t\tFlxTween.tween(loadingBackdrop, {alpha: 1}, 0.5, {ease: FlxEase.sineInOut});\r\n\r\n\t\tMain.execAsync(function() {\r\n\t\t\tif (video.load(localPath)) FlxTimer.wait(0.001, function() {\r\n\t\t\t\tmutex.acquire(); onReady(); mutex.release();\r\n\t\t\t});\r\n\t\t\telse { mutex.acquire(); close(); mutex.release(); }\r\n\t\t});\r\n\r\n\t\tadd(bg);\r\n\t\tadd(subtitle);\r\n\r\n\t\tcameras = [cutsceneCamera];\r\n\t\t#else\r\n\t\tclose();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseSubtitles",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#if VIDEO_CUTSCENES\r\n\tpublic function parseSubtitles() {\r\n\t\tvar subtitlesPath = '${Path.withoutExtension(path)}.srt';\r\n\r\n\t\tif (Assets.exists(subtitlesPath)) {\r\n\t\t\tvar text = Assets.getText('$subtitlesPath').split(\"\\n\");\r\n\t\t\twhile(text.length > 0) {\r\n\t\t\t\tvar head = text.shift();\r\n\t\t\t\tif (head == null || head.trim() == \"\")\r\n\t\t\t\t\tcontinue; // no head (EOF or empty line), skipping\r\n\t\t\t\tif (Std.parseInt(head) == null)\r\n\t\t\t\t\tcontinue; // invalid index, skipping\r\n\r\n\t\t\t\tvar id = head;\r\n\t\t\t\tvar time = text.shift();\r\n\t\t\t\tif (time == null) continue; // no time (EOF), skipping\r\n\t\t\t\tvar arrowIndex = time.indexOf('-->');\r\n\t\t\t\tif (arrowIndex < 0) continue; // no -->, skipping\r\n\t\t\t\tvar beginTime = splitTime(time.substr(0, arrowIndex).trim());\r\n\t\t\t\tvar endTime = splitTime(time.substr(arrowIndex + 3).trim());\r\n\t\t\t\tif (beginTime < 0 || endTime < 0) continue; // invalid timestamps\r\n\r\n\t\t\t\tvar subtitleText:Array<String> = [];\r\n\t\t\t\tvar t:String = text.shift();\r\n\t\t\t\twhile(t != null && t.trim() != \"\") {\r\n\t\t\t\t\tsubtitleText.push(t);\r\n\t\t\t\t\tt = text.shift();\r\n\t\t\t\t}\r\n\t\t\t\tif (subtitleText.length <= 0) continue; // empty subtitle, skipping\r\n\t\t\t\tvar lastSub = subtitles.last();\r\n\t\t\t\tif (lastSub != null && lastSub.subtitle == \"\" && lastSub.time >= beginTime)\r\n\t\t\t\t\tsubtitles.pop(); // remove last subtitle auto reset to prevent bugs\r\n\t\t\t\tsubtitles.push({\r\n\t\t\t\t\tsubtitle: subtitleText.join(\"\"),\r\n\t\t\t\t\ttime: beginTime * 1000\r\n\t\t\t\t});\r\n\t\t\t\tsubtitles.push({\r\n\t\t\t\t\tsubtitle: \"\",\r\n\t\t\t\t\ttime: endTime * 1000\r\n\t\t\t\t});\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "splitTime",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function splitTime(str:String):Float {\r\n\t\tif (str == null || str.trim() == \"\") return -1;\r\n\t\tvar multipliers:Array<Float> = [1, 60, 3600, 86400, 31536000]; // no way a cutscene will last longer than years\r\n\t\tvar timeSplit:Array<Null<Float>> = [for(e in str.split(\":\")) Std.parseFloat(e.replace(\",\", \".\"))];\r\n\t\tvar time:Float = 0;\r\n\r\n\t\tfor(k=>i in timeSplit) {\r\n\t\t\tvar mul = multipliers[timeSplit.length - 1 - k];\r\n\t\t\tif (i != null)\r\n\t\t\t\ttime += i * mul;\r\n\t\t}\r\n\t\treturn time;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onReady",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function onReady() {\r\n\t\ttrace(\"VideoCutscene: Ready\");\r\n\t\tFlxTween.cancelTweensOf(loadingBackdrop);\r\n\t\tFlxTween.tween(loadingBackdrop, {alpha: 0}, 0.7, {ease: FlxEase.sineInOut, onComplete: function(_) {\r\n\t\t\tloadingBackdrop.destroy();\r\n\t\t\ttext.destroy();\r\n\t\t}});\r\n\r\n\t\tpausable = __loaded = true;\r\n\t\tvideo.play();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif(loadingBackdrop != null) return;\r\n\r\n\t\t@:privateAccess\r\n\t\tvar time:Int64 = video.bitmap.time;\r\n\t\tvar time:Float = FPHelper.i64ToDouble(time.low, time.high);\r\n\r\n\t\tif(curSubtitle < subtitles.length && subtitles[curSubtitle].time < time) {\r\n\t\t\tsetSubtitle(subtitles[curSubtitle]);\r\n\t\t\tcurSubtitle++;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pauseCutscene",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function pauseCutscene() {\r\n\t\tvideo.pause();\r\n\t\tsuper.pauseCutscene();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "onResumeCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResumeCutscene(event) {\r\n\t\tvideo.resume();\r\n\t\tsuper.onResumeCutscene(event);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onRestartCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onRestartCutscene(event) {\r\n\t\tcloseSubState();\r\n\t\tvideo.bitmap.position = curSubtitle = 0;\r\n\t\tsetSubtitle({time: -1, subtitle: \"\"});\r\n\t\tvideo.resume();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setSubtitle",
+			"args": [
+				{
+					"name": "sub",
+					"type": "CutsceneSubtitle",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setSubtitle(sub:CutsceneSubtitle) {\r\n\t\tif (bg.visible = subtitle.visible = (sub.subtitle.length > 0)) {\r\n\t\t\tsubtitle.text = sub.subtitle;\r\n\t\t\tsubtitle.screenCenter(X);\r\n\t\t\tbg.scale.set(subtitle.width + 8, subtitle.height + 8);\r\n\t\t\tbg.updateHitbox();\r\n\t\t\tbg.setPosition(subtitle.x - 4, subtitle.y - 4);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tFlxG.cameras.remove(cutsceneCamera, true);\r\n\t\tvideo.destroy();\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "AlphabetRenderMode",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

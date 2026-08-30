@@ -1,0 +1,114 @@
+{
+	"kind": "final class",
+	"name": "DirectionAnimEvent",
+	"pkg": "funkin.backend.scripting.events.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "animName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Default animation that will be played",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "direction",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "In which direction the animation will be played",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "suffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The suffix of the animation (ex: \"-alt\") - Defaults to \"\"",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "context",
+			"type": "PlayAnimContext",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Context of the animation. Is either equal to `SING` or `MISS`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "reversed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the animation will play reversed or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "frame",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "At what frame the animation will start playing",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "force",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Force the animation to replay even if it's already playing  (if it's null it will be forced based on the sprite's data xml, if it has one).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

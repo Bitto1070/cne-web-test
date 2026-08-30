@@ -1,0 +1,8 @@
+{
+	"kind": "enum",
+	"name": "StageChange",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

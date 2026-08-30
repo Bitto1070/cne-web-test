@@ -1,0 +1,40 @@
+{
+	"kind": "enum abstract",
+	"name": "AlphabetAlignment",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getMultiplier",
+			"args": [],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getMultiplier():Float {\r\n\t\treturn switch(this) {\r\n\t\t\tcase CENTER: 0.5;\r\n\t\t\tcase RIGHT: 1.0;\r\n\t\t\tdefault: 0.0;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fromString",
+			"args": [
+				{
+					"name": "value",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AlphabetAlignment",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:from\r\n\tpublic static function fromString(value:String):AlphabetAlignment\r\n\t\treturn switch(value) {\r\n\t\t\tcase \"left\": LEFT;\r\n\t\t\tcase \"center\": CENTER;\r\n\t\t\tcase \"right\": RIGHT;\r\n\t\t\tdefault: LEFT;\r\n\t\t}\r\n}\r\n\r\nenum abstract CaseMode(ByteUInt) from ByteUInt to ByteUInt {\r\n\tvar NONE;",
+			"doc": null,
+			"meta": [
+				"@:from"
+			]
+		}
+	]
+}

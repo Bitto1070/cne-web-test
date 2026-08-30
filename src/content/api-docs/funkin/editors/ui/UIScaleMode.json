@@ -1,0 +1,33 @@
+{
+	"kind": "class",
+	"name": "UIScaleMode",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "onMeasure",
+			"args": [
+				{
+					"name": "Width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function onMeasure(Width:Int, Height:Int):Void {\r\n\t\tif ((Width < FlxG.initialWidth || Height < FlxG.initialHeight) && !Options.bypassEditorsResize) {\r\n\t\t\t@:privateAccess {\r\n\t\t\t\tFlxG.width = FlxG.initialWidth;\r\n\t\t\t\tFlxG.height = FlxG.initialHeight;\r\n\t\t\t}\r\n\t\r\n\t\t\tupdateGameSize(Width, Height);\r\n\t\t\tupdateDeviceSize(Width, Height);\r\n\t\t\tupdateScaleOffset();\r\n\t\t\tupdateGamePosition();\r\n\t\t} else {\r\n\t\t\tsuper.onMeasure(Width, Height);\r\n\r\n\t\t\tfor (camera in FlxG.cameras.list) {\r\n\t\t\t\tcamera.width = Width;\r\n\t\t\t\tcamera.height = Height;\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,27 @@
+{
+	"kind": "final class",
+	"name": "DialogueCharHideEvent",
+	"pkg": "funkin.backend.scripting.events.dialogue",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "animation",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastAnimContext",
+			"type": "DialogueCharAnimContext",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

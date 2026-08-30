@@ -1,0 +1,513 @@
+{
+	"kind": "final class",
+	"name": "TranslationUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "The class used for translations based on the XMLs inside the translations folders.\n\nMade by @NexIsDumb originally for the Poldhub mod.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:allow(funkin.backend.assets.TranslatedAssetLibrary)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stringMap",
+			"type": "Map<String, IFormatInfo>",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": {
+				"text": "The current language selected translation map.\n\nIt'll never be `null`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "alternativeStringMap",
+			"type": "Map<String, IFormatInfo>",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": {
+				"text": "The alternative language selected translation map.\nIt is filled with the default language.\n\nThis is filled in if the current language is not the same as the default language.\nIts used when showMissingIds in the config is false (or is not present).\n\nIt'll never be `null`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "config",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current language config.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curLanguage",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current language.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curLanguageName",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current language name.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isDefaultLanguage",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns if the current language is the default one (`DEFAULT_LANGUAGE`).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isLanguageLoaded",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns if any translation are loaded.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "foundLanguages",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns an array has a list of the languages that were found.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setLanguage",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setLanguage(?name:String):Void {\r\n\t\t#if TRANSLATIONS_SUPPORT\r\n\t\tif(name == null) name = curLanguage;\r\n\t\tif(!langConfigs.exists(name)) name = Flags.DEFAULT_LANGUAGE;\r\n\t\tif(!langConfigs.exists(name)) name = foundLanguages[0];\r\n\r\n\t\tif(curLanguage != name) {\r\n\t\t\tLogs.traceColored([\r\n\t\t\t\tLogs.getPrefix(\"Language\"),\r\n\t\t\t\tLogs.logText(\"Changing saved language to: \"),\r\n\t\t\t\tLogs.logText('${getLanguageName(name)} ($name)', GREEN)\r\n\t\t\t], INFO);\r\n\t\t\t// todo: make this into a notification system for the user\r\n\t\t\t// notification would be in previous language\r\n\t\t\t// but only if the user didnt manually change it.\r\n\t\t\tcurLanguage = name;\r\n\t\t} else {\r\n\t\t\tLogs.traceColored([\r\n\t\t\t\tLogs.getPrefix(\"Language\"),\r\n\t\t\t\tLogs.logText(\"Setting Language To: \"),\r\n\t\t\t\tLogs.logText('${getLanguageName(name)} ($name)', GREEN)\r\n\t\t\t], VERBOSE);\r\n\t\t}\r\n\r\n\t\tfor(mod in ModsFolder.getLoadedModsLibs(false))\r\n\t\t\tif(mod is TranslatedAssetLibrary)\r\n\t\t\t\tcast(mod, TranslatedAssetLibrary).langFolder = name;\r\n\r\n\t\tconfig = getConfig(name);\r\n\t\tstringMap = loadLanguage(name);\r\n\t\talternativeStringMap = name == Flags.DEFAULT_LANGUAGE || config.get(\"showMissingIds\").getDefault(\"false\") == \"true\" ? [] : loadLanguage(Flags.DEFAULT_LANGUAGE);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Updates the language.\nAlso changes the translations map.\n\nIf `name` is `null`, its gonna use the current language.\nIf `name` is not `null`, it will load the translations for the given language.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "params",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "def",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function get(?id:String, ?params:Array<Dynamic>, ?def:String):String\r\n\t\treturn getRaw(id, def).format(params);",
+			"doc": {
+				"text": "This is for checking and getting a translation, `defString` it's just the string that gets returned just in case it won't find the translation OR the current language selected is ``DEFAULT_LANGUAGE``.\n\nIf `id` is `null` then it's gonna search using `defString`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "translate",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "params",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "def",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function translate(?id:String, ?params:Array<Dynamic>, ?def:String):String\r\n\t\treturn get(id, params, def);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "translateDiff",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "params",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function translateDiff(?id:String, ?params:Array<Dynamic>):String\r\n\t\treturn get(\"diff.\" + id.toLowerCase(), params, id);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function exists(id:String):Bool {\r\n\t\t#if TRANSLATIONS_SUPPORT\r\n\t\tfor (map in [stringMap, alternativeStringMap]) if (map.exists(id)) return true;\r\n\t\t#end\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getRaw",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "def",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "IFormatInfo",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getRaw(id:String, ?def:String):IFormatInfo\r\n\t{\r\n\t\t#if TRANSLATIONS_SUPPORT\r\n\t\tfor (map in [stringMap, alternativeStringMap]) if (map.exists(id))\r\n\t\t\treturn map.get(id);\r\n\t\t#end\r\n\r\n\t\tif(def != null)\r\n\t\t\treturn FormatUtil.get(def);\r\n\r\n\t\treturn FormatUtil.getStr(\"{\" + id + \"}\");\r\n\r\n\t\t/*if(curLanguage == Flags.DEFAULT_LANGUAGE) {\r\n\t\t\treturn FormatUtil.getStr(\"{\" + id + \"}\");\r\n\t\t} else {\r\n\r\n\t\t}\r\n\r\n\t\treturn FormatUtil.get(showMissingIds ? \"{\" + id + \"}\" : id);*/\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "raw2Id",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function raw2Id(str:String):String\r\n\t{\r\n\t\tstr = str.trim().toLowerCase();\r\n\t\treturn [for(i => s in str.split(\" \"))\r\n\t\t\ti != 0 ? s.charAt(0).toUpperCase() + s.substr(1) : s\r\n\t\t].join(\"\");\r\n\t}",
+			"doc": {
+				"text": "Formats a normal string into an ID for translations.\n\nExample: `Resume Song` => `resumeSong`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isBlacklisted",
+			"args": [
+				{
+					"name": "lang",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isBlacklisted(lang:String):Bool\r\n\t\treturn Flags.BLACKLISTED_LANGUAGES.contains(lang);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isWhitelisted",
+			"args": [
+				{
+					"name": "lang",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isWhitelisted(lang:String):Bool\r\n\t\treturn Flags.WHITELISTED_LANGUAGES.length == 0 || Flags.WHITELISTED_LANGUAGES.contains(lang);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isAllowed",
+			"args": [
+				{
+					"name": "lang",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isAllowed(lang:String):Bool\r\n\t\treturn isWhitelisted(lang) && !isBlacklisted(lang);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "findAllLanguages",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function findAllLanguages():Void\r\n\t{\r\n\t\t#if TRANSLATIONS_SUPPORT\r\n\t\tfoundLanguages = [];\r\n\t\tnameMap = getDefaultNameMap();\r\n\t\tlangConfigs = getDefaultLangConfigs();\r\n\t\tvar mainPath:String = translationsMain(\"\");\r\n\t\tvar langName:String = null;\r\n\t\tfor (lang in Paths.assetsTree.getFolders(\"assets/\" + mainPath)) {\r\n\t\t\tif (!isAllowed(lang)) continue;\r\n\r\n\t\t\tvar path:String = Path.join([mainPath, lang, \"config.ini\"]);\r\n\t\t\tvar config = getDefaultConfig(lang);\r\n\r\n\t\t\tif(Assets.exists(path)) {\r\n\t\t\t\tvar c = IniUtil.parseAsset(path);\r\n\t\t\t\tfor (i => v in c)\r\n\t\t\t\t\tfor (key => value in v)\r\n\t\t\t\t\t\tconfig[key] = value;\r\n\t\t\t} else { // if there was no config.ini, use the file name as the language name\r\n\t\t\t\tfor(file in Paths.getFolderContent(mainPath + lang).sortAlphabetically()) {\r\n\t\t\t\t\tif(Path.extension(file) == \"xml\") {\r\n\t\t\t\t\t\tconfig[\"name\"] = Path.withoutExtension(file);\r\n\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tlangName = config[\"name\"];\r\n\t\t\tnameMap.set(lang, langName);\r\n\t\t\tlangConfigs.set(lang, config);\r\n\t\t\tfoundLanguages.push('$lang/$langName');\r\n\t\t}\r\n\r\n\t\t// Ensure that the default language is always first\r\n\t\tvar defaultName = Flags.DEFAULT_LANGUAGE + \"/\" + getLanguageName(Flags.DEFAULT_LANGUAGE);\r\n\t\tif(foundLanguages.contains(defaultName)) foundLanguages.remove(defaultName);\r\n\t\tfoundLanguages.insert(0, defaultName);\r\n\r\n\t\tif(!nameMap.exists(curLanguage)) curLanguage = Flags.DEFAULT_LANGUAGE;\r\n\t\tLogs.trace(\"Found languages: \" + foundLanguages.join(\", \"), \"Language\");\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Returns an array that specifies which languages were found.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadLanguage",
+			"args": [
+				{
+					"name": "lang",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Map<String, IFormatInfo>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadLanguage(lang:String):Map<String, IFormatInfo>\r\n\t{\r\n\t\t#if TRANSLATIONS_SUPPORT\r\n\t\tFormatUtil.clear(); // Clean up the format cache\r\n\t\tvar mainPath:String = translationsMain(lang);\r\n\t\tvar leMap:Map<String, IFormatInfo> = [];\r\n\t\tvar translations:Array<TranslationPair> = [];\r\n\r\n\t\tfinal NODE_NAMES = [\"text\", \"trans\", \"lang\", \"string\", \"str\"];\r\n\t\tfunction parseXml(xml:Access, prefix:String = \"\") {\r\n\t\t\tfor(node in xml.elements) {\r\n\t\t\t\tif (node.name == \"group\") // Cosmetic name\r\n\t\t\t\t\tparseXml(node, prefix + (node.has.prefix ? node.att.prefix : \"\"));\r\n\t\t\t\telse if(NODE_NAMES.contains(node.name))\r\n\t\t\t\t\ttranslations.push({\r\n\t\t\t\t\t\tprefix: prefix,\r\n\t\t\t\t\t\tnode: node\r\n\t\t\t\t\t});\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t// todo make it load the default languages in a second string map\r\n\r\n\t\tfor(mod in ModsFolder.getLoadedModsLibs(true)) for(file in mod.getFiles(\"assets/\" + mainPath).sortAlphabetically().map((v)->'$mainPath/$v')) {\r\n\t\t\tif(Path.extension(file).toLowerCase() != \"xml\") continue;\r\n\r\n\t\t\t// Parse the XML\r\n\t\t\tvar xml:Access = null;\r\n\t\t\ttry xml = new Access(Xml.parse(Assets.getText(\"assets/\" + file)))\r\n\t\t\tcatch(e) Logs.error('Error while parsing $file: ${Std.string(e)}', \"Language\");\r\n\r\n\t\t\tif (xml == null) continue;\r\n\t\t\tif (!xml.hasNode.language) {\r\n\t\t\t\tLogs.warn('File $file requires a <language> root element.', \"Language\");\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\r\n\t\t\tvar langNode = xml.node.language;\r\n\t\t\tvar prefix = langNode.getAtt(\"prefix\").getDefault(\"\");\r\n\r\n\t\t\t//if (langNode.has.name) {\r\n\t\t\t//\tgetConfig(lang).set(\"name\", langNode.att.name);\r\n\t\t\t//}\r\n\r\n\t\t\tparseXml(langNode, prefix);\r\n\t\t}\r\n\r\n\t\tfor(pair in translations) {\r\n\t\t\tvar node = pair.node;\r\n\t\t\tif (!node.has.id) {\r\n\t\t\t\tLogs.warn('A <${node.name}> node requires an ID attribute.', \"Language\");\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tvar prefix = pair.prefix;\r\n\r\n\t\t\tvar id = prefix + node.att.id;\r\n\r\n\t\t\tif(leMap.exists(id)) continue;\r\n\t\t\tvar value:String = node.has.string ? node.att.string : node.innerData;\r\n\t\t\tif(node.getAtt(\"notrim\").getDefault(\"true\") != \"true\") value = value.trim();\r\n\t\t\t// make it so you can escape the backslash\r\n\t\t\tvalue = value.replace(\"\\\\n\", \"\\n\").replace(\"\\r\", \"\"); // remove stupid windows line breaks and convert newline literals to newlines\r\n\t\t\tleMap.set(id, FormatUtil.get(value));\r\n\t\t\t//leMap.set(id, FormatUtil.getStr(\"{\" + id + \"}\"));\r\n\t\t\t//Logs.trace(\"Added \" + id + \" -> `\" + value + \"`\", \"Language\");\r\n\t\t}\r\n\r\n\t\treturn leMap;\r\n\t\t#else\r\n\t\treturn [];\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Returns a map of translations based on its XML.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLanguageName",
+			"args": [
+				{
+					"name": "lang",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// Utils\r\n\r\n\tpublic static function getLanguageName(lang:String):String {\r\n\t\treturn nameMap.exists(lang) ? nameMap.get(lang) : lang;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLanguageFromName",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getLanguageFromName(name:String):String {\r\n\t\tvar reverseMap = new Map<String, String>();\r\n\t\tfor(key => val in nameMap) reverseMap.set(val, key);\r\n\t\treturn reverseMap.exists(name) ? reverseMap.get(name) : name;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getConfig",
+			"args": [
+				{
+					"name": "lang",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Map<String, String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getConfig(lang:String):Map<String, String> {\r\n\t\treturn langConfigs.exists(lang) ? langConfigs.get(lang) : getDefaultConfig(lang);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isShowingMissingIds",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isShowingMissingIds():Bool {\r\n\t\treturn Lambda.count(alternativeStringMap) > 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "translationsMain",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function translationsMain(key:String):String\r\n\t\treturn '$LANG_FOLDER/$key';",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "translations",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function translations(key:String):String\r\n\t\treturn translationsMain('$curLanguage/$key');",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

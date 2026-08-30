@@ -1,0 +1,212 @@
+{
+	"kind": "class",
+	"name": "KeybindSetting",
+	"pkg": "funkin.options.keybinds",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "title",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bind1",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bind2",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "icon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "changingKeybind",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "p2Selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "value",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "custom",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "option1",
+			"type": "Null<FlxKey>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "option2",
+			"type": "Null<FlxKey>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sparrowIcon",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "sparrowAnim",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "custom",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, name:String, value:String, ?sparrowIcon:String, ?sparrowAnim:String, ?custom:Bool = false) {\r\n\t\tsuper();\r\n\t\tthis.value = value;\r\n\t\tthis.custom = custom;\r\n\t\ttitle = new Alphabet(0, 0, name, true);\r\n\t\tadd(title);\r\n\r\n\t\tvar controlArrayP1:Array<FlxKey> = custom ? [Reflect.getProperty(FlxG.save.data, 'P1_${value}')] : Reflect.field(Options, 'P1_${value}');\r\n\t\tvar controlArrayP2:Array<FlxKey> = custom ? [Reflect.getProperty(FlxG.save.data, 'P2_${value}')] : Reflect.field(Options, 'P2_${value}');\r\n\r\n\t\toption1 = controlArrayP1[0];\r\n\t\toption2 = controlArrayP2[0];\r\n\r\n\t\tfor (i in 1...3) {\r\n\t\t\tvar b = null;\r\n\t\t\tvar bx = FlxG.width * (0.25 * (i+1)) - x;\r\n\t\t\tif (i == 1)\r\n\t\t\t\tb = bind1 = new Alphabet(bx, 0, \"\", \"normal\");\r\n\t\t\telse\r\n\t\t\t\tb = bind2 = new Alphabet(bx, 0, \"\", \"normal\");\r\n\r\n\t\t\t//b.setPosition(FlxG.width * (0.25 * (i+1)) - x, -60);\r\n\t\t\tadd(b);\r\n\t\t}\r\n\t\tupdateText();\r\n\r\n\t\tif (sparrowIcon != null) {\r\n\t\t\ticon = new FlxSprite();\r\n\t\t\ticon.frames = Paths.getFrames(sparrowIcon);\r\n\t\t\ticon.antialiasing = true;\r\n\t\t\ticon.animation.addByPrefix('icon', sparrowAnim, 24, true);\r\n\t\t\ticon.animation.play('icon');\r\n\t\t\ticon.setGraphicSize(75, 75);\r\n\t\t\ticon.updateHitbox();\r\n\t\t\tvar min = Math.min(icon.scale.x, icon.scale.y);\r\n\t\t\ticon.scale.set(min, min);\r\n\t\t\tadd(icon);\r\n\r\n\t\t\ttitle.setPosition(100, 0);\r\n\t\t}\r\n\r\n\t\tif (title.x + title.width > bind1.x - 20) {\r\n\t\t\ttitle.scale.x = (bind1.x - 20 - title.x) / title.width;\r\n\t\t\ttitle.updateHitbox();\r\n\t\t}\r\n\r\n\t\tsetPosition(x, y);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tbind1.alpha = (p2Selected ? 0.2 : 1) / alpha;\r\n\t\tbind2.alpha = (p2Selected ? 1 : 0.2) / alpha;\r\n\t\tbind1.alpha *= alpha;\r\n\t\tbind2.alpha *= alpha;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeKeybind",
+			"args": [
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "cancelCallback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "p2",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeKeybind(callback:Void->Void, cancelCallback:Void->Void, p2:Bool = false) {\r\n\t\tvar flicker = FlxFlicker.flicker(this, 0, Options.flashingMenu ? 0.06 : 0.15, true, false, function(t) {});\r\n\r\n\t\tKeybindsOptions.instance.persistentDraw = true;\r\n\t\tKeybindsOptions.instance.persistentUpdate = false;\r\n\r\n\t\tKeybindsOptions.instance.openSubState(new ChangeKeybindSubState(function(key:FlxKey) {\r\n\t\t\tflicker.stop();\r\n\t\t\tflicker.destroy();\r\n\t\t\tif (!custom) {\r\n\t\t\t\tif (p2)\r\n\t\t\t\t\tReflect.setField(Options, 'P2_$value', [option2 = key]);\r\n\t\t\t\telse\r\n\t\t\t\t\tReflect.setField(Options, 'P1_$value', [option1 = key]);\r\n\t\t\t} else {\r\n\t\t\t\tif (p2)\r\n\t\t\t\t\tReflect.setProperty(FlxG.save.data, 'P2_$value', option2 = key);\r\n\t\t\t\telse\r\n\t\t\t\t\tReflect.setProperty(FlxG.save.data, 'P1_$value', option1 = key);\r\n\t\t\t}\r\n\r\n\t\t\tupdateText();\r\n\t\t\tcallback();\r\n\t\t}, function() {\r\n\t\t\tflicker.stop();\r\n\t\t\tflicker.destroy();\r\n\t\t\tif (!custom) {\r\n\t\t\t\tif (p2)\r\n\t\t\t\t\tReflect.setField(Options, 'P2_$value', [option2 = 0]);\r\n\t\t\t\telse\r\n\t\t\t\t\tReflect.setField(Options, 'P1_$value', [option1 = 0]);\r\n\t\t\t} else {\r\n\t\t\t\tif (p2)\r\n\t\t\t\t\tReflect.setProperty(FlxG.save.data, 'P2_$value', option2 = 0);\r\n\t\t\t\telse\r\n\t\t\t\t\tReflect.setProperty(FlxG.save.data, 'P1_$value', option1 = 0);\r\n\t\t\t}\r\n\t\t\tupdateText();\r\n\t\t\tcancelCallback();\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateText",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateText() {\r\n\t\tbind1.text = CoolUtil.keyToString(option1);\r\n\t\tbind2.text = CoolUtil.keyToString(option2);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

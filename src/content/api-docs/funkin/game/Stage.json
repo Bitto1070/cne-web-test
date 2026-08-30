@@ -1,0 +1,561 @@
+{
+	"kind": "class",
+	"name": "Stage",
+	"pkg": "funkin.game",
+	"doc": {
+		"text": "A class that handles loading a stage and putting the sprites into the state.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "extra",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageXML",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stagePath",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageFile",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageSprites",
+			"type": "Map<String, FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageScript",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "state",
+			"type": "FlxState",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterPoses",
+			"type": "Map<String, StageCharPos>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xmlImportedScripts",
+			"type": "Array<XMLImportedScriptInfo>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultZoom",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startCam",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onXMLLoaded",
+			"type": "(Access, Array<Access>)->Array<Access>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onNodeLoaded",
+			"type": "(Access, Dynamic)->Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onNodeFinished",
+			"type": "(Access, Dynamic)->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onAddSprite",
+			"type": "(FlxObject)->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onXMLPostLoaded",
+			"type": "(Access, Array<Access>)->Array<Access>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spritesParentFolder",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSprite",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getSprite(name:String)\r\n\t\treturn stageSprites[name];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setStagesSprites",
+			"args": [
+				{
+					"name": "script",
+					"type": "Script",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setStagesSprites(script:Script)\r\n\t\tfor (k=>e in stageSprites) script.set(k, e);",
+			"doc": {
+				"text": "Sets the sprites in the script, so you can access them by the name.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareInfos",
+			"args": [
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function prepareInfos(node:Access)\r\n\t\treturn  PlayState.instance == null ? null : XMLImportedScriptInfo.prepareInfos(node, PlayState.instance.scripts, (infos) -> xmlImportedScripts.push(infos));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "stage",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "state",
+					"type": "FlxState",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "autoLoad",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(stage:String, ?state:FlxState, autoLoad:Bool = true) {\r\n\t\tsuper();\r\n\r\n\t\tif (state == null) state = PlayState.instance;\r\n\t\tif (state == null) state = FlxG.state;\r\n\t\tthis.state = state;\r\n\r\n\t\tstageFile = stage;\r\n\t\tstagePath = Paths.xml('stages/$stageFile');\r\n\t\ttry if (Assets.exists(stagePath)) stageXML = new Access(Xml.parse(Assets.getText(stagePath)).firstElement())\r\n\t\tcatch(e) Logs.trace('Couldn\\'t load stage \"$stageFile\": ${e.message}', ERROR);\r\n\r\n\t\tif (autoLoad) loadXml(stageXML);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "DEFAULT_ATTRIBUTES",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadXml",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "forceLoadAll",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadXml(xml:Access, forceLoadAll:Bool = false) {\r\n\t\tif (PlayState.instance == state) {\r\n\t\t\tstageScript = Script.create(Paths.script('data/stages/$stageFile'));\r\n\t\t\tPlayState.instance.scripts.add(stageScript);\r\n\t\t\tstageScript.load();\r\n\t\t}\r\n\r\n\t\tvar event = null;\r\n\t\tvar elems:Array<Access> = [];\r\n\t\tif (xml != null) {\r\n\t\t\tvar parsed:Null<Float>;\r\n\t\t\tif((parsed = Std.parseFloat(xml.getAtt(\"startCamPosX\"))).isNotNull()) startCam.x = parsed;\r\n\t\t\tif((parsed = Std.parseFloat(xml.getAtt(\"startCamPosY\"))).isNotNull()) startCam.y = parsed;\r\n\t\t\tif((parsed = Std.parseFloat(xml.getAtt(\"zoom\"))).isNotNull()) defaultZoom = parsed;\r\n\r\n\t\t\tstageName = xml.getAtt(\"name\").getDefault(stageFile);\r\n\r\n\t\t\tif (PlayState.instance == state) {\r\n\t\t\t\tif(xml.has.startCamPosX) PlayState.instance.camFollow.x = startCam.x;\r\n\t\t\t\tif(xml.has.startCamPosY) PlayState.instance.camFollow.y = startCam.y;\r\n\t\t\t\tif(xml.has.zoom) PlayState.instance.defaultCamZoom = defaultZoom;\r\n\t\t\t}\r\n\t\t\tif (xml.has.folder) {\r\n\t\t\t\tspritesParentFolder = xml.att.folder;\r\n\t\t\t\tif (!spritesParentFolder.endsWith(\"/\")) spritesParentFolder += \"/\";\r\n\t\t\t}\r\n\r\n\t\t\t// Load custom attributes\r\n\t\t\tfor(att in xml.x.attributes())\r\n\t\t\t\tif(!DEFAULT_ATTRIBUTES.contains(att))\r\n\t\t\t\t\textra.set(att, xml.x.get(att));\r\n\r\n\t\t\t// some way to tag that the sprites are from the group\r\n\t\t\tfor(node in xml.elements) {\r\n\t\t\t\tif (node.name == \"high-memory\" && (!Options.lowMemoryMode || forceLoadAll)) for(e in node.elements) __pushNcheckNode(elems, e);\r\n\t\t\t\telse if (node.name == \"low-memory\" && (Options.lowMemoryMode || forceLoadAll)) for(e in node.elements) __pushNcheckNode(elems, e);\r\n\t\t\t\telse __pushNcheckNode(elems, node);\r\n\t\t\t}\r\n\r\n\t\t\tif (PlayState.instance == state) {\r\n\t\t\t\tevent = EventManager.get(StageXMLEvent).recycle(this, stageXML, elems);\r\n\t\t\t\telems = PlayState.instance.gameAndCharsEvent(\"onStageXMLParsed\", event).elems;\r\n\t\t\t}\r\n\t\t\tif(onXMLLoaded != null) {\r\n\t\t\t\telems = onXMLLoaded(xml, elems);\r\n\t\t\t}\r\n\r\n\t\t\tvar curRemoved:Map<String, String> = [];\r\n\t\t\tinline function tempRemove(xml:Xml, att:String) {\r\n\t\t\t\tif (xml.exists(att)) {\r\n\t\t\t\t\tcurRemoved.set(att, xml.get(att));\r\n\t\t\t\t\txml.remove(att);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tfor(node in elems) {\r\n\t\t\t\tvar sprite:Dynamic = switch(node.name) {\r\n\t\t\t\t\tcase \"sprite\" | \"spr\" | \"sparrow\":\r\n\t\t\t\t\t\tif (!node.has.sprite || !node.has.name) continue;\r\n\r\n\t\t\t\t\t\tvar spr = XMLUtil.createSpriteFromXML(node, spritesParentFolder, LOOP);\r\n\r\n\t\t\t\t\t\tstageSprites.set(spr.name, spr);\r\n\t\t\t\t\t\taddSprite(spr);\r\n\t\t\t\t\tcase \"box\" | \"solid\":\r\n\t\t\t\t\t\tif (!node.has.name || !node.has.width || !node.has.height) continue;\r\n\r\n\t\t\t\t\t\tvar isSolid = node.name == \"solid\";\r\n\r\n\t\t\t\t\t\tvar spr = new FunkinSprite();\r\n\t\t\t\t\t\t(isSolid ? spr.makeSolid : spr.makeGraphic)(\r\n\t\t\t\t\t\t\tStd.parseInt(node.att.width),\r\n\t\t\t\t\t\t\tStd.parseInt(node.att.height),\r\n\t\t\t\t\t\t\t(node.has.color) ? CoolUtil.getColorFromDynamic(node.att.color) : -1\r\n\t\t\t\t\t\t);\r\n\r\n\t\t\t\t\t\tif (isSolid) tempRemove(node.x, \"updateHitbox\");\r\n\t\t\t\t\t\tfor (a in [\"width\", \"height\", \"color\"]) tempRemove(node.x, a);\r\n\t\t\t\t\t\tXMLUtil.loadSpriteFromXML(spr, node, \"\", NONE, false);\r\n\r\n\t\t\t\t\t\t// mainly for the stage editor\r\n\t\t\t\t\t\tfor (k => v in curRemoved)\r\n\t\t\t\t\t\t\tnode.x.set(k, v);\r\n\t\t\t\t\t\tcurRemoved.clear();\r\n\r\n\t\t\t\t\t\tstageSprites.set(spr.name, spr);\r\n\t\t\t\t\t\taddSprite(spr);\r\n\t\t\t\t\tcase \"boyfriend\" | \"bf\" | \"player\":\r\n\t\t\t\t\t\taddCharPos(\"boyfriend\", node, getDefaultPos(\"boyfriend\"));\r\n\t\t\t\t\tcase \"girlfriend\" | \"gf\":\r\n\t\t\t\t\t\taddCharPos(\"girlfriend\", node, getDefaultPos(\"girlfriend\"));\r\n\t\t\t\t\tcase \"dad\" | \"opponent\":\r\n\t\t\t\t\t\taddCharPos(\"dad\", node, getDefaultPos(\"dad\"));\r\n\t\t\t\t\tcase \"character\" | \"char\":\r\n\t\t\t\t\t\tif (!node.has.name) continue;\r\n\t\t\t\t\t\taddCharPos(node.att.name, node);\r\n\t\t\t\t\tcase \"ratings\" | \"combo\":\r\n\t\t\t\t\t\tif (PlayState.instance != state) continue;\r\n\t\t\t\t\t\tPlayState.instance.comboGroup.setPosition(\r\n\t\t\t\t\t\t\tStd.parseFloat(node.getAtt(\"x\")).getDefaultFloat(PlayState.instance.comboGroup.x),\r\n\t\t\t\t\t\t\tStd.parseFloat(node.getAtt(\"y\")).getDefaultFloat(PlayState.instance.comboGroup.y)\r\n\t\t\t\t\t\t);\r\n\t\t\t\t\t\tPlayState.instance.add(PlayState.instance.comboGroup);\r\n\t\t\t\t\t\tPlayState.instance.comboGroup;\r\n\t\t\t\t\tcase \"use-extension\" | \"extension\" | \"ext\":\r\n\t\t\t\t\t\tif (XMLImportedScriptInfo.shouldLoadBefore(node) || prepareInfos(node) == null) continue;\r\n\t\t\t\t\t\tnull;\r\n\t\t\t\t\tdefault: null;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif(PlayState.instance == state) {\r\n\t\t\t\t\tsprite = PlayState.instance.gameAndCharsEvent(\"onStageNodeParsed\", EventManager.get(StageNodeEvent).recycle(this, node, sprite, node.name)).sprite;\r\n\t\t\t\t}\r\n\t\t\t\tif(onNodeLoaded != null) {\r\n\t\t\t\t\tsprite = onNodeLoaded(node, sprite);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (sprite != null) {\r\n\t\t\t\t\tfor(e in node.nodes.property)\r\n\t\t\t\t\t\tXMLUtil.applyXMLProperty(sprite, e);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif(onNodeFinished != null) {\r\n\t\t\t\t\tonNodeFinished(node, sprite);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (characterPoses[\"girlfriend\"] == null)\r\n\t\t\taddCharPos(\"girlfriend\", null, getDefaultPos(\"girlfriend\"));\r\n\r\n\t\tif (characterPoses[\"dad\"] == null)\r\n\t\t\taddCharPos(\"dad\", null, getDefaultPos(\"dad\"));\r\n\r\n\t\tif (characterPoses[\"boyfriend\"] == null)\r\n\t\t\taddCharPos(\"boyfriend\", null, getDefaultPos(\"boyfriend\"));\r\n\r\n\t\tif (PlayState.instance == state) {\r\n\t\t\tsetStagesSprites(stageScript);\r\n\r\n\t\t\t// i know this for gets run twice under, but its better like this in case a script modifies the short lived ones, i dont wanna save them in an array; more dynamic like this  - Nex\r\n\t\t\tfor (info in xmlImportedScripts) if (info.importStageSprites) {\r\n\t\t\t\tvar script = info.getScript();\r\n\t\t\t\tif (script != null) setStagesSprites(script);\r\n\t\t\t}\r\n\r\n\t\t\t// idk lemme check anyways just in case scripts did smth  - Nex\r\n\t\t\tif (event != null) PlayState.instance.gameAndCharsEvent(\"onPostStageCreation\", event);\r\n\r\n\t\t\t// shortlived scripts destroy when the stage finishes setting up  - Nex\r\n\t\t\tfor (info in xmlImportedScripts) if (info.shortLived) {\r\n\t\t\t\tvar script = info.getScript();\r\n\t\t\t\tif (script == null) continue;\r\n\r\n\t\t\t\tPlayState.instance.scripts.remove(script);\r\n\t\t\t\tscript.destroy();\r\n\t\t\t}\r\n\t\t}\r\n\t\tif(onXMLPostLoaded != null) {\r\n\t\t\telems = onXMLPostLoaded(xml, elems);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaultPos",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "StageCharPosInfo",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getDefaultPos(name:String):StageCharPosInfo {\r\n\t\treturn switch(name) {\r\n\t\t\tcase \"boyfriend\" | \"bf\" | \"player\": {\r\n\t\t\t\tx: 770,\r\n\t\t\t\ty: 100,\r\n\t\t\t\tscroll: 1,\r\n\t\t\t\tflip: true\r\n\t\t\t};\r\n\t\t\tcase \"girlfriend\" | \"gf\": {\r\n\t\t\t\tx: 400,\r\n\t\t\t\ty: 130,\r\n\t\t\t\tscroll: 0.95,\r\n\t\t\t\tflip: false\r\n\t\t\t};\r\n\t\t\tcase \"dad\" | \"opponent\": {\r\n\t\t\t\tx: 100,\r\n\t\t\t\ty: 100,\r\n\t\t\t\tscroll: 1,\r\n\t\t\t\tflip: false\r\n\t\t\t};\r\n\t\t\tdefault: {\r\n\t\t\t\tx: 0,\r\n\t\t\t\ty: 0,\r\n\t\t\t\tscroll: 1,\r\n\t\t\t\tflip: false\r\n\t\t\t};\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addCharPos",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "nonXMLInfo",
+					"type": "StageCharPosInfo",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "StageCharPos",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addCharPos(name:String, node:Access, ?nonXMLInfo:StageCharPosInfo):StageCharPos {\r\n\t\tvar charPos = new StageCharPos();\r\n\t\tcharPos.visible = charPos.active = false;\r\n\t\tcharPos.name = name;\r\n\r\n\t\tif (nonXMLInfo != null) {\r\n\t\t\tcharPos.setPosition(nonXMLInfo.x, nonXMLInfo.y);\r\n\t\t\tcharPos.scrollFactor.set(nonXMLInfo.scroll, nonXMLInfo.scroll);\r\n\t\t\tcharPos.flipX = nonXMLInfo.flip;\r\n\t\t}\r\n\r\n\t\tif (node != null) {\r\n\t\t\tcharPos.x = Std.parseFloat(node.getAtt(\"x\")).getDefault(charPos.x);\r\n\t\t\tcharPos.y = Std.parseFloat(node.getAtt(\"y\")).getDefault(charPos.y);\r\n\t\t\tcharPos.charSpacingX = Std.parseFloat(node.getAtt(\"spacingx\")).getDefault(charPos.charSpacingX);\r\n\t\t\tcharPos.charSpacingY = Std.parseFloat(node.getAtt(\"spacingy\")).getDefault(charPos.charSpacingY);\r\n\t\t\tcharPos.camxoffset = Std.parseFloat(node.getAtt(\"camxoffset\")).getDefault(charPos.camxoffset);\r\n\t\t\tcharPos.camyoffset = Std.parseFloat(node.getAtt(\"camyoffset\")).getDefault(charPos.camyoffset);\r\n\t\t\tcharPos.skewX = Std.parseFloat(node.getAtt(\"skewx\")).getDefault(charPos.skewX);\r\n\t\t\tcharPos.skewY = Std.parseFloat(node.getAtt(\"skewy\")).getDefault(charPos.skewY);\r\n\t\t\tcharPos.alpha = Std.parseFloat(node.getAtt(\"alpha\")).getDefault(charPos.alpha);\r\n\t\t\tcharPos.angle = Std.parseFloat(node.getAtt(\"angle\")).getDefault(charPos.angle);\r\n\t\t\tcharPos.flipX = (node.has.flip || node.has.flipX) ? (node.getAtt(\"flip\") == \"true\" || node.getAtt(\"flipX\") == \"true\") : charPos.flipX;\r\n\t\t\tcharPos.zoomFactor = Std.parseFloat(node.getAtt(\"zoomfactor\")).getDefault(charPos.zoomFactor);\r\n\r\n\t\t\tif (node.has.scale) {\r\n\t\t\t\tvar scale:Null<Float> = Std.parseFloat(node.att.scale);\r\n\t\t\t\tif (scale.isNotNull()) charPos.scale.set(scale, scale);\r\n\t\t\t}\r\n\t\t\tif (node.has.scalex) {\r\n\t\t\t\tvar scale:Null<Float> = Std.parseFloat(node.att.scalex);\r\n\t\t\t\tif (scale.isNotNull()) charPos.scale.x = scale;\r\n\t\t\t}\r\n\t\t\tif (node.has.scaley) {\r\n\t\t\t\tvar scale:Null<Float> = Std.parseFloat(node.att.scaley);\r\n\t\t\t\tif (scale.isNotNull()) charPos.scale.y = scale;\r\n\t\t\t}\r\n\r\n\t\t\tif (node.has.scroll) {\r\n\t\t\t\tvar scroll:Null<Float> = Std.parseFloat(node.att.scroll);\r\n\t\t\t\tif (scroll != null) charPos.scrollFactor.set(scroll, scroll);\r\n\t\t\t}\r\n\t\t\tif (node.has.scrollx) {\r\n\t\t\t\tvar scroll:Null<Float> = Std.parseFloat(node.att.scrollx);\r\n\t\t\t\tif (scroll != null) charPos.scrollFactor.x = scroll;\r\n\t\t\t}\r\n\t\t\tif (node.has.scrolly) {\r\n\t\t\t\tvar scroll:Null<Float> = Std.parseFloat(node.att.scrolly);\r\n\t\t\t\tif (scroll != null) charPos.scrollFactor.y = scroll;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn addSprite(characterPoses[name] = charPos);\r\n\t}",
+			"doc": {
+				"text": "Adds a character position to the stage.",
+				"params": {
+					"name": "The name of the character",
+					"node": "The XML node",
+					"nonXMLInfo": "(Optional) Non-XML information"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isCharFlipped",
+			"args": [
+				{
+					"name": "posName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "def",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function isCharFlipped(posName:String, def:Bool = false)\r\n\t\treturn characterPoses[posName] != null ? characterPoses[posName].flipX : def;",
+			"doc": {
+				"text": "Checks if a character is flipped or not.",
+				"params": {
+					"posName": "The name of the character position",
+					"def": "The default value"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "applyCharStuff",
+			"args": [
+				{
+					"name": "char",
+					"type": "Character",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "posName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "id",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function applyCharStuff(char:Character, posName:String, id:Float = 0) {\r\n\t\tvar charPos = characterPoses[char.curCharacter] != null ? characterPoses[char.curCharacter] : characterPoses[posName];\r\n\t\tif (charPos != null) {\r\n\t\t\tcharPos.prepareCharacter(char, id);\r\n\t\t\tstate.insert(state.members.indexOf(charPos), char);\r\n\t\t} else {\r\n\t\t\tstate.add(char);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Applies the character stuff to the character.\nAdds the character to the stage, or inserts it into the stage.",
+				"params": {
+					"char": "The character",
+					"posName": "The name of the character position",
+					"id": "The ID of the character"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroySilently",
+			"args": [
+				{
+					"name": "destroySprites",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "destroyScript",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function destroySilently(destroySprites:Bool = true, destroyScript:Bool = true) {\r\n\t\tif (destroyScript && stageScript != null) {\r\n\t\t\tif (PlayState.instance == state && PlayState.instance.scripts != null) PlayState.instance.scripts.remove(stageScript);\r\n\t\t\tstageScript.destroy();\r\n\t\t}\r\n\r\n\t\tif (destroySprites)\r\n\t\t\tfor (e in stageSprites)\r\n\t\t\t\te?.destroy();\r\n\r\n\t\tstartCam.put();\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": {
+				"text": "Same of destroy, but doesn't call the various script events.",
+				"params": {
+					"destroySprites": "Whether the stage sprites should be destroyed",
+					"destroyScript": "Whether the stage script should be destroyed"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tif (PlayState.instance == state && PlayState.instance.scripts != null) PlayState.instance.gameAndCharsCall(\"onStageDestroy\", [this]);\r\n\t\tstageScript?.call(\"destroy\");\r\n\t\tdestroySilently();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function beatHit(curBeat:Int) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curStep",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function stepHit(curStep:Int) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "measureHit",
+			"args": [
+				{
+					"name": "curMeasure",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function measureHit(curMeasure:Int) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getList",
+			"args": [
+				{
+					"name": "mods",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "xmlOnly",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getList(?mods:Bool = false, ?xmlOnly:Bool = false):Array<String> {\r\n\t\tvar list:Array<String> = [];\r\n\t\tvar extensions:Array<String> = [\"xml\"];\r\n\t\tif (!xmlOnly) extensions.push(\"hx\");\r\n\r\n\t\tfor (path in Paths.getFolderContent(\"data/stages/\", false, mods ? MODS : BOTH)) {\r\n\t\t\tvar extension = Path.extension(path);\r\n\t\t\tif (extensions.contains(extension)) {\r\n\t\t\t\t// list.pushOnce(\"test\");\r\n\t\t\t\tlist.pushOnce(Path.withoutExtension(path));\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn list;\r\n\t}",
+			"doc": {
+				"text": "Gets a list of stages that are available to be used.",
+				"params": {
+					"mods": "Whenever only the mods folder should be checked"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

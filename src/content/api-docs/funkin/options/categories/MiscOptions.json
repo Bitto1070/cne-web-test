@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "MiscOptions",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('optionsTree.miscellaneous-name', 'optionsTree.miscellaneous-desc', 'MiscOptions.');\r\n\r\n\t\tadd(new Checkbox(getNameID('devMode'), getDescID('devMode'), 'devMode'));\r\n\t\tadd(new Checkbox(getNameID('allowConfigWarning'), getDescID('allowConfigWarning'), 'allowConfigWarning'));\r\n\t\t#if UPDATE_CHECKING\r\n\t\tadd(new Checkbox(getNameID('betaUpdates'), getDescID('betaUpdates'), 'betaUpdates'));\r\n\t\tadd(new TextOption(getNameID('checkForUpdates'), getDescID('checkForUpdates'), () -> {\r\n\t\t\tvar report = funkin.backend.system.updating.UpdateUtil.checkForUpdates(true);\r\n\t\t\tif (report.newUpdate) FlxG.switchState(new funkin.backend.system.updating.UpdateAvailableScreen(report));\r\n\t\t\telse {\r\n\t\t\t\tCoolUtil.playMenuSFX(CANCEL);\r\n\t\t\t\t//updateDescText(translate('checkForUpdates-noUpdateFound'));\r\n\t\t\t}\r\n\t\t}));\r\n\t\t#end\r\n\r\n\t\tadd(new Separator());\r\n\t\tadd(new TextOption(getNameID('resetSaveData'), getDescID('resetSaveData'), () -> {\r\n\t\t\tFunkinSave.save.erase();\r\n\t\t\tFunkinSave.highscores.clear();\r\n\t\t\tFunkinSave.flush();\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

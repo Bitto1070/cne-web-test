@@ -1,0 +1,108 @@
+{
+	"kind": "class",
+	"name": "GithubIconOption",
+	"pkg": "funkin.options.type",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "user",
+			"type": "CreditsGitHubContributor",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "icon",
+			"type": "GithubUserIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "usePortrait",
+			"type": "Dynamic",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set_usePortrait",
+			"args": [
+				{
+					"name": "value",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function set_usePortrait(value:Bool)\r\n\t{\r\n\t\tif (icon == null) return usePortrait = false;\r\n\t\ticon.shader = (value ? new CustomShader('engine/circleProfilePicture') : null);\r\n\t\treturn usePortrait = value;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "user",
+					"type": "CreditsGitHubContributor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "customName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Int",
+					"optional": false,
+					"def": "96"
+				},
+				{
+					"name": "usePortrait",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "waitUntilLoad",
+					"type": "Float",
+					"optional": false,
+					"def": "0.25"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(user:CreditsGitHubContributor, desc:String, ?callback:Void->Void, ?customName:String, size:Int = 96, usePortrait:Bool = true, waitUntilLoad:Float = 0.25) {\r\n\t\tsuper(customName == null ? user.login : customName, desc, callback == null ? function() CoolUtil.openURL(user.html_url) : callback);\r\n\t\tthis.user = user;\r\n\t\tthis.icon = new GithubUserIcon(user, size, waitUntilLoad);\r\n\t\tthis.usePortrait = usePortrait;\r\n\t\tadd(icon);\r\n\t\t__text.x = 100;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

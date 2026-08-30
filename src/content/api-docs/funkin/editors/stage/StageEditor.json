@@ -1,0 +1,355 @@
+{
+	"kind": "class",
+	"name": "StageEditor",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [
+		"@:access(flixel.FlxSprite)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stage",
+			"type": "Stage",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "StageEditor",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenu",
+			"type": "Array<UIContextMenuOption>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenuSpr",
+			"type": "UITopMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiGroup",
+			"type": "FlxTypedGroup<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageSpritesWindow",
+			"type": "StageSpritesWindow",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xmlMap",
+			"type": "Map<FlxObject, Access>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "chars",
+			"type": "Array<Character>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charMap",
+			"type": "Map<String, Character>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gizmosCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "axisGizmo",
+			"type": "AxisGizmo",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selection",
+			"type": "Selection",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "mouseMode",
+			"type": "StageEditorMouseMode",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "mousePoint",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "clickPoint",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storedPos",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storedScale",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storedSkew",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storedAngle",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angleOffset",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "showCharacters",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SPRITE_WINDOW_WIDTH",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SPRITE_WINDOW_BUTTON_HEIGHT",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "undos",
+			"type": "UndoList<StageChange>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exID",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function exID(id:String) {\r\n\t\treturn \"stageEditor.\" + id;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "stage",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(stage:String) {\r\n\t\tsuper();\r\n\t\tif (stage != null) __stage = stage;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tWindowUtils.suffix = \" (\" + TU.translate(\"editor.stage.name\") + \")\";\r\n\t\tSaveWarning.selectionClass = StageSelection;\r\n\t\tSaveWarning.saveFunc = () -> {_file_save(null);};\r\n\r\n\t\ttopMenu = [\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.file\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.save\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, S],\r\n\t\t\t\t\t\tonSelect: _file_save,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveAs\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, S],\r\n\t\t\t\t\t\tonSelect: _file_saveas,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.exit\"),\r\n\t\t\t\t\t\tonSelect: _file_exit\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.edit\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.undo\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, Z],\r\n\t\t\t\t\t\tonSelect: _edit_undo,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.redo\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, Z],\r\n\t\t\t\t\t\tonSelect: _edit_redo,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.editStageInfo\"),\r\n\t\t\t\t\t\tonSelect: (_) -> {\r\n\t\t\t\t\t\t\topenSubState(new UISoftcodedWindow(\r\n\t\t\t\t\t\t\t\t\"layouts/stage/stageInfoScreen\",\r\n\t\t\t\t\t\t\t\t[\r\n\t\t\t\t\t\t\t\t\t\"winTitle\" => \"Editing Stage Info\",\r\n\t\t\t\t\t\t\t\t\t\"hasSaveButton\" => true,\r\n\t\t\t\t\t\t\t\t\t\"hasCloseButton\" => true,\r\n\t\t\t\t\t\t\t\t\t\"stage\" => stage,\r\n\t\t\t\t\t\t\t\t\t\"Stage\" => Stage,\r\n\t\t\t\t\t\t\t\t\t\"exID\" => exID,\r\n\t\t\t\t\t\t\t\t\t\"CEditInfo\" => StageChange.CEditInfo,\r\n\t\t\t\t\t\t\t\t\t\"translate\" => function (id:String, ?args:Array<Dynamic>) {\r\n\t\t\t\t\t\t\t\t\t\treturn TU.translate(\"stageInfoScreen.\" + id, args);\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t]\r\n\t\t\t\t\t\t\t));\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.select\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"select.all\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, A],\r\n\t\t\t\t\t\tonSelect: (_) -> _select_all(_),\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"select.deselect\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, D],\r\n\t\t\t\t\t\tonSelect: (_) -> _select_deselect(_),\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"select.inverse\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, I],\r\n\t\t\t\t\t\tonSelect: (_) -> _select_inverse(_),\r\n\t\t\t\t\t},\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.view\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomIn\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADPLUS],\r\n\t\t\t\t\t\tonSelect: _view_zoomin\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomOut\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADMINUS],\r\n\t\t\t\t\t\tonSelect: _view_zoomout\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomReset\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\tonSelect: _view_zoomreset\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.focusDad\"),\r\n\t\t\t\t\t\t//keybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\tonSelect: _view_focusdad\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.focusGF\"),\r\n\t\t\t\t\t\t//keybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\tonSelect: _view_focusgf\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.focusBF\"),\r\n\t\t\t\t\t\t//keybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\tonSelect: _view_focusbf\r\n\t\t\t\t\t},\r\n\t\t\t\t\t// TODO: add support for custom character focus\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.editor\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"editor.showCharacters\"),\r\n\t\t\t\t\t\t//keybind: [CONTROL, NUMPADMINUS],\r\n\t\t\t\t\t\tonSelect: _editor_showCharacters,\r\n\t\t\t\t\t\ticon: showCharacters ? 1 : 0\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t];\r\n\r\n\t\tstageCamera = FlxG.camera;\r\n\r\n\t\tgizmosCamera = new FlxCamera();\r\n\t\tgizmosCamera.bgColor = 0;\r\n\t\tFlxG.cameras.add(gizmosCamera, false);\r\n\r\n\t\taxisGizmo = new AxisGizmo();\r\n\t\taxisGizmo.cameras = [gizmosCamera];\r\n\r\n\t\tuiCamera = new FlxCamera();\r\n\t\tuiCamera.bgColor = 0;\r\n\r\n\t\tuiCameras = [uiCamera];\r\n\r\n\t\t//FlxG.cameras.add(guideCamera, false);\r\n\t\tFlxG.cameras.add(uiCamera, false);\r\n\r\n\t\t// Load from xml\r\n\t\tvar order:Array<Dynamic> = [];\r\n\t\tvar orderNodes:Array<Access> = [];\r\n\r\n\t\tloadStage(order, orderNodes);\r\n\r\n\t\t// for (sprite => node in xmlMap)\r\n\t\t// \tsprite.cameras = [stageCamera];\r\n\r\n\t\ttopMenuSpr = new UITopMenu(topMenu);\r\n\t\ttopMenuSpr.cameras = uiGroup.cameras = [uiCamera];\r\n\r\n\t\tstageSpritesWindow = new StageSpritesWindow(Std.int(FlxG.width - 400), 25);\r\n\t\tfor (i=>sprite in order) {\r\n\t\t\tvar xml = (sprite != null) ? xmlMap.get(sprite) : orderNodes[i];\r\n\t\t\tif (xml != null) {\r\n\t\t\t\tif (sprite is Character) {\r\n\t\t\t\t\tvar char:Character = cast sprite;\r\n\t\t\t\t\tvar button = new StageCharacterButton(0,0, char, xml);\r\n\t\t\t\t\tchar.extra.set(exID(\"button\"), button);\r\n\t\t\t\t\tstageSpritesWindow.add(button);\r\n\t\t\t\t} else if (sprite is FunkinSprite) {\r\n\t\t\t\t\tvar sprite:FunkinSprite = cast sprite;\r\n\t\t\t\t\tvar type = sprite.extra.get(exID(\"type\"));\r\n\t\t\t\t\tvar button:StageElementButton = (type == \"box\" || type == \"solid\") ? new StageSolidButton(0,0, sprite, xml) : new StageSpriteButton(0,0, sprite, xml);\r\n\t\t\t\t\tsprite.extra.set(exID(\"button\"), button);\r\n\t\t\t\t\tstageSpritesWindow.add(button);\r\n\t\t\t\t} else if(sprite == null) {\r\n\t\t\t\t\tvar basic = new FlxBasic(); // prevent awkward layering\r\n\t\t\t\t\tbasic.exists = false;\r\n\t\t\t\t\tinsert(i, basic);\r\n\t\t\t\t\tvar button = new StageUnknownButton(0,0, basic, xml);\r\n\t\t\t\t\tstageSpritesWindow.add(button);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tuiGroup.add(stageSpritesWindow);\r\n\r\n\t\tadd(topMenuSpr);\r\n\t\tadd(uiGroup);\r\n\t\tadd(axisGizmo);\r\n\r\n\t\tif(Framerate.isLoaded) {\r\n\t\t\tFramerate.fpsCounter.alpha = 0.4;\r\n\t\t\tFramerate.memoryCounter.alpha = 0.4;\r\n\t\t\tFramerate.codenameBuildField.alpha = 0.4;\r\n\t\t}\r\n\r\n\t\t// DiscordUtil.call(\"onEditorLoaded\", [\"Stage Editor\", __stage]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (true) {\r\n\t\t\tif(FlxG.keys.justPressed.ANY)\r\n\t\t\t\tUIUtil.processShortcuts(topMenu);\r\n\t\t}\r\n\r\n\t\t//if (character != null)\r\n\t\t//\tcharacterPropertiresWindow.characterInfo.text = '${character.getNameList().length} Animations\\nFlipped: ${character.flipX}\\nSprite: ${character.sprite}\\nAnim: ${character.getAnimName()}\\nOffset: (${character.frameOffset.x}, ${character.frameOffset.y})';\r\n\r\n\t\tcurrentCursor = ARROW;\r\n\r\n\t\tFlxG.mouse.getWorldPosition(stageCamera, mousePoint);\r\n\t\tif ((!stageSpritesWindow.hovered && !stageSpritesWindow.dragging) && !topMenuSpr.hovered) {\r\n\t\t\tif (FlxG.mouse.wheel != 0) {\r\n\t\t\t\tzoom += 0.25 * FlxG.mouse.wheel;\r\n\t\t\t\tupdateZoom();\r\n\t\t\t}\r\n\r\n\t\t\tvar prevMode = mouseMode;\r\n\r\n\t\t\t// TODO: make this work with multiple selections\r\n\t\t\tif(selection.length == 1) {\r\n\t\t\t\tfor(sprite in selection) {\r\n\t\t\t\t\tif(sprite is FunkinSprite) {\r\n\t\t\t\t\t\thandleSelection(cast sprite);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\t//if (FlxG.mouse.justReleasedRight) {\r\n\t\t\t//\tcloseCurrentContextMenu();\r\n\t\t\t//\topenContextMenu(topMenu[2].childs);\r\n\t\t\t//}\r\n\r\n\t\t\tif (mouseMode == NONE && prevMode == NONE) {\r\n\t\t\t\tif (FlxG.mouse.pressed) {\r\n\t\t\t\t\tvar x = FlxG.mouse.deltaScreenX;\r\n\t\t\t\t\tvar y = FlxG.mouse.deltaScreenY;\r\n\t\t\t\t\tmovedTillRel.x += x; movedTillRel.y += y;\r\n\t\t\t\t\tnextScroll.set(nextScroll.x - x, nextScroll.y - y);\r\n\t\t\t\t\tcurrentCursor = HAND;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (FlxG.mouse.justReleased) {\r\n\t\t\t\t\tif (Math.abs(movedTillRel.x) < 16 && Math.abs(movedTillRel.y) < 16) {\r\n\t\t\t\t\t\tvar point = FlxG.mouse.getWorldPosition(stageCamera, _point);\r\n\t\t\t\t\t\tvar sprites = getRealSprites();\r\n\t\t\t\t\t\tfor (i in 0...sprites.length) {\r\n\t\t\t\t\t\t\tvar sprite = sprites[sprites.length - i - 1];\r\n\t\t\t\t\t\t\t//if(sprite.animateAtlas != null) continue;\r\n\r\n\t\t\t\t\t\t\tcalcSpriteBounds(sprite);\r\n\t\t\t\t\t\t\t//trace(\"Sprite: \" + sprite);\r\n\t\t\t\t\t\t\t//trace(\"Sprite bounds: \" + sprite.extra.get(exID(\"bounds\")));\r\n\t\t\t\t\t\t\tif (cast(sprite.extra.get(exID(\"bounds\")), FlxRect).containsPoint(point)) {\r\n\t\t\t\t\t\t\t\tselectSprite(sprite); break;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tmovedTillRel.set();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}/* else if (!FlxG.mouse.pressed)\r\n\t\t\tcurrentCursor = ARROW;*/\r\n\r\n\t\tstageCamera.scroll.set(\r\n\t\t\tlerp(stageCamera.scroll.x, nextScroll.x, 0.35),\r\n\t\t\tlerp(stageCamera.scroll.y, nextScroll.y, 0.35)\r\n\t\t);\r\n\r\n\t\tstageCamera.zoom = lerp(stageCamera.zoom, __camZoom, 0.125);\r\n\r\n\t\tWindowUtils.prefix = undos.unsaved ? \"* \" : \"\";\r\n\t\tSaveWarning.showWarning = undos.unsaved;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "selectSprite",
+			"args": [
+				{
+					"name": "_sprite",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function selectSprite(_sprite:FunkinSprite) {\r\n\t\tif(!UIUtil.getKeyState(CONTROL, PRESSED))\r\n\t\t\t_select_deselect(null, false);\r\n\r\n\t\tif(_sprite is FunkinSprite) {\r\n\t\t\tif(selection.contains(_sprite))\r\n\t\t\t\tselection.remove(_sprite);\r\n\t\t\telse\r\n\t\t\t\tselection.push(_sprite);\r\n\t\t}\r\n\t\tupdateSelection();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "calcSpriteBounds",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function calcSpriteBounds(sprite:FunkinSprite) {\r\n\t\tvar oldWidth = sprite.width;\r\n\t\tvar oldHeight = sprite.height;\r\n\r\n\t\t/*\r\n\t\tif (sprite.animateAtlas != null) {\r\n\t\t\tvar rect:FlxRect = MatrixUtil.getBounds(sprite);\r\n\t\t\toldWidth = rect.width;\r\n\t\t\toldHeight = rect.height;\r\n\t\t}\r\n\t\t*/\r\n\r\n\t\tvar oldOffset = sprite.offset.clone(FlxPoint.weak());\r\n\t\tvar oldOrigin = sprite.origin.clone(FlxPoint.weak());\r\n\t\tsprite.updateHitbox();\r\n\t\tsprite.offset.copyFrom(oldOffset);\r\n\t\tsprite.origin.copyFrom(oldOrigin);\r\n\t\t@:privateAccess sprite.updateTrig();\r\n\r\n\t\tvar corners = sprite.getMatrixPosition([\r\n\t\t\t// corners\r\n\t\t\tFlxPoint.get(0, 0),\r\n\t\t\tFlxPoint.get(1, 0),\r\n\t\t\tFlxPoint.get(0, 1),\r\n\t\t\tFlxPoint.get(1, 1),\r\n\t\t\t// edges\r\n\t\t\tFlxPoint.get(0, 0.5),\r\n\t\t\tFlxPoint.get(1, 0.5),\r\n\t\t\tFlxPoint.get(0.5, 1),\r\n\t\t\tFlxPoint.get(0.5, 0),\r\n\t\t\t// center\r\n\t\t\tFlxPoint.get(0.5, 0.5),\r\n\t\t\t//FlxPoint.get(0.5, -100/sprite.frameHeight) // angle\r\n\t\t\tFlxPoint.get(0.5, -0.5), // angle\r\n\t\t\tFlxPoint.get(1, 0) // rotate corner\r\n\t\t], sprite.camera, sprite.frameWidth, sprite.frameHeight);\r\n\t\t//if(sprite.animateAtlas != null) {\r\n\t\t//\ttrace(\"Corners: \" + corners);\r\n\t\t//}\r\n\t\t@:privateAccess corners[corners.length - 1].add(\r\n\t\t\tdotCheckSize * 0.35 * sprite._cosAngle + dotCheckSize * 0.35 * sprite._sinAngle,\r\n\t\t\t-dotCheckSize * 0.35 * sprite._cosAngle + dotCheckSize * 0.35 * sprite._sinAngle\r\n\t\t);\r\n\r\n\t\t//Logs.trace(\"Guide at \" + corners[0].x + \", \" + corners[0].y + \" sprite at \" + sprite.x + \", \" + sprite.y);\r\n\r\n\t\tif(sprite is FunkinSprite) {\r\n\t\t\tvar sprite:FunkinSprite = cast sprite;\r\n\t\t\tvar corner0 = corners[0];\r\n\t\t\tvar corner1 = corners[1];\r\n\t\t\tvar corner2 = corners[2];\r\n\t\t\tvar corner3 = corners[3];\r\n\t\t\tvar maxX = MathUtil.maxSmart(corner0.x, corner1.x, corner2.x, corner3.x);\r\n\t\t\tvar maxY = MathUtil.maxSmart(corner0.y, corner1.y, corner2.y, corner3.y);\r\n\t\t\tvar minX = MathUtil.minSmart(corner0.x, corner1.x, corner2.x, corner3.x);\r\n\t\t\tvar minY = MathUtil.minSmart(corner0.y, corner1.y, corner2.y, corner3.y);\r\n\r\n\t\t\tif(!sprite.extra.exists(exID(\"bounds\"))) {\r\n\t\t\t\tsprite.extra.set(exID(\"bounds\"), new FlxRect());\r\n\t\t\t}\r\n\t\t\tcast(sprite.extra.get(exID(\"bounds\")), FlxRect).set(minX, minY, maxX - minX, maxY - minY);\r\n\t\t}\r\n\r\n\t\t// reset hitbox to old values\r\n\t\tsprite.width = oldWidth;\r\n\t\tsprite.height = oldHeight;\r\n\r\n\t\treturn corners;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dotCheckSize",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

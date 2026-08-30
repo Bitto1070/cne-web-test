@@ -1,0 +1,411 @@
+{
+	"kind": "class",
+	"name": "AssetsLibraryList",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "libraries",
+			"type": "Array<AssetLibrary>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cleanLibraries",
+			"type": "Array<AssetLibrary>",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rootDirectory",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hasCompressedLibrary",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "base",
+			"type": "AssetLibrary",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transLib",
+			"type": "TranslatedAssetLibrary",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeLibrary",
+			"args": [
+				{
+					"name": "lib",
+					"type": "AssetLibrary",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic function removeLibrary(lib:AssetLibrary) {\r\n\t\tif (lib != null) {\r\n\t\t\tlibraries.remove(lib);\r\n\t\t\t#if TRANSLATIONS_SUPPORT\r\n\t\t\t// TODO: improve this code\r\n\t\t\tfor(k=>l in libraries) {\r\n\t\t\t\tif(l == null) continue;\r\n\t\t\t\tif(l is TranslatedAssetLibrary) {\r\n\t\t\t\t\tvar tlib = cast(l, TranslatedAssetLibrary);\r\n\t\t\t\t\tvar lib:Dynamic = lib;\r\n\t\t\t\t\tif(tlib.forLibrary == lib) {\r\n\t\t\t\t\t\tlibraries.remove(tlib);\r\n\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\t#end\r\n\t\t}\r\n\t\treturn lib;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "existsSpecific",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function existsSpecific(id:String, type:String, source:AssetSource = BOTH) {\r\n\t\tif (!id.startsWith(\"assets/\") && existsSpecific('assets/$id', type, source))\r\n\t\t\treturn true;\r\n\r\n\t\t// Prevent massive lags on repetitive usage, primarily with getting note sprite sheets in mania charts (usually 2k+ notes)\r\n\t\tfinal time = haxe.Timer.stamp();\r\n\r\n\t\tvar cacheLibraryTypes = existsSpecificCacheLibrary.get(source), cacheTimeTypes = existsSpecificCacheTime.get(source);\r\n\t\tif (cacheLibraryTypes == null) {\r\n\t\t\texistsSpecificCacheLibrary.set(source, cacheLibraryTypes = []);\r\n\t\t\texistsSpecificCacheTime.set(source, cacheTimeTypes = []);\r\n\t\t}\r\n\r\n\t\tvar cacheLibraryPaths = cacheLibraryTypes.get(type), cacheTimePaths = cacheTimeTypes.get(type);\r\n\t\tif (cacheLibraryPaths == null) {\r\n\t\t\tcacheLibraryTypes.set(type, cacheLibraryPaths = []);\r\n\t\t\tcacheTimeTypes.set(type, cacheTimePaths = []);\r\n\t\t}\r\n\r\n\t\tif (cacheTimePaths.exists(id)) {\r\n\t\t\tfinal cacheSafeTime = cacheTimePaths.get(id) + 6, library = cacheLibraryPaths.get(id);\r\n\t\t\tif (library != null) {\r\n\t\t\t\tif (time < cacheSafeTime) return true;\r\n\t\t\t\telse if (!shouldSkipLib(library, source) && library.exists(id, type)) {\r\n\t\t\t\t\tcacheTimePaths.set(id, time);\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tcacheLibraryPaths.remove(id);\r\n\t\t\t}\r\n\t\t\telse if (time < cacheSafeTime) {\r\n\t\t\t\treturn false;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tcacheTimePaths.set(id, time);\r\n\r\n\t\tfor (library in libraries) {\r\n\t\t\tif (shouldSkipLib(library, source)) continue;\r\n\t\t\tif (library.exists(id, type)) {\r\n\t\t\t\tcacheLibraryPaths.set(id, library);\r\n\t\t\t\treturn true;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public override inline function exists(id:String, type:String):Bool\r\n\t\treturn existsSpecific(id, type, BOTH);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSpecificPath",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSpecificPath(id:String, source:AssetSource = BOTH) {\r\n\t\tfor(k=>e in libraries) {\r\n\t\t\tif (shouldSkipLib(e, source)) continue;\r\n\r\n\t\t\t@:privateAccess\r\n\t\t\tif (e.exists(id, e.types.get(id))) {\r\n\t\t\t\tvar path = e.getPath(id);\r\n\t\t\t\tif (path != null)\r\n\t\t\t\t\treturn path;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPath",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public override inline function getPath(id:String)\r\n\t\treturn getSpecificPath(id, BOTH);",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getFiles",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getFiles(folder:String, source:AssetSource = BOTH):Array<String> {\r\n\t\tvar content:Array<String> = [];\r\n\t\tfor(k=>l in libraries) {\r\n\t\t\tif (shouldSkipLib(l, source)) continue;\r\n\r\n\t\t\tl = getCleanLibrary(l);\r\n\r\n\t\t\t// TODO: do base folder scanning\r\n\t\t\t#if MOD_SUPPORT\r\n\t\t\tif (l is IModsAssetLibrary) {\r\n\t\t\t\tvar lib = cast(l, IModsAssetLibrary);\r\n\t\t\t\tfor(e in lib.getFiles(folder))\r\n\t\t\t\t\tcontent.pushOnce(e);\r\n\t\t\t}\r\n\t\t\t#end\r\n\t\t}\r\n\t\treturn content;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFolders",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getFolders(folder:String, source:AssetSource = BOTH):Array<String> {\r\n\t\tvar content:Array<String> = [];\r\n\t\tfor(k=>l in libraries) {\r\n\t\t\tif (shouldSkipLib(l, source)) continue;\r\n\r\n\t\t\tl = getCleanLibrary(l);\r\n\r\n\t\t\t// TODO: do base folder scanning\r\n\t\t\t#if MOD_SUPPORT\r\n\t\t\tif (l is IModsAssetLibrary) {\r\n\t\t\t\tvar lib = cast(l, IModsAssetLibrary);\r\n\t\t\t\tfor(e in lib.getFolders(folder))\r\n\t\t\t\t\tcontent.pushOnce(e);\r\n\t\t\t}\r\n\t\t\t#end\r\n\t\t}\r\n\t\treturn content;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSpecificAsset",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSpecificAsset(id:String, type:String, source:AssetSource = BOTH):Dynamic {\r\n\t\ttry {\r\n\t\t\tif (!id.startsWith(\"assets/\")) {\r\n\t\t\t\tvar ass = getSpecificAsset('assets/$id', type, source);\r\n\t\t\t\tif (ass != null) {\r\n\t\t\t\t\treturn ass;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tfor(k=>l in libraries) {\r\n\t\t\t\tif (shouldSkipLib(l, source)) continue;\r\n\r\n\t\t\t\t@:privateAccess\r\n\t\t\t\tif (l.exists(id, l.types.get(id))) {\r\n\t\t\t\t\tvar asset = l.getAsset(id, type);\r\n\t\t\t\t\tif (asset != null) {\r\n\t\t\t\t\t\treturn asset;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\treturn null;\r\n\t\t} catch(e) {\r\n\t\t\t// TODO: trace the error\r\n\t\t\tthrow e;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAsset",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public override inline function getAsset(id:String, type:String):Dynamic\r\n\t\treturn getSpecificAsset(id, type, BOTH);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "list",
+			"args": [
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function list(type:String):Array<String> {\r\n\t\t// idk if there's a more efficient way tbh, correct if u find better\r\n\t\tvar files:Map<String, Bool> = [];\r\n\t\tfor(k=>l in libraries) {\r\n\t\t\tfor(f in l.list(type))\r\n\t\t\t\tfiles.set(f, false);\r\n\t\t}\r\n\t\treturn [for(k=>e in files) k];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isLocal",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function isLocal(id:String, type:String) {\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "base",
+					"type": "AssetLibrary",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?base:AssetLibrary) {\r\n\t\tsuper();\r\n\t\tif (base == null) (this.base = Assets.getLibrary(\"default\")).tag = SOURCE;\r\n\t\telse this.base = base;\r\n\t\t__defaultLibraries.push(this.base);\r\n\r\n\t\t#if sys\r\n\r\n\t\t#if TEST_BUILD\r\n\t\tLogs.infos(\"Used cne test / cne build. Switching into source assets.\");\r\n\t\tswitchToSourceAssets();\r\n\t\t#elseif USE_ADAPTED_ASSETS\r\n\t\tif (sys.FileSystem.exists('./${Main.pathBack}assets/') && !sys.FileSystem.exists('./assets/')) {\r\n\t\t\tLogs.infos(\"Source assets detected. Switching into source assets.\");\r\n\t\t\tswitchToSourceAssets();\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\t__defaultLibraries.push(ModsFolder.loadLibraryFromFolder('assets', rootDirectory, true, null, SOURCE));\r\n\r\n\t\t#end\r\n\r\n\t\tfor (d in __defaultLibraries) addLibrary(d);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "unloadLibraries",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic function unloadLibraries() {\r\n\t\tfor(l in libraries)\r\n\t\t\tif (!__defaultLibraries.contains(l))\r\n\t\t\t\tl.unload();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reset() {\r\n\t\tunloadLibraries();\r\n\r\n\t\tfor(source in [AssetSource.SOURCE, AssetSource.MODS, AssetSource.BOTH]) {\r\n\t\t\texistsSpecificCacheLibrary[source]?.clear();\r\n\t\t\texistsSpecificCacheTime[source]?.clear();\r\n\t\t}\r\n\t\texistsSpecificCacheLibrary.clear();\r\n\t\texistsSpecificCacheTime.clear();\r\n\r\n\t\tlibraries.resize(0);\r\n\r\n\t\t// adds default libraries in again\r\n\t\tfor (d in __defaultLibraries) addLibrary(d);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addLibrary",
+			"args": [
+				{
+					"name": "lib",
+					"type": "AssetLibrary",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "tag",
+					"type": "AssetSource",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "addTransLib",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addLibrary(lib:AssetLibrary, ?tag:AssetSource, ?addTransLib:Bool = true) {\r\n\t\tlibraries.insert(0, lib);\r\n\t\tif (tag != null) lib.tag = tag;\r\n\t\telse if (lib.tag == null) lib.tag = MODS;\r\n\t\t#if TRANSLATIONS_SUPPORT\r\n\t\tif(addTransLib) {\r\n\t\t\tvar cleanLib = getCleanLibrary(lib);\r\n\t\t\tif(cleanLib != null && (cleanLib is IModsAssetLibrary)) {\r\n\t\t\t\tvar transLib = new TranslatedAssetLibrary(cast(cleanLib, IModsAssetLibrary));\r\n\t\t\t\ttransLib.tag = cleanLib.tag;\r\n\t\t\t\tlibraries.insert(0, transLib);\r\n\t\t\t}\r\n\t\t}\r\n\t\t#end\r\n\t\treturn lib;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getCleanLibrary",
+			"args": [
+				{
+					"name": "e",
+					"type": "AssetLibrary",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AssetLibrary",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getCleanLibrary(e:AssetLibrary):AssetLibrary {\r\n\t\tvar l = e;\r\n\t\tif (l is openfl.utils.AssetLibrary) {\r\n\t\t\tvar al = cast(l, openfl.utils.AssetLibrary);\r\n\t\t\t@:privateAccess\r\n\t\t\tif (al.__proxy != null) l = al.__proxy;\r\n\t\t}\r\n\t\treturn l;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

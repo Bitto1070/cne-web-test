@@ -1,0 +1,176 @@
+{
+	"kind": "class",
+	"name": "ScriptableShader",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:access(funkin.backend.shaders.FunkinShader)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "shader",
+			"type": "FunkinShader",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "shader",
+					"type": "FunkinShader",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scriptName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "parentScriptPack",
+					"type": "ScriptPack",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(shader:FunkinShader, ?scriptName:String, ?parentScriptPack:ScriptPack) {\r\n\t\tsuper();\r\n\r\n\t\tif(parentScriptPack == null && PlayState.instance != null)\r\n\t\t\tparentScriptPack = PlayState.instance.scripts;\r\n\r\n\t\tif(scriptName == null)\r\n\t\t\tif((shader is CustomShader)) scriptName = cast(shader, CustomShader).fileName;\r\n\t\t\telse throw \"Missing name for shader script, please provide a scriptName, or use CustomShader\";\r\n\r\n\t\tthis.shader = shader;\r\n\r\n\t\tscript = Script.create(Paths.script('shaders/$scriptName'));\r\n\t\tscript.setParent(shader);\r\n\t\tscript.set(\"shader\", shader);\r\n\t\tscript.set(\"registerParameter\", shader.registerParameter);\r\n\t\tscript.set(\"registerField\", (name:String, get: Void->Dynamic, set: Dynamic->Dynamic) -> {\r\n\t\t\tregisterField(name, get, set);\r\n\t\t});\r\n\t\tscript.set(\"registerShaderField\", (name:String, shaderField:String) -> {\r\n\t\t\tvar get = () -> shader.hget(shaderField);\r\n\t\t\tvar set = (value:Dynamic) -> {\r\n\t\t\t\tvar val = shader.hset(shaderField, value);\r\n\t\t\t\tscript.set(name, val);\r\n\t\t\t\treturn val;\r\n\t\t\t};\r\n\t\t\tregisterField(name, get, set);\r\n\t\t\tvar gg = script.get(name);\r\n\t\t\tif(gg != null) {\r\n\t\t\t\tshader.hset(shaderField, gg);\r\n\t\t\t}\r\n\t\t});\r\n\t\tif(parentScriptPack != null)\r\n\t\t\tscript.setPublicMap(parentScriptPack.publicVariables);\r\n\t\tscript.load();\r\n\t\tscript.call(\"create\");\r\n\r\n\t\tshader.onGLUpdate.add(updateGL);\r\n\t\tshader.onProcessGLData.add(processGLData);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) script.call(\"update\", [elapsed]);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() script.call(\"draw\", []);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateGL",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateGL() script.call(\"updateGL\", []);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "processGLData",
+			"args": [
+				{
+					"name": "source",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "storageType",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function processGLData(source:String, storageType:String) {\r\n\t\tvar event = EventManager.get(ShaderProcessEvent).recycle(source, storageType);\r\n\t\tscript.call(\"processGLData\", [event]);\r\n\t\tif(event.cancelled)\r\n\t\t\tshader.__cancelNextProcessGLData = true;\r\n\t\tscript.call(\"processGLDataPost\", [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tshader.onGLUpdate.remove(updateGL);\r\n\t\tshader.onProcessGLData.remove(processGLData);\r\n\t\tif(script != null) {\r\n\t\t\tscript.call(\"destroy\");\r\n\t\t\tscript.destroy();\r\n\t\t}\r\n\t\tfields = null;\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hget",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hget(name:String):Dynamic {\r\n\t\tif(fields.exists(name))\r\n\t\t\treturn fields.get(name).get();\r\n\t\tif (__instanceFields.contains(name) || __instanceFields.contains('get_${name}'))\r\n\t\t\treturn Reflect.getProperty(this, name);\r\n\t\treturn shader.hget(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hset",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "val",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hset(name:String, val:Dynamic):Dynamic {\r\n\t\tif (fields.exists(name)) {\r\n\t\t\treturn fields.get(name).set(val);\r\n\t\t}\r\n\t\tif (__instanceFields.contains(name) || __instanceFields.contains('set_${name}')) {\r\n\t\t\tReflect.setProperty(this, name, val);\r\n\t\t\treturn val;\r\n\t\t}\r\n\t\treturn shader.hset(name, val);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,273 @@
+{
+	"kind": "final class",
+	"name": "Windows",
+	"pkg": "funkin.backend.utils.native",
+	"doc": null,
+	"meta": [
+		"@:buildXml('\r\n<target id=\"haxe\">\r\n\t<lib name=\"dwmapi.lib\" if=\"windows\" />\r\n\t<lib name=\"shell32.lib\" if=\"windows\" />\r\n\t<lib name=\"gdi32.lib\" if=\"windows\" />\r\n\t<lib name=\"ole32.lib\" if=\"windows\" />\r\n\t<lib name=\"uxtheme.lib\" if=\"windows\" />\r\n</target>\r\n')",
+		"@:cppFileCode('\r\n#include \"mmdeviceapi.h\"\r\n#include \"combaseapi.h\"\r\n#include <iostream>\r\n#include <Windows.h>\r\n#include <cstdio>\r\n#include <tchar.h>\r\n#include <dwmapi.h>\r\n#include <winuser.h>\r\n#include <Shlobj.h>\r\n#include <wingdi.h>\r\n#include <shellapi.h>\r\n#include <uxtheme.h>\r\n')",
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "setDarkMode",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "enable",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function setDarkMode(title:String, enable:Bool) {}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\tint darkMode = enable ? 1 : 0;\r\n\r\n\t\tHWND window = FindWindowA(NULL, title.c_str());\r\n\t\t// Look for child windows if top level is not found\r\n\t\tif (window == NULL) window = FindWindowExA(GetActiveWindow(), NULL, NULL, title.c_str());\r\n\t\t// If still not found, try to get the active window\r\n\t\tif (window == NULL) window = GetActiveWindow();\r\n\t\tif (window == NULL) return;\r\n\r\n\t\tif (S_OK != DwmSetWindowAttribute(window, 19, &darkMode, sizeof(darkMode))) {\r\n\t\t\tDwmSetWindowAttribute(window, 20, &darkMode, sizeof(darkMode));\r\n\t\t}\r\n\t\tUpdateWindow(window);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setWindowBorderColor",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "Array<Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "setHeader",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "setBorder",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function setWindowBorderColor(title:String, color:Array<Int>, setHeader:Bool = true, setBorder:Bool = true) {}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\tHWND window = FindWindowA(NULL, title.c_str());\r\n\tif (window == NULL) window = FindWindowExA(GetActiveWindow(), NULL, NULL, title.c_str());\r\n\tif (window == NULL) window = GetActiveWindow();\r\n\tif (window == NULL) return;\r\n\r\n\tCOLORREF finalColor;\r\n\tif(color[0] == -1 && color[1] == -1 && color[2] == -1 && color[3] == -1) { // bad fix, I know :sob:\r\n\t\tfinalColor = 0xFFFFFFFF; // Default border\r\n\t} else if(color[3] == 0) {\r\n\t\tfinalColor = 0xFFFFFFFE; // No border (must have setBorder as true)\r\n\t} else {\r\n\t\tfinalColor = RGB(color[0], color[1], color[2]); // Use your custom color\r\n\t}\r\n\r\n\tif(setHeader) DwmSetWindowAttribute(window, 35, &finalColor, sizeof(COLORREF));\r\n\tif(setBorder) DwmSetWindowAttribute(window, 34, &finalColor, sizeof(COLORREF));\r\n\r\n\tUpdateWindow(window);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setWindowTitleColor",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "Array<Int>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function setWindowTitleColor(title:String, color:Array<Int>) {}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\tHWND window = FindWindowA(NULL, title.c_str());\r\n\tif (window == NULL) window = FindWindowExA(GetActiveWindow(), NULL, NULL, title.c_str());\r\n\tif (window == NULL) window = GetActiveWindow();\r\n\tif (window == NULL) return;\r\n\r\n\tCOLORREF finalColor;\r\n\tif(color[0] == -1 && color[1] == -1 && color[2] == -1 && color[3] == -1) { // bad fix, I know :sob:\r\n\t\tfinalColor = 0xFFFFFFFF; // Default border\r\n\t} else {\r\n\t\tfinalColor = RGB(color[0], color[1], color[2]); // Use your custom color\r\n\t}\r\n\r\n\tDwmSetWindowAttribute(window, 36, &finalColor, sizeof(COLORREF));\r\n\tUpdateWindow(window);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setWindowIcon",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function setWindowIcon(path:String) {}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\tHWND window = GetConsoleWindow();\r\n\tHICON smallIcon = (HICON) LoadImage(NULL, path, IMAGE_ICON, 16, 16, LR_LOADFROMFILE);\r\n\tHICON icon = (HICON) LoadImage(NULL, path, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE);\r\n\tSendMessage(window, WM_SETICON, ICON_SMALL, (LPARAM)smallIcon);\r\n\tSendMessage(window, WM_SETICON, ICON_BIG, (LPARAM)icon);    \r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "allocConsole",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function allocConsole() {\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t// https://stackoverflow.com/questions/15543571/allocconsole-not-displaying-cout\r\n\r\n\tif (!AllocConsole())\r\n\t\treturn;\r\n\r\n\tfreopen(\"CONIN$\", \"r\", stdin);\r\n\tfreopen(\"CONOUT$\", \"w\", stdout);\r\n\tfreopen(\"CONOUT$\", \"w\", stderr);\r\n\r\n\tSetConsoleOutputCP(65001);\r\n\tSetConsoleCP(65001);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getFileAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FileAttribute",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function getFileAttributes(path:String):FileAttribute\r\n\t{\r\n\t\treturn NORMAL;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\treturn GetFileAttributes(path);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setFileAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "FileAttribute",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function setFileAttributes(path:String, attrib:FileAttribute):Int\r\n\t{\r\n\t\treturn 0;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\treturn SetFileAttributes(path, attrib);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setConsoleColors",
+			"args": [
+				{
+					"name": "color",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function setConsoleColors(color:Int) {\r\n\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\tHANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);\r\n\t\tSetConsoleTextAttribute(console, color);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "clearScreen",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function clearScreen() {\r\n\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\tsystem(\"CLS\");\r\n\t\tstd::cout<< \"\" <<std::flush;\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "showMessageBox",
+			"args": [
+				{
+					"name": "caption",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "message",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "icon",
+					"type": "MessageBoxIcon",
+					"optional": false,
+					"def": "MSG_WARNING"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function showMessageBox(caption:String, message:String, icon:MessageBoxIcon = MSG_WARNING) {\r\n\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\tMessageBox(GetActiveWindow(), message, caption, icon | MB_SETFOREGROUND);\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "registerAsDPICompatible",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function registerAsDPICompatible() {}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\t\tSetProcessDPIAware();\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getTotalRam",
+			"args": [],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "\")\r\n\tpublic static function getTotalRam():Float\r\n\t{\r\n\t\treturn 0;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode(\"\r\n\t\t// simple but effective code\r\n\t\tunsigned long long allocatedRAM = 0;\r\n\t\tGetPhysicallyInstalledSystemMemory(&allocatedRAM);\r\n\t\treturn (allocatedRAM / 1024);\r\n\t\")"
+			]
+		}
+	]
+}

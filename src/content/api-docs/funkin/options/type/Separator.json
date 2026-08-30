@@ -1,0 +1,27 @@
+{
+	"kind": "class",
+	"name": "Separator",
+	"pkg": "funkin.options.type",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "height",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "67.0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(height = 67.0) {\r\n\t\tsuper();\r\n\t\tseparatorHeight = height;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

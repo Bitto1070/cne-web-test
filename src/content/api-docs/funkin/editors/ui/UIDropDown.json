@@ -1,0 +1,251 @@
+{
+	"kind": "class",
+	"name": "UIDropDown",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "dropButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dropIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "label",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "index",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "options",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "items",
+			"type": "Array<DropDownItem>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "key",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "value",
+			"type": "Dynamic",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onChange",
+			"type": "Int->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getItems",
+			"args": [
+				{
+					"name": "options",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<DropDownItem>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getItems(options:Array<String>):Array<DropDownItem> {\r\n\t\treturn [for(i=>o in options) {label: o, value: i}];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": "320"
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": "32"
+				},
+				{
+					"name": "_options",
+					"type": "Array<OneOfTwo<DropDownItem, String>>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, width:Int = 320, height:Int = 32, _options:Array<OneOfTwo<DropDownItem, String>>, index:Int = 0) {\r\n\t\tsuper(x, y, width - height, height, 'editors/ui/inputbox'); // using same sprite cause fuck you\r\n\r\n\t\tvar _items:Array<DropDownItem> = [];\r\n\r\n\t\tif(_options.length > 0) {\r\n\t\t\tif(_options[0] is String) {\r\n\t\t\t\t_items = getItems(_options);\r\n\t\t\t} else {\r\n\t\t\t\t_items = cast _options;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tthis.items = _items;\r\n\t\tthis.options = [for(o in _items) o.label]; // backwards compatibility\r\n\t\tthis.index = index;\r\n\r\n\t\tcursor = CLICK;\r\n\r\n\t\tlabel = new UIText(0, 0, width - height, items[index].label != null ? items[index].label : \"ERROR\");\r\n\t\tmembers.push(label);\r\n\r\n\t\tdropButton = new UIButton(0, 0, null, null, height, height);\r\n\t\tmembers.push(dropButton);\r\n\r\n\t\tdropIcon = new FlxSprite(x-(10+16), y+8).loadGraphic(Paths.image(\"editors/ui/dropdown-button\"));\r\n\t\tdropIcon.antialiasing = false;\r\n\t\tmembers.push(dropIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "indexOfItemValue",
+			"args": [
+				{
+					"name": "items",
+					"type": "Array<DropDownItem>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function indexOfItemValue(items:Array<DropDownItem>, value:Dynamic):Int {\r\n\t\treturn [for(o in items) o.value].indexOf(value);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "indexOfItemLabel",
+			"args": [
+				{
+					"name": "items",
+					"type": "Array<DropDownItem>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function indexOfItemLabel(items:Array<DropDownItem>, str:String):Int {\r\n\t\treturn [for(o in items) o.label].indexOf(str);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setOption",
+			"args": [
+				{
+					"name": "newIndex",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setOption(newIndex:Int) {\r\n\t\tif (index != (index = newIndex)) {\r\n\t\t\tlabel.text = items[index].label;\r\n\t\t\tif (onChange != null)\r\n\t\t\t\tonChange(index);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tvar opened = curMenu.contextMenuOpened();\r\n\t\tframesOffset = (opened || (hovered && FlxG.mouse.pressed)) ? 18 : (hovered ? 9 : 0);\r\n\t\tif (FlxG.mouse.justReleased && (hovered || dropButton.hovered) && !opened)\r\n\t\t\topenContextMenu();\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tlabel.follow(this, 4, Std.int((bHeight - label.height) / 2));\r\n\t\tdropButton.follow(this, bWidth - bHeight, 0);\r\n\t\tdropIcon.follow(dropButton, (dropButton.bWidth/2)-(dropIcon.width/2), (dropButton.bHeight/2)-(dropIcon.height/2));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openContextMenu",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function openContextMenu() {\r\n\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_DROPDOWNAPPEAR_SOUND);\r\n\t\tvar screenPos = getScreenPosition(null, __lastDrawCameras[0] == null ? FlxG.camera : __lastDrawCameras[0]);\r\n\t\tcurMenu = UIState.state.openContextMenu([\r\n\t\t\tfor(k=>o in items) {\r\n\t\t\t\ticon: (k == index) ? 1 : 0,\r\n\t\t\t\tlabel: o.label\r\n\t\t\t}\r\n\t\t], function(_, i, _) {\r\n\t\t\tsetOption(i);\r\n\t\t}, __lastDrawCameras[0].x + screenPos.x, __lastDrawCameras[0].y + screenPos.y + bHeight);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

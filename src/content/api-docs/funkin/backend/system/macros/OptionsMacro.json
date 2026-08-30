@@ -1,0 +1,26 @@
+{
+	"kind": "class",
+	"name": "OptionsMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": {
+		"text": "Macro used in the options class to add getters for the SOLO keybinds.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "build",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function build():Array<Field> {\r\n\t\tvar fields = Context.getBuildFields();\r\n\r\n\t\tfor(f in fields) {\r\n\t\t\tswitch(f.kind) {\r\n\t\t\t\tcase FProp(get, set, t, e):\r\n\t\t\t\t\tif (f.name.startsWith('SOLO_') && get == \"get\" && set == \"null\") {\r\n\t\t\t\t\t\t// Auto-create getters for solo (P1/P2) keybinds\r\n\t\t\t\t\t\tvar name = f.name.substr(5);\r\n\t\t\t\t\t\tvar getterName = 'get_SOLO_$name';\r\n\t\t\t\t\t\tvar ponename = 'P1_$name';\r\n\t\t\t\t\t\tvar ptwoname = 'P2_$name';\r\n\t\t\t\t\t\tvar newFuncExpr:Expr = macro {\r\n\t\t\t\t\t\t\tvar a:Array<FlxKey> = [];\r\n\t\t\t\t\t\t\tfor(e in $i{ponename}) a.push(e);\r\n\t\t\t\t\t\t\tfor(e in $i{ptwoname}) a.push(e);\r\n\t\t\t\t\t\t\treturn a;\r\n\t\t\t\t\t\t};\r\n\r\n\t\t\t\t\t\tfields.push({\r\n\t\t\t\t\t\t\tname: getterName,\r\n\t\t\t\t\t\t\tkind: FFun({\r\n\t\t\t\t\t\t\t\texpr: newFuncExpr,\r\n\t\t\t\t\t\t\t\targs: []\r\n\t\t\t\t\t\t\t}),\r\n\t\t\t\t\t\t\tpos: Context.currentPos(),\r\n\t\t\t\t\t\t\taccess: [APrivate, AStatic, AInline]\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t}\r\n\t\t\t\tdefault:\r\n\t\t\t\t\t// nothing\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

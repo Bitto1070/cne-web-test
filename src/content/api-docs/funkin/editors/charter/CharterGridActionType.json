@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "CharterGridActionType",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

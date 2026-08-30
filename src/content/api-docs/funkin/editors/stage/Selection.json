@@ -1,0 +1,29 @@
+{
+	"kind": "abstract",
+	"name": "Selection",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [
+		"@:forward"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "array",
+					"type": "Array<FunkinSprite>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function new(?array:Array<FunkinSprite>)\r\n\t\tthis = array == null ? [] : array;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

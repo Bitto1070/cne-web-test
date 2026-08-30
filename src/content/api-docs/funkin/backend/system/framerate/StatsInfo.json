@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "StatsInfo",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper(\"Asset Libraries Tree Info\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\r\n\t\tvar buf = new StringBuf();\r\n\t\tStringMacro.addLine(buf, 'totalDC: ${Context3DStats.totalDrawCalls()}');\r\n\t\tStringMacro.addLine(buf, '\\nstageDC: ${Context3DStats.contextDrawCalls(DrawCallContext.STAGE)}');\r\n\t\tStringMacro.addLine(buf, '\\nstage3DDC: ${Context3DStats.contextDrawCalls(DrawCallContext.STAGE3D)}');\r\n\t\t_text = buf.toString();\r\n\r\n\t\tthis.text.text = _text;\r\n\t\tsuper.__enterFrame(t);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

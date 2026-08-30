@@ -1,0 +1,321 @@
+{
+	"kind": "class",
+	"name": "HealthIcon",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "sprTracker",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Attaches the icon to a sprite, following it's position",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sprTrackerAlignment",
+			"type": "TrackerAlignment",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Where to place the icon in relation to the sprite\n\nLEFT: Left of the sprite\n\nCENTER: Center of the sprite\n\nRIGHT: Right of the sprite",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sprTrackerOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Offset of the icon in relation to the sprite\n\nBy default it is set to (10, -30) and is intended to be used with Alphabet",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curCharacter",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The currently showing icon",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isPlayer",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If the character is for the player",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthSteps",
+			"type": "Map<Int, OneOfTwo<String, Int>>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Health steps in this format:\n\nMin Percentage => Frame Index / Animation Name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curAnimState",
+			"type": "OneOfTwo<String, Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current animation state",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultScale",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The Default Scale For The Icon\n\nThis is what scale the icon should return to when its bump animation is finished",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animated",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever or not the icon is animated or not",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xmlData",
+			"type": "Xml",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "XML Animated Icon data\n\n`null` if the icon is not animated or its invalid",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "extraOffsets",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Extra offsets to add when updating the hitbox",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setHealthSteps",
+			"args": [
+				{
+					"name": "steps",
+					"type": "Array<Array<OneOfTwo<String, Int>>>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) @:noCompletion @:deprecated(\"use healthSteps instead\")\r\n\tpublic function setHealthSteps(steps:Array<Array<OneOfTwo<String, Int>>>):Void { // helper for hscript that can't do maps\r\n\t\tif (steps == null) return;\r\n\t\thealthSteps = [];\r\n\t\tfor (s in steps)\r\n\t\t\tif (s.length > 1)\r\n\t\t\t\thealthSteps[s[0]] = s[1];\r\n\r\n\t\tif (Lambda.count(healthSteps) <= 0) healthSteps = [\r\n\t\t\t0 => (this.animated ? \"losing\" : 1), // losing icon\r\n\t\t\t20 => (this.animated ? \"neutral\" : 0), // normal icon\r\n\t\t];\r\n\t}",
+			"doc": {
+				"text": "Helper for HScript who can't make maps\n\nTHIS IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE\n\nPlease set the healthSteps directly in the script instead, hscript does support maps",
+				"params": {
+					"steps": "Something like this: `[[0, 1], [20, 0]]` or `[[0, \"losing\"], [20, \"neutral\"]]` for animated icons"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:dox(hide)",
+				"@:noCompletion",
+				"@:deprecated(\"use healthSteps instead\")"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "char",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "isPlayer",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?char:String, isPlayer:Bool = false)\r\n\t{\r\n\t\tsuper();\r\n\t\thealth = 0.5;\r\n\t\tthis.isPlayer = isPlayer;\r\n\t\tsetIcon(char != null ? char : Flags.DEFAULT_CHARACTER);\r\n\r\n\t\tscrollFactor.set();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "bump",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function bump():Void {\r\n\t\tvar iconScale = Flags.BOP_ICON_SCALE;\r\n\t\tscale.set(defaultScale * iconScale, defaultScale * iconScale);\r\n\t\tupdateHitbox();\r\n\t}",
+			"doc": {
+				"text": "Called every beat, and causes the icon to become bigger",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateBump",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function updateBump():Void {\r\n\t\tvar iconLerp = Flags.ICON_LERP;\r\n\t\tscale.set(CoolUtil.fpsLerp(scale.x, defaultScale, iconLerp), CoolUtil.fpsLerp(scale.y, defaultScale, iconLerp));\r\n\t\tupdateHitbox();\r\n\t}",
+			"doc": {
+				"text": "Called every frame and causes the icon to become smaller",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setIcon",
+			"args": [
+				{
+					"name": "char",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "allowAnimated",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setIcon(char:String, allowAnimated:Bool = true):Void {\r\n\t\tif (curCharacter == char) return;\r\n\r\n\t\tvar oldIconPath = 'icons/$char';\r\n\t\tvar newIconPath = 'icons/$char/icon';\r\n\r\n\t\tif (!Assets.exists(Paths.image(oldIconPath)) && !Assets.exists(Paths.image(newIconPath))) {\r\n\t\t\tchar = 'face';\r\n\t\t\toldIconPath = 'icons/$char';\r\n\t\t\tnewIconPath = 'icons/$char/icon';\r\n\t\t}\r\n\t\tcurCharacter = char;\r\n\r\n\t\tvar iconPath = Assets.exists(Paths.image(oldIconPath)) ? oldIconPath : newIconPath;\r\n\t\tvar iconXmlPath = Paths.getPath('images/icons/$char/data.xml');\r\n\t\tvar iconFoundData = Assets.exists(iconXmlPath);\r\n\r\n\t\ttry {\r\n\t\t\txmlData = iconFoundData ? Xml.parse(Assets.getText(iconXmlPath)) : null;\r\n\t\t} catch(e) {\r\n\t\t\tLogs.trace('Error while parsing icon data for $char: ${e.message}', ERROR);\r\n\t\t\txmlData = null;\r\n\t\t}\r\n\t\tvar xmlValid = xmlData != null && (xmlData = xmlData.firstElement()) != null;\r\n\r\n\t\tthis.animated = allowAnimated && iconFoundData && xmlValid && Paths.framesExists(Paths.image(newIconPath), true, true, true);\r\n\r\n\t\tvar iconAmt:Int = 0;\r\n\t\tvar iconSize:Int = 0;\r\n\t\tvar iconIsPlayer = xmlValid ? xmlData.get(\"facing\").getDefault(\"right\").toLowerCase() == \"left\" : false;\r\n\r\n\t\tif (this.animated)\r\n\t\t\tloadSprite(Paths.image(newIconPath));\r\n\t\telse {\r\n\t\t\tvar iconAsset:FlxGraphic = FlxG.bitmap.add(Paths.image(iconPath));\r\n\t\t\tvar assetW:Float = iconAsset.width;\r\n\t\t\tvar assetH:Float = iconAsset.height;\r\n\r\n\t\t\ticonAmt = Math.round(assetW / assetH); // Just in case the icon is in a weird aspect ratio\r\n\t\t\ticonSize = Math.floor(assetW / iconAmt);\r\n\t\t\tif (iconSize * iconAmt > assetW) {\r\n\t\t\t\ticonSize = Math.floor(assetW / iconAmt);\r\n\t\t\t\ticonAmt = Math.floor(assetW / iconSize);\r\n\t\t\t}\r\n\r\n\t\t\tloadGraphic(iconAsset, true, Std.int(Math.min(iconSize, assetW)), Std.int(Math.min(iconSize, assetH)));\r\n\r\n\t\t\tanimation.add(char, [for(i in 0...iconAmt) i], 0, false, isPlayer != iconIsPlayer);\r\n\t\t\tanimation.play(char);\r\n\t\t}\r\n\r\n\t\tif(!animation.onFinishEnd.has(animFinishCallback))\r\n\t\t\tanimation.onFinishEnd.add(animFinishCallback);\r\n\r\n\t\tvar parsedSteps:Map<Int, String> = [];\r\n\r\n\t\tantialiasing = true;\r\n\t\tif (xmlValid) {\r\n\t\t\tif (xmlData.exists(\"antialiasing\"))\r\n\t\t\t\tantialiasing = xmlData.get(\"antialiasing\").toLowerCase() == \"true\";\r\n\t\t\tif (xmlData.exists(\"offsetX\"))\r\n\t\t\t\textraOffsets.x = Std.parseFloat(xmlData.get(\"offsetX\")).getDefault(0);\r\n\t\t\tif (xmlData.exists(\"offsetY\"))\r\n\t\t\t\textraOffsets.y = Std.parseFloat(xmlData.get(\"offsetY\")).getDefault(0);\r\n\r\n\t\t\tfor (node in xmlData.elements())\r\n\t\t\t\tswitch(node.nodeName) {\r\n\t\t\t\t\tcase \"transition\":\r\n\t\t\t\t\t\tif (this.animated == false) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <transition> is not allowed when not animated', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif (!node.exists(\"anim\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <transition> is missing anim', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif (!node.exists(\"to\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <transition> is missing to', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif (!node.exists(\"from\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <transition> is missing from', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tvar animName = 'from-${node.get(\"from\")}-to-${node.get(\"to\")}';\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tvar offsetX:Float = 0;\r\n\t\t\t\t\t\tvar offsetY:Float = 0;\r\n\t\t\t\t\t\tif (node.exists(\"offsetX\"))\r\n\t\t\t\t\t\t\toffsetX = Std.parseFloat(node.get(\"offsetX\")).getDefault(0);\r\n\t\t\t\t\t\telse if (node.exists(\"offsetx\"))\r\n\t\t\t\t\t\t\toffsetX = Std.parseFloat(node.get(\"offsetx\")).getDefault(0);\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tif (node.exists(\"offsetY\"))\r\n\t\t\t\t\t\t\toffsetY = Std.parseFloat(node.get(\"offsetY\")).getDefault(0);\r\n\t\t\t\t\t\telse if (node.exists(\"offsety\"))\r\n\t\t\t\t\t\t\toffsetY = Std.parseFloat(node.get(\"offsety\")).getDefault(0);\r\n\r\n\t\t\t\t\t\taddAnim(animName, node.get(\"anim\"), Std.parseInt(node.get(\"fps\")).getDefault(24), false, null, null, offsetX, offsetY); // don't allow looping for transitions\r\n\t\t\t\t\t\tif (animation.exists(animName))\r\n\t\t\t\t\t\t\tanimation.getByName(animName).flipX = isPlayer != iconIsPlayer;\r\n\t\t\t\t\tcase \"anim\":\r\n\t\t\t\t\t\tif (!this.animated) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <anim> is not allowed when not animated', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif (!node.exists(\"name\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <anim> is missing name', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif (!node.exists(\"anim\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <anim> is missing anim', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tvar animName = node.get(\"name\");\r\n\r\n\t\t\t\t\t\tvar offsetX:Float = 0;\r\n\t\t\t\t\t\tvar offsetY:Float = 0;\r\n\t\t\t\t\t\tif (node.exists(\"offsetX\"))\r\n\t\t\t\t\t\t\toffsetX = Std.parseFloat(node.get(\"offsetX\")).getDefault(0);\r\n\t\t\t\t\t\telse if (node.exists(\"offsetx\"))\r\n\t\t\t\t\t\t\toffsetX = Std.parseFloat(node.get(\"offsetx\")).getDefault(0);\r\n\r\n\t\t\t\t\t\tif (node.exists(\"offsetY\"))\r\n\t\t\t\t\t\t\toffsetY = Std.parseFloat(node.get(\"offsetY\")).getDefault(0);\r\n\t\t\t\t\t\telse if (node.exists(\"offsety\"))\r\n\t\t\t\t\t\t\toffsetY = Std.parseFloat(node.get(\"offsety\")).getDefault(0);\r\n\r\n\t\t\t\t\t\tvar looped:Bool = false;\r\n\t\t\t\t\t\tif (node.exists(\"looped\"))\r\n\t\t\t\t\t\t\tlooped = node.get(\"looped\").toLowerCase() == \"true\";\r\n\t\t\t\t\t\telse if (node.exists(\"loop\"))\r\n\t\t\t\t\t\t\tlooped = node.get(\"loop\").toLowerCase() == \"true\";\r\n\r\n\t\t\t\t\t\taddAnim(animName, node.get(\"anim\"), Std.parseInt(node.get(\"fps\")).getDefault(24), looped, null, null, offsetX, offsetY);\r\n\t\t\t\t\t\tif (animation.exists(animName))\r\n\t\t\t\t\t\t\tanimation.getByName(animName).flipX = isPlayer != iconIsPlayer;\r\n\t\t\t\t\tcase \"step\":\r\n\t\t\t\t\t\tif (!node.exists(\"percent\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <step> is missing percent', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif (!node.exists(\"name\")) {\r\n\t\t\t\t\t\t\tLogs.trace('Icon ${char} data <step> is missing name', WARNING);\r\n\t\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tparsedSteps.set(Std.parseInt(node.get(\"percent\")).getDefault(0), node.get(\"name\"));\r\n\t\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (Lambda.count(parsedSteps) > 0) {\r\n\t\t\thealthSteps = parsedSteps;\r\n\t\t} else {\r\n\t\t\tvar hasLosing = this.animated ? hasAnim(\"losing\") : iconAmt >= 2;\r\n\t\t\tvar hasWinning = this.animated ? hasAnim(\"winning\") : iconAmt >= 3;\r\n\r\n\t\t\tif (hasLosing) {\r\n\t\t\t\thealthSteps = [\r\n\t\t\t\t\t0  => (this.animated ? \"losing\" : 1), // losing icon\r\n\t\t\t\t\t20 => (this.animated ? \"neutral\" : 0), // normal icon\r\n\t\t\t\t];\r\n\t\t\t} else {\r\n\t\t\t\thealthSteps = [\r\n\t\t\t\t\t0 => (this.animated ? \"neutral\" : 0), // normal icon\r\n\t\t\t\t];\r\n\t\t\t}\r\n\t\t\tif (hasWinning)\r\n\t\t\t\thealthSteps.set(80, this.animated ? \"winning\" : 2); // winning icon\r\n\t\t}\r\n\t\tvar data = getIconAnim(health);\r\n\t\tif (data.isValid) {\r\n\t\t\tif (this.animated)\r\n\t\t\t\tplayAnim(data.animState);\r\n\t\t\telse\r\n\t\t\t\tanimation.curAnim.curFrame = data.animState;\r\n\t\t\tcurAnimState = data.animState;\r\n\t\t}\r\n\r\n\t\tsetGraphicSize(150);\r\n\t\tupdateHitbox();\r\n\r\n\t\tdefaultScale = (xmlValid && xmlData.exists(\"scale\")) ? Std.parseFloat(xmlData.get(\"scale\")).getDefault(scale.x) : scale.x;\r\n\t\tscale.set(defaultScale, defaultScale);\r\n\t\tupdateHitbox();\r\n\t}",
+			"doc": {
+				"text": "Sets the icon to the specified character",
+				"params": {
+					"char": "Character to set the icon to",
+					"allowAnimated": "Whenever the icon can be animated"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getIconAnim",
+			"args": [
+				{
+					"name": "health",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "IconAnimData",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function getIconAnim(health:Float):IconAnimData {\r\n\t\tvar i:OneOfTwo<String, Int> = -1;\r\n\t\tvar oldKey:Int = -1;\r\n\t\tvar isValid = false;\r\n\t\tfor (k=>icon in healthSteps) if (k > oldKey && k <= health * 100) {\r\n\t\t\toldKey = k;\r\n\t\t\ti = icon;\r\n\t\t\tisValid = true;\r\n\t\t}\r\n\r\n\t\ti = normalizeAnim(i);\r\n\r\n\t\treturn new IconAnimData(i, isValid);\r\n\t}",
+			"doc": {
+				"text": "Gets the animation data for a specific health percentage",
+				"params": {
+					"health": "Health percentage"
+				},
+				"returns": "Animation data (-1 if invalid)",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

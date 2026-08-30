@@ -1,0 +1,48 @@
+{
+	"kind": "class",
+	"name": "LanguageRadio",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "langID",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "screen",
+					"type": "TreeMenuScreen",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "langID",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(screen:TreeMenuScreen, name:String, langID:String) {\r\n\t\tthis.langID = langID;\r\n\t\tsuper(screen, name, \"LanguageOptions.language-desc\", null, langID, null, \"languageSelector\");\r\n\r\n\t\tchecked = langID == TU.curLanguage;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

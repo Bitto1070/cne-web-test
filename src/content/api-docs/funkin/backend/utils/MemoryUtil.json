@@ -1,0 +1,176 @@
+{
+	"kind": "final class",
+	"name": "MemoryUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Tools that are related to memory.\nIncluding garbage collection, and memory usage, and hardware info.\n\nDISCLAIMER: Hardware info is only available on Native platforms.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "disableCount",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "askDisable",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function askDisable() {\r\n\t\tdisableCount++;\r\n\t\tif (disableCount > 0)\r\n\t\t\tdisable();\r\n\t\telse\r\n\t\t\tenable();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "askEnable",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function askEnable() {\r\n\t\tdisableCount--;\r\n\t\tif (disableCount > 0)\r\n\t\t\tdisable();\r\n\t\telse\r\n\t\t\tenable();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clearMinor",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function clearMinor() {\r\n\t\t#if (cpp || java || neko)\r\n\t\tGc.run(false);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Does a minor garbage collection.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clearMajor",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function clearMajor() {\r\n\t\t#if cpp\r\n\t\tGc.run(true);\r\n\t\tGc.compact();\r\n\t\t#elseif hl\r\n\t\tGc.major();\r\n\t\t#elseif (java || neko)\r\n\t\tGc.run(true);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Does a full garbage collection.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "enable",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function enable() {\r\n\t\t#if (cpp || hl)\r\n\t\tGc.enable(true);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Enables garbage collection.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "disable",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function disable() {\r\n\t\t#if (cpp || hl)\r\n\t\tGc.enable(false);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Disables garbage collection.\nFyi: doesn't fully disable garbage collection, but prevents it from running as much.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTotalMem",
+			"args": [],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTotalMem():Float\r\n\t{\r\n\t\t#if cpp\r\n\t\t\t#if windows\r\n\t\t\treturn funkin.backend.utils.native.Windows.getTotalRam();\r\n\t\t\t#elseif mac\r\n\t\t\treturn funkin.backend.utils.native.Mac.getTotalRam();\r\n\t\t\t#elseif linux\r\n\t\t\treturn funkin.backend.utils.native.Linux.getTotalRam();\r\n\t\t\t#else\r\n\t\t\treturn 0;\r\n\t\t\t#end\r\n\t\t#else\r\n\t\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Gets the total memory of the system.\nOutput depends on the hardware.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "currentMemUsage",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function currentMemUsage() {\r\n\t\t#if cpp\r\n\t\treturn Gc.memInfo64(Gc.MEM_INFO_USAGE);\r\n\t\t#elseif hl\r\n\t\treturn Gc.stats().currentMemory;\r\n\t\t#elseif sys\r\n\t\treturn cast(cast(System.totalMemory, UInt), Float);\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Gets the current memory usage of the app.\nDISCLAIMER: This gets the memory usage that is taken up by Haxe, not the actual memory usage of the app.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMemType",
+			"args": [],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMemType():String {\r\n\t\t#if windows\r\n\t\tvar memoryMap:Map<Int, String> = [\r\n\t\t\t0 => null,\r\n\t\t\t1 => \"Other\",\r\n\t\t\t2 => \"DRAM\",\r\n\t\t\t3 => \"Synchronous DRAM\",\r\n\t\t\t4 => \"Cache DRAM\",\r\n\t\t\t5 => \"EDO\",\r\n\t\t\t6 => \"EDRAM\",\r\n\t\t\t7 => \"VRAM\",\r\n\t\t\t8 => \"SRAM\",\r\n\t\t\t9 => \"RAM\",\r\n\t\t\t10 => \"ROM\",\r\n\t\t\t11 => \"Flash\",\r\n\t\t\t12 => \"EEPROM\",\r\n\t\t\t13 => \"FEPROM\",\r\n\t\t\t14 => \"EPROM\",\r\n\t\t\t15 => \"CDRAM\",\r\n\t\t\t16 => \"3DRAM\",\r\n\t\t\t17 => \"SDRAM\",\r\n\t\t\t18 => \"SGRAM\",\r\n\t\t\t19 => \"RDRAM\",\r\n\t\t\t20 => \"DDR\",\r\n\t\t\t21 => \"DDR2\",\r\n\t\t\t22 => \"DDR2 FB-DIMM\",\r\n\t\t\t24 => \"DDR3\",\r\n\t\t\t25 => \"FBD2\",\r\n\t\t\t26 => \"DDR4\",\r\n\t\t\t27 => \"LPDDR\",\r\n\t\t\t28 => \"LPDDR2\",\r\n\t\t\t29 => \"LPDDR3\",\r\n\t\t\t30 => \"LPDDR4\",\r\n\t\t\t31 => \"Logical Non-volatile device\",\r\n\t\t\t32 => \"HBM\",\r\n\t\t\t33 => \"HBM2\",\r\n\t\t\t34 => \"DDR5\",\r\n\t\t\t35 => \"LPDDR5\",\r\n\t\t\t36 => \"HBM3\",\r\n\t\t];\r\n\t\tvar memoryOutput:Int = -1;\r\n\r\n\t\tvar process = new HiddenProcess(\"powershell\", [\"-Command\", \"Get-CimInstance Win32_PhysicalMemory | Select-Object -ExpandProperty SMBIOSMemoryType\" ]);\r\n\t\tif (process.exitCode() == 0) memoryOutput = Std.int(Std.parseFloat(process.stdout.readAll().toString().trim().split(\"\\n\")[1]));\r\n\t\tif (memoryOutput != -1) return memoryMap[memoryOutput] == null ? 'Unknown ($memoryOutput)' : memoryMap[memoryOutput];\r\n\t\t#elseif mac\r\n\t\tvar process = new HiddenProcess(\"system_profiler\", [\"SPMemoryDataType\"]);\r\n\t\tvar reg = ~/Type: (.+)/;\r\n\t\treg.match(process.stdout.readAll().toString());\r\n\t\tif (process.exitCode() == 0) return reg.matched(1);\r\n\t\t#elseif linux\r\n\t\t/*var process = new HiddenProcess(\"sudo\", [\"dmidecode\", \"--type\", \"17\"]);\r\n\t\tif (process.exitCode() != 0) return \"Unknown\";\r\n\t\tvar lines = process.stdout.readAll().toString().split(\"\\n\");\r\n\t\tfor (line in lines) {\r\n\t\t\tif (line.startsWith(\"Type:\")) {\r\n\t\t\t\treturn line.substring(\"Type:\".length).trim();\r\n\t\t\t}\r\n\t\t}*/\r\n\t\t// TODO: sort of unsafe? also requires users to use `sudo`\r\n\t\t// when launching the engine through the CLI, REIMPLEMENT LATER. \r\n\t\t#end\r\n\t\treturn \"Unknown\";\r\n\t}",
+			"doc": {
+				"text": "Gets the memory type of the system.\nOutput depends on the platform, and hardware.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

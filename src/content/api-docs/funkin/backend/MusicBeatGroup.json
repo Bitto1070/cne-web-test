@@ -1,0 +1,69 @@
+{
+	"kind": "class",
+	"name": "MusicBeatGroup",
+	"pkg": "funkin.backend",
+	"doc": {
+		"text": "Group of FlxSprites, if the sprite implements `IBeatReceiver`, then beatHit, stepHit and measureHit will be called.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function beatHit(curBeat:Int) {\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver = cast e;_;}).beatHit(curBeat);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curStep",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function stepHit(curStep:Int) {\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver = cast e;_;}).stepHit(curStep);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "measureHit",
+			"args": [
+				{
+					"name": "curMeasure",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function measureHit(curMeasure:Int) {\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver = cast e;_;}).measureHit(curMeasure);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

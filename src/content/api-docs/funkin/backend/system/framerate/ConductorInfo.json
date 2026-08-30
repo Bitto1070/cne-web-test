@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "ConductorInfo",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper(\"Conductor Info\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\r\n\t\tvar buf = new StringBuf();\r\n\t\tStringMacro.addLine(buf, 'Current Song Position: ${Math.floor(Conductor.songPosition * 1000) / 1000}');\r\n\t\tStringMacro.addLine(buf, '\\n - ${Conductor.curBeat} beats');\r\n\t\tStringMacro.addLine(buf, '\\n - ${Conductor.curStep} steps');\r\n\t\tStringMacro.addLine(buf, '\\n - ${Conductor.curMeasure} measures');\r\n\t\tStringMacro.addLine(buf, '\\nCurrent BPM: ${Conductor.bpm}');\r\n\t\tStringMacro.addLine(buf, '\\nTime Signature: ${Conductor.beatsPerMeasure}/${Conductor.denominator}');\r\n\t\t_text = buf.toString();\r\n\r\n\t\tthis.text.text = _text;\r\n\t\tsuper.__enterFrame(t);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

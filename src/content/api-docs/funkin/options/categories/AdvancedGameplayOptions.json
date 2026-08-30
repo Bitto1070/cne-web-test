@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "AdvancedGameplayOptions",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('optionsMenu.advanced', 'optionsTree.gameplay.advanced-desc', 'GameplayOptions.Advanced.');\r\n\r\n\t\tadd(new Checkbox(getNameID('streamedMusic'), getDescID('streamedMusic'), 'streamedMusic'));\r\n\t\tadd(new Checkbox(getNameID('streamedVocals'), getDescID('streamedVocals'), 'streamedVocals'));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

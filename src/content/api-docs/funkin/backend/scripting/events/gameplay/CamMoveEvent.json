@@ -1,0 +1,54 @@
+{
+	"kind": "final class",
+	"name": "CamMoveEvent",
+	"pkg": "funkin.backend.scripting.events.gameplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "position",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Final camera position.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "StrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Currently focused strumline.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "focusedCharacters",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Number of focused characters",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

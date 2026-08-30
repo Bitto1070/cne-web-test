@@ -1,0 +1,8 @@
+{
+	"kind": "enum",
+	"name": "EventParamType",
+	"pkg": "funkin.backend.chart",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

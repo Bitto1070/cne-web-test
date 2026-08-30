@@ -1,0 +1,59 @@
+{
+	"kind": "class",
+	"name": "MenuItem",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "targetY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, path:String)\r\n\t{\r\n\t\tsuper(x, y);\r\n\t\tCoolUtil.loadAnimatedGraphic(this, Paths.image(path, null, true));\r\n\t\tscreenCenter(X);\r\n\t\tantialiasing = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "startFlashing",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function startFlashing():Void\r\n\t{\r\n\t\tisFlashing = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

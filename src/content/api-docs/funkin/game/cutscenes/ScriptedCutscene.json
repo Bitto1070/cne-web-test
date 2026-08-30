@@ -1,0 +1,315 @@
+{
+	"kind": "class",
+	"name": "ScriptedCutscene",
+	"pkg": "funkin.game.cutscenes",
+	"doc": {
+		"text": "Substate made for scripted cutscenes.\nTo add cutscenes to your songs, add a `cutscene.hx` file in your song's directory (ex: `songs/song/cutscene.hx`)",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "scriptPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(scriptPath:String, callback:Void->Void) {\r\n\t\tsuper(callback);\r\n\r\n\t\tscript = Script.create(this.scriptPath = Paths.script(Path.withoutExtension(scriptPath), null, scriptPath.startsWith('assets')));\r\n\t\tscript.setPublicMap(PlayState.instance.scripts.publicVariables);\r\n\t\tscript.setParent(this);\r\n\t\tscript.load();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t\tscript.call(\"create\");\r\n\r\n\t\tif(Std.isOfType(script, DummyScript))\r\n\t\t\tonErrorScriptLoading();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onErrorScriptLoading",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onErrorScriptLoading() {\r\n\t\tLogs.trace('Could not find script for scripted cutscene at \"${scriptPath}\"', ERROR, RED);\r\n\t\tclose();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pauseCheck",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function pauseCheck():Bool\r\n\t{\r\n\t\tvar shouldClose = super.pauseCheck();\r\n\t\tscript.call(\"pauseCheck\", [shouldClose]);\r\n\t\treturn shouldClose;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float)\r\n\t{\r\n\t\tscript.call(\"update\", [elapsed]);\r\n\t\tsuper.update(elapsed);\r\n\t\tscript.call(\"postUpdate\", [elapsed]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pauseCutscene",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function pauseCutscene()\r\n\t{\r\n\t\tvar event = new CancellableEvent();\r\n\t\tscript.call(\"pauseCutscene\", [event]);\r\n\t\tif(!event.cancelled) super.pauseCutscene();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSkipCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onSkipCutscene(event:NameEvent)\r\n\t{\r\n\t\tscript.call(\"onSkipCutscene\", [event]);\r\n\t\tif(!event.cancelled) super.onSkipCutscene(event);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onRestartCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onRestartCutscene(event:NameEvent)\r\n\t{\r\n\t\tscript.call(\"onRestartCutscene\", [event]);\r\n\t\tif(!event.cancelled) super.onRestartCutscene(event);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResumeCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResumeCutscene(event:NameEvent)\r\n\t{\r\n\t\tscript.call(\"onResumeCutscene\", [event]);\r\n\t\tif(!event.cancelled) super.onResumeCutscene(event);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "measureHit",
+			"args": [
+				{
+					"name": "curMeasure",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function measureHit(curMeasure:Int)\r\n\t{\r\n\t\tsuper.measureHit(curMeasure);\r\n\t\tscript.call(\"measureHit\", [curMeasure]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function beatHit(curBeat:Int)\r\n\t{\r\n\t\tsuper.beatHit(curBeat);\r\n\t\tscript.call(\"beatHit\", [curBeat]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curStep",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function stepHit(curStep:Int)\r\n\t{\r\n\t\tsuper.stepHit(curStep);\r\n\t\tscript.call(\"stepHit\", [curStep]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openSubState",
+			"args": [
+				{
+					"name": "subState",
+					"type": "FlxSubState",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function openSubState(subState:FlxSubState)\r\n\t{\r\n\t\tvar event = EventManager.get(StateEvent).recycle(subState);\r\n\t\tscript.call(Flags.MOD_API_VERSION <= 1 ? \"onSubstateClose\" /*Remove this entirely*/ : \"onOpenSubState\", [event]);\r\n\t\tif (!event.cancelled)\r\n\t\t\tsuper.openSubState(event.substate is FlxSubState ? cast event.substate : subState);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "closeSubState",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function closeSubState()\r\n\t{\r\n\t\tvar event = EventManager.get(StateEvent).recycle(subState);\r\n\t\tscript.call(Flags.MOD_API_VERSION <= 1 ? \"onSubstateOpen\" /*Remove this entirely*/ : \"onCloseSubState\", [event]);\r\n\t\tif (!event.cancelled)\r\n\t\t\tsuper.closeSubState();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tscript.call(\"destroy\");\r\n\t\tscript.destroy();\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "startVideo",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// VIDEOS\r\n\t#if REGION\r\n\tpublic function startVideo(path:String, ?callback:Void->Void) {\r\n\t\tpersistentDraw = false;\r\n\t\topenSubState(new VideoCutscene(path, function() {\r\n\t\t\tif (callback != null)\r\n\t\t\t\tcallback();\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isVideoPlaying",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "startDialogue",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\r\n\t// DIALOGUE\r\n\t#if REGION\r\n\tpublic function startDialogue(path:String, ?callback:Void->Void) {\r\n\t\tpersistentDraw = true;\r\n\t\topenSubState(new DialogueCutscene(path, function() {\r\n\t\t\tif (callback != null)\r\n\t\t\t\tcallback();\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isDialoguePlaying",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

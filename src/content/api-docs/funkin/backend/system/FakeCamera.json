@@ -1,0 +1,304 @@
+{
+	"kind": "class",
+	"name": "FakeCamera",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "final",
+			"name": "instance",
+			"type": "Dynamic",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\r\n\t\tvisible = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawPixels",
+			"args": [
+				{
+					"name": "frame",
+					"type": "FlxFrame",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "pixels",
+					"type": "BitmapData",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "matrix",
+					"type": "FlxMatrix",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "transform",
+					"type": "ColorTransform",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "blend",
+					"type": "BlendMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "smoothing",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "shader",
+					"type": "FlxShader",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "wrapMode",
+					"type": "Context3DWrapMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "depthCompareMode",
+					"type": "Context3DCompareMode",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function drawPixels(?frame:FlxFrame, ?pixels:BitmapData, matrix:FlxMatrix, ?transform:ColorTransform, ?blend:BlendMode, ?smoothing:Bool = false, ?shader:FlxShader, ?wrapMode:Context3DWrapMode, ?depthCompareMode:Context3DCompareMode) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "copyPixels",
+			"args": [
+				{
+					"name": "frame",
+					"type": "FlxFrame",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "pixels",
+					"type": "BitmapData",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "sourceRect",
+					"type": "Rectangle",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "destPoint",
+					"type": "Point",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "transform",
+					"type": "ColorTransform",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "blend",
+					"type": "BlendMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "smoothing",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "shader",
+					"type": "FlxShader",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "wrapMode",
+					"type": "Context3DWrapMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "depthCompareMode",
+					"type": "Context3DCompareMode",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function copyPixels(?frame:FlxFrame, ?pixels:BitmapData, ?sourceRect:Rectangle, destPoint:Point, ?transform:ColorTransform, ?blend:BlendMode, ?smoothing:Bool = false, ?shader:FlxShader, ?wrapMode:Context3DWrapMode, ?depthCompareMode:Context3DCompareMode) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawTriangles",
+			"args": [
+				{
+					"name": "graphic",
+					"type": "FlxGraphic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "vertices",
+					"type": "DrawData<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "indices",
+					"type": "DrawData<Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "uvtData",
+					"type": "DrawData<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "colors",
+					"type": "DrawData<Int>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "position",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "blend",
+					"type": "BlendMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "repeat",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "smoothing",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "transform",
+					"type": "ColorTransform",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "shader",
+					"type": "FlxShader",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "wrapMode",
+					"type": "Context3DWrapMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "depthCompareMode",
+					"type": "Context3DCompareMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "culling",
+					"type": "TriangleCulling",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function drawTriangles(graphic:FlxGraphic, vertices:DrawData<Float>, indices:DrawData<Int>, uvtData:DrawData<Float>, ?colors:DrawData<Int>, ?position:FlxPoint, ?blend:BlendMode, repeat:Bool = false, smoothing:Bool = false, ?transform:ColorTransform, ?shader:FlxShader, ?wrapMode:Context3DWrapMode, ?depthCompareMode:Context3DCompareMode, ?culling:TriangleCulling):Void {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setScale",
+			"args": [
+				{
+					"name": "X",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function setScale(X:Float, Y:Float):Void {}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

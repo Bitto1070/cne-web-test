@@ -1,0 +1,46 @@
+{
+	"kind": "class",
+	"name": "CustomShader",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:deprecated(\"Use funkin.backend.shaders.FunkinShader.fromFile instead.\")"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "path",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:isVar"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "glslVersion",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, ?glslVersion:String) {\r\n\t\tsuper();\r\n\t\tloadShaderFile(Paths.fragShader(name), Paths.vertShader(name), glslVersion);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

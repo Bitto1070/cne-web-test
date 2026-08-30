@@ -1,0 +1,310 @@
+{
+	"kind": "class",
+	"name": "TreeMenuScreen",
+	"pkg": "funkin.options",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "persistentUpdate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "persistentDraw",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onClose",
+			"type": "FlxSignal",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "TreeMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transitioning",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "inputEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSelected",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "desc",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "prefix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The prefix to add to the translations ids.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getNameID",
+			"args": [
+				{
+					"name": "name",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String return prefix + name + \"-name\"",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getNameID(name):String return prefix + name + \"-name\";",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDescID",
+			"args": [
+				{
+					"name": "name",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String return prefix + name + \"-desc\"",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getDescID(name):String return prefix + name + \"-desc\";",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getID",
+			"args": [
+				{
+					"name": "name",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String return prefix + name",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getID(name):String return prefix + name;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "translate",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "String return TU.translate(getID(name), args)",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function translate(name:String, ?args:Array<Dynamic>):String return TU.translate(getID(name), args);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "controls",
+			"type": "Controls",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "objects",
+					"type": "Array<FlxSprite>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, desc:String, prefix:String = \"\", ?objects:Array<FlxSprite>) {\r\n\t\tsuper();\r\n\t\tthis.prefix = prefix;\r\n\t\trawName = name;\r\n\t\trawDesc = desc;\r\n\r\n\t\tturboBasics = [leftTurboControl, rightTurboControl, upTurboControl, downTurboControl];\r\n\r\n\t\tif (objects != null) for (object in objects) add(object);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadStrings",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reloadStrings() {\r\n\t\trawName = rawName;\r\n\t\trawDesc = rawDesc;\r\n\r\n\t\tfor (object in members) if (object != null && object is OptionType) cast(object, OptionType).reloadStrings();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateItems",
+			"args": [
+				{
+					"name": "force",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateItems(force = false) {\r\n\t\tvar r = force ? 1 : 0.25, initY = FlxG.height * 0.5;\r\n\t\tvar i = curSelected, y = initY, object:FlxSprite = null, itemHeight:Float = 0;\r\n\r\n\t\twhile (i < length) if ((object = members[i++]) != null) {\r\n\t\t\titemHeight = object.height;\r\n\t\t\tupdateItem(object, itemHeight, y, r);\r\n\t\t\ty += itemHeight;\r\n\t\t}\r\n\r\n\t\ty = initY;\r\n\t\ti = curSelected;\r\n\t\twhile (i-- > 0) if ((object = members[i]) != null) {\r\n\t\t\ty -= (itemHeight = object.height);\r\n\t\t\tupdateItem(object, itemHeight, y, r);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function close() {\r\n\t\tonClose.dispatch();\r\n\r\n\t\tif (curOption != null) curOption.selected = false;\r\n\r\n\t\tif (parent == null) return destroy();\r\n\t\telse parent.removeMenu(this);\r\n\r\n\t\tCoolUtil.playMenuSFX(CANCEL).persist = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSelection",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeSelection(change:Int, force:Bool = false) {\r\n\t\tif (length == 0 || (change == 0 && !force)) return;\r\n\r\n\t\tvar prevSelect = curSelected = FlxMath.wrap(curSelected + change, 0, members.length - 1);\r\n\t\twhile (members[curSelected] is Separator)\r\n\t\t\tif ((curSelected = FlxMath.wrap(curSelected + (change > 0 ? 1 : -1), 0, members.length - 1)) == prevSelect) break;\r\n\r\n\t\tif (curOption != null) curOption.selected = false;\r\n\t\tif (members[curSelected] is ITreeOption) {\r\n\t\t\t(curOption = cast members[curSelected]).selected = true;\r\n\t\t\tif (curOption is ITreeFloatOption) curFloatOption = cast curOption;\r\n\t\t\telse curFloatOption = null;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tcurOption = null;\r\n\t\t\tcurFloatOption = null;\r\n\t\t}\r\n\t\tupdateMenuDesc();\r\n\r\n\t\tCoolUtil.playMenuSFX(SCROLL);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateMenuDesc",
+			"args": [
+				{
+					"name": "customTxt",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateMenuDesc(?customTxt:String) {\r\n\t\tif (parent != null) parent.updateDesc(customTxt);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

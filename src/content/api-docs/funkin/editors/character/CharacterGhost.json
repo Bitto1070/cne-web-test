@@ -1,0 +1,86 @@
+{
+	"kind": "class",
+	"name": "CharacterGhost",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "ghosts",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildCharacter",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function buildCharacter(xml:Access) {\r\n\t\tuseRenderTexture = true; // per request from maru heh, still overridable\r\n\t\tsuper.buildCharacter(xml);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tghostDraw = FakeCallCamera.instance.ignoreDraws = true;\r\n\r\n\t\tvar wasInvalidFrame:Bool = !colorTransform.__isDefault(false);\r\n\t\tcolorTransform.__identity();\r\n\r\n\t\tvar animName = animation.curAnim?.name ?? null;\r\n\t\tvar animFrame = animation.curAnim?.curFrame ?? 0;\r\n\t\tvar animFrameTimer = animation.curAnim?._frameTimer ?? 0;\r\n\r\n\t\tfor (anim in ghosts) @:privateAccess {\r\n\t\t\talpha = 0.4; color = 0xFFAEAEAE;\r\n\r\n\t\t\tvar flxanim:FlxAnimation = animation._animations.get(anim);\r\n\t\t\tanimation.play(anim, true, false, flxanim.frames.length - 1);\r\n\r\n\t\t\tsetAnimOffset(anim);\r\n\t\t\tsuper.draw();\r\n\t\t}\r\n\r\n\t\tif (ghosts.length > 0)\r\n\t\t\tframe = frames.frames[animation.frameIndex];\r\n\t\tghostDraw = FakeCallCamera.instance.ignoreDraws = false; \r\n\r\n\t\talpha = 1; color = 0xFFFFFFFF;\r\n\t\tif (wasInvalidFrame) {\r\n\t\t\tframeOffset.set(0, 0); \r\n\t\t\toffset.set(globalOffset.x * (isPlayer != playerOffsets ? 1 : -1), -globalOffset.y);\r\n\t\t\tcolorTransform.color = 0xFFEF0202;\r\n\t\t} else {\r\n\t\t\tanimation.play(animName, true, false, animFrame);\r\n\t\t\tsetAnimOffset(animName);\r\n\t\t\tif (animation.curAnim != null)\r\n\t\t\t\tanimation.curAnim._frameTimer = animFrameTimer;\r\n\t\t}\r\n\t\t\r\n\t\tsuper.draw();\r\n\t}\r\n\r\n\tpublic function setAnimOffset(anim:String) {\r\n\t\tvar daOffset:FlxPoint = animOffsets.get(anim);\r\n\t\tif (daOffset != null) {\r\n\t\t\tframeOffset.set(daOffset.x, daOffset.y);\r\n\t\t\tdaOffset.putWeak();\r\n\t\t}\r\n\r\n\t\toffset.set(globalOffset.x * (isPlayer != playerOffsets ? 1 : -1), -globalOffset.y);\r\n\t}\r\n\r\n\tpublic function generateRenderTextureForAnim(anim:String):RenderTexture @:privateAccess {\r\n\t\tif (!isAnimate) return null;\r\n\r\n\t\tvar wasInvalidFrame:Bool = !colorTransform.__isDefault(false);\r\n\t\tcolorTransform.__identity();\r\n\t\t\r\n\t\tvar animName = animation.curAnim?.name ?? null;\r\n\t\tvar animFrame = animation.curAnim?.curFrame ?? 0;\r\n\t\tvar animFrameTimer = animation.curAnim?._frameTimer ?? 0;\r\n\r\n\t\tvar oldRenderTexture:RenderTexture = this._renderTexture;\r\n\t\tvar oldRenderTextureDirty = _renderTextureDirty;\r\n\t\tvar oldAlpha = alpha;\r\n\r\n\t\tthis._renderTexture = null;\r\n\t\tthis._renderTextureDirty = true;\r\n\t\tthis.alpha = 256.0/257.0;\r\n\r\n\t\tanimation.play(anim, true, false, 0);\r\n\r\n\t\tdrawAnimate(FakeCallCamera.instance);\r\n\r\n\t\tvar renderTex = this._renderTexture;\r\n\r\n\t\tthis._renderTexture = oldRenderTexture;\r\n\t\tthis._renderTextureDirty = oldRenderTextureDirty;\r\n\t\tthis.alpha = oldAlpha;\r\n\r\n\t\tif (wasInvalidFrame) {\r\n\t\t\tcolorTransform.color = 0xFFEF0202;\r\n\t\t} else {\r\n\t\t\tanimation.play(animName, true, false, animFrame);\r\n\t\t\tif (animation.curAnim != null)\r\n\t\t\t\tanimation.curAnim._frameTimer = animFrameTimer;\r\n\t\t}\r\n\r\n\t\treturn renderTex;\r\n\t}\r\n\r\n\t// This gets annoying lmao -lunar\r\n\t// it's gone now <3 -yosh\r\n}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setAnimOffset",
+			"args": [
+				{
+					"name": "anim",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setAnimOffset(anim:String) {\r\n\t\tvar daOffset:FlxPoint = animOffsets.get(anim);\r\n\t\tif (daOffset != null) {\r\n\t\t\tframeOffset.set(daOffset.x, daOffset.y);\r\n\t\t\tdaOffset.putWeak();\r\n\t\t}\r\n\r\n\t\toffset.set(globalOffset.x * (isPlayer != playerOffsets ? 1 : -1), -globalOffset.y);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "generateRenderTextureForAnim",
+			"args": [
+				{
+					"name": "anim",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "RenderTexture @:privateAccess",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function generateRenderTextureForAnim(anim:String):RenderTexture @:privateAccess {\r\n\t\tif (!isAnimate) return null;\r\n\r\n\t\tvar wasInvalidFrame:Bool = !colorTransform.__isDefault(false);\r\n\t\tcolorTransform.__identity();\r\n\t\t\r\n\t\tvar animName = animation.curAnim?.name ?? null;\r\n\t\tvar animFrame = animation.curAnim?.curFrame ?? 0;\r\n\t\tvar animFrameTimer = animation.curAnim?._frameTimer ?? 0;\r\n\r\n\t\tvar oldRenderTexture:RenderTexture = this._renderTexture;\r\n\t\tvar oldRenderTextureDirty = _renderTextureDirty;\r\n\t\tvar oldAlpha = alpha;\r\n\r\n\t\tthis._renderTexture = null;\r\n\t\tthis._renderTextureDirty = true;\r\n\t\tthis.alpha = 256.0/257.0;\r\n\r\n\t\tanimation.play(anim, true, false, 0);\r\n\r\n\t\tdrawAnimate(FakeCallCamera.instance);\r\n\r\n\t\tvar renderTex = this._renderTexture;\r\n\r\n\t\tthis._renderTexture = oldRenderTexture;\r\n\t\tthis._renderTextureDirty = oldRenderTextureDirty;\r\n\t\tthis.alpha = oldAlpha;\r\n\r\n\t\tif (wasInvalidFrame) {\r\n\t\t\tcolorTransform.color = 0xFFEF0202;\r\n\t\t} else {\r\n\t\t\tanimation.play(animName, true, false, animFrame);\r\n\t\t\tif (animation.curAnim != null)\r\n\t\t\t\tanimation.curAnim._frameTimer = animFrameTimer;\r\n\t\t}\r\n\r\n\t\treturn renderTex;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,420 @@
+{
+	"kind": "class",
+	"name": "ZipFolderLibrary",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "basePath",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "libName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "prefix",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "zip",
+			"type": "SysZip",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "assets",
+			"type": "Map<String, SysZipEntry>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lowerCaseAssets",
+			"type": "Map<String, SysZipEntry>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "nameMap",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "PRELOAD_VIDEOS",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "basePath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "modName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "preloadVideos",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(basePath:String, libName:String, ?modName:String, ?preloadVideos:Bool = true) {\r\n\t\tthis.libName = libName;\r\n\r\n\t\tthis.basePath = basePath;\r\n\t\t\r\n\t\tthis.modName = (modName == null) ? libName : modName;\r\n\r\n\t\tzip = SysZip.openFromFile(basePath);\r\n\t\tfor(entry in zip.entries) {\r\n\t\t\tif (entry.fileName.length < 0 || entry.fileName.endsWith(\"/\")) continue;\r\n\r\n\t\t\tvar name:String = entry.fileName.toLowerCase(); // calling .toLowerCase a million times is never the solution\r\n\t\t\tlowerCaseAssets[name] = assets[name] = assets[entry.fileName] = entry;\r\n\t\t\tnameMap.set(name, entry.fileName);\r\n\t\t}\r\n\r\n\t\tsuper();\r\n\r\n\t\tisCompressed = true;\r\n\t\t\r\n\t\t// don't override default value of true if the file exists.\r\n\t\t// by default `PRELOAD_VIDEOS` is true so you will never need to add this file, but in the case of it being false this is a backup method.\r\n\t\tPRELOAD_VIDEOS = (!PRELOAD_VIDEOS) ? exists(\"assets/data/PRECACHE_VIDEOS\", \"TEXT\") : PRELOAD_VIDEOS;\r\n\r\n\t\t// if (PRELOAD_VIDEOS) precacheVideos(); // we do this in `MainState` now to handle for `Flags.VIDEO_EXT` :)\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "precacheVideos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function precacheVideos() {\r\n\t\t_videoExtensions = [Flags.VIDEO_EXT];\r\n\t\t\r\n\t\tvideoCacheRemap = [];\r\n\t\tfor (entry in zip.entries) {\r\n\t\t\tvar name = entry.fileName.toLowerCase();\r\n\t\t\tif (_videoExtensions.contains(Path.extension(name))) getPath(prefix+name);\r\n\t\t}\r\n\r\n\t\tvar count:Int = 0;\r\n        for (_ in videoCacheRemap.keys()) count++;\r\n\t\tif (count <= 0) return;\r\n\t\ttrace('Precached $count video${(count == 1) ? \"\" : \"s\"}');\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "_videoExtensions",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "videoCacheRemap",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getVideoRemap",
+			"args": [
+				{
+					"name": "originalPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getVideoRemap(originalPath:String):String {\r\n\t\tif (!_videoExtensions.contains(Path.extension(_parsedAsset))) return originalPath;\r\n\t\tif (videoCacheRemap.exists(originalPath)) return videoCacheRemap.get(originalPath);\r\n\r\n\t\t// We adding the length of the string to counteract folder in folder naming duplicates.\r\n\t\tvar newPath = './.temp/${_parsedAsset.length}-zipvideo-${_parsedAsset.split(\"/\").pop()}';\r\n\t\tFile.saveBytes(newPath, unzip(assets[_parsedAsset]));\r\n\t\tvideoCacheRemap.set(originalPath, newPath);\r\n\t\treturn newPath;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "_parsedAsset",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAudioBuffer",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AudioBuffer",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getAudioBuffer(id:String):AudioBuffer {\r\n\t\t__parseAsset(id);\r\n\t\treturn AudioBuffer.fromBytes(unzip(assets[_parsedAsset]));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBytes",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bytes",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getBytes(id:String):Bytes {\r\n\t\t__parseAsset(id);\r\n\t\treturn Bytes.fromBytes(unzip(assets[_parsedAsset]));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Font",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getFont(id:String):Font {\r\n\t\t__parseAsset(id);\r\n\t\treturn ModsFolder.registerFont(Font.fromBytes(unzip(assets[_parsedAsset])));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getImage",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Image",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getImage(id:String):Image {\r\n\t\t__parseAsset(id);\r\n\t\treturn Image.fromBytes(unzip(assets[_parsedAsset]));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPath",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPath(id:String):String {\r\n\t\tif (!__parseAsset(id)) return null;\r\n\t\treturn getAssetPath();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "unzip",
+			"args": [
+				{
+					"name": "f",
+					"type": "SysZipEntry",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function unzip(f:SysZipEntry) return (f == null) ? null : zip.unzipEntry(f);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__parseAsset",
+			"args": [
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function __parseAsset(asset:String):Bool {\r\n\t\tif (!asset.startsWith(prefix)) return false;\r\n\t\t_parsedAsset = asset.substr(prefix.length);\r\n\t\tif (ModsFolder.useLibFile) {\r\n\t\t\tvar file = new haxe.io.Path(_parsedAsset);\r\n\t\t\tif(file.file.startsWith(\"LIB_\")) {\r\n\t\t\t\tvar library = file.file.substr(4);\r\n\t\t\t\tif(library != modName) return false;\r\n\r\n\t\t\t\t_parsedAsset = file.dir + \".\" + file.ext;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t_parsedAsset = _parsedAsset.toLowerCase();\r\n\t\tif (nameMap.exists(_parsedAsset)) _parsedAsset = nameMap.get(_parsedAsset);\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__isCacheValid",
+			"args": [
+				{
+					"name": "cache",
+					"type": "Map<String, Dynamic>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "isLocal",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function __isCacheValid(cache:Map<String, Dynamic>, asset:String, isLocal:Bool = false) {\r\n\t\tif (cache.exists(isLocal ? '$libName:$asset': asset)) return true;\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function exists(asset:String, type:String):Bool {\r\n\t\tif(!__parseAsset(asset)) return false;\r\n\r\n\t\treturn assets[_parsedAsset] != null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFiles",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// TODO: rewrite this to 1 function, like ModsFolderLibrary\r\n\tpublic function getFiles(folder:String):Array<String> {\r\n\t\tif (!folder.endsWith(\"/\")) folder += \"/\";\r\n\t\tif (!__parseAsset(folder)) return [];\r\n\r\n\t\tvar content:Array<String> = [];\r\n\r\n\t\tvar checkPath = _parsedAsset.toLowerCase();\r\n\r\n\t\t@:privateAccess\r\n\t\tfor(k=>e in lowerCaseAssets) {\r\n\t\t\tif (k.toLowerCase().startsWith(checkPath)) {\r\n\t\t\t\tif(nameMap.exists(k))\r\n\t\t\t\t\tk = nameMap.get(k);\r\n\t\t\t\tvar fileName = k.substr(_parsedAsset.length);\r\n\t\t\t\tif (!fileName.contains(\"/\") && fileName.length > 0)\r\n\t\t\t\t\tcontent.pushOnce(fileName);\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn content;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFolders",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getFolders(folder:String):Array<String> {\r\n\t\tif (!folder.endsWith(\"/\")) folder += \"/\";\r\n\t\tif (!__parseAsset(folder)) return [];\r\n\r\n\t\tvar content:Array<String> = [];\r\n\r\n\t\tvar checkPath = _parsedAsset.toLowerCase();\r\n\r\n\t\t@:privateAccess\r\n\t\tfor(k=>e in lowerCaseAssets) {\r\n\t\t\tif (k.toLowerCase().startsWith(checkPath)) {\r\n\t\t\t\tif(nameMap.exists(k))\r\n\t\t\t\t\tk = nameMap.get(k);\r\n\t\t\t\tvar fileName = k.substr(_parsedAsset.length);\r\n\t\t\t\tvar index = fileName.indexOf(\"/\");\r\n\t\t\t\tif (index != -1 && fileName.length > 0) {\r\n\t\t\t\t\tvar s = fileName.substr(0, index);\r\n\t\t\t\t\tcontent.pushOnce(s);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn content;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "list",
+			"args": [
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function list(type:String):Array<String> { return [for(k=>e in nameMap) '$prefix$e']; }",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

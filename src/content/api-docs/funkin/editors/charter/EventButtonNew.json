@@ -1,0 +1,87 @@
+{
+	"kind": "class",
+	"name": "EventButtonNew",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "icon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "event",
+			"type": "ChartEvent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "event",
+					"type": "ChartEvent",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "icon",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "substate",
+					"type": "CharterEventScreenNew",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UIButtonList<EventButtonNew>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(event:ChartEvent, icon:FlxSprite, id:Int, substate:CharterEventScreenNew, parent:UIButtonList<EventButtonNew>) {\r\n\t\tthis.icon = icon;\r\n\t\tthis.event = event;\r\n\t\tsuper(0, 0, null, function() {\r\n\t\t\tsubstate.changeTab(id);\r\n\t\t\tfor(i in parent.buttons.members)\r\n\t\t\t\ti.alpha = i == this ? 1 : 0.25;\r\n\t\t}, 73, 40);\r\n\t\tautoAlpha = false;\r\n\r\n\t\tmembers.push(icon);\r\n\t\ticon.setPosition(18 - icon.width / 2, 20 - icon.height / 2);\r\n\r\n\t\tdeleteButton = new UIButton(bWidth - 30, y + (bHeight - 26) / 2, null, function () {\r\n\t\t\tsubstate.events.splice(id, 1);\r\n\t\t\tsubstate.changeTab(id, false);\r\n\t\t\tparent.remove(this);\r\n\t\t}, 26, 26);\r\n\t\tdeleteButton.color = FlxColor.RED;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + (15/2), deleteButton.y + 4).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

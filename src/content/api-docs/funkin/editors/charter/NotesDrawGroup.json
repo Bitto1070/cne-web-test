@@ -1,0 +1,22 @@
+{
+	"kind": "class",
+	"name": "NotesDrawGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [
+		"@:privateAccess"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tvar oldDefaultCameras = FlxCamera._defaultCameras;\r\n\t\tif (cameras != null)\r\n\t\t\tFlxCamera._defaultCameras = cameras;\r\n\r\n\t\tvar i:Int = 0;\r\n\t\tvar note:CharterNote = null;\r\n\r\n\t\twhile (i < length) {\r\n\t\t\tnote = members[i++];\r\n\t\t\tif (note != null && note.exists && note.visible) {\r\n\t\t\t\tif (note.snappedToGrid) note.x = (note.strumLine != null ? note.strumLine.x : 0) + (note.id % (note.strumLine != null ? note.strumLine.keyCount : 4)) * 40;\r\n\t\t\t\tnote.drawMembers();\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\ti = 0; note = null;\r\n\t\twhile (i < length) {\r\n\t\t\tnote = members[i++];\r\n\t\t\tif (note != null && note.exists && note.visible)\r\n\t\t\t\tnote.drawSuper();\r\n\t\t}\r\n\r\n\t\ti = 0; note = null;\r\n\t\twhile (i < length) {\r\n\t\t\tnote = members[i++];\r\n\t\t\tif (note != null && note.exists && note.visible)\r\n\t\t\t\tnote.drawNoteTypeText();\r\n\t\t}\r\n\r\n\t\tFlxCamera._defaultCameras = oldDefaultCameras;\r\n\t}\r\n}\r\n\r\nclass CharterBackdrop extends FlxTypedGroup<FlxBasic> {\r\n\tpublic var gridBackDrop:FlxBackdrop;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,134 @@
+{
+	"kind": "class",
+	"name": "CharterStrumlineButton",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "button",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "text",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onClick",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animationOnClick",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "imagePath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function new(imagePath:String, text:String) {\r\n\t\tsuper();\r\n\r\n\t\tscrollFactor.set(1, 0);\r\n\t\talpha = 0;\r\n\r\n\t\tbutton = new UISprite();\r\n\t\tbutton.loadGraphic(Paths.image(imagePath), true, 71, 71);\r\n\t\tfor(i in 0...button.frames.frames.length)\r\n\t\t\tbutton.animation.add(Std.string(i), [i]);\r\n\t\tbutton.animation.play(\"0\", true);\r\n\t\tbutton.scale.set(0.85,0.85);\r\n\t\tbutton.updateHitbox();\r\n\t\tbutton.antialiasing = true;\r\n\t\tbutton.cursor = CLICK;\r\n\t\tmembers.push(button);\r\n\r\n\t\tthis.text = new UIText(0,0, 160, text);\r\n\t\tthis.text.alignment = CENTER;\r\n\t\tmembers.push(this.text);\r\n\r\n\t\ttextTweenColor = new FlxInterpolateColor(0xFFFFFFFF);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textTweenColor",
+			"type": "FlxInterpolateColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textColorLerp",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tbutton.follow(this, ((40 * 4) - button.width) / 2, 20+buttonYOffset);\r\n\t\ttext.follow(this, 0, 84);\r\n\r\n\t\tshakeTimer -= elapsed;\r\n\t\tif (shakeTimer > 0)\r\n\t\t\tfor (spr in [button, text])\r\n\t\t\t\t{spr.x += FlxG.random.float(0, 3) * FlxG.random.sign(); spr.y += FlxG.random.float(0, 3) * FlxG.random.sign();}\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tbutton.updateSpriteRect();\r\n\t\tif (UIState.state.curContextMenu == null && UIState.state.isOverlapping(button, button.__rect) && button.visible) {\r\n\t\t\tbuttonScale.set(0.95, 0.95);\r\n\t\t\tif (FlxG.mouse.justPressed && onClick != null) {\r\n\t\t\t\tonClick();\r\n\t\t\t\tif (animationOnClick) pressAnimation();\r\n\t\t\t}\r\n\t\t}\r\n\t\telse buttonScale.set(0.85, 0.85);\r\n\r\n\t\tbutton.scale.set(\r\n\t\t\tFlxMath.lerp(button.scale.x, buttonScale.x, 1/6),\r\n\t\t\tFlxMath.lerp(button.scale.y, buttonScale.y, 1/6)\r\n\t\t);\r\n\t\tbutton.scale += buttonScaleOffset;\r\n\r\n\t\ttextTweenColor.fpsLerpTo(0xFFFFFFFF, (1/20) * textColorLerp);\r\n\t\ttext.color = textTweenColor.color;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\r\n\t\tbuttonScale.put();\r\n\t\tbuttonScaleOffset.put();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pressAnimation",
+			"args": [
+				{
+					"name": "extra",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function pressAnimation(extra:Bool = false) {\r\n\t\tshakeTimer = 0.14;\r\n\r\n\t\tif (jumpTween != null) jumpTween.cancel(); buttonYOffset = 0;\r\n\t\tjumpTween = FlxTween.tween(this, {buttonYOffset: -10 + FlxG.random.float(-2, 2) + (extra ? -8 : 0)}, .12, {ease: FlxEase.circOut})\r\n\t\t\t.then(FlxTween.tween(this, {buttonYOffset: 0}, .1 + FlxG.random.float(.1, .3), {ease: FlxEase.circIn}));\r\n\r\n\t\tif (scaleTween != null) scaleTween.cancel(); buttonScaleOffset.set(0,0);\r\n\t\tscaleTween = FlxTween.tween(buttonScaleOffset, {x: .015 * (extra ? 3 : 1), y: .02 * (extra ? 3 : 1)}, .12, {ease: FlxEase.circOut})\r\n\t\t\t.then(FlxTween.tween(buttonScaleOffset, {x: 0, y: 0}, .1 + FlxG.random.float(.1, .3), {ease: FlxEase.circIn}));\r\n\r\n\t\tif (!extra) return;\r\n\r\n\t\tif (angleTween != null) angleTween.cancel(); button.angle = 0;\r\n\t\tangleTween = FlxTween.tween(button, {angle: 360}, .5, {ease: FlxEase.circInOut});\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

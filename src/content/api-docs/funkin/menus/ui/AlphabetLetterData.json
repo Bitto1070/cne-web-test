@@ -1,0 +1,58 @@
+{
+	"kind": "final class",
+	"name": "AlphabetLetterData",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [
+		"@:structInit"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "isDefault",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:optional"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "advance",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "advanceEmpty",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "components",
+			"type": "Array<AlphabetComponent>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startIndex",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

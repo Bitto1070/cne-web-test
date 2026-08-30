@@ -1,0 +1,71 @@
+{
+	"kind": "class",
+	"name": "FreeplaySonglist",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "songs",
+			"type": "Array<ChartMetaData>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSongsFromSource",
+			"args": [
+				{
+					"name": "source",
+					"type": "funkin.backend.assets.AssetSource",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useTxt",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSongsFromSource(source:funkin.backend.assets.AssetSource, useTxt:Bool = true) {\r\n\t\tvar songsFound:Array<String> = null;\r\n\t\tif (useTxt) {\r\n\t\t\tvar oldPath = Paths.txt('freeplaySonglist');\r\n\t\t\tvar newPath = Paths.txt('config/freeplaySonglist');\r\n\t\t\tif (Paths.assetsTree.existsSpecific(newPath, \"TEXT\", source)) songsFound = CoolUtil.coolTextFile(newPath);\r\n\t\t\telse if (Paths.assetsTree.existsSpecific(oldPath, \"TEXT\", source)) {\r\n\t\t\t\tLogs.warn(\"data/freeplaySonglist.txt is deprecated and will be removed in the future. Please move the file to data/config/\", DARKYELLOW, \"FreeplaySonglist\");\r\n\t\t\t\tsongsFound = CoolUtil.coolTextFile(oldPath);\r\n\t\t\t}\r\n\t\t}\r\n\t\tif (songsFound == null) songsFound = Paths.getFolderDirectories(\"songs\", false, source);\r\n\t\tif (songsFound.length > 0) {\r\n\t\t\tfor (s in songsFound) songs.push(Chart.loadChartMeta(s, source == MODS));\r\n\t\t\treturn false;\r\n\t\t}\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "useTxt",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function get(useTxt:Bool = true) {\r\n\t\tvar songList = new FreeplaySonglist();\r\n\r\n\t\tswitch(Flags.SONGS_LIST_MOD_MODE) {\r\n\t\t\tcase 'prepend':\r\n\t\t\t\tsongList.getSongsFromSource(MODS, useTxt);\r\n\t\t\t\tsongList.getSongsFromSource(SOURCE, useTxt);\r\n\t\t\tcase 'append':\r\n\t\t\t\tsongList.getSongsFromSource(SOURCE, useTxt);\r\n\t\t\t\tsongList.getSongsFromSource(MODS, useTxt);\r\n\t\t\tdefault /*case 'override'*/:\r\n\t\t\t\tif (songList.getSongsFromSource(MODS, useTxt))\r\n\t\t\t\t\tsongList.getSongsFromSource(SOURCE, useTxt);\r\n\t\t}\r\n\r\n\t\treturn songList;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,288 @@
+{
+	"kind": "class",
+	"name": "FunkinWebSocket",
+	"pkg": "funkin.backend.system.net",
+	"doc": {
+		"text": "This is a wrapper for hxWebSockets. Used in-tangem with `FunkinPacket` and `Metrics`.\nYou can override how `haxe.io.Bytes` is decoded by setting `AUTO_DECODE_PACKETS`. By default it will attempt to deserialize the packet into a `FunkinPacket`.\nIt also has `Metrics` which keeps track of the amount of bytes sent and received.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "metrics",
+			"type": "Metrics",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "This keeps track of the amount of bytes sent and received.\nYou can set the logging state directly in the class.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onOpen",
+			"type": "FlxTypedSignal<Void->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "This signal is only called once when the connection is opened.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onMessage",
+			"type": "FlxTypedSignal<OneOfThree<String, Bytes, FunkinPacket>->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "This signal is called every time a message is received.\nIt can be one of three types: String, Bytes, or FunkinPacket.\nIf you have AUTO_DECODE_PACKETS set to true, It will attempt to deserialize the packet into a FunkinPacket.\nIf it fails to deserialize or AUTO_DECODE_PACKETS is false, it will just return the Bytes directly.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onClose",
+			"type": "FlxTypedSignal<Void->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "This signal is only called once when the connection is closed.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onError",
+			"type": "FlxTypedSignal<Dynamic->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "This signal is only called when an error occurs. Useful for debugging and letting the user know something has gone wrong.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "url",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The URL to connect to, including the protocol (ws:// or wss://). Currently wss:// (Secure WebSocket) is not supported.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "handshakeHeaders",
+			"type": "Map<String, String>",
+			"access": "get, null",
+			"isStatic": false,
+			"doc": {
+				"text": "This just allows you to override or add custom headers when the handshake happens, as this is the first and last time we use proper HTTP Headers.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_handshakeHeaders",
+			"args": [],
+			"ret": "Map<String, String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get_handshakeHeaders():Map<String, String> { return this._ws.additionalHeaders; }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "AUTO_DECODE_PACKETS",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If true, the packets will be automatically deserialized into a `FunkinPacket` if possible.\nOtherwise you will handle everything manually.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "_url",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(_url:String) {\r\n\t\tthis.url = _url;\r\n\r\n\t\tthis._ws = new WebSocket(this.url, false);\r\n\t\tthis._ws.onopen = _onOpen;\r\n\t\tthis._ws.onmessage = _onMessage;\r\n\t\tthis._ws.onclose = _onClose;\r\n\t\tthis._ws.onerror = _onError;\r\n\t}",
+			"doc": {
+				"text": "",
+				"params": {
+					"_url": "The URL to connect to, including the protocol (ws:// or wss://). Currently wss:// (SSH) is not supported."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "open",
+			"args": [],
+			"ret": "FunkinWebSocket",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function open():FunkinWebSocket {\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.logText('[FunkinWebSocket] ', CYAN),\r\n\t\t\tLogs.logText('Opening WebSocket to ', NONE), Logs.logText(url, YELLOW),\r\n\t\t]);\r\n\t\ttry {\r\n\t\t\tthis._ws.open();\r\n\t\t} catch(e) {\r\n\t\t\tLogs.traceColored([\r\n\t\t\t\tLogs.logText('[FunkinWebSocket] ', CYAN),\r\n\t\t\t\tLogs.logText('Failed to open WebSocket: ${e}', NONE),\r\n\t\t\t]);\r\n\t\t\tonError.dispatch(e);\r\n\t\t}\r\n\t\treturn this;\r\n\t}",
+			"doc": {
+				"text": "Opens the WebSocket connection.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "send",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function send(data:Dynamic):Bool {\r\n\t\ttry {\r\n\t\t\tif (data is FunkinPacket)\r\n\t\t\t\tthis._ws.send(data.stringify());\r\n\t\t\telse\r\n\t\t\t\tthis._ws.send(data);\r\n\r\n\t\t\t// Do an outside check to see if it wants to log before we try decoding stuff into raw bytes, to save on some unnecessary work.\r\n\t\t\tif (metrics.IS_LOGGING) {\r\n\t\t\t\tif (data is String) metrics.updateBytesSent(Bytes.ofString(data).length);\r\n\t\t\t\telse if (data is Bytes || data is ByteArrayData) metrics.updateBytesSent(data.length);\r\n\t\t\t\telse if (data is FunkinPacket) metrics.updateBytesSent(data.toBytes().length);\r\n\t\t\t}\r\n\r\n\t\t\treturn true;\r\n\t\t} catch(e) {\r\n\t\t\tLogs.traceColored([\r\n\t\t\t\tLogs.logText('[FunkinWebSocket] ', CYAN),\r\n\t\t\t\tLogs.logText('Failed to send data: ${e}', NONE),\r\n\t\t\t]);\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": {
+				"text": "Sends data to the server.",
+				"params": {
+					"data": "The data to send."
+				},
+				"returns": "true if the data was sent successfully, false if it failed.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "MAX_BYTES_PER_CHUNK",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "send_bytes",
+			"args": [
+				{
+					"name": "bytes",
+					"type": "ByteArrayData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "extra_start_data",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "extra_end_data",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// 16KB\r\n\r\n\tpublic function send_bytes(bytes:ByteArrayData, ?extra_start_data:Dynamic, ?extra_end_data:Dynamic):Void {\r\n\t\tvar bytes_start:FunkinPacket = new FunkinPacket();\r\n\t\tbytes_start.set(\"sending_byte_chunks\", true);\r\n\t\tbytes_start.set(\"total_size\", bytes.bytesAvailable);\r\n\t\tbytes_start.appendJson(extra_start_data);\r\n\r\n\t\tthis.send(bytes_start);\r\n\r\n\t\t// ensure we start at the beginning of the bytes\r\n\t\tbytes.position = 0;\r\n\t\tThreadUtil.execAsync(() -> {\r\n\t\t\twhile (bytes.bytesAvailable > 0) {\r\n\t\t\t\ttry {\r\n\t\t\t\t\tvar size = Std.int(Math.min(MAX_BYTES_PER_CHUNK, bytes.bytesAvailable));\r\n\r\n\t\t\t\t\tvar chunk = new ByteArrayData();\r\n\t\t\t\t\tbytes.readBytes(chunk, 0, size);\r\n\t\t\t\t\tthis._ws.send(chunk);\r\n\t\t\t\t} catch(e) {\r\n\t\t\t\t\tLogs.traceColored([\r\n\t\t\t\t\t\tLogs.logText('[FunkinWebSocket] ', CYAN),\r\n\t\t\t\t\t\tLogs.logText('Failed to compile a chunk: ${e}', NONE),\r\n\t\t\t\t\t]);\r\n\t\t\t\t};\r\n\t\t\t}\r\n\t\t\tbytes.position = 0;\r\n\t\t\t\r\n\t\t\tvar bytes_end:FunkinPacket = new FunkinPacket();\r\n\t\t\tbytes_end.set(\"chunks_complete\", true);\r\n\t\t\tbytes_end.appendJson(extra_end_data);\r\n\t\t\tthis.send(bytes_end);\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function close():Void {\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.logText('[FunkinWebSocket] ', CYAN),\r\n\t\t\tLogs.logText('Closing WebSocket from ', NONE), Logs.logText(url, YELLOW),\r\n\t\t]);\r\n\t\tthis._ws.close();\r\n\t}",
+			"doc": {
+				"text": "Closes the WebSocket connection.\nOnce you close the connection, you cannot reopen it, you must create a new instance.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function destroy():Void { close(); }",
+			"doc": {
+				"text": "Basically the same as close(), but if a class is handling it and expects it to be IFlxDestroyable compatable, it will call this.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

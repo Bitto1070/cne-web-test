@@ -1,0 +1,275 @@
+{
+	"kind": "class",
+	"name": "Main",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "Main",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modToLoad",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forceGPUOnlyBitmapsOff",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noTerminalColor",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "verbose",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scaleMode",
+			"type": "FunkinRatioScaleMode",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "framerateSprite",
+			"type": "Framerate",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "game",
+			"type": "FunkinGame",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "timeSinceFocus",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "The time since the game was focused last time in seconds.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "time",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preInit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// You can pretty much ignore everything from here on - your code should go in your states.\r\n\r\n\tpublic static function preInit() {\r\n\t\t#if sys\r\n\t\tfunkin.backend.utils.NativeAPI.registerAsDPICompatible();\r\n\t\tfunkin.backend.system.CommandLineHandler.parseCommandLine(Sys.args());\r\n\t\tfunkin.backend.system.Main.fixWorkingDirectory();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new()\r\n\t{\r\n\t\tsuper();\r\n\r\n\t\tinstance = this;\r\n\r\n\t\tCrashHandler.init();\r\n\r\n\t\taddChild(game = new FunkinGame(gameWidth, gameHeight, MainState, Options.framerate, Options.framerate, skipSplash, startFullscreen));\r\n\r\n\t\t#if (!mobile && !web)\r\n\t\taddChild(framerateSprite = new Framerate());\r\n\t\tSystemInfo.init();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "audioDisconnected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "changeID",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pathBack",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startedFromSource",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "execAsync",
+			"args": [
+				{
+					"name": "func",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// DEPRECATED\r\n\t@:dox(hide) public static function execAsync(func:Void->Void) ThreadUtil.execAsync(func);",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "loadGameSettings",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadGameSettings() {\r\n\t\tWindowUtils.init();\r\n\t\tSaveWarning.init();\r\n\t\tMemoryUtil.init();\r\n\t\tFunkinCache.init();\r\n\t\tPaths.assetsTree = new AssetsLibraryList();\r\n\r\n\t\t#if UPDATE_CHECKING\r\n\t\tfunkin.backend.system.updating.UpdateUtil.init();\r\n\t\t#end\r\n\t\tShaderResizeFix.init();\r\n\t\tLogs.init();\r\n\t\tPaths.init();\r\n\r\n\t\thscript.Interp.importRedirects = funkin.backend.scripting.Script.getDefaultImportRedirects();\r\n\r\n\t\t#if GLOBAL_SCRIPT\r\n\t\tfunkin.backend.scripting.GlobalScript.init();\r\n\t\t#end\r\n\r\n\t\tvar lib = new AssetLibrary();\r\n\t\t@:privateAccess\r\n\t\tlib.__proxy = Paths.assetsTree;\r\n\t\tAssets.registerLibrary('default', lib);\r\n\r\n\t\tfunkin.options.PlayerSettings.init();\r\n\t\tOptions.load();\r\n\r\n\t\tgame.focusLostFramerate = 30;\r\n\t\tFlxG.fixedTimestep = false;\r\n\t\tFlxG.scaleMode = scaleMode = new FunkinRatioScaleMode();\r\n\r\n\t\tConductor.init();\r\n\t\tEventManager.init();\r\n\t\tFlxG.signals.focusGained.add(onFocus);\r\n\t\tFlxG.signals.preStateSwitch.add(onStateSwitch);\r\n\t\tFlxG.signals.postStateSwitch.add(onStateSwitchPost);\r\n\t\tFlxG.signals.postUpdate.add(onUpdate);\r\n\r\n\t\tFlxG.mouse.useSystemCursor = true;\r\n\t\t#if DARK_MODE_WINDOW\r\n\t\tif(funkin.backend.utils.NativeAPI.hasVersion(\"Windows 10\")) funkin.backend.utils.NativeAPI.redrawWindowHeader();\r\n\t\t#end\r\n\r\n\t\tModsFolder.init();\r\n\t\t#if MOD_SUPPORT\r\n\t\tif (FileSystem.exists(\"mods/autoload.txt\"))\r\n\t\t\tmodToLoad = File.getContent(\"mods/autoload.txt\").trim();\r\n\r\n\t\tModsFolder.switchMod(modToLoad.getDefault(Options.lastLoadedMod));\r\n\t\t#end\r\n\r\n\t\tinitTransition();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshAssets",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function refreshAssets() @:privateAccess {\r\n\t\tFunkinCache.instance.clearSecondLayer();\r\n\r\n\t\tvar game = FlxG.game;\r\n\t\tvar daSndTray = Type.createInstance(game._customSoundTray = funkin.menus.ui.FunkinSoundTray, []);\r\n\t\tvar index:Int = game.numChildren - 1;\r\n\r\n\t\tif(game.soundTray != null)\r\n\t\t{\r\n\t\t\tvar newIndex:Int = game.getChildIndex(game.soundTray);\r\n\t\t\tif(newIndex != -1) index = newIndex;\r\n\t\t\tgame.removeChild(game.soundTray);\r\n\t\t\tgame.soundTray.__cleanup();\r\n\t\t}\r\n\r\n\t\tgame.addChildAt(game.soundTray = daSndTray, index);\r\n\t}\r\n\r\n\tpublic static function initTransition() {\r\n\t\tvar diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);\r\n\t\tdiamond.persist = true;\r\n\t\tdiamond.destroyOnNoUse = false;\r\n\r\n\t\tFlxTransitionableState.defaultTransIn = new TransitionData(FADE, 0xFF000000, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},\r\n\t\t\tnew FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));\r\n\t\tFlxTransitionableState.defaultTransOut = new TransitionData(FADE, 0xFF000000, 0.7, new FlxPoint(0, 1),\r\n\t\t\t{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));\r\n\t}\r\n\r\n\tpublic static function onFocus() {\r\n\t\t_tickFocused = FlxG.game.ticks;\r\n\t}\r\n\r\n\tprivate static function onStateSwitch() {\r\n\t\tscaleMode.resetSize();\r\n\t}\r\n\r\n\tpublic static function onUpdate() {\r\n\t\tif (PlayerSettings.solo.controls.DEV_CONSOLE)\r\n\t\t\tNativeAPI.allocConsole();\r\n\r\n\t\tif (PlayerSettings.solo.controls.FPS_COUNTER)\r\n\t\t\tFramerate.debugMode = (Framerate.debugMode + 1) % 3;\r\n\t}\r\n\r\n\tprivate static function onStateSwitchPost() {\r\n\t\t// manual asset clearing since base openfl one does'nt clear lime one\r\n\t\t// does'nt clear bitmaps since flixel fork does it auto\r\n\r\n\t\tMemoryUtil.clearMajor();\r\n\t}\r\n\r\n\tpublic static var noCwdFix:Bool = false;",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "initTransition",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function initTransition() {\r\n\t\tvar diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);\r\n\t\tdiamond.persist = true;\r\n\t\tdiamond.destroyOnNoUse = false;\r\n\r\n\t\tFlxTransitionableState.defaultTransIn = new TransitionData(FADE, 0xFF000000, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},\r\n\t\t\tnew FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));\r\n\t\tFlxTransitionableState.defaultTransOut = new TransitionData(FADE, 0xFF000000, 0.7, new FlxPoint(0, 1),\r\n\t\t\t{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "onFocus",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function onFocus() {\r\n\t\t_tickFocused = FlxG.game.ticks;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onUpdate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function onUpdate() {\r\n\t\tif (PlayerSettings.solo.controls.DEV_CONSOLE)\r\n\t\t\tNativeAPI.allocConsole();\r\n\r\n\t\tif (PlayerSettings.solo.controls.FPS_COUNTER)\r\n\t\t\tFramerate.debugMode = (Framerate.debugMode + 1) % 3;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noCwdFix",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixWorkingDirectory",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fixWorkingDirectory() {\r\n\t\t#if windows\r\n\t\tif (!noCwdFix && !sys.FileSystem.exists('manifest/default.json')) {\r\n\t\t\tSys.setCwd(haxe.io.Path.directory(Sys.programPath()));\r\n\t\t}\r\n\t\t#elseif android\r\n\t\tSys.setCwd(haxe.io.Path.addTrailingSlash(VERSION.SDK_INT > 30 ? Context.getObbDir() : Context.getExternalFilesDir()));\r\n\t\t#elseif (ios || switch)\r\n\t\tSys.setCwd(haxe.io.Path.addTrailingSlash(openfl.filesystem.File.applicationStorageDirectory.nativePath));\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_timeSinceFocus",
+			"args": [],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function get_timeSinceFocus():Float {\r\n\t\treturn (FlxG.game.ticks - _tickFocused) / 1000;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

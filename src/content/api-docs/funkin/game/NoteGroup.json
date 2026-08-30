@@ -1,0 +1,233 @@
+{
+	"kind": "class",
+	"name": "NoteGroup",
+	"pkg": "funkin.game",
+	"doc": {
+		"text": "Group of notes, that handles updating and rendering only the visible notes.\nTo only get the visible notes you gotta do `group.forEach()` or `group.forEachAlive()` instead of `group.members`.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "limit",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "How many milliseconds it should show a note before it should be hit",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preallocate",
+			"args": [
+				{
+					"name": "len",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function preallocate(len:Int) {\r\n\t\tmembers = cast new haxe.ds.Vector<Note>(len);\r\n\t\tlength = len;\r\n\t}",
+			"doc": {
+				"text": "Preallocates the members array with nulls, but if theres anything in the array already it clears it",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addNotes",
+			"args": [
+				{
+					"name": "notes",
+					"type": "Array<Note>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function addNotes(notes:Array<Note>) {\r\n\t\tfor(e in notes) add(e);\r\n\t\tsortNotes();\r\n\t}",
+			"doc": {
+				"text": "Adds an array of notes to the group, and sorts them.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sortNotes",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function sortNotes() {\r\n\t\tsort(function(i, n1, n2) {\r\n\t\t\tif (n1.strumTime == n2.strumTime)\r\n\t\t\t\treturn n1.isSustainNote ? 1 : -1;\r\n\t\t\treturn FlxSort.byValues(FlxSort.DESCENDING, n1.strumTime, n2.strumTime);\r\n\t\t});\r\n\t}",
+			"doc": {
+				"text": "Sorts the notes in the group.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__forcedSongPos",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\ti = length-1;\r\n\t\t__loopSprite = null;\r\n\t\t__time = __getSongPos() + limit;\r\n\t\twhile(i >= 0) {\r\n\t\t\t__loopSprite = members[i--];\r\n\t\t\tif (__loopSprite == null || !__loopSprite.exists || !__loopSprite.active) continue;\r\n\t\t\tif (__loopSprite.strumTime > __time) break;\r\n\t\t\t__loopSprite.update(elapsed);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tvar oldDefaultCameras = FlxCamera._defaultCameras;\r\n\t\tif (_cameras != null) FlxCamera._defaultCameras = _cameras;\r\n\r\n\t\tvar oldCur = __currentlyLooping;\r\n\t\t__currentlyLooping = true;\r\n\r\n\t\ti = length-1;\r\n\t\t__loopSprite = null;\r\n\t\t__time = __getSongPos() + limit;\r\n\t\twhile(i >= 0) {\r\n\t\t\t__loopSprite = members[i--];\r\n\t\t\tif (__loopSprite == null || !__loopSprite.exists || !__loopSprite.visible) continue;\r\n\t\t\tif (__loopSprite.strumTime > __time) break;\r\n\t\t\t__loopSprite.draw();\r\n\t\t}\r\n\t\t__currentlyLooping = oldCur;\r\n\r\n\t\tFlxCamera._defaultCameras = oldDefaultCameras;\r\n\t}\r\n\r\n\t/**\r\n\t * Gets the correct order of notes\r\n\t **/\r\n\tpublic function get(id:Int) {\r\n\t\treturn members[length - 1 - id];\r\n\t}\r\n\r\n\tpublic override function forEach(noteFunc:Note->Void, recursive:Bool = false) {\r\n\t\ti = length-1;\r\n\t\t__loopSprite = null;\r\n\t\t__time = __getSongPos() + limit;\r\n\r\n\t\tvar oldCur = __currentlyLooping;\r\n\t\t__currentlyLooping = true;\r\n\r\n\t\twhile(i >= 0) {\r\n\t\t\t__loopSprite = members[i--];\r\n\t\t\tif (__loopSprite == null || !__loopSprite.exists) continue;\r\n\t\t\tif (__loopSprite.strumTime > __time) break;\r\n\t\t\tnoteFunc(__loopSprite);\r\n\t\t}\r\n\t\t__currentlyLooping = oldCur;\r\n\t}\r\n\tpublic override function forEachAlive(noteFunc:Note->Void, recursive:Bool = false) {\r\n\t\tforEach(function(note) {\r\n\t\t\tif (note.alive) noteFunc(note);\r\n\t\t}, recursive);\r\n\t}\r\n\r\n\tpublic override function remove(Object:Note, Splice:Bool = false):Note\r\n\t{\r\n\t\tif (members == null)\r\n\t\t\treturn null;\r\n\r\n\t\tvar index:Int = members.lastIndexOf(Object);\r\n\r\n\t\tif (index < 0)\r\n\t\t\treturn null;\r\n\r\n\t\t// doesn't prevent looping from breaking\r\n\t\tif (Splice && __currentlyLooping && i >= index)\r\n\t\t\ti++;\r\n\r\n\t\tif (Splice)\r\n\t\t{\r\n\t\t\tmembers.splice(index, 1);\r\n\t\t\tlength--;\r\n\t\t}\r\n\t\telse\r\n\t\t\tmembers[index] = null;\r\n\r\n\t\tif (_memberRemoved != null)\r\n\t\t\t_memberRemoved.dispatch(Object);\r\n\r\n\t\treturn Object;\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get(id:Int) {\r\n\t\treturn members[length - 1 - id];\r\n\t}",
+			"doc": {
+				"text": "Gets the correct order of notes",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "forEach",
+			"args": [
+				{
+					"name": "noteFunc",
+					"type": "Note->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "recursive",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function forEach(noteFunc:Note->Void, recursive:Bool = false) {\r\n\t\ti = length-1;\r\n\t\t__loopSprite = null;\r\n\t\t__time = __getSongPos() + limit;\r\n\r\n\t\tvar oldCur = __currentlyLooping;\r\n\t\t__currentlyLooping = true;\r\n\r\n\t\twhile(i >= 0) {\r\n\t\t\t__loopSprite = members[i--];\r\n\t\t\tif (__loopSprite == null || !__loopSprite.exists) continue;\r\n\t\t\tif (__loopSprite.strumTime > __time) break;\r\n\t\t\tnoteFunc(__loopSprite);\r\n\t\t}\r\n\t\t__currentlyLooping = oldCur;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "forEachAlive",
+			"args": [
+				{
+					"name": "noteFunc",
+					"type": "Note->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "recursive",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function forEachAlive(noteFunc:Note->Void, recursive:Bool = false) {\r\n\t\tforEach(function(note) {\r\n\t\t\tif (note.alive) noteFunc(note);\r\n\t\t}, recursive);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "remove",
+			"args": [
+				{
+					"name": "Object",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Splice",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Note",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function remove(Object:Note, Splice:Bool = false):Note\r\n\t{\r\n\t\tif (members == null)\r\n\t\t\treturn null;\r\n\r\n\t\tvar index:Int = members.lastIndexOf(Object);\r\n\r\n\t\tif (index < 0)\r\n\t\t\treturn null;\r\n\r\n\t\t// doesn't prevent looping from breaking\r\n\t\tif (Splice && __currentlyLooping && i >= index)\r\n\t\t\ti++;\r\n\r\n\t\tif (Splice)\r\n\t\t{\r\n\t\t\tmembers.splice(index, 1);\r\n\t\t\tlength--;\r\n\t\t}\r\n\t\telse\r\n\t\t\tmembers[index] = null;\r\n\r\n\t\tif (_memberRemoved != null)\r\n\t\t\t_memberRemoved.dispatch(Object);\r\n\r\n\t\treturn Object;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

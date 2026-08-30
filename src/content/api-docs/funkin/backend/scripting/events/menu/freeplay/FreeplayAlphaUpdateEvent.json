@@ -1,0 +1,84 @@
+{
+	"kind": "final class",
+	"name": "FreeplayAlphaUpdateEvent",
+	"pkg": "funkin.backend.scripting.events.menu.freeplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "idleAlpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The alpha when nothing is playing and isn't selected",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "idlePlayingAlpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The alpha when something is playing and isn't selected",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectedAlpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The alpha when nothing is playing and selected",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectedPlayingAlpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The alpha when something is playing and selected",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lerp",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The lerp of the alpha",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

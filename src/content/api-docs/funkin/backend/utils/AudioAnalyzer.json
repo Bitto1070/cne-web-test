@@ -1,0 +1,713 @@
+{
+	"kind": "final class",
+	"name": "AudioAnalyzer",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "An utility that analyze FlxSound,\ncan be used to make waveform or real-time audio visualizer.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getByte",
+			"args": [
+				{
+					"name": "buffer",
+					"type": "ArrayBuffer",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "position",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "wordSize",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getByte(buffer:ArrayBuffer, position:Int, wordSize:Int):Int {\r\n\t\tif (wordSize == 2) return ArrayBufferIO.getInt16(buffer, position);\r\n\t\telse if (wordSize == 3) {\r\n\t\t\twordSize = ArrayBufferIO.getUint16(buffer, position) | (buffer.get(position + 2) << 16);\r\n\t\t\tif (wordSize & 0x800000 != 0) return wordSize - 0x1000000;\r\n\t\t\telse return wordSize;\r\n\t\t}\r\n\t\telse if (wordSize == 4) return ArrayBufferIO.getInt32(buffer, position);\r\n\t\telse return ArrayBufferIO.getInt8(buffer, position);\r\n\t}",
+			"doc": {
+				"text": "Get bytes from an audio buffer with specified position and wordSize",
+				"params": {
+					"buffer": "The audio buffer to get byte from.",
+					"position": "The specified position to get the byte from the audio buffer.",
+					"wordSize": "How many bytes to get with to one byte (Usually it's bitsPerSample / 8 or bitsPerSample >> 3)."
+				},
+				"returns": "Byte from the audio buffer with specified position.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSpectrumFromFrequencies",
+			"args": [
+				{
+					"name": "frequencies",
+					"type": "Array<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sampleRate",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "barCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spectrum",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "0.0"
+				},
+				{
+					"name": "minDb",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "-63.0"
+				},
+				{
+					"name": "maxDb",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "-10.0"
+				},
+				{
+					"name": "minFreq",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "20.0"
+				},
+				{
+					"name": "maxFreq",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "20000.0"
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getSpectrumFromFrequencies(frequencies:Array<Float>, sampleRate:Int, barCount:Int, ?spectrum:Array<Float>, ratio = 0.0, minDb = -63.0, maxDb = -10.0, minFreq = 20.0, maxFreq = 20000.0):Array<Float> {\r\n\t\tif (spectrum == null) spectrum = [];\r\n\t\tif (spectrum.length != barCount) spectrum.resize(barCount);\r\n\r\n\t\tvar logMin = Math.log(minFreq), n = frequencies.length - 1;\r\n\t\tvar logRange = Math.log(maxFreq) - logMin, dbRangeRate = 1 / (maxDb - minDb), rate = frequencies.length * 2 / sampleRate;\r\n\t\tinline function calculateScale(i:Int)\r\n\t\t\treturn FlxMath.bound(Math.exp(logMin + (logRange * i / (barCount + 1))) * rate, 0, n);\r\n\r\n\t\tvar s1 = calculateScale(0), s2;\r\n\t\tvar i1 = Math.floor(s1), i2;\r\n\t\tvar v, range;\r\n\t\tfor (i in 0...barCount) {\r\n\t\t\tif ((range = (s2 = calculateScale(i + 1)) - s1) < 1) {\r\n\t\t\t\ti2 = Math.ceil(s2);\r\n\t\t\t\tif (i2 == i1) v = frequencies[i1] * range;\r\n\t\t\t\telse v = (frequencies[i1] + (frequencies[i2] - frequencies[i1]) * (s1 - i1)) * range;\r\n\t\t\t}\r\n\t\t\telse {\r\n\t\t\t\tv = frequencies[i1] * (Math.ceil(s1) - i1);\r\n\t\t\t\tif (i1 != (i2 = Math.floor(s2))) {\r\n\t\t\t\t\twhile (++i1 < i2) v += frequencies[i1];\r\n\t\t\t\t\tv += frequencies[i2] * (s2 - Math.floor(s2));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\ti1 = Math.floor(s1 = s2);\r\n\r\n\t\t\tv = FlxMath.bound((Math.log(v) * 8.685889638065035 - minDb) * dbRangeRate, 0, 1);\r\n\t\t\tif (ratio > 0 && ratio < 1 && v < spectrum[i]) spectrum[i] -= (spectrum[i] - v) * ratio;\r\n\t\t\telse spectrum[i] = v;\r\n\t\t}\r\n\r\n\t\treturn spectrum;\r\n\t}",
+			"doc": {
+				"text": "Gets spectrum from the frequencies with specified sample rate.",
+				"params": {
+					"frequencies": "Frequencies input.",
+					"sampleRate": "Sample Rate input.",
+					"barCount": "How much bars to get.",
+					"spectrum": "The output for getting the values, to avoid memory leaks (Optional).",
+					"ratio": "How much ratio for smoothen the values from the previous spectrum values (Optional, use FlxMath.getElapsedLerp(1 - ratio) to simulate web AnalyserNode.smoothingTimeConstant, 0.35 of smoothingTime works most of the time).",
+					"minDb": "The minimum decibels to cap (Optional, default -63.0, -120 is pure silence).",
+					"maxDb": "The maximum decibels to cap (Optional, default -10.0, Above 0 is not recommended).",
+					"minFreq": "The minimum frequency to cap (Optional, default 20.0, Below 8.0 is not recommended).",
+					"maxFreq": "The maximum frequency to cap (Optional, default 20000.0, Above 23000.0 is not recommended)."
+				},
+				"returns": "Output of spectrum/bars that ranges from 0 to 1.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLevelsFromFrequencies",
+			"args": [
+				{
+					"name": "frequencies",
+					"type": "Array<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sampleRate",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "barCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "levels",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "0.0"
+				},
+				{
+					"name": "minDb",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "-63.0"
+				},
+				{
+					"name": "maxDb",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "-10.0"
+				},
+				{
+					"name": "minFreq",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "20.0"
+				},
+				{
+					"name": "maxFreq",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "22000.0"
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:deprecated(\"Use getSpectrumFromFrequencies instead of getLevelsFromFrequencies.\")\r\n\tpublic static function getLevelsFromFrequencies(frequencies:Array<Float>, sampleRate:Int, barCount:Int, ?levels:Array<Float>, ratio = 0.0, minDb = -63.0, maxDb = -10.0, minFreq = 20.0, maxFreq = 22000.0):Array<Float>\r\n\t\treturn inline getSpectrumFromFrequencies(frequencies, sampleRate, barCount, levels, ratio, minDb, maxDb, minFreq, maxFreq);",
+			"doc": {
+				"text": "Gets levels from the frequencies with specified sample rate.\n\ndeprecated, use getSpectrumFromFrequencies instead.",
+				"params": {
+					"frequencies": "Frequencies input.",
+					"sampleRate": "Sample Rate input.",
+					"barCount": "How much bars to get.",
+					"levels": "The output for getting the values, to avoid memory leaks (Optional).",
+					"ratio": "How much ratio for smoothen the values from the previous levels values (Optional, use CoolUtil.getFPSRatio(1 - ratio) to simulate web AnalyserNode.smoothingTimeConstant, 0.35 of smoothingTime works most of the time).",
+					"minDb": "The minimum decibels to cap (Optional, default -63.0, -120 is pure silence).",
+					"maxDb": "The maximum decibels to cap (Optional, default -10.0, Above 0 is not recommended).",
+					"minFreq": "The minimum frequency to cap (Optional, default 20.0, Below 8.0 is not recommended).",
+					"maxFreq": "The maximum frequency to cap (Optional, default 22000.0, Above 23000.0 is not recommended)."
+				},
+				"returns": "Output of levels/bars that ranges from 0 to 1.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:deprecated(\"Use getSpectrumFromFrequencies instead of getLevelsFromFrequencies.\")"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getFrequenciesFromSamples",
+			"args": [
+				{
+					"name": "samples",
+					"type": "Array<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "window",
+					"type": "WindowFunction",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "frequencies",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "fftN",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFrequenciesFromSamples(samples:Array<Float>, ?window:WindowFunction, ?frequencies:Array<Float>, ?fftN:Int):Array<Float> {\r\n\t\tif (fftN == null) fftN = samples.length;\r\n\r\n\t\tvar bits = 0;\r\n\t\twhile ((fftN >>= 1) > 0) bits++;\r\n\t\tif (bits == 0) throw \"FunkinAudioAnalyzer.getFrequenciesFromSamples: Cannot insert a sample length or fftN of 1\";\r\n\r\n\t\tfftN = 1 << bits;\r\n\t\tvar fftN2 = fftN >> 1, n = fftN - 1;\r\n\r\n\t\tvar permutation:Array<Int>, twiddleReal:Array<Float>, twiddleImag:Array<Float>;\r\n\t\t_mutex.acquire();\r\n\r\n\t\tvar real:Array<Float> = _reals[_freqCalculating], imag:Array<Float> = _imags[_freqCalculating];\r\n\t\tif (real == null) {\r\n\t\t\t_reals.push(real = []);\r\n\t\t\t_imags.push(imag = []);\r\n\t\t}\r\n\t\t_freqCalculating++;\r\n\r\n\t\tif (_permutations.exists(bits)) {\r\n\t\t\tpermutation = _permutations.get(bits);\r\n\t\t\ttwiddleReal = _twiddleReals.get(bits);\r\n\t\t\ttwiddleImag = _twiddleImags.get(bits);\r\n\t\t}\r\n\t\telse {\r\n\t\t\t(permutation = []).resize(fftN);\r\n\t\t\t(twiddleReal = []).resize(fftN2);\r\n\t\t\t(twiddleImag = []).resize(fftN2);\r\n\r\n\t\t\tvar ang:Float;\r\n\t\t\tfor (i in 0...fftN) {\r\n\t\t\t\tpermutation[i] = _bitReverse(i, bits);\r\n\t\t\t\tif (i < fftN2) {\r\n\t\t\t\t\ttwiddleReal[i] = Math.cos((ang = -6.283185307179586 * i / n));\r\n\t\t\t\t\ttwiddleImag[i] = Math.sin(ang);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\t_permutations.set(bits, permutation);\r\n\t\t\t_twiddleReals.set(bits, twiddleReal);\r\n\t\t\t_twiddleImags.set(bits, twiddleImag);\r\n\t\t}\r\n\r\n\t\t_mutex.release();\r\n\r\n\t\tif (fftN > real.length) {\r\n\t\t\treal.resize(fftN);\r\n\t\t\timag.resize(fftN);\r\n\t\t}\r\n\r\n\t\tif (frequencies == null) frequencies = [];\r\n\t\tif (frequencies.length != fftN2) frequencies.resize(fftN2);\r\n\r\n\t\tvar tr = 1 / n;\r\n\t\tfor (i in 0...fftN) {\r\n\t\t\treal[permutation[i]] = samples[i];\r\n\t\t\tif (window != null) real[permutation[i]] *= window(i * tr);\r\n\t\t\timag[i] = 0;\r\n\t\t}\r\n\r\n\t\tvar half = 1, g:Int, b:Int, r:Int, i0:Int, i1:Int, ti:Float;\r\n\t\twhile (fftN2 > 0) {\r\n\t\t\tg = 0;\r\n\t\t\twhile (g < fftN) {\r\n\t\t\t\tb = r = 0;\r\n\t\t\t\twhile (b < half) {\r\n\t\t\t\t\ti1 = (i0 = g + b) + half;\r\n\t\t\t\t\ttr = real[i1] * twiddleReal[r] - imag[i1] * twiddleImag[r];\r\n\t\t\t\t\tti = real[i1] * twiddleImag[r] + imag[i1] * twiddleReal[r];\r\n\t\t\t\t\treal[i1] = real[i0] - tr;\r\n\t\t\t\t\timag[i1] = imag[i0] - ti;\r\n\t\t\t\t\treal[i0] += tr;\r\n\t\t\t\t\timag[i0] += ti;\r\n\t\t\t\t\tb++;\r\n\t\t\t\t\tr += fftN2;\r\n\t\t\t\t}\r\n\t\t\t\tg += half << 1;\r\n\t\t\t}\r\n\t\t\thalf <<= 1;\r\n\t\t\tfftN2 >>= 1;\r\n\t\t}\r\n\r\n\t\ttr = 1.0 / fftN;\r\n\t\ti0 = frequencies.length - 1;\r\n\t\tfor (i in 1...i0) frequencies[i] = 2 * Math.sqrt(real[i] * real[i] + imag[i] * imag[i]) * tr;\r\n\t\tfrequencies[0] = Math.sqrt(real[0] * real[0] + imag[0] * imag[0]) * tr;\r\n\t\tfrequencies[i0] = Math.sqrt(real[i0] * real[i0] + imag[i0] * imag[i0]) * tr;\r\n\r\n\t\t_mutex.acquire();\r\n\t\t_freqCalculating--;\r\n\t\t_mutex.release();\r\n\r\n\t\treturn frequencies;\r\n\t}",
+			"doc": {
+				"text": "Gets frequencies from the samples.",
+				"params": {
+					"samples": "The samples (can be from FunkinAudioAnalyzer.getSamples).",
+					"window": "The windowing function to use when passed.",
+					"frequencies": "The output for getting the frequencies, to avoid memory leaks (Optional)."
+				},
+				"returns": "Output of frequencies.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sound",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The current sound to analyze.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "FlxSoundData",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": {
+				"text": "The current data from sound.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fftN",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "How much samples for the fourier transform to get.\nHas to be power of two, or it won't work.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "byteSize",
+			"type": "Int",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": {
+				"text": "The current byteSize from buffer.\nExample the byteSize of 16 BitsPerSample is 32768 (1 << (16 - 1))",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "sound",
+					"type": "FlxSound",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fftN",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "4096"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(sound:FlxSound, fftN = 4096) {\r\n\t\tthis.sound = sound;\r\n\t\tthis.fftN = fftN;\r\n\t\t_check();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSpectrum",
+			"args": [
+				{
+					"name": "pos",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "timeUnit",
+					"type": "TimeUnit",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "gain",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "window",
+					"type": "WindowFunction",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "barCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spectrum",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "minDb",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "maxDb",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "minFreq",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "maxFreq",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSpectrum(?pos:Float, ?timeUnit:TimeUnit, ?gain:Float, ?window:WindowFunction, barCount:Int, ?spectrum:Array<Float>, ?ratio:Float, ?minDb:Float, ?maxDb:Float, ?minFreq:Float, ?maxFreq:Float):Array<Float> {\r\n\t\treturn getSpectrumFromFrequencies(_frequencies = getFrequencies(pos, timeUnit, gain, window, _frequencies), data.sampleRate, barCount, spectrum, ratio, minDb, maxDb, minFreq, maxFreq);\r\n\t}",
+			"doc": {
+				"text": "Gets spectrum from an attached sound from position.",
+				"params": {
+					"pos": "Position to get (Optional).",
+					"timeUnit": "TimeUnit to use for positions (Optional).",
+					"gain": "How much gain multiplier will it affect the output. (Optional, default 1.0).",
+					"barCount": "How much bars to get.",
+					"spectrum": "The output for getting the values, to avoid memory leaks (Optional).",
+					"ratio": "How much ratio for smoothen the values from the previous spectrum values (Optional, use FlxMath.getElapsedLerp(1 - ratio) to simulate web AnalyserNode.smoothingTimeConstant, 0.35 of smoothingTime works most of the time).",
+					"minDb": "The minimum decibels to cap (Optional, default -63.0, -120 is pure silence).",
+					"maxDb": "The maximum decibels to cap (Optional, default -10.0, Above 0 is not recommended).",
+					"minFreq": "The minimum frequency to cap (Optional, default 20.0, Below 8.0 is not recommended).",
+					"maxFreq": "The maximum frequency to cap (Optional, default 20000.0, Above 23000.0 is not recommended)."
+				},
+				"returns": "Output of spectrum/bars that ranges from 0 to 1.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLevels",
+			"args": [
+				{
+					"name": "startPos",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "volume",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "barCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "levels",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "minDb",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "maxDb",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "minFreq",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "maxFreq",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:deprecated(\"Use getSpectrum instead of getLevels.\")\r\n\tpublic function getLevels(?startPos:Float, ?volume:Float, barCount:Int, ?levels:Array<Float>, ?ratio:Float, ?minDb:Float, ?maxDb:Float, ?minFreq:Float, ?maxFreq:Float):Array<Float>\r\n\t\treturn inline getSpectrum(startPos, MILLISECOND, volume, null, barCount, levels, ratio, minDb, maxDb, minFreq, maxFreq);",
+			"doc": {
+				"text": "Gets levels from an attached FlxSound from startPos, basically a minimized of frequencies.\n\ndeprecated, use getLevels instead.",
+				"params": {
+					"startPos": "Start Position to get from sound in milliseconds.",
+					"volume": "How much volume multiplier will it affect the output. (Optional, default 1.0).",
+					"barCount": "How much bars to get.",
+					"levels": "The output for getting the values, to avoid memory leaks (Optional).",
+					"ratio": "How much ratio for smoothen the values from the previous levels values (Optional, use CoolUtil.getFPSRatio(1 - ratio) to simulate web AnalyserNode.smoothingTimeConstant, 0.35 of smoothingTime works most of the time).",
+					"minDb": "The minimum decibels to cap (Optional, default -63.0, -120 is pure silence).",
+					"maxDb": "The maximum decibels to cap (Optional, default -10.0, Above 0 is not recommended).",
+					"minFreq": "The minimum frequency to cap (Optional, default 20.0, Below 8.0 is not recommended).",
+					"maxFreq": "The maximum frequency to cap (Optional, default 22000.0, Above 23000.0 is not recommended)."
+				},
+				"returns": "Output of levels/bars that ranges from 0 to 1.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:deprecated(\"Use getSpectrum instead of getLevels.\")"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getFrequencies",
+			"args": [
+				{
+					"name": "pos",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "timeUnit",
+					"type": "TimeUnit",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "gain",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "window",
+					"type": "WindowFunction",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "frequencies",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getFrequencies(?pos:Float, ?timeUnit:TimeUnit, ?gain:Float, ?window:WindowFunction, ?frequencies:Array<Float>):Array<Float> {\r\n\t\tif (pos == null) {\r\n\t\t\tif (sound == null) return frequencies;\r\n\t\t\t_check();\r\n\t\t\tif ((pos = sound.time / 1000 * data.sampleRate - fftN) < 0) pos = 0;\r\n\t\t\ttimeUnit = SAMPLE;\r\n\t\t}\r\n\t\treturn getFrequenciesFromSamples(_freqSamples = getSamples(pos, timeUnit, fftN, true, -1, gain, _freqSamples), window, frequencies);\r\n\t}",
+			"doc": {
+				"text": "Gets frequencies from an attached sound from position.",
+				"params": {
+					"pos": "Position to get. (Optional).",
+					"timeUnit": "TimeUnit to use for positions. (Optional).",
+					"gain": "How much gain multiplier will it affect the output. (Optional, default 1.0).",
+					"window": "The windowing function to use when passed.",
+					"frequencies": "The output for getting the frequencies, to avoid memory leaks (Optional)."
+				},
+				"returns": "Output of frequencies.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "analyze",
+			"args": [
+				{
+					"name": "startPos",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "endPos",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "timeUnit",
+					"type": "TimeUnit",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "outOrOutMins",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "outMaxs",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function analyze(startPos:Float, endPos:Float, ?timeUnit:TimeUnit, ?outOrOutMins:Array<Float>, ?outMaxs:Array<Float>):Float {\r\n\t\tvar hasOut = outOrOutMins != null;\r\n\t\tvar hasTwoOut = hasOut && outMaxs != null;\r\n\r\n\t\t_check();\r\n\t\tvar conversion:Float = switch (timeUnit) {\r\n\t\t\tcase SAMPLE: 1;\r\n\t\t\tcase SECOND: data.sampleRate;\r\n\t\t\tdefault: data.sampleRate / 1000;\r\n\t\t}\r\n\t\tfor (i in 0...data.channels) _mins[i] = _maxs[i] = -0x7FFFFFFF;\r\n\t\tif (startPos > endPos) _read(Math.floor(startPos * conversion), Math.floor(endPos * conversion), _analyzeRead);\r\n\r\n\t\tvar min = -0x7FFFFFFF, max = -0x7FFFFFFF, v = 1 / byteSize, f:Float;\r\n\t\tfor (i in 0...data.channels) {\r\n\t\t\tif (hasTwoOut) {\r\n\t\t\t\tif ((f = _mins[i] * v) > outOrOutMins[i]) outOrOutMins[i] = f;\r\n\t\t\t\tif ((f = _maxs[i] * v) > outMaxs[i]) outMaxs[i] = f;\r\n\t\t\t}\r\n\t\t\tif (_maxs[i] > max) max = _maxs[i];\r\n\t\t\tif (_mins[i] > min) min = _mins[i];\r\n\t\t}\r\n\r\n\t\tif (hasOut && outMaxs == null) {\r\n\t\t\tif ((f = min * v) > outOrOutMins[0]) outOrOutMins[0] = f;\r\n\t\t\tif ((f = max * v) > outOrOutMins[1]) outOrOutMins[1] = f;\r\n\t\t}\r\n\t\treturn (max + min) * v;\r\n\t}",
+			"doc": {
+				"text": "Analyzes an attached sound from startPos to endPos in milliseconds to get the amplitudes.",
+				"params": {
+					"startPos": "Start Position to get.",
+					"endPos": "End Position to get.",
+					"timeUnit": "TimeUnit to use for positions.",
+					"outOrOutMins": "The output minimum value from the analyzer, indices is in channels (0 to -0.5 -> 0 to 0.5) (Optional, if outMax doesn't get passed in, it will be [min, max] with all channels combined instead).",
+					"outMaxs": "The output maximum value from the analyzer, indices is in channels (Optional)."
+				},
+				"returns": "Output\t\t\tof amplitude from given position.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSamples",
+			"args": [
+				{
+					"name": "startPos",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "timeUnit",
+					"type": "TimeUnit",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "length",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "mono",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "channel",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "-1"
+				},
+				{
+					"name": "gain",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "1.0"
+				},
+				{
+					"name": "output",
+					"type": "Array<Float>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "outputMerge",
+					"type": "Dynamic",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Array<Float>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSamples(startPos:Float, ?timeUnit:TimeUnit, length:Int, mono = true, channel = -1, gain = 1.0, ?output:Array<Float>, ?outputMerge = false):Array<Float> {\r\n\t\t_check();\r\n\t\t((!mono && channel == -1) ? (_sampleOutputLength = length * data.channels) : (_sampleOutputLength = length));\r\n\t\tif (((output == null) ? (_sampleOutput = output = []) : (_sampleOutput = output)).length != _sampleOutputLength) output.resize(_sampleOutputLength);\r\n\t\t_sampleValueGain = gain;\r\n\t\t_sampleOutputMerge = outputMerge;\r\n\t\t_sampleIndex = 0;\r\n\t\t_sampleValue = 0;\r\n\r\n\t\tfinal samplePos = Math.floor(switch (timeUnit) {\r\n\t\t\tcase SAMPLE: startPos;\r\n\t\t\tcase SECOND: startPos * data.sampleRate;\r\n\t\t\tdefault: startPos * data.sampleRate / 1000;\r\n\t\t});\r\n\t\t_sampleChannel = mono ? data.channels - 1 : channel;\r\n\t\tif (length > 0) _read(samplePos, samplePos + length, mono ? _getSamplesCallbackMono : (channel == -1 ? _getSamplesCallback : _getSamplesCallbackChannel));\r\n\r\n\t\t_sampleOutput = null;\r\n\t\treturn output;\r\n\t}",
+			"doc": {
+				"text": "Gets samples from startPos with given length of samples.",
+				"params": {
+					"startPos": "Start Position to get.",
+					"timeUnit": "TimeUnit to use for positions.",
+					"length": "Length of Samples.",
+					"mono": "Merge all of the byte channels of samples in one channel instead (Optional).",
+					"channel": "What channels to get from? (-1 == All Channels, Optional, this will be ignored if mono is enabled).",
+					"gain": "How much gain multiplier will it affect the output. (Optional, default 1.0).",
+					"output": "An Output that gets passed into this function, usually for to avoid memory leaks (Optional).",
+					"outputMerge": "Merge with previous values (Optional, default false)."
+				},
+				"returns": "Output of samples.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

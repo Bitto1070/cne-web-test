@@ -1,0 +1,412 @@
+{
+	"kind": "class",
+	"name": "CharacterPropertiesWindow",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animsWindow",
+			"type": "CharacterAnimsWindow",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "positionXStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "positionYStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "positionXYComma",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scaleStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editCharacterButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editSpriteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipXCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraXStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraYStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraXYComma",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "antialiasingCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "testAsDropDown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "designedAsDropDown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "labels",
+			"type": "Map<UISprite, UIText>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "character",
+					"type": "Character",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, character:Character) @:privateAccess {\r\n\t\tsuper(x, y, 424+16, 204+20, \"editors/ui/inputbox\");\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String) {\r\n\t\t\tvar uiText:UIText = new UIText(ui.x, ui.y-24, 0, text);\r\n\t\t\tmembers.push(uiText); labels.set(ui, uiText);\r\n\t\t}\r\n\r\n\t\tpositionXStepper = new UINumericStepper(x+16, y+36, character.globalOffset.x, 0.001, 2, null, null, 104);\r\n\t\tpositionXStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess positionXStepper.__onChange(text);\r\n\t\t\tthis.changePosition(positionXStepper.value, null);\r\n\t\t};\r\n\t\tmembers.push(positionXStepper);\r\n\t\taddLabelOn(positionXStepper, translate(\"position\"));\r\n\r\n\t\tmembers.push(positionXYComma = new UIText(positionXStepper.x+104-32+0, positionXStepper.y + 9, 0, \",\", 22));\r\n\r\n\t\tpositionYStepper = new UINumericStepper(positionXStepper.x+104-32+26, positionXStepper.y, character.globalOffset.y, 0.001, 2, null, null, 104);\r\n\t\tpositionYStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess positionYStepper.__onChange(text);\r\n\t\t\tthis.changePosition(null, positionYStepper.value);\r\n\t\t};\r\n\t\tmembers.push(positionYStepper);\r\n\r\n\t\tscaleStepper = new UINumericStepper(positionYStepper.x+104-32+26, positionYStepper.y, character.scale.x, 0.001, 2, 0, null, 90);\r\n\t\tscaleStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess scaleStepper.__onChange(text);\r\n\t\t\tthis.changeScale(scaleStepper.value);\r\n\t\t};\r\n\t\tmembers.push(scaleStepper);\r\n\t\taddLabelOn(scaleStepper, translate(\"scale\"));\r\n\r\n\t\teditCharacterButton = new UIButton(scaleStepper.x + 90 -32 + 26, scaleStepper.y-20, translate(\"editInfo\"), editCharacterInfoUI, 120, 24);\r\n\t\teditCharacterButton.field.size -= 2;\r\n\t\tmembers.push(editCharacterButton);\r\n\r\n\t\teditSpriteButton = new UIButton(editCharacterButton.x, editCharacterButton.y+24+6, translate(\"editSprite\"), editCharacterSpriteUI, 120, 24);\r\n\t\teditSpriteButton.field.size -= 2;\r\n\t\tmembers.push(editSpriteButton);\r\n\r\n\t\tflipXCheckbox = new UICheckbox(scaleStepper.x+22, scaleStepper.y+32+14, translate(\"charFlipped\"), character.isPlayer ? !character.__baseFlipped : character.__baseFlipped);\r\n\t\tflipXCheckbox.onChecked = (checked:Bool) -> {this.changeFlipX(checked);};\r\n\t\tmembers.push(flipXCheckbox);\r\n\r\n\t\tcameraXStepper = new UINumericStepper(positionXStepper.x, positionXStepper.y+32+32+4, character.cameraOffset.x, 0.001, 2, null, null, 104);\r\n\t\tcameraXStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess cameraXStepper.__onChange(text);\r\n\t\t\tthis.changeCamPosition(cameraXStepper.value, null);\r\n\t\t};\r\n\t\tmembers.push(cameraXStepper);\r\n\t\taddLabelOn(cameraXStepper, translate(\"camPosition\"));\r\n\r\n\t\tmembers.push(cameraXYComma = new UIText(cameraXStepper.x + 104-32+0, cameraXStepper.y+9, 0, \",\", 22));\r\n\r\n\t\tcameraYStepper = new UINumericStepper(cameraXStepper.x+104-32+26, cameraXStepper.y, character.cameraOffset.y, 0.001, 2, null, null, 104);\r\n\t\tcameraYStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess cameraYStepper.__onChange(text);\r\n\t\t\tthis.changeCamPosition(null, cameraYStepper.value);\r\n\t\t};\r\n\t\tmembers.push(cameraYStepper);\r\n\r\n\t\tantialiasingCheckbox = new UICheckbox(scaleStepper.x+22, flipXCheckbox.y+32, translate(\"antialiased\"), character.antialiasing);\r\n\t\tantialiasingCheckbox.onChecked = (checked:Bool) -> {this.changeAntialiasing(checked);};\r\n\t\tmembers.push(antialiasingCheckbox);\r\n\r\n\t\ttestAsDropDown = new UIDropDown(cameraXStepper.x, cameraXStepper.y+32+32+4, 193, 32, [\"BOYFRIEND\", \"DAD\"], character.playerOffsets ? 0 : 1);\r\n\t\ttestAsDropDown.onChange = (index:Int) -> {\r\n\t\t\tCharacterEditor.instance.changeStagePosition(testAsDropDown.options[index]);\r\n\t\t};\r\n\t\tmembers.push(testAsDropDown);\r\n\t\taddLabelOn(testAsDropDown, translate(\"testCharAs\"));\r\n\t\ttestAsDropDown.bWidth = 193; //REFUSES TO FUCKING SET TO 170 PIECE OF SHIT!!\r\n\r\n\t\tdesignedAsDropDown = new UIDropDown(testAsDropDown.x+193+22, testAsDropDown.y, 193, 32, [\"BOYFRIEND\", \"DAD\"], character.playerOffsets ? 0 : 1);\r\n\t\tdesignedAsDropDown.onChange = (index:Int) -> {\r\n\t\t\tCharacterEditor.instance.changeCharacterDesginedAs(designedAsDropDown.options[index] == \"BOYFRIEND\");\r\n\t\t};\r\n\t\tmembers.push(designedAsDropDown);\r\n\t\taddLabelOn(designedAsDropDown, translate(\"charDesign\"));\r\n\t\tdesignedAsDropDown.bWidth = 193;\r\n\r\n\t\talpha = 0.7;\r\n\r\n\t\tthis.character = character;\r\n\t}\r\n\r\n\tpublic function changePosition(newPosX:Null<Float>, newPosY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tif (newPosX != null && newPosY != null && newPosX == character.globalOffset.x && newPosY == character.globalOffset.y)\r\n\t\t\treturn;\r\n\t\telse if (addToUndo) {\r\n\t\t\tif (newPosX != null && newPosX == character.globalOffset.x) return;\r\n\t\t\tif (newPosY != null && newPosY == character.globalOffset.y) return;\r\n\t\t}\r\n\t\tvar oldPosition:FlxPoint = character.globalOffset.clone();\r\n\r\n\t\tif (newPosX != null) character.globalOffset.x = newPosX;\r\n\t\tif (newPosY != null) character.globalOffset.y = newPosY;\r\n\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tpositionXStepper.label.text = Std.string(character.globalOffset.x);\r\n\t\tpositionYStepper.label.text = Std.string(character.globalOffset.y);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditPosition(oldPosition, character.globalOffset.clone()));\r\n\t\telse oldPosition.put();\r\n\t}\r\n\r\n\tpublic function changeScale(newScale:Float, addToUndo:Bool = true) {\r\n\t\tif (character.scale.x == newScale) return;\r\n\t\tvar oldScale:Float = character.scale.x;\r\n\r\n\t\tcharacter.scale.set(newScale, newScale);\r\n\t\tcharacter.updateHitbox();\r\n\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tscaleStepper.label.text = Std.string(newScale);\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditScale(oldScale, newScale));\r\n\t}\r\n\r\n\tpublic function editCharacterInfoUI() {\r\n\t\tCharacterEditor.instance.openSubState(new CharacterInfoScreen(character, (info:CharacterExtraInfo) -> {editCharacterInfo(info);}));\r\n\t}\r\n\r\n\tpublic function editCharacterInfo(info:CharacterExtraInfo, addToUndo:Bool = true) {\r\n\t\tvar oldInfo:CharacterExtraInfo = {\r\n\t\t\ticon: character.icon,\r\n\t\t\ticonColor: character.iconColor,\r\n\t\t\tholdTime: character.holdTime,\r\n\t\t\tdefaultAimFPS: character.defaultAimFPS,\r\n\t\t\tcustomProperties: character.extra.copy()\r\n\t\t};\r\n\r\n\t\tcharacter.icon = info.icon;\r\n\t\tcharacter.iconColor = info.iconColor;\r\n\t\tcharacter.holdTime = info.holdTime;\r\n\t\tcharacter.defaultAimFPS = info.defaultAimFPS;\r\n\t\tcharacter.extra = info.customProperties.copy();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditInfo(oldInfo, info));\r\n\t}\r\n\r\n\tpublic function editCharacterSpriteUI() {\r\n\t\tCharacterEditor.instance.openSubState(new CharacterSpriteScreen('characters/${character.sprite}', (sprite:String, isAtlas:Bool) -> {\r\n\t\t\tchangeSprite(sprite);\r\n\t\t}));\r\n\t}\r\n\r\n\tpublic function changeSprite(sprite:String) @:privateAccess {\r\n\t\tvar path:String = Paths.image('characters/$sprite');\r\n\t\tvar noExt:String = Path.withoutExtension(path);\r\n\r\n\t\tcharacter.sprite = sprite;\r\n\r\n\t\tanimsWindow.displayWindowSprite.animation.reset();\r\n\t\tanimsWindow.clearDisplayAnims();\r\n\t\tif (animsWindow.displayWindowGraphic != null) \r\n\t\t\tanimsWindow.displayWindowGraphic.destroy();\r\n\r\n\t\tcharacter.frames = Paths.getFrames(path, true);\r\n\r\n\t\tanimsWindow.displayWindowSprite.loadGraphicFromSprite(character);\r\n\t\tif (Assets.exists(Paths.image('characters/${character.sprite}')))\r\n\t\t\tanimsWindow.displayWindowGraphic = FlxG.bitmap.add(Assets.getBitmapData(Paths.image('characters/${character.sprite}'), true, false));\r\n\r\n\t\tcharacter.animDatas.clear();\r\n\t\tfor (anim in animsWindow.buttons) anim.checkValid(); // Re-add all animations\r\n\r\n\t\tCharacterEditor.instance.playAnimation(animsWindow.findValid().getDefault(animsWindow.buttons.members[0].anim));\r\n\t\tanimsWindow.setAnimAutoComplete(CoolUtil.getAnimsListFromSprite(character));\r\n\t}\r\n\r\n\tpublic function changeFlipX(newFlipX:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tcharacter.flipX = character.isPlayer ? !newFlipX : newFlipX;\r\n\t\tcharacter.__baseFlipped = character.flipX;\r\n\t\t\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tflipXCheckbox.checked = newFlipX;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditFlipped(newFlipX));\r\n\t}\r\n\r\n\tpublic function changeCamPosition(newPosX:Null<Float>, newPosY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tif (newPosX != null && newPosY != null && newPosX == character.cameraOffset.x && newPosY == character.cameraOffset.y)\r\n\t\t\treturn;\r\n\t\telse if (addToUndo) {\r\n\t\t\tif (newPosX != null && newPosX == character.cameraOffset.x) return;\r\n\t\t\tif (newPosY != null && newPosY == character.cameraOffset.y) return;\r\n\t\t}\r\n\t\tvar oldCamPosition:FlxPoint = character.cameraOffset.clone();\r\n\r\n\t\tif (newPosX != null) character.cameraOffset.x = newPosX;\r\n\t\tif (newPosY != null) character.cameraOffset.y = newPosY;\r\n\r\n\t\tcameraXStepper.label.text = Std.string(character.cameraOffset.x);\r\n\t\tcameraYStepper.label.text = Std.string(character.cameraOffset.y);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditCamPosition(oldCamPosition, character.cameraOffset.clone()));\r\n\t\telse oldCamPosition.put();\r\n\t}\r\n\r\n\tpublic function changeAntialiasing(newAntialiasing:Bool, addToUndo:Bool = true) {\r\n\t\tif (character.antialiasing == newAntialiasing) return;\r\n\t\tcharacter.antialiasing = newAntialiasing;\r\n\t\tanimsWindow.displayWindowSprite.antialiasing = newAntialiasing;\r\n\r\n\t\tantialiasingCheckbox.checked = newAntialiasing;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditAntialiasing(newAntialiasing));\r\n\t}\r\n\r\n\tpublic function updateButtonsPos() {\r\n\t\tpositionXStepper.follow(this, 16, 36);\r\n\t\tpositionYStepper.follow(this, 16+104-32+26, 36);\r\n\t\tpositionXYComma.follow(this, 16+104-32+0, 36 + 9);\r\n\t\tscaleStepper.follow(this, (16+104-32+26)+104-32+26, 36);\r\n\t\teditCharacterButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, 36-20);\r\n\t\teditSpriteButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, (36-20)+24+6);\r\n\t\tflipXCheckbox.follow(this, (16+104-32+26)+104-32+26+22, 36+32+14);\r\n\t\r\n\t\tcameraXStepper.follow(this, 16, 36+32+32+4);\r\n\t\tcameraYStepper.follow(this, (16)+104-32+26, 36+32+32+4);\r\n\t\tcameraXYComma.follow(this, 16 + 104-32+0, (36+32+32+4)+9);\r\n\t\tantialiasingCheckbox.follow(this, ((16+104-32+26)+104-32+26)+22, 36+32+14+32);\r\n\t\ttestAsDropDown.follow(this, 16, (36+32+32+4)+32+32+4);\r\n\t\tdesignedAsDropDown.follow(this, (16)+193+22, (36+32+32+4)+32+32+4);\r\n\r\n\t\tfor (ui => text in labels)\r\n\t\t\ttext.follow(ui, 0, -24);\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changePosition",
+			"args": [
+				{
+					"name": "newPosX",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "newPosY",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changePosition(newPosX:Null<Float>, newPosY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tif (newPosX != null && newPosY != null && newPosX == character.globalOffset.x && newPosY == character.globalOffset.y)\r\n\t\t\treturn;\r\n\t\telse if (addToUndo) {\r\n\t\t\tif (newPosX != null && newPosX == character.globalOffset.x) return;\r\n\t\t\tif (newPosY != null && newPosY == character.globalOffset.y) return;\r\n\t\t}\r\n\t\tvar oldPosition:FlxPoint = character.globalOffset.clone();\r\n\r\n\t\tif (newPosX != null) character.globalOffset.x = newPosX;\r\n\t\tif (newPosY != null) character.globalOffset.y = newPosY;\r\n\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tpositionXStepper.label.text = Std.string(character.globalOffset.x);\r\n\t\tpositionYStepper.label.text = Std.string(character.globalOffset.y);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditPosition(oldPosition, character.globalOffset.clone()));\r\n\t\telse oldPosition.put();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess",
+				"@:privateAccess",
+				"@:privateAccess",
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeScale",
+			"args": [
+				{
+					"name": "newScale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeScale(newScale:Float, addToUndo:Bool = true) {\r\n\t\tif (character.scale.x == newScale) return;\r\n\t\tvar oldScale:Float = character.scale.x;\r\n\r\n\t\tcharacter.scale.set(newScale, newScale);\r\n\t\tcharacter.updateHitbox();\r\n\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tscaleStepper.label.text = Std.string(newScale);\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditScale(oldScale, newScale));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "editCharacterInfoUI",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function editCharacterInfoUI() {\r\n\t\tCharacterEditor.instance.openSubState(new CharacterInfoScreen(character, (info:CharacterExtraInfo) -> {editCharacterInfo(info);}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "editCharacterInfo",
+			"args": [
+				{
+					"name": "info",
+					"type": "CharacterExtraInfo",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function editCharacterInfo(info:CharacterExtraInfo, addToUndo:Bool = true) {\r\n\t\tvar oldInfo:CharacterExtraInfo = {\r\n\t\t\ticon: character.icon,\r\n\t\t\ticonColor: character.iconColor,\r\n\t\t\tholdTime: character.holdTime,\r\n\t\t\tdefaultAimFPS: character.defaultAimFPS,\r\n\t\t\tcustomProperties: character.extra.copy()\r\n\t\t};\r\n\r\n\t\tcharacter.icon = info.icon;\r\n\t\tcharacter.iconColor = info.iconColor;\r\n\t\tcharacter.holdTime = info.holdTime;\r\n\t\tcharacter.defaultAimFPS = info.defaultAimFPS;\r\n\t\tcharacter.extra = info.customProperties.copy();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditInfo(oldInfo, info));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "editCharacterSpriteUI",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function editCharacterSpriteUI() {\r\n\t\tCharacterEditor.instance.openSubState(new CharacterSpriteScreen('characters/${character.sprite}', (sprite:String, isAtlas:Bool) -> {\r\n\t\t\tchangeSprite(sprite);\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSprite",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeSprite(sprite:String) @:privateAccess {\r\n\t\tvar path:String = Paths.image('characters/$sprite');\r\n\t\tvar noExt:String = Path.withoutExtension(path);\r\n\r\n\t\tcharacter.sprite = sprite;\r\n\r\n\t\tanimsWindow.displayWindowSprite.animation.reset();\r\n\t\tanimsWindow.clearDisplayAnims();\r\n\t\tif (animsWindow.displayWindowGraphic != null) \r\n\t\t\tanimsWindow.displayWindowGraphic.destroy();\r\n\r\n\t\tcharacter.frames = Paths.getFrames(path, true);\r\n\r\n\t\tanimsWindow.displayWindowSprite.loadGraphicFromSprite(character);\r\n\t\tif (Assets.exists(Paths.image('characters/${character.sprite}')))\r\n\t\t\tanimsWindow.displayWindowGraphic = FlxG.bitmap.add(Assets.getBitmapData(Paths.image('characters/${character.sprite}'), true, false));\r\n\r\n\t\tcharacter.animDatas.clear();\r\n\t\tfor (anim in animsWindow.buttons) anim.checkValid(); // Re-add all animations\r\n\r\n\t\tCharacterEditor.instance.playAnimation(animsWindow.findValid().getDefault(animsWindow.buttons.members[0].anim));\r\n\t\tanimsWindow.setAnimAutoComplete(CoolUtil.getAnimsListFromSprite(character));\r\n\t}\r\n\r\n\tpublic function changeFlipX(newFlipX:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tcharacter.flipX = character.isPlayer ? !newFlipX : newFlipX;\r\n\t\tcharacter.__baseFlipped = character.flipX;\r\n\t\t\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tflipXCheckbox.checked = newFlipX;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditFlipped(newFlipX));\r\n\t}\r\n\r\n\tpublic function changeCamPosition(newPosX:Null<Float>, newPosY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tif (newPosX != null && newPosY != null && newPosX == character.cameraOffset.x && newPosY == character.cameraOffset.y)\r\n\t\t\treturn;\r\n\t\telse if (addToUndo) {\r\n\t\t\tif (newPosX != null && newPosX == character.cameraOffset.x) return;\r\n\t\t\tif (newPosY != null && newPosY == character.cameraOffset.y) return;\r\n\t\t}\r\n\t\tvar oldCamPosition:FlxPoint = character.cameraOffset.clone();\r\n\r\n\t\tif (newPosX != null) character.cameraOffset.x = newPosX;\r\n\t\tif (newPosY != null) character.cameraOffset.y = newPosY;\r\n\r\n\t\tcameraXStepper.label.text = Std.string(character.cameraOffset.x);\r\n\t\tcameraYStepper.label.text = Std.string(character.cameraOffset.y);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditCamPosition(oldCamPosition, character.cameraOffset.clone()));\r\n\t\telse oldCamPosition.put();\r\n\t}\r\n\r\n\tpublic function changeAntialiasing(newAntialiasing:Bool, addToUndo:Bool = true) {\r\n\t\tif (character.antialiasing == newAntialiasing) return;\r\n\t\tcharacter.antialiasing = newAntialiasing;\r\n\t\tanimsWindow.displayWindowSprite.antialiasing = newAntialiasing;\r\n\r\n\t\tantialiasingCheckbox.checked = newAntialiasing;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditAntialiasing(newAntialiasing));\r\n\t}\r\n\r\n\tpublic function updateButtonsPos() {\r\n\t\tpositionXStepper.follow(this, 16, 36);\r\n\t\tpositionYStepper.follow(this, 16+104-32+26, 36);\r\n\t\tpositionXYComma.follow(this, 16+104-32+0, 36 + 9);\r\n\t\tscaleStepper.follow(this, (16+104-32+26)+104-32+26, 36);\r\n\t\teditCharacterButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, 36-20);\r\n\t\teditSpriteButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, (36-20)+24+6);\r\n\t\tflipXCheckbox.follow(this, (16+104-32+26)+104-32+26+22, 36+32+14);\r\n\t\r\n\t\tcameraXStepper.follow(this, 16, 36+32+32+4);\r\n\t\tcameraYStepper.follow(this, (16)+104-32+26, 36+32+32+4);\r\n\t\tcameraXYComma.follow(this, 16 + 104-32+0, (36+32+32+4)+9);\r\n\t\tantialiasingCheckbox.follow(this, ((16+104-32+26)+104-32+26)+22, 36+32+14+32);\r\n\t\ttestAsDropDown.follow(this, 16, (36+32+32+4)+32+32+4);\r\n\t\tdesignedAsDropDown.follow(this, (16)+193+22, (36+32+32+4)+32+32+4);\r\n\r\n\t\tfor (ui => text in labels)\r\n\t\t\ttext.follow(ui, 0, -24);\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeFlipX",
+			"args": [
+				{
+					"name": "newFlipX",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeFlipX(newFlipX:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tcharacter.flipX = character.isPlayer ? !newFlipX : newFlipX;\r\n\t\tcharacter.__baseFlipped = character.flipX;\r\n\t\t\r\n\t\tCharacterEditor.instance.playAnimation(character.getAnimName());\r\n\r\n\t\tflipXCheckbox.checked = newFlipX;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditFlipped(newFlipX));\r\n\t}\r\n\r\n\tpublic function changeCamPosition(newPosX:Null<Float>, newPosY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tif (newPosX != null && newPosY != null && newPosX == character.cameraOffset.x && newPosY == character.cameraOffset.y)\r\n\t\t\treturn;\r\n\t\telse if (addToUndo) {\r\n\t\t\tif (newPosX != null && newPosX == character.cameraOffset.x) return;\r\n\t\t\tif (newPosY != null && newPosY == character.cameraOffset.y) return;\r\n\t\t}\r\n\t\tvar oldCamPosition:FlxPoint = character.cameraOffset.clone();\r\n\r\n\t\tif (newPosX != null) character.cameraOffset.x = newPosX;\r\n\t\tif (newPosY != null) character.cameraOffset.y = newPosY;\r\n\r\n\t\tcameraXStepper.label.text = Std.string(character.cameraOffset.x);\r\n\t\tcameraYStepper.label.text = Std.string(character.cameraOffset.y);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditCamPosition(oldCamPosition, character.cameraOffset.clone()));\r\n\t\telse oldCamPosition.put();\r\n\t}\r\n\r\n\tpublic function changeAntialiasing(newAntialiasing:Bool, addToUndo:Bool = true) {\r\n\t\tif (character.antialiasing == newAntialiasing) return;\r\n\t\tcharacter.antialiasing = newAntialiasing;\r\n\t\tanimsWindow.displayWindowSprite.antialiasing = newAntialiasing;\r\n\r\n\t\tantialiasingCheckbox.checked = newAntialiasing;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditAntialiasing(newAntialiasing));\r\n\t}\r\n\r\n\tpublic function updateButtonsPos() {\r\n\t\tpositionXStepper.follow(this, 16, 36);\r\n\t\tpositionYStepper.follow(this, 16+104-32+26, 36);\r\n\t\tpositionXYComma.follow(this, 16+104-32+0, 36 + 9);\r\n\t\tscaleStepper.follow(this, (16+104-32+26)+104-32+26, 36);\r\n\t\teditCharacterButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, 36-20);\r\n\t\teditSpriteButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, (36-20)+24+6);\r\n\t\tflipXCheckbox.follow(this, (16+104-32+26)+104-32+26+22, 36+32+14);\r\n\t\r\n\t\tcameraXStepper.follow(this, 16, 36+32+32+4);\r\n\t\tcameraYStepper.follow(this, (16)+104-32+26, 36+32+32+4);\r\n\t\tcameraXYComma.follow(this, 16 + 104-32+0, (36+32+32+4)+9);\r\n\t\tantialiasingCheckbox.follow(this, ((16+104-32+26)+104-32+26)+22, 36+32+14+32);\r\n\t\ttestAsDropDown.follow(this, 16, (36+32+32+4)+32+32+4);\r\n\t\tdesignedAsDropDown.follow(this, (16)+193+22, (36+32+32+4)+32+32+4);\r\n\r\n\t\tfor (ui => text in labels)\r\n\t\t\ttext.follow(ui, 0, -24);\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeCamPosition",
+			"args": [
+				{
+					"name": "newPosX",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "newPosY",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeCamPosition(newPosX:Null<Float>, newPosY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tif (newPosX != null && newPosY != null && newPosX == character.cameraOffset.x && newPosY == character.cameraOffset.y)\r\n\t\t\treturn;\r\n\t\telse if (addToUndo) {\r\n\t\t\tif (newPosX != null && newPosX == character.cameraOffset.x) return;\r\n\t\t\tif (newPosY != null && newPosY == character.cameraOffset.y) return;\r\n\t\t}\r\n\t\tvar oldCamPosition:FlxPoint = character.cameraOffset.clone();\r\n\r\n\t\tif (newPosX != null) character.cameraOffset.x = newPosX;\r\n\t\tif (newPosY != null) character.cameraOffset.y = newPosY;\r\n\r\n\t\tcameraXStepper.label.text = Std.string(character.cameraOffset.x);\r\n\t\tcameraYStepper.label.text = Std.string(character.cameraOffset.y);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditCamPosition(oldCamPosition, character.cameraOffset.clone()));\r\n\t\telse oldCamPosition.put();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeAntialiasing",
+			"args": [
+				{
+					"name": "newAntialiasing",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeAntialiasing(newAntialiasing:Bool, addToUndo:Bool = true) {\r\n\t\tif (character.antialiasing == newAntialiasing) return;\r\n\t\tcharacter.antialiasing = newAntialiasing;\r\n\t\tanimsWindow.displayWindowSprite.antialiasing = newAntialiasing;\r\n\r\n\t\tantialiasingCheckbox.checked = newAntialiasing;\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditAntialiasing(newAntialiasing));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButtonsPos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateButtonsPos() {\r\n\t\tpositionXStepper.follow(this, 16, 36);\r\n\t\tpositionYStepper.follow(this, 16+104-32+26, 36);\r\n\t\tpositionXYComma.follow(this, 16+104-32+0, 36 + 9);\r\n\t\tscaleStepper.follow(this, (16+104-32+26)+104-32+26, 36);\r\n\t\teditCharacterButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, 36-20);\r\n\t\teditSpriteButton.follow(this, ((16+104-32+26)+104-32+26)+90-32+26, (36-20)+24+6);\r\n\t\tflipXCheckbox.follow(this, (16+104-32+26)+104-32+26+22, 36+32+14);\r\n\t\r\n\t\tcameraXStepper.follow(this, 16, 36+32+32+4);\r\n\t\tcameraYStepper.follow(this, (16)+104-32+26, 36+32+32+4);\r\n\t\tcameraXYComma.follow(this, 16 + 104-32+0, (36+32+32+4)+9);\r\n\t\tantialiasingCheckbox.follow(this, ((16+104-32+26)+104-32+26)+22, 36+32+14+32);\r\n\t\ttestAsDropDown.follow(this, 16, (36+32+32+4)+32+32+4);\r\n\t\tdesignedAsDropDown.follow(this, (16)+193+22, (36+32+32+4)+32+32+4);\r\n\r\n\t\tfor (ui => text in labels)\r\n\t\t\ttext.follow(ui, 0, -24);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -7,6 +7,22 @@ const { frontmatter, id } = Astro.props;
 
 // WORST SHIT IVE EVER done
 function stupid(b:Array<any>, root:string):string {
+    if (b == null) return '<hr style="display: flex; width: 90%;"/>';
+    var subpages = (b[2] != undefined) ? `<div style="margin-left: 0.5em;
+            padding-left: 0.5em;
+            border-left: 2px solid var(--primary-color);">
+                ${b[2].map((c:any) => (stupid(c, root + b[0] + '/'))).join('\n')}
+            </div>` : '';
+    // b[3] being true means its unclickable, but still has subpages
+    if (b[3] == true) return `
+    <div x-data="{show:true}">
+        <div class="panel" style="border-radius: 8px; font-weight: bolder; padding: 8px; margin: 2px; display: flex; align-items: center; justify-content: space-between;">
+            ${b[1]} <img src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/menu.png"}" alt="Show/Hide" title="Show/Hide" width="16" height="16" x-on:click="show = !show" style="image-rendering: pixelated; cursor: pointer;"/>
+        </div>
+        <div x-show="show">
+            ${subpages}
+        </div>
+    </div>`;
     var url = Astro.url.pathname;
     if (!url.endsWith('/')) url += '/';
     const coolRoot = (import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+'wiki/'+root+b[0];
@@ -17,13 +33,7 @@ function stupid(b:Array<any>, root:string):string {
                 ${b[1]}
             </button>
         </a>
-        ${(b[2] != undefined) ? 
-            `<div style="margin-left: 0.5em;
-            padding-left: 0.5em;
-            border-left: 2px solid var(--primary-color);">
-                ${b[2].map((c:any) => (stupid(c, root + b[0] + '/'))).join('\n')}
-            </div>`
-         : ''}
+        ${subpages}
     </div>`
 }
 ---

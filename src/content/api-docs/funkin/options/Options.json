@@ -1,0 +1,1271 @@
+{
+	"kind": "class",
+	"name": "Options",
+	"pkg": "funkin.options",
+	"doc": {
+		"text": "The save data of the engine.\nMod save data is stored in `FlxG.save.data`.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:build(funkin.backend.system.macros.OptionsMacro.build())",
+		"@:build(funkin.backend.system.macros.FunkinSaveMacro.build(\"__save\", \"__flush\", \"__load\"))"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "__save",
+			"type": "FlxSave",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)",
+				"@:doNotSave"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "naughtyness",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "SETTINGS",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "downscroll",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostTapping",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flashingMenu",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomOnBeat",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fpsCounter",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "autoPause",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "antialiasing",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "volume",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "volumeMusic",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "volumeSFX",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "week6PixelPerfect",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameplayShaders",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorHealthBar",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lowMemoryMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "devMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "betaUpdates",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "splashesEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hitWindow",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)",
+				"@:doNotSave"
+			]
+		},
+		{
+			"kind": "final",
+			"name": "maxFrameRate",
+			"type": "Int",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:doNotSave"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "songOffset",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "framerate",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gpuOnlyBitmaps",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "language",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "streamedMusic",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "streamedVocals",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "quality",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "allowConfigWarning",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modchartingHoldSubdivisions",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastLoadedMod",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "intensiveBlur",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "EDITORS SETTINGS",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editorSFX",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterSwapEventSides",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editorCharterPrettyPrint",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editorCharacterPrettyPrint",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editorStagePrettyPrint",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editorsResizable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bypassEditorsResize",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "maxUndos",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songOffsetAffectEditors",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "freeplayLastSong",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "QOL FEATURES",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "freeplayLastDifficulty",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "freeplayLastVariation",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "contributors",
+			"type": "Array<funkin.backend.system.github.GitHubContributor.CreditsGitHubContributor>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "mainDevs",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastUpdated",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterMetronomeEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "CHARTER",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterShowSections",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterShowBeats",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterShowCameraHighlights",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterEnablePlaytestScripts",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterRainbowWaveforms",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterLowDetailWaveforms",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterAutoSaves",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterAutoSaveTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterAutoSaveWarningTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterAutoSavesSeparateFolder",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageSelected",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "CHARACTER EDITOR",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterHitbox",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterCamera",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterAxis",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterDragging",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playAnimOnOffset",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_NOTE_LEFT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "PLAYER 1 CONTROLS",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_NOTE_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_NOTE_UP",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_NOTE_RIGHT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_LEFT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_UP",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_RIGHT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_ACCEPT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_BACK",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_PAUSE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_CHANGE_MODE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_RESET",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_SWITCHMOD",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_VOLUME_UP",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_VOLUME_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_VOLUME_MUTE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_FPS_COUNTER",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_DEV_ACCESS",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_DEV_CONSOLE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P1_DEV_RELOAD",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_NOTE_LEFT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "PLAYER 2 CONTROLS (ALT)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_NOTE_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_NOTE_UP",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_NOTE_RIGHT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_LEFT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_UP",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_RIGHT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_ACCEPT",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_BACK",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_PAUSE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_CHANGE_MODE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_RESET",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_SWITCHMOD",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_VOLUME_UP",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_VOLUME_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_VOLUME_MUTE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_FPS_COUNTER",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_DEV_ACCESS",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_DEV_CONSOLE",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "P2_DEV_RELOAD",
+			"type": "Array<FlxKey>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_NOTE_LEFT",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": {
+				"text": "SOLO GETTERS",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_NOTE_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_NOTE_UP",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_NOTE_RIGHT",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_LEFT",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_UP",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_RIGHT",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_ACCEPT",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_BACK",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_PAUSE",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_CHANGE_MODE",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_RESET",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_SWITCHMOD",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_VOLUME_UP",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_VOLUME_DOWN",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_VOLUME_MUTE",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_FPS_COUNTER",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_DEV_ACCESS",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_DEV_CONSOLE",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SOLO_DEV_RELOAD",
+			"type": "Array<FlxKey>",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "load",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function load() {\r\n\t\tvar path = haxe.macro.Compiler.getDefine(\"SAVE_OPTIONS_PATH\"), name = haxe.macro.Compiler.getDefine(\"SAVE_OPTIONS_NAME\");\r\n\t\tif (path == null) path = 'CodenameEngine';\r\n\t\tif (name == null) name = 'options';\r\n\r\n\t\tif (__save == null) __save = new FlxSave();\r\n\t\t__save.bind(name, path);\r\n\t\t__load();\r\n\r\n\t\tif (!__eventAdded) {\r\n\t\t\tLib.application.onExit.add(function(i:Int) {\r\n\t\t\t\tLogs.traceColored([\r\n\t\t\t\t\tLogs.getPrefix(\"Options\"),\r\n\t\t\t\t\tLogs.logText(\"Saving \"),\r\n\t\t\t\t\tLogs.logText(\"settings\", GREEN),\r\n\t\t\t\t\tLogs.logText(\"...\")\r\n\t\t\t\t], VERBOSE);\r\n\t\t\t\tsave();\r\n\t\t\t});\r\n\t\t\t__eventAdded = true;\r\n\t\t}\r\n\t\tFlxG.sound.volume = volume;\r\n\t\tapplySettings();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "applySettings",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function applySettings() {\r\n\t\tapplyKeybinds();\r\n\t\tapplyQuality();\r\n\r\n\t\tflixel.sound.FlxSoundData.allowStreaming = streamedMusic;\r\n\t\tFlxG.sound.defaultMusicGroup.volume = volumeMusic;\r\n\t\tFlxG.autoPause = autoPause;\r\n\r\n\t\tvar _framerate = framerate;\r\n\t\tif (_framerate > maxFrameRate) _framerate = 0;\r\n\r\n\t\tif (FlxG.updateFramerate < framerate) FlxG.drawFramerate = FlxG.updateFramerate = _framerate;\r\n\t\telse FlxG.updateFramerate = FlxG.drawFramerate = _framerate;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "applyQuality",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function applyQuality() {\r\n\t\tswitch (quality) {\r\n\t\t\tcase 0:\r\n\t\t\t\tantialiasing = false;\r\n\t\t\t\tlowMemoryMode = true;\r\n\t\t\t\tgameplayShaders = false;\r\n\t\t\tcase 1:\r\n\t\t\t\tantialiasing = true;\r\n\t\t\t\tlowMemoryMode = false;\r\n\t\t\t\tgameplayShaders = true;\r\n\t\t}\r\n\r\n\t\tFlxG.game.stage.quality = (FlxG.enableAntialiasing = antialiasing) ? BEST : LOW;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "applyKeybinds",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function applyKeybinds() {\r\n\t\tPlayerSettings.solo.setKeyboardScheme(Solo);\r\n\t\tPlayerSettings.player1.setKeyboardScheme(Duo(true));\r\n\t\tPlayerSettings.player2.setKeyboardScheme(Duo(false));\r\n\r\n\t\tFlxG.sound.volumeUpKeys = SOLO_VOLUME_UP;\r\n\t\tFlxG.sound.volumeDownKeys = SOLO_VOLUME_DOWN;\r\n\t\tFlxG.sound.muteKeys = SOLO_VOLUME_MUTE;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "save",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function save() {\r\n\t\tvolume = FlxG.sound.volume;\r\n\t\t__flush();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

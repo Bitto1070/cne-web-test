@@ -1,0 +1,192 @@
+{
+	"kind": "class",
+	"name": "StrumLineButton",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "idText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charactersList",
+			"type": "UIButtonList<CompactCharacterButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "typeDropdown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stagePositionDropdown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudScaleStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudXStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudYStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "visibleCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeedStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "usesChartScrollSpeed",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "labels",
+			"type": "Map<UISprite, UIText>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "XYComma",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraClipShader",
+			"type": "CustomShader",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "strumLine",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UIButtonList<StrumLineButton>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(id:Int, strumLine:ChartStrumLine, parent:UIButtonList<StrumLineButton>) {\r\n\t\tsuper(0, 0, '', function () {}, 620, 246);\r\n\r\n\t\tvar subState:ChartCreationScreen = cast FlxG.state.subState;\r\n\t\tautoAlpha = false; frames = Paths.getFrames('editors/ui/inputbox');\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String, ?size:Int):UIText {\r\n\t\t\tvar uiText:UIText = new UIText(ui.x, ui.y - 24, 0, text, size);\r\n\t\t\tmembers.push(uiText); labels.set(ui, uiText);\r\n\t\t\treturn uiText;\r\n\t\t}\r\n\r\n\t\tcharactersList = new UIButtonList<CompactCharacterButton>(16, 8+26, 210, 160, null, FlxPoint.get(200, 40), null, 5);\r\n\t\tcharactersList.frames = Paths.getFrames('editors/ui/inputbox');\r\n\t\tcharactersList.cameraSpacing = 0;\r\n\r\n\t\tcharactersList.addButton.callback = function()\r\n\t\t\tcharactersList.add(new CompactCharacterButton(TU.translate(\"charterStrumLine.newChar\"), subState.charFileList, charactersList));\r\n\t\tfor (character in strumLine.characters)\r\n\t\t\tcharactersList.add(new CompactCharacterButton(character, subState.charFileList, charactersList));\r\n\r\n\t\tmembers.push(charactersList);\r\n\t\tidText = addLabelOn(charactersList, TU.translate(\"chartCreation.strumLine.format\", [id]));\r\n\r\n\t\tcameraClipShader = new CustomShader(\"engine/cameraClip\");\r\n\t\tcameraClipShader.hset(\"clipRect\", [0, 0, 100, 100]);\r\n\t\tcharactersList.buttonCameras.addShader(cameraClipShader);\r\n\r\n\t\ttypeDropdown = new UIDropDown(charactersList.x + charactersList.bWidth + 16, 8+26, 200, 32, [\"OPPONENT\", \"PLAYER\", \"ADDITIONAL\"], strumLine.type);\r\n\t\tmembers.push(typeDropdown);\r\n\t\taddLabelOn(typeDropdown, TU.translate(\"charterStrumLine.type\"));\r\n\r\n\t\tvar stagePositionI = strumLine.position == null ? strumLine.type : [\"DAD\", \"BOYFRIEND\", \"GIRLFRIEND\"].indexOf(strumLine.position.toUpperCase());\r\n\r\n\t\tstagePositionDropdown = new UIDropDown(typeDropdown.x + 200 - 32 + 26, typeDropdown.y, 200, 32, [\"DAD\", \"BOYFRIEND\", \"GIRLFRIEND\"], stagePositionI);\r\n\t\tmembers.push(stagePositionDropdown);\r\n\t\taddLabelOn(stagePositionDropdown, TU.translate(\"charterStrumLine.stagePos\"));\r\n\r\n\t\thudScaleStepper = new UINumericStepper(typeDropdown.x, typeDropdown.y + 64, strumLine.strumScale == null ? 1 : strumLine.strumScale, 0.001, 2, null, null, 74);\r\n\t\tmembers.push(hudScaleStepper);\r\n\t\taddLabelOn(hudScaleStepper, TU.translate(\"charterStrumLine.scale\"));\r\n\r\n\t\tvar strOffset:Float = strumLine.strumLinePos == null ? (strumLine.type == 1 ? 0.75 : 0.25) : strumLine.strumLinePos;\r\n\r\n\t\tvar startingPos:FlxPoint = strumLine.strumLinePos == null ?\r\n\t\t\tFlxPoint.get(strOffset, 50) :\r\n\t\t\tFlxPoint.get(strOffset, strumLine.strumPos[1]);\r\n\r\n\t\thudXStepper = new UINumericStepper(hudScaleStepper.x + 80 - 32 + 26, hudScaleStepper.y, startingPos.x, 0.01, 2, 0, 2, 84);\r\n\t\tmembers.push(hudXStepper);\r\n\t\taddLabelOn(hudXStepper, TU.translate(\"charterStrumLine.hudPos\"));\r\n\r\n\t\tmembers.push(XYComma = new UIText(hudXStepper.x + 84 - 32 + 0, hudXStepper.y + 9, 0, \",\", 22));\r\n\r\n\t\thudYStepper = new UINumericStepper(hudXStepper.x + 84 - 32 + 26, hudXStepper.y, startingPos.y, 0.001, 2, null, null, 84);\r\n\t\tmembers.push(hudYStepper);\r\n\r\n\t\tvisibleCheckbox = new UICheckbox(hudYStepper.x + hudYStepper.bWidth + 42, hudYStepper.y + 9, TU.translate(\"charterStrumLine.visible\"), strumLine.visible == null ? true : strumLine.visible);\r\n\t\tmembers.push(visibleCheckbox);\r\n\r\n\t\tscrollSpeedStepper = new UINumericStepper(typeDropdown.x, typeDropdown.y + 128, strumLine.scrollSpeed, 0.1, 2, 0, 10, 82);\r\n\t\tscrollSpeedStepper.selectable = strumLine.scrollSpeed != null;\r\n\t\tmembers.push(scrollSpeedStepper);\r\n\t\taddLabelOn(scrollSpeedStepper, TU.translate(\"charterStrumLine.scrollSpeed\"));\r\n\r\n\t\tusesChartScrollSpeed = new UICheckbox(scrollSpeedStepper.x + 104, typeDropdown.y + 135, TU.translate(\"charterStrumLine.useChartScrollSpeed\"), strumLine.scrollSpeed == null);\r\n\t\tusesChartScrollSpeed.onChecked = function(b) {\r\n\t\t\tif(b) {\r\n\t\t\t\tscrollSpeedStepper.value = subState.scrollSpeedTextBox.value;\r\n\t\t\t\tscrollSpeedStepper.selectable = false;\r\n\t\t\t} else\r\n\t\t\t\tscrollSpeedStepper.selectable = true;\r\n\t\t}\r\n\t\tmembers.push(usesChartScrollSpeed);\r\n\r\n\t\tdeleteButton = new UIButton(16, 246-32-11, null, function () {\r\n\t\t\tparent.remove(this);\r\n\t\t}, 620-32);\r\n\t\tdeleteButton.color = 0xFFFF0000;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + ((deleteButton.bWidth/2)-(15/2)), deleteButton.y + ((deleteButton.bHeight/2)-(16/2))).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tcharactersList.follow(this, 16, 8+26);\r\n\t\ttypeDropdown.follow(this, charactersList.x + charactersList.bWidth + 16, 8+26);\r\n\t\tstagePositionDropdown.follow(this, typeDropdown.x + 200 - 32 + 26, 8+26);\r\n\t\thudScaleStepper.follow(this, typeDropdown.x, 8+26 + 64);\r\n\t\thudXStepper.follow(this, hudScaleStepper.x + 80 - 32 + 26, 8+26 + 64);\r\n\t\thudYStepper.follow(this, hudXStepper.x + 84 - 32 + 26, 8+26 + 64);\r\n\t\tvisibleCheckbox.follow(this, hudYStepper.x + hudYStepper.bWidth + 42, 8+26 + 64 + 9);\r\n\t\tscrollSpeedStepper.follow(this, typeDropdown.x, 8+26 + 128);\r\n\t\tusesChartScrollSpeed.follow(this, scrollSpeedStepper.x + 104, 8+26 + 135);\r\n\r\n\t\tdeleteButton.follow(this, 16, 246-32-11);\r\n\t\tdeleteIcon.follow(this, 16 + ((deleteButton.bWidth/2)-(15/2)), (246-32-11) + ((deleteButton.bHeight/2)-(16/2)));\r\n\r\n\t\tXYComma.follow(hudXStepper, 84 - 32, 9);\r\n\t\tfor (ui => text in labels)\r\n\t\t\ttext.follow(ui, 0, -24);\r\n\r\n\t\tvar subState:ChartCreationScreen = cast FlxG.state.subState;\r\n\t\tvar strumLineList:UIButtonList<StrumLineButton> = subState.strumLineList;\r\n\t\tcameraClipShader.hset(\"clipRect\", [0, (-y-(8+26))+cameras[0].scroll.y, strumLineList.bWidth, strumLineList.bHeight]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

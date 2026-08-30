@@ -1,0 +1,155 @@
+{
+	"kind": "class",
+	"name": "CharterNoteGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "autoSort",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "forEach",
+			"args": [
+				{
+					"name": "noteFunc",
+					"type": "CharterNote->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "recursive",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function forEach(noteFunc:CharterNote->Void, recursive:Bool = false) {\r\n\t\t__loopSprite = null;\r\n\r\n\t\tmax = FlxG.height / 70 / camera.zoom;\r\n\r\n\t\tvar oldCur = __currentlyLooping;\r\n\t\t__currentlyLooping = true;\r\n\r\n\t\tvar curStep = Conductor.curStepFloat;\r\n\t\tif (!FlxG.sound.music.playing)\r\n\t\t\tcurStep = Charter.instance.gridBackdrops.conductorSprY / 40;\r\n\r\n\t\tvar begin = SortedArrayUtil.binarySearch(members, curStep - max, getVarForEachAdd);\r\n\t\tvar end = SortedArrayUtil.binarySearch(members, curStep + max, getVarForEachRemove);\r\n\r\n\t\tfor(i in begin...end) {\r\n\t\t\t__loopSprite = members[i];\r\n\t\t\tif (__loopSprite != null && !Charter.selection.contains(__loopSprite))\r\n\t\t\t\tnoteFunc(__loopSprite);\r\n\t\t}\r\n\t\tfor(c in Charter.selection.copy())\r\n\t\t\tif (c != null && c is CharterNote) noteFunc(cast c);\r\n\r\n\t\t__currentlyLooping = oldCur;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "add",
+			"args": [
+				{
+					"name": "v",
+					"type": "CharterNote",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "CharterNote",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function add(v:CharterNote):CharterNote {\r\n\t\tSortedArrayUtil.addSorted(members, v, getVar);\r\n\t\treturn v;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "remove",
+			"args": [
+				{
+					"name": "v",
+					"type": "CharterNote",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "CharterNote",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function remove(v:CharterNote, force:Bool = true):CharterNote {\r\n\t\tv.ID = -1;\r\n\t\treturn super.remove(v, true);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) @:privateAccess {\r\n\t\tvar oldDefaultCameras = FlxCamera._defaultCameras;\r\n\t\tif (_cameras != null) FlxCamera._defaultCameras = _cameras;\r\n\r\n\t\tif (autoSort && members.length != __lastSort)\r\n\t\t\tsortNotes();\r\n\r\n\t\tforEach((n) -> {\r\n\t\t\tif(n.exists && n.active) {\r\n\t\t\t\tn._cameras = n.__lastDrawCameras = cameras;\r\n\t\t\t\tn.update(elapsed);\r\n\t\t\t}\r\n\t\t});\r\n\r\n\t\tFlxCamera._defaultCameras = oldDefaultCameras;\r\n\t}\r\n\r\n\tpublic function sortNotes() {\r\n\t\t__lastSort = members.length;\r\n\t\tthis.sort(function(i, n1, n2) {\r\n\t\t\tif (n1.step == n2.step)\r\n\t\t\t\treturn FlxSort.byValues(FlxSort.ASCENDING, n1.fullID, n2.fullID);\r\n\t\t\treturn FlxSort.byValues(FlxSort.ASCENDING, n1.step, n2.step);\r\n\t\t});\r\n\t\tupdateNoteIDs();\r\n\t}\r\n\r\n\tpublic inline function updateNoteIDs()\r\n\t\tfor (i => n in members) n.ID = i;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sortNotes",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function sortNotes() {\r\n\t\t__lastSort = members.length;\r\n\t\tthis.sort(function(i, n1, n2) {\r\n\t\t\tif (n1.step == n2.step)\r\n\t\t\t\treturn FlxSort.byValues(FlxSort.ASCENDING, n1.fullID, n2.fullID);\r\n\t\t\treturn FlxSort.byValues(FlxSort.ASCENDING, n1.step, n2.step);\r\n\t\t});\r\n\t\tupdateNoteIDs();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateNoteIDs",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateNoteIDs()\r\n\t\tfor (i => n in members) n.ID = i;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preallocate",
+			"args": [
+				{
+					"name": "len",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function preallocate(len:Int) {\r\n\t\tmembers = cast new haxe.ds.Vector<CharterNote>(len);\r\n\t\tlength = len;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,45 @@
+{
+	"kind": "final class",
+	"name": "PauseCreationEvent",
+	"pkg": "funkin.backend.scripting.events.menu.pause",
+	"doc": {
+		"text": "CANCEL this event to prevent default behaviour!",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "music",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Music that is going to be played",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "options",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "All option names",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

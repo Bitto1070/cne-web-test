@@ -1,0 +1,141 @@
+{
+	"kind": "class",
+	"name": "ChartDataScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "ChartData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeedStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageTextBox",
+			"type": "UIAutoCompleteTextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLineCam",
+			"type": "HudCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "previewStrumLine",
+			"type": "CharterPreviewStrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "data",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(data:ChartData) {\r\n\t\tsuper();\r\n\t\tthis.data = data;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tFlxG.sound.music.pause();\r\n\t\tCharter.instance.vocals.pause();\r\n\t\tfor (strumLine in Charter.instance.strumLines.members) strumLine.vocals.pause();\r\n\r\n\t\twinTitle = TU.translate(\"chartDataScreen.title\");\r\n\t\twinWidth = 420; winHeight = 230; // guys look, the funny numbers!\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String)\r\n\t\t\tadd(new UIText(ui.x, ui.y - 24, 0, text));\r\n\r\n\t\tvar title:UIText;\r\n\t\tadd(title = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, TU.translate(\"chartDataScreen.editChartData\"), 28));\r\n\r\n\t\tvar stageFileList = Stage.getList(true);\r\n\t\tif (stageFileList.length == 0) stageFileList = Stage.getList(false);\r\n\r\n\t\tstageTextBox = new UIAutoCompleteTextBox(title.x, title.y + title.height + 38, PlayState.SONG.stage, 200);\r\n\t\tstageTextBox.suggestItems = stageFileList;\r\n\t\tadd(stageTextBox);\r\n\t\taddLabelOn(stageTextBox, TU.translate(\"chartDataScreen.stage\"));\r\n\r\n\t\tscrollSpeedStepper = new UINumericStepper(stageTextBox.x + 200 + 26, stageTextBox.y, data.scrollSpeed, 0.1, 2, 0, 10, 82);\r\n\t\tadd(scrollSpeedStepper);\r\n\t\taddLabelOn(scrollSpeedStepper, TU.translate(\"chartDataScreen.scrollSpeed\"));\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tsaveInfo();\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20, saveButton.y, TU.translate(\"editor.close\"), function() {\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t\tcloseButton.x -= closeButton.bWidth;\r\n\r\n\t\tstrumLineCam = new HudCamera();\r\n\t\tstrumLineCam.downscroll = Options.downscroll;\r\n\t\tstrumLineCam.bgColor = 0;\r\n\t\tstrumLineCam.alpha = 0;\r\n\t\tFlxG.cameras.add(strumLineCam, false);\r\n\t\tpreviewStrumLine = new CharterPreviewStrumLine(96, 50, 1, 1, 4, 0);\r\n\t\tpreviewStrumLine.camera = strumLineCam;\r\n\t\tadd(previewStrumLine);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveInfo() {\r\n\t\tUIUtil.confirmUISelections(this);\r\n\r\n\t\tvar oldData:{stage:String, speed:Float} = {stage: PlayState.SONG.stage, speed: PlayState.SONG.scrollSpeed};\r\n\r\n\t\tPlayState.SONG.stage = stageTextBox.label.text;\r\n\t\tPlayState.SONG.scrollSpeed = scrollSpeedStepper.value;\r\n\r\n\t\tCharter.undos.addToUndo(CEditChartData(oldData, {stage: stageTextBox.label.text, speed: scrollSpeedStepper.value}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function update(elapsed:Float) {\r\n\t\tvar scrollSpeed:Float = 0.0;\r\n\t\tif (scrollSpeedStepper.hovered || scrollSpeedStepper.focused)\r\n\t\t\tscrollSpeed = scrollSpeedStepper.value;\r\n\r\n\t\tstrumLineCam.alpha = CoolUtil.fpsLerp(strumLineCam.alpha, scrollSpeed == 0.0 ? 0.0 : 1.0, 0.2);\r\n\t\tpreviewStrumLine.updatePos(96, 50, 1, 1, 4, scrollSpeed);\r\n\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tFlxG.cameras.remove(strumLineCam);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,102 @@
+{
+	"kind": "class",
+	"name": "Checkbox",
+	"pkg": "funkin.options.type",
+	"doc": {
+		"text": "Option type that allows you to toggle a checkbox.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "checkbox",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "checked",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "optionName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "optionName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "selectCallback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(text:String, desc:String, ?optionName:String, ?selectCallback:Void->Void, ?parent:Dynamic) {\r\n\t\tthis.optionName = optionName;\r\n\t\tthis.parent = parent = parent != null ? parent : Options;\r\n\r\n\t\tcheckbox = new FlxSprite(10, -30);\r\n\t\tcheckbox.frames = Paths.getFrames('menus/options/checkboxThingie');\r\n\t\tcheckbox.animation.addByPrefix(\"unchecked\", \"Check Box unselected0\", 24);\r\n\t\tcheckbox.animation.addByPrefix(\"checked\", \"Check Box Selected Static0\", 24);\r\n\t\tcheckbox.animation.addByPrefix(\"unchecking\", \"Check Box deselect animation0\", 24, false);\r\n\t\tcheckbox.animation.addByPrefix(\"checking\", \"Check Box selecting animation0\", 24, false);\r\n\t\tcheckbox.antialiasing = true;\r\n\t\tcheckbox.scale.set(0.75, 0.75);\r\n\t\tcheckbox.updateHitbox();\r\n\r\n\t\t//__text.x = 100;\r\n\r\n\t\tif (optionName != null) checked = Reflect.field(parent, optionName);\r\n\t\telse checked = false;\r\n\r\n\t\tsuper(text, desc, selectCallback);\r\n\t\tadd(checkbox);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "firstFrame",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

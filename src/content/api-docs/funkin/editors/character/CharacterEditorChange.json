@@ -1,0 +1,10 @@
+{
+	"kind": "enum",
+	"name": "CharacterEditorChange",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [
+		"@:privateAccess"
+	],
+	"fields": []
+}

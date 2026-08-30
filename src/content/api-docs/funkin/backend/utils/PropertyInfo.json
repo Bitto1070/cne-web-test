@@ -1,0 +1,107 @@
+{
+	"kind": "class",
+	"name": "PropertyInfo",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "object",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "field",
+			"type": "OneOfTwo<String, Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "typeOfField",
+			"type": "Type.ValueType",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isCustom",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "custom",
+			"type": "hscript.IHScriptCustomBehaviour",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "object",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "field",
+					"type": "OneOfTwo<String, Int>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic function new(object:Dynamic, field:OneOfTwo<String, Int>) {\r\n\t\tthis.object = object;\r\n\t\tthis.field = field;\r\n\t\t#if hscript_improved\r\n\t\tif (object is hscript.IHScriptCustomBehaviour)\r\n\t\t{\r\n\t\t\tisCustom = true;\r\n\t\t\tcustom = cast object;\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\ttypeOfField = Type.typeof(field);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getValue",
+			"args": [],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getValue():Dynamic\r\n\t{\r\n\t\tif (typeOfField == TInt)\r\n\t\t{\r\n\t\t\tvar index:Int = cast field;\r\n\t\t\tvar arr:Array<Dynamic> = cast object;\r\n\t\t\treturn arr[index];\r\n\t\t}\r\n\t\telse\r\n\t\t{\r\n\t\t\t#if hscript_improved\r\n\t\t\tif (isCustom)\r\n\t\t\t\treturn custom.hget(field);\r\n\t\t\telse\r\n\t\t\t#end\r\n\t\t\treturn Reflect.getProperty(object, field);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setValue",
+			"args": [
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setValue(value:Dynamic):Void\r\n\t{\r\n\t\tif (typeOfField == TInt)\r\n\t\t{\r\n\t\t\tvar index:Int = cast field;\r\n\t\t\tvar arr:Array<Dynamic> = cast object;\r\n\t\t\tarr[index] = value;\r\n\t\t}\r\n\t\telse\r\n\t\t{\r\n\t\t\t#if hscript_improved\r\n\t\t\tif (isCustom)\r\n\t\t\t\tcustom.hset(field, value);\r\n\t\t\telse\r\n\t\t\t#end\r\n\t\t\tReflect.setProperty(object, field, value);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

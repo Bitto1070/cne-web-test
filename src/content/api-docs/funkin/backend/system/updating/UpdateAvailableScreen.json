@@ -1,0 +1,186 @@
+{
+	"kind": "class",
+	"name": "UpdateAvailableScreen",
+	"pkg": "funkin.backend.system.updating",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bg",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "versionCheckBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "title",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "versionDifferenceLabel",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "changeLogText",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "check",
+			"type": "UpdateCheckCallback",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "optionsBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "installButton",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "skipButton",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "installSelected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "check",
+					"type": "UpdateCheckCallback",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(check:UpdateCheckCallback) {\r\n\t\tsuper();\r\n\r\n\t\tthis.check = check;\r\n\t\tif (Date.now().getTime() - check.date.getTime() > 15000) {\r\n\t\t\tif ((check = UpdateUtil.checkForUpdates(true)).newUpdate) this.check = check;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t\tMusicBeatState.skipTransIn = true;\r\n\t\tFlxG.mouse.visible = true;\r\n\r\n\t\tFlxG.camera.flash(0xFF000000, 0.25);\r\n\r\n\t\tbg = new FlxSprite().loadAnimatedGraphic(Paths.image(\"menus/menuDesat\"));\r\n\t\tbg.color = 0xFF181818;\r\n\t\tbg.antialiasing = true;\r\n\t\tbg.scrollFactor.set();\r\n\t\tbg.screenCenter();\r\n\t\tadd(bg);\r\n\r\n\t\t// which file should i put this in?\r\n\t\t// Misc.xml?\r\n\t\ttitle = new Alphabet(0, 10, TU.translate(\"updateAvailable.title\"), true);\r\n\t\ttitle.screenCenter(X);\r\n\t\ttitle.scrollFactor.set();\r\n\r\n\t\tversionDifferenceLabel = new FunkinText(0, title.y + title.height + 10, FlxG.width, '${check.currentVersionTag} < ${check.newVersionTag}', 28, false);\r\n\t\tversionDifferenceLabel.color = 0xFFFFFFFF;\r\n\t\tversionDifferenceLabel.alignment = CENTER;\r\n\t\tversionDifferenceLabel.scrollFactor.set();\r\n\r\n\t\tversionCheckBG = new FlxSprite(-1, -1).makeGraphic(1, 1, 0xFFFFFFFF);\r\n\t\tversionCheckBG.alpha = 0.75;\r\n\t\tversionCheckBG.color = 0xFF000000;\r\n\t\tversionCheckBG.scale.set(FlxG.width + 2, versionDifferenceLabel.y + versionDifferenceLabel.height + 14);\r\n\t\tversionCheckBG.updateHitbox();\r\n\t\tversionCheckBG.scrollFactor.set();\r\n\r\n\t\tchangeLogText = new FunkinText(0, versionCheckBG.y + versionCheckBG.height + 10, FlxG.width, \"\", 20, true);\r\n\t\tchangeLogText.borderColor = 0xFF000000;\r\n\t\tMarkdownUtil.applyMarkdownText(changeLogText, check.updates.last().body);\r\n\r\n\t\tinstallButton = new FunkinText(0, FlxG.height - 25, Std.int(FlxG.width / 2), \"PLACEHOLDER\", 32);\r\n\t\tskipButton = new FunkinText(Std.int(FlxG.width / 2), FlxG.height - 25, Std.int(FlxG.width / 2), \"PLACEHOLDER\", 32);\r\n\r\n\t\tskipButton.y -= skipButton.height;\r\n\t\tinstallButton.y -= installButton.height;\r\n\r\n\t\tinstallButton.alignment = skipButton.alignment = CENTER;\r\n\r\n\t\toptionsBG = new FlxSprite(-1, installButton.y - 25).makeGraphic(1, 1, 0xFFFFFFFF);\r\n\t\toptionsBG.alpha = 0.75;\r\n\t\toptionsBG.color = 0xFF000000;\r\n\t\toptionsBG.scale.set(FlxG.width + 2, Std.int(FlxG.height - optionsBG.y));\r\n\t\toptionsBG.updateHitbox();\r\n\r\n\t\tinstallButton.scrollFactor.set();\r\n\t\tskipButton.scrollFactor.set();\r\n\t\toptionsBG.scrollFactor.set();\r\n\r\n\t\tadd(changeLogText);\r\n\r\n\t\tadd(versionCheckBG);\r\n\t\tadd(title);\r\n\t\tadd(versionDifferenceLabel);\r\n\r\n\t\tadd(optionsBG);\r\n\t\tadd(installButton);\r\n\t\tadd(skipButton);\r\n\r\n\t\toldPos = FlxG.mouse.getScreenPosition();\r\n\r\n\t\tchangeSelection(false);\r\n\r\n\t\tDiscordUtil.call(\"onMenuLoaded\", [\"Update Available Screen\"]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tdestY = CoolUtil.bound(destY - (FlxG.mouse.wheel * 75), 0, Math.max(0, changeLogText.height - FlxG.height + versionCheckBG.height + 20 + optionsBG.height));\r\n\t\tFlxG.camera.scroll.y = lerp(FlxG.camera.scroll.y, destY, 1/3);\r\n\r\n\t\tif (controls.LEFT_P || controls.RIGHT_P) {\r\n\t\t\tinstallSelected = !installSelected;\r\n\t\t\tchangeSelection();\r\n\t\t}\r\n\r\n\t\tvar newPos = FlxG.mouse.getScreenPosition();\r\n\t\tif (oldPos.x != newPos.x || oldPos.y != newPos.y) {\r\n\t\t\tif (newPos.y >= optionsBG.y) {\r\n\t\t\t\tif (installSelected != (installSelected = (newPos.x < (FlxG.width / 2)))) {\r\n\t\t\t\t\tchangeSelection();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\toldPos = newPos;\r\n\t\t}\r\n\r\n\t\tif (controls.ACCEPT || (newPos.y >= optionsBG.y && FlxG.mouse.justPressed))\r\n\t\t\tselect();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "select",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function select() {\r\n\t\tif (installSelected) {\r\n\t\t\tCoolUtil.playMenuSFX(CONFIRM);\r\n\t\t\tFlxG.switchState(new UpdateScreen(check));\r\n\t\t} else {\r\n\t\t\tCoolUtil.playMenuSFX(CANCEL);\r\n\t\t\tFlxG.switchState(new MainMenuState());\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSelection",
+			"args": [
+				{
+					"name": "playSFX",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeSelection(playSFX:Bool = true) {\r\n\t\tCoolUtil.playMenuSFX(SCROLL, 0.7);\r\n\r\n\t\t// keeping this local just incase we wanna change this later\r\n\t\tinline function wrap(str:String, shouldWrap:Bool)\r\n\t\t\treturn shouldWrap ? \"> \" + str + \" <\" : str;\r\n\r\n\t\tinstallButton.text = wrap(installText, installSelected);\r\n\t\tskipButton.text = wrap(skipText, !installSelected);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tFlxG.mouse.visible = false;\r\n\t\toldPos.put();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

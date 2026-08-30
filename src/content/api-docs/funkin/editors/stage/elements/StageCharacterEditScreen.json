@@ -1,0 +1,67 @@
+{
+	"kind": "class",
+	"name": "StageCharacterEditScreen",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "button",
+			"type": "StageCharacterButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "char",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "button",
+					"type": "StageCharacterButton",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(button:StageCharacterButton) {\r\n\t\tthis.button = button;\r\n\t\tthis.char = button.char;\r\n\t\tsuper(\"layouts/stage/characterEditScreen\", [\r\n\t\t\t\"stage\" => StageEditor.instance.stage,\r\n\t\t\t\"char\" => char,\r\n\t\t\t\"charScale\" => button.charScale,\r\n\t\t\t\"button\" => button,\r\n\t\t\t\"xml\" => button.xml,\r\n\t\t\t\"exID\" => StageEditor.exID,\r\n\t\t\t\"StringTools\" => StringTools,\r\n\t\t\t\"getEx\" => function(name:String):Dynamic {\r\n\t\t\t\treturn char.extra.get(StageEditor.exID(name));\r\n\t\t\t},\r\n\t\t\t\"setEx\" => function(name:String, value:Dynamic) {\r\n\t\t\t\tchar.extra.set(StageEditor.exID(name), value);\r\n\t\t\t},\r\n\t\t\t\"translate\" => translate,\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveData",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function saveData() {\r\n\t\tsuper.saveData();\r\n\t\tbutton.updateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

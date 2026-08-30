@@ -1,0 +1,286 @@
+{
+	"kind": "class",
+	"name": "FunkinSave",
+	"pkg": "funkin.savedata",
+	"doc": {
+		"text": "Class used for saves WITHOUT going through the struggle of type checks\nJust add your save variables the way you would do in the Options.hx file.\nThe macro will automatically generate the `flush` and `load` functions.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:build(funkin.backend.system.macros.FunkinSaveMacro.build(\"save\", \"__flush\", \"__load\"))"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "highscores",
+			"type": "Map<HighscoreEntry, SongScore>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:doNotSave"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "save",
+			"type": "FlxSave",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:doNotSave"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tvar path = Flags.SAVE_PATH, name = Flags.SAVE_NAME;\r\n\t\tif (path == null) path = 'CodenameEngine';\r\n\t\tif (name == null) name = 'save-default';\r\n\r\n\t\tif (save == null) save = new FlxSave();\r\n\t\tsave.bind(name, path);\r\n\t\tload();\r\n\r\n\t\tif (!__eventAdded) {\r\n\t\t\tLib.application.onExit.add(function(i:Int) {\r\n\t\t\t\tLogs.traceColored([\r\n\t\t\t\t\tLogs.getPrefix(\"FunkinSave\"),\r\n\t\t\t\t\tLogs.logText(\"Saving \"),\r\n\t\t\t\t\tLogs.logText(\"save data\", GREEN),\r\n\t\t\t\t\tLogs.logText(\"...\")\r\n\t\t\t\t], VERBOSE);\r\n\t\t\t\tflush();\r\n\t\t\t});\r\n\t\t\t__eventAdded = true;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "load",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function load() {\r\n\t\t__load();\r\n\t\tif (save.data.highscores != null) {\r\n\t\t\tvar temp;\r\n\t\t\tfor (entryData in Reflect.fields(save.data.highscores))\r\n\t\t\t\tif ((temp = __getHighscoreEntry(entryData)) != null && Reflect.field(save.data.highscores, entryData) != null)\r\n\t\t\t\t\thighscores.set(temp, Reflect.field(save.data.highscores, entryData));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "flush",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function flush() {\r\n\t\tif (save.data.highscores == null) save.data.highscores = {};\r\n\t\tfor (entry => score in highscores) Reflect.setField(save.data.highscores, __formatHighscoreEntry(entry), score);\r\n\t\t__flush();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSongHighscore",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "variation",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "changes",
+					"type": "Array<HighscoreChange>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getSongHighscore(name:String, diff:String, ?variation:String, ?changes:Array<HighscoreChange>) {\r\n\t\tif (changes == null) changes = [];\r\n\t\treturn safeGetHighscore(getSongEntry(name, diff, variation, changes));\r\n\t}",
+			"doc": {
+				"text": "Returns the high-score for a song.",
+				"params": {
+					"name": "Song name",
+					"diff": "Song difficulty",
+					"changes": "Changes made to that song in freeplay."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setSongHighscore",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "variation",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "highscore",
+					"type": "SongScore",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "changes",
+					"type": "Array<HighscoreChange>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function setSongHighscore(name:String, diff:String, ?variation:String, highscore:SongScore, ?changes:Array<HighscoreChange>, ?force:Bool) {\r\n\t\tif (changes == null) changes = [];\r\n\t\tif (safeRegisterHighscore(getSongEntry(name, diff, variation, changes), highscore, force)) {\r\n\t\t\tflush();\r\n\t\t\treturn true;\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSongEntry",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "variation",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "changes",
+					"type": "Array<HighscoreChange>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "HighscoreEntry",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getSongEntry(name:String, diff:String, ?variation:String, ?changes:Array<HighscoreChange>):HighscoreEntry\r\n\t\treturn HSongEntry(name.toLowerCase(), diff.toLowerCase(), variation, changes);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getWeekHighscore",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getWeekHighscore(name:String, diff:String)\r\n\t\treturn safeGetHighscore(getWeekEntry(name, diff));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setWeekHighscore",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "highscore",
+					"type": "SongScore",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function setWeekHighscore(name:String, diff:String, highscore:SongScore, ?force:Bool) {\r\n\t\tif (safeRegisterHighscore(getWeekEntry(name, diff), highscore, force)) {\r\n\t\t\tflush();\r\n\t\t\treturn true;\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getWeekEntry",
+			"args": [
+				{
+					"name": "name",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "HighscoreEntry",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getWeekEntry(name, diff:String):HighscoreEntry\r\n\t\treturn HWeekEntry(name.toLowerCase(), diff.toLowerCase());",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

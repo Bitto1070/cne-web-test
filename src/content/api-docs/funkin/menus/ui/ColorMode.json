@@ -1,0 +1,51 @@
+{
+	"kind": "enum abstract",
+	"name": "ColorMode",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "setColorTransform",
+			"args": [
+				{
+					"name": "color",
+					"type": "openfl.geom.ColorTransform",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "red",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "green",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "blue",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "alpha",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setColorTransform(color:openfl.geom.ColorTransform, red:Float, green:Float, blue:Float, alpha:Float) {\r\n\t\tvar moduloWorkaround:Int = this;\r\n\t\tvar tintMult = Math.max(-moduloWorkaround + 1, 0);\r\n\t\tvar tintOffset = Math.min(moduloWorkaround, 1);\r\n\t\tvar offsetMult = (moduloWorkaround % 2) * 255;\r\n\r\n\t\tcolor.redMultiplier = red * tintMult + tintOffset;\r\n\t\tcolor.greenMultiplier = green * tintMult + tintOffset;\r\n\t\tcolor.blueMultiplier = blue * tintMult + tintOffset;\r\n\t\tcolor.redOffset = red * offsetMult;\r\n\t\tcolor.greenOffset = green * offsetMult;\r\n\t\tcolor.blueOffset = blue * offsetMult;\r\n\t\tcolor.alphaMultiplier = alpha;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

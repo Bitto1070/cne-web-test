@@ -1,0 +1,105 @@
+{
+	"kind": "interface",
+	"name": "IUIFocusable",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "onKeyDown",
+			"args": [
+				{
+					"name": "e",
+					"type": "KeyCode",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "modifier",
+					"type": "KeyModifier",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onKeyDown(e:KeyCode, modifier:KeyModifier):Void;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onKeyUp",
+			"args": [
+				{
+					"name": "e",
+					"type": "KeyCode",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "modifier",
+					"type": "KeyModifier",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onKeyUp(e:KeyCode, modifier:KeyModifier):Void;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onTextInput",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onTextInput(text:String):Void;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onTextEdit",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "start",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "end",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onTextEdit(text:String, start:Int, end:Int):Void;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

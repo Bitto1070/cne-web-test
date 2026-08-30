@@ -1,0 +1,207 @@
+{
+	"kind": "class",
+	"name": "UIBaseNotification",
+	"pkg": "funkin.editors.ui.notifications",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "textField",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onRemove",
+			"type": "(notif:UIBaseNotification)->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "showedAnimation",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "showTimer",
+					"type": "Float",
+					"optional": false,
+					"def": "5"
+				},
+				{
+					"name": "corner",
+					"type": "Corner",
+					"optional": false,
+					"def": "BOTTOM_LEFT"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(text:String, showTimer:Float = 5, corner:Corner = BOTTOM_LEFT) {\r\n\t\tsuper(x, y, 340, 46, \"editors/ui/inputbox\");\r\n\r\n\t\tcloseButton = new UIButton(0, 0, \"X\", () -> {\r\n\t\t\tif (closed) return;\r\n\t\t\tclosed = true;\r\n\r\n\t\t\t(new FlxTimer()).start(0.2, (_) -> {disappearAnimation();});\r\n\t\t}, 32, 32);\r\n\t\tcloseButton.hoverCallback = () -> {\r\n\t\t\tcloseButton.color = 0xFFAC3D3D;\r\n\t\t\tcloseButton.field.color = 0xFFffffff;\r\n\t\t\t//closeButton.field.color = closeButton.hovered ? 0xFFffffff : 0xFF7f7f7f;\r\n\t\t}\r\n\t\tcloseButton.autoAlpha = false;\r\n\t\tcloseButton.alpha = 0.0;\r\n\r\n\t\ttextField = new UIText(0, 0, 0, text, 14);\r\n\t\ttextField.alignment = LEFT;\r\n\t\ttextField.fieldWidth = bWidth - 32 - 8;\r\n\t\tmembers.push(textField);\r\n\r\n\t\tif(textField.height > bHeight)\r\n\t\t\tbHeight = Std.int(textField.height);\r\n\r\n\t\talpha = 0;\r\n\t\ttextField.alpha = 0;\r\n\r\n\t\tshowingTimer = showTimer;\r\n\r\n\t\tmembers.push(closeButton);\r\n\r\n\t\tvar margin = 20;\r\n\r\n\t\tswitch(corner) {\r\n\t\t\tcase TOP_LEFT:\r\n\t\t\t\tx = margin;\r\n\t\t\t\ty = margin;\r\n\t\t\tcase TOP_RIGHT:\r\n\t\t\t\tx = FlxG.width - bWidth - margin;\r\n\t\t\t\ty = margin;\r\n\t\t\tcase BOTTOM_LEFT:\r\n\t\t\t\tx = margin;\r\n\t\t\t\ty = FlxG.height - bHeight - margin;\r\n\t\t\tcase BOTTOM_RIGHT:\r\n\t\t\t\tx = FlxG.width - bWidth - margin;\r\n\t\t\t\ty = FlxG.height - bHeight - margin;\r\n\t\t}\r\n\r\n\t\tdefaultX = x;\r\n\t\tdefaultY = y;\r\n\r\n\t\tswitch(corner) {\r\n\t\t\tcase TOP_LEFT | BOTTOM_LEFT:\r\n\t\t\t\tx -= bWidth - margin - 20;\r\n\t\t\tcase TOP_RIGHT | BOTTOM_RIGHT:\r\n\t\t\t\tx += bWidth - margin - 20;\r\n\t\t}\r\n\r\n\t\tclosingX = x;\r\n\t\tclosingY = y;\r\n\r\n\t\talpha = 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closingX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closingY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "showingTimer",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "timerActive",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "progress",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tcloseButton.color = 0xFFFFFFFF;\r\n\t\tcloseButton.field.color = 0xFF7f7f7f;\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif(timerActive) {\r\n\t\t\tshowingTimer -= elapsed;\r\n\t\t\tif(showingTimer <= 0) {\r\n\t\t\t\ttimerActive = false;\r\n\t\t\t\tidleDisappearAnimation();\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\ttextField.follow(this, 5, bHeight / 2 - textField.height / 2);\r\n\t\tcloseButton.follow(this, bWidth-closeButton.bWidth - 7, bHeight / 2 - closeButton.bHeight / 2);\r\n\t\tcloseButton.field.alpha = alpha * .7;\r\n\t\t//closeButton.alpha = alpha;\r\n\t\ttextField.alpha = alpha;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "appearAnimation",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function appearAnimation() {\r\n\t\tx = closingX; alpha=0; FlxTween.cancelTweensOf(this, [\"x\", \"alpha\"]);\r\n\t\tFlxTween.tween(this, {x: defaultX}, .4, {ease: FlxEase.circInOut});\r\n\t\tFlxTween.tween(this, {alpha: 1}, .3, {ease: FlxEase.sineOut, startDelay: .1, onComplete: (_) -> {\r\n\t\t\tif(showingTimer > 0) timerActive = true;\r\n\t\t}});\r\n\r\n\t\tshowedAnimation = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isClosing",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "disappearAnimation",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function disappearAnimation() {\r\n\t\tif (isClosing) return;\r\n\t\tisClosing = true;\r\n\r\n\t\t// TODO: make it so you can click through the notification\r\n\t\tcloseButton.active = false;\r\n\t\tcloseButton.selectable = false;\r\n\t\tcloseButton.canBeHovered = false;\r\n\t\tselectable = false;\r\n\t\tcanBeHovered = false;\r\n\r\n\t\tx = defaultX; alpha = 1; FlxTween.cancelTweensOf(this, [\"x\", \"alpha\"]);\r\n\t\tFlxTween.tween(this, {alpha: 0}, .3, {ease: FlxEase.sineOut, onComplete: (_) -> {\r\n\t\t\tif(onRemove != null) onRemove(this);\r\n\t\t\tdestroy();\r\n\t\t}});\r\n\r\n\t\tshowedAnimation = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "idleDisappearAnimation",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function idleDisappearAnimation() {\r\n\t\tif (isClosing) return;\r\n\t\tisClosing = true;\r\n\r\n\t\tx = defaultX; alpha = 1; FlxTween.cancelTweensOf(this, [\"x\", \"alpha\"]);\r\n\t\tFlxTween.tween(this, {alpha: 0}, .3, {ease: FlxEase.sineOut});\r\n\t\tFlxTween.tween(this, {x: closingX}, .4, {ease: FlxEase.circInOut, onComplete: (_) -> {\r\n\t\t\tif(onRemove != null) onRemove(this);\r\n\t\t\tdestroy();\r\n\t\t}});\r\n\r\n\t\tshowedAnimation = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

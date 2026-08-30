@@ -1,0 +1,223 @@
+{
+	"kind": "class",
+	"name": "UISliceSprite",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bWidth",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bHeight",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "framesOffset",
+			"type": "Int",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "incorporeal",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, w:Int, h:Int, path:String) {\r\n\t\tsuper(x, y);\r\n\r\n\t\tframes = Paths.getFrames(path);\r\n\t\tresize(w, h);\r\n\t\tcalculateFrames();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButton",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateButton() {\r\n\t\tif (incorporeal) return;\r\n\t\t__rect.set(x, y, bWidth, bHeight);\r\n\t\tUIState.state.updateRectButtonHandler(this, __rect, onHovered);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resize",
+			"args": [
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function resize(w:Int, h:Int) {\r\n\t\tbWidth = w;\r\n\t\tbHeight = h;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topAlpha",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "middleAlpha",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomAlpha",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "drawTop",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "drawMiddle",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "drawBottom",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topHeight",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomHeight",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "leftWidth",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rightWidth",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tvar lastPixelPerfect:Bool = cameras[0] != null ? cameras[0].pixelPerfectRender : false;\r\n\t\tif (cameras[0] != null) cameras[0].pixelPerfectRender = false;\r\n\r\n\t\tvar topLeft = (flipX ? (flipY ? bottomright : topright) : (flipY ? bottomleft : topleft));\r\n\t\tvar topMiddle = (flipY ? bottom : top);\r\n\t\tvar topRight = (flipX ? (flipY ? bottomleft : topleft) : (flipY ? bottomright : topright));\r\n\t\tvar middleLeft = (flipX ? middleright : middleleft);\r\n\t\tvar middleRight = (flipX ? middleleft : middleright);\r\n\t\tvar bottomLeft = (flipX ? (flipY ? topright : bottomright) : (flipY ? topleft : bottomleft));\r\n\t\tvar bottomMiddle = (flipY ? top : bottom);\r\n\t\tvar bottomRight = (flipX ? (flipY ? topleft : bottomleft) : (flipY ? topright : bottomright));\r\n\r\n\t\tvar x:Float = this.x;\r\n\t\tvar y:Float = this.y;\r\n\r\n\t\tif (visible && !(bWidth == 0 || bHeight == 0)) {\r\n\t\t\tvar topLeftWidth:Float = getFixedSize(topLeft.frame.width, bWidth);\r\n\t\t\tvar topLeftHeight:Float = getFixedSize(topLeft.frame.height, bHeight);\r\n\t\t\t//var topMiddleWidth:Float = getFixedSize(topMiddle.frame.width, bWidth);\r\n\t\t\tvar topMiddleHeight:Float = getFixedSize(topMiddle.frame.height, bHeight);\r\n\t\t\tvar topRightWidth:Float = getFixedSize(topRight.frame.width, bWidth);\r\n\t\t\tvar topRightHeight:Float = getFixedSize(topRight.frame.height, bHeight);\r\n\t\t\tvar middleLeftWidth:Float = getFixedSize(middleLeft.frame.width, bWidth);\r\n\t\t\t//var middleLeftHeight:Float = getFixedSize(middleLeft.frame.height, bHeight);\r\n\t\t\t//var middleMiddleWidth:Float = getFixedSize(middle.frame.width, bWidth);\r\n\t\t\t//var middleMiddleHeight:Float = getFixedSize(middle.frame.height, bHeight);\r\n\t\t\tvar middleRightWidth:Float = getFixedSize(middleRight.frame.width, bWidth);\r\n\t\t\t//var middleRightHeight:Float = getFixedSize(middleRight.frame.height, bHeight);\r\n\t\t\tvar bottomLeftWidth:Float = getFixedSize(bottomLeft.frame.width, bWidth);\r\n\t\t\tvar bottomLeftHeight:Float = getFixedSize(bottomLeft.frame.height, bHeight);\r\n\t\t\t//var bottomMiddleWidth:Float = getFixedSize(bottomMiddle.frame.width, bWidth);\r\n\t\t\tvar bottomMiddleHeight:Float = getFixedSize(bottomMiddle.frame.height, bHeight);\r\n\t\t\tvar bottomRightWidth:Float = getFixedSize(bottomRight.frame.width, bWidth);\r\n\t\t\tvar bottomRightHeight:Float = getFixedSize(bottomRight.frame.height, bHeight);\r\n\r\n\t\t\tvar oldAlpha = alpha;\r\n\t\t\t// TOP\r\n\t\t\tif (drawTop) {\r\n\t\t\t\t// TOP LEFT\r\n\t\t\t\tif(topAlpha != null) alpha = topAlpha;\r\n\t\t\t\tframe = topLeft;\r\n\t\t\t\tsetPosition(x, y);\r\n\t\t\t\t__setSize(\r\n\t\t\t\t\ttopLeftWidth,\r\n\t\t\t\t\ttopLeftHeight\r\n\t\t\t\t);\r\n\t\t\t\tsuper.drawSuper();\r\n\r\n\t\t\t\t// TOP\r\n\t\t\t\tif (bWidth > topLeft.frame.width + topRight.frame.width) {\r\n\t\t\t\t\tframe = topMiddle;\r\n\t\t\t\t\tsetPosition(x + topLeft.frame.width, y);\r\n\t\t\t\t\t__setSize(\r\n\t\t\t\t\t\tbWidth - topLeft.frame.width - topRight.frame.width,\r\n\t\t\t\t\t\ttopMiddleHeight\r\n\t\t\t\t\t);\r\n\t\t\t\t\tsuper.drawSuper();\r\n\t\t\t\t}\r\n\r\n\t\t\t\t// TOP RIGHT\r\n\t\t\t\tsetPosition(x + bWidth - topRightWidth, y);\r\n\t\t\t\tframe = topRight;\r\n\t\t\t\t__setSize(\r\n\t\t\t\t\ttopRightWidth,\r\n\t\t\t\t\ttopRightHeight\r\n\t\t\t\t);\r\n\t\t\t\tsuper.drawSuper();\r\n\t\t\t}\r\n\r\n\t\t\t// MIDDLE\r\n\t\t\tif (drawMiddle && bHeight > topMiddle.frame.height + bottomMiddle.frame.height) {\r\n\t\t\t\tif(middleAlpha != null) alpha = middleAlpha;\r\n\t\t\t\tvar middleHeight:Float = bHeight - topLeftHeight - bottomLeftHeight;\r\n\r\n\t\t\t\t// MIDDLE LEFT\r\n\t\t\t\tframe = middleLeft;\r\n\t\t\t\tsetPosition(x, y + topMiddle.frame.height);\r\n\t\t\t\t__setSize(middleLeftWidth, middleHeight);\r\n\t\t\t\tsuper.drawSuper();\r\n\r\n\t\t\t\tif (bWidth > (middleLeftWidth) + middleRight.frame.width) {\r\n\t\t\t\t\t// MIDDLE\r\n\t\t\t\t\tframe = middle;\r\n\t\t\t\t\tsetPosition(x + topLeft.frame.width, y + topMiddle.frame.height);\r\n\t\t\t\t\t__setSize(bWidth - middleLeft.frame.width - middleRight.frame.width, middleHeight);\r\n\t\t\t\t\tsuper.drawSuper();\r\n\t\t\t\t}\r\n\r\n\t\t\t\t// MIDDLE RIGHT\r\n\t\t\t\tframe = middleRight;\r\n\t\t\t\tsetPosition(x + bWidth - (topRightWidth), y + topMiddle.frame.height);\r\n\t\t\t\t__setSize(middleRightWidth, middleHeight);\r\n\t\t\t\tsuper.drawSuper();\r\n\t\t\t}\r\n\r\n\t\t\t// BOTTOM\r\n\t\t\tif (drawBottom) {\r\n\t\t\t\tif(bottomAlpha != null) alpha = bottomAlpha;\r\n\t\t\t\t// BOTTOM LEFT\r\n\t\t\t\tframe = bottomLeft;\r\n\t\t\t\tsetPosition(x, y + bHeight - (bottomLeftHeight));\r\n\t\t\t\t__setSize(\r\n\t\t\t\t\tbottomLeftWidth,\r\n\t\t\t\t\tbottomLeftHeight\r\n\t\t\t\t);\r\n\t\t\t\tsuper.drawSuper();\r\n\r\n\t\t\t\tif (bWidth > bottomLeft.frame.width + bottomRight.frame.width) {\r\n\t\t\t\t\t// BOTTOM\r\n\t\t\t\t\tframe = bottomMiddle;\r\n\t\t\t\t\tsetPosition(x + bottomLeft.frame.width, y + bHeight - (bottomMiddleHeight));\r\n\t\t\t\t\t__setSize(bWidth - bottomLeft.frame.width - bottomRight.frame.width, bottomMiddleHeight);\r\n\t\t\t\t\tsuper.drawSuper();\r\n\t\t\t\t}\r\n\r\n\t\t\t\t// BOTTOM RIGHT\r\n\t\t\t\tframe = bottomRight;\r\n\r\n\t\t\t\tsetPosition(\r\n\t\t\t\t\tx + bWidth - (bottomRightWidth),\r\n\t\t\t\t\ty + bHeight - (bottomRightHeight)\r\n\t\t\t\t);\r\n\t\t\t\t__setSize(\r\n\t\t\t\t\tbottomRightWidth,\r\n\t\t\t\t\tbottomRightHeight\r\n\t\t\t\t);\r\n\t\t\t\tsuper.drawSuper();\r\n\r\n\t\t\t}\r\n\t\t\talpha = oldAlpha;\r\n\t\t}\r\n\t\tif (cameras[0] != null) cameras[0].pixelPerfectRender = lastPixelPerfect;\r\n\r\n\t\tsetPosition(x, y);\r\n\t\tsuper.drawMembers();\r\n\t}\r\n\r\n\tprivate function __setSize(Width:Float, Height:Float) {\r\n\t\tvar newScaleX:Float = Width / frameWidth;\r\n\t\tvar newScaleY:Float = Height / frameHeight;\r\n\t\tscale.set(newScaleX, newScaleY);\r\n\r\n\t\tif (Width <= 0)\r\n\t\t\tscale.x = newScaleY;\r\n\t\telse if (Height <= 0)\r\n\t\t\tscale.y = newScaleX;\r\n\r\n\t\tupdateHitbox();\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

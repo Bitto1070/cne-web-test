@@ -1,0 +1,371 @@
+{
+	"kind": "class",
+	"name": "SongCreationScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "songNameTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bpmStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatsPerMeasureStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "denominatorStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "instExplorer",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "voicesExplorer",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importFrom",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayNameTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconSprite",
+			"type": "HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "opponentModeCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "coopAllowedCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorWheel",
+			"type": "UIColorwheel",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficultiesTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "engineDropdown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "createSong",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importInstExplorer",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importVoicesExplorer",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importIdTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importChartFile",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importMetaFile",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "backButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songDataGroup",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "menuDataGroup",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectFormatGroup",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importAudioGroup",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importDataGroup",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pages",
+			"type": "Array<FlxGroup>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pageSizes",
+			"type": "Array<FlxPoint>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importPages",
+			"type": "Array<FlxGroup>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importPageSizes",
+			"type": "Array<FlxPoint>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isImporting",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curPage",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "onSave",
+					"type": "SongCreationData -> Null<String -> Void> -> Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?onSave:SongCreationData -> Null<String -> Void> -> Void) {\r\n\t\tsuper();\r\n\t\tif (onSave != null) this.onSave = onSave;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\twinTitle = translate(\"win-title\");\r\n\r\n\t\twinWidth = 748 - 32 + 40;\r\n\t\twinHeight = 520;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String):UIText {\r\n\t\t\tvar label:UIText = new UIText(ui.x, ui.y - 24, 0, text);\r\n\t\t\tui.members.push(label);\r\n\t\t\treturn label;\r\n\t\t}\r\n\r\n\t\tvar songTitle:UIText;\r\n\t\tsongDataGroup.add(songTitle = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, translate(\"title\"), 28));\r\n\r\n\t\tsongNameTextBox = new UITextBox(songTitle.x, songTitle.y + songTitle.height + 36, translateMeta(\"songName\"));\r\n\t\tsongDataGroup.add(songNameTextBox);\r\n\t\taddLabelOn(songNameTextBox, translateMeta(\"songName\"));\r\n\r\n\t\tbpmStepper = new UINumericStepper(songNameTextBox.x + 320 + 26, songNameTextBox.y, 100, 1, 2, 1, null, 90);\r\n\t\tsongDataGroup.add(bpmStepper);\r\n\t\taddLabelOn(bpmStepper, translateMeta(\"bpm\"));\r\n\r\n\t\tbeatsPerMeasureStepper = new UINumericStepper(bpmStepper.x + 60 + 26, bpmStepper.y, 4, 1, 0, 1, null, 54);\r\n\t\tsongDataGroup.add(beatsPerMeasureStepper);\r\n\t\taddLabelOn(beatsPerMeasureStepper, translateMeta(\"timeSignature\"));\r\n\r\n\t\tsongDataGroup.add(new UIText(beatsPerMeasureStepper.x + 30, beatsPerMeasureStepper.y + 3, 0, \"/\", 22));\r\n\r\n\t\tdenominatorStepper = new UINumericStepper(beatsPerMeasureStepper.x + 30 + 24, beatsPerMeasureStepper.y, 4, 1, 0, 1, null, 54);\r\n\t\tsongDataGroup.add(denominatorStepper);\r\n\r\n\t\tinstExplorer = new UIFileExplorer(songNameTextBox.x, songNameTextBox.y + 32 + 36, null, null, Flags.SOUND_EXT, function (path, res) {\r\n\t\t\tif (path == null || res == null) return;\r\n\t\t\tvar audioPlayer:UIAudioPlayer = new UIAudioPlayer(instExplorer.x + 8, instExplorer.y + 8, res);\r\n\t\t\tinstExplorer.members.push(audioPlayer);\r\n\t\t\tinstExplorer.uiElement = audioPlayer;\r\n\t\t});\r\n\t\tsongDataGroup.add(instExplorer);\r\n\t\taddLabelOn(instExplorer, \"\").applyMarkup(\r\n\t\t\ttranslate(\"instAudio\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\tvoicesExplorer = new UIFileExplorer(instExplorer.x + 320 + 26, instExplorer.y, null, null, Flags.SOUND_EXT, function (path, res) {\r\n\t\t\tif (path == null || res == null) return;\r\n\t\t\tvar audioPlayer:UIAudioPlayer = new UIAudioPlayer(voicesExplorer.x + 8, voicesExplorer.y + 8, res);\r\n\t\t\tvoicesExplorer.members.push(audioPlayer);\r\n\t\t\tvoicesExplorer.uiElement = audioPlayer;\r\n\t\t});\r\n\t\tsongDataGroup.add(voicesExplorer);\r\n\r\n\t\t/*voicesUIText = addLabelOn(voicesExplorer, \"\");\r\n\t\tvoicesUIText.applyMarkup(\r\n\t\t\ttranslate(\"voicesAudio\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);*/\r\n\r\n\t\taddLabelOn(voicesExplorer, translate(\"voicesAudio\"));\r\n\r\n\t\timportFrom = new UIButton(windowSpr.x + 20, windowSpr.y + windowSpr.bHeight - 16 - 32, translate(\"importFrom\"), function() {\r\n\t\t\twinTitle = translate(\"win-title-importing\");\r\n\t\t\tisImporting = true;\r\n\t\t\tupdatePagesTexts();\r\n\t\t\trefreshPages();\r\n\t\t}, 150);\r\n\t\tsongDataGroup.add(importFrom);\r\n\r\n\t\tvar menuTitle:UIText;\r\n\t\tmenuDataGroup.add(menuTitle = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, translateMeta(\"menusData\"), 28));\r\n\r\n\t\tdisplayNameTextBox = new UITextBox(menuTitle.x, menuTitle.y + menuTitle.height + 36, translateMeta(\"displayName\"));\r\n\t\tmenuDataGroup.add(displayNameTextBox);\r\n\t\taddLabelOn(displayNameTextBox, translateMeta(\"displayName\"));\r\n\r\n\t\ticonTextBox = new UITextBox(displayNameTextBox.x + 320 + 26, displayNameTextBox.y, \"face\", 150);\r\n\t\ticonTextBox.onChange = (newIcon:String) -> {updateIcon(newIcon);}\r\n\t\tmenuDataGroup.add(iconTextBox);\r\n\t\taddLabelOn(iconTextBox, translateMeta(\"icon\"));\r\n\r\n\t\tupdateIcon(\"face\");\r\n\r\n\t\topponentModeCheckbox = new UICheckbox(displayNameTextBox.x, iconTextBox.y + 10 + 32 + 26, translateMeta(\"opponentMode\"), true);\r\n\t\tmenuDataGroup.add(opponentModeCheckbox);\r\n\t\taddLabelOn(opponentModeCheckbox, translateMeta(\"modesAllowed\"));\r\n\r\n\t\tcoopAllowedCheckbox = new UICheckbox(opponentModeCheckbox.x + 150 + 26, opponentModeCheckbox.y, translateMeta(\"coopAllowed\"), true);\r\n\t\tmenuDataGroup.add(coopAllowedCheckbox);\r\n\r\n\t\tcolorWheel = new UIColorwheel(iconTextBox.x, coopAllowedCheckbox.y, 0xFFFFFF);\r\n\t\tmenuDataGroup.add(colorWheel);\r\n\t\taddLabelOn(colorWheel, translateMeta(\"color\"));\r\n\r\n\t\tdifficultiesTextBox = new UITextBox(opponentModeCheckbox.x, opponentModeCheckbox.y + 6 + 32 + 26, \"\");\r\n\t\tmenuDataGroup.add(difficultiesTextBox);\r\n\t\taddLabelOn(difficultiesTextBox, translateMeta(\"difficulties\"));\r\n\r\n\t\tfor (checkbox in [opponentModeCheckbox, coopAllowedCheckbox])\r\n\t\t\t{checkbox.y += 6; checkbox.x += 4;}\r\n\r\n\t\tvar menuTitle:UIText;\r\n\t\tselectFormatGroup.add(menuTitle = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, translate(\"importSource\"), 28));\r\n\r\n\t\tengineDropdown = new UIDropDown(menuTitle.x, menuTitle.y + menuTitle.height + 36, 480, 32, [translate(\"legacyOrPsych\"), translate(\"vslice\"), translate(\"vsliceProject\")]);\r\n\t\tselectFormatGroup.add(engineDropdown);\r\n\t\taddLabelOn(engineDropdown, translate(\"importChartFormat\"));\r\n\r\n\t\tcreateSong = new UIButton(windowSpr.x + 20, windowSpr.y + windowSpr.bHeight - 16 - 32, \"< \" + translate(\"back\"), function() {\r\n\t\t\twinTitle = translate(\"win-title\");\r\n\t\t\tisImporting = false;\r\n\t\t\tupdatePagesTexts();\r\n\t\t\trefreshPages();\r\n\t\t}, 120);\r\n\t\tselectFormatGroup.add(createSong);\r\n\r\n\t\tvar menuTitle:UIText;\r\n\t\timportAudioGroup.add(menuTitle = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, translate(\"importAudios\"), 28));\r\n\r\n\t\timportInstExplorer = new UIFileExplorer(menuTitle.x, menuTitle.y + menuTitle.height + 36, null, null, Flags.SOUND_EXT, function (path, res) {\r\n\t\t\tif (path == null || res == null) return;\r\n\t\t\tvar audioPlayer:UIAudioPlayer = new UIAudioPlayer(importInstExplorer.x + 8, importInstExplorer.y + 8, res);\r\n\t\t\timportInstExplorer.members.push(audioPlayer);\r\n\t\t\timportInstExplorer.uiElement = audioPlayer;\r\n\t\t});\r\n\t\timportAudioGroup.add(importInstExplorer);\r\n\t\taddLabelOn(importInstExplorer, \"\").applyMarkup(\r\n\t\t\ttranslate(\"instAudio\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\timportVoicesExplorer = new UIFileExplorer(importInstExplorer.x + 320 + 26, importInstExplorer.y, null, null, Flags.SOUND_EXT, function (path, res) {\r\n\t\t\tif (path == null || res == null) return;\r\n\t\t\tvar audioPlayer:UIAudioPlayer = new UIAudioPlayer(importVoicesExplorer.x + 8, importVoicesExplorer.y + 8, res);\r\n\t\t\timportVoicesExplorer.members.push(audioPlayer);\r\n\t\t\timportVoicesExplorer.uiElement = audioPlayer;\r\n\t\t});\r\n\t\timportAudioGroup.add(importVoicesExplorer);\r\n\t\taddLabelOn(importVoicesExplorer, translate(\"voicesAudio\"));\r\n\r\n\t\tvar menuTitle:UIText;\r\n\t\timportDataGroup.add(menuTitle = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, \"Add Data\", 28));\r\n\r\n\t\timportDataGroup.add(importIdTextBox = new UITextBox(menuTitle.x, menuTitle.y + menuTitle.height + 36));\r\n\t\taddLabelOn(importIdTextBox, \"\").applyMarkup(\r\n\t\t\ttranslate(\"songFileName\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\timportChartFile = new UIFileExplorer(importIdTextBox.x, importIdTextBox.y + importIdTextBox.height + 56, null, null, \"fnfc\", function (_, _) importIdTextBox.label.text = new haxe.io.Path(importChartFile.filePath).file);\r\n\t\timportDataGroup.add(importChartFile);\r\n\t\taddLabelOn(importChartFile, \"\").applyMarkup(\r\n\t\t\ttranslate(\"songDataFile\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\timportMetaFile = new UIFileExplorer(importChartFile.x + 320 + 26, importChartFile.y, null, null, \"json\");\r\n\t\timportDataGroup.add(importMetaFile);\r\n\t\taddLabelOn(importMetaFile, \"\").applyMarkup(\r\n\t\t\ttranslate(\"songMetaFile\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tvar pages = isImporting ? importPages : pages;\r\n\t\t\tif (curPage == pages.length-1) {\r\n\t\t\t\tsaveSongInfo();\r\n\t\t\t\tif (subState == null) close();\r\n\t\t\t} else {\r\n\t\t\t\tcurPage++;\r\n\t\t\t\trefreshPages();\r\n\t\t\t}\r\n\r\n\t\t\tupdatePagesTexts();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tbackButton = new UIButton(saveButton.x - 20 - saveButton.bWidth, saveButton.y, \"< \" + translate(\"back\"), function() {\r\n\t\t\tcurPage--;\r\n\t\t\trefreshPages();\r\n\r\n\t\t\tupdatePagesTexts();\r\n\t\t}, 125);\r\n\t\tadd(backButton);\r\n\r\n\t\tcloseButton = new UIButton(backButton.x - 20 - saveButton.bWidth, saveButton.y, TU.translate(\"editor.close\"), function() {\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\r\n\t\tpages.push(cast add(songDataGroup));\r\n\t\tpageSizes.push(FlxPoint.get(748 - 32 + 40, 340));\r\n\r\n\t\tpages.push(cast add(menuDataGroup));\r\n\t\tpageSizes.push(FlxPoint.get(748 - 32 + 40, 400));\r\n\r\n\t\timportPages.push(cast add(selectFormatGroup));\r\n\t\timportPageSizes.push(FlxPoint.get(500, 250));\r\n\r\n\t\timportPages.push(cast add(importAudioGroup));\r\n\t\timportPageSizes.push(FlxPoint.get(705, 250));\r\n\r\n\t\timportPages.push(cast add(importDataGroup));\r\n\t\timportPageSizes.push(FlxPoint.get(705, 300));\r\n\r\n\t\trefreshPages();\r\n\t\tupdatePagesTexts();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tif (isImporting)\r\n\t\t{\r\n\t\t\tvar name = engineDropdown.options[engineDropdown.index];\r\n\t\t\tvar project = name == translate(\"vsliceProject\");\r\n\r\n\t\t\tif (curPage == 1) {\r\n\t\t\t\timportInstExplorer.selectable = importVoicesExplorer.selectable = !project;\r\n\t\t\t\tsaveButton.selectable = #if TEST_BUILD true #else project ? true : (importInstExplorer.file != null) #end;\r\n\t\t\t} else if (curPage == 2) {\r\n\t\t\t\timportIdTextBox.selectable = !project;\r\n\t\t\t\timportChartFile.fileType = project ? \"fnfc\" : \"json\";\r\n\t\t\t\timportMetaFile.selectable = name == translate(\"vslice\");\r\n\t\t\t\tsaveButton.selectable = importChartFile.file != null && (!importMetaFile.selectable || importMetaFile.file != null) && (!importIdTextBox.selectable || importIdTextBox.label.text.trim().length > 0);\r\n\t\t\t} else\r\n\t\t\t\tsaveButton.selectable = true;\r\n\t\t} else {\r\n\t\t\tif (curPage == 0)\r\n\t\t\t\tsaveButton.selectable = (instExplorer.file != null);\r\n\t\t\telse\r\n\t\t\t\tsaveButton.selectable = true;\r\n\t\t}\r\n\r\n\t\tsaveButton.alpha = saveButton.field.alpha = saveButton.selectable ? 1 : 0.4;\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

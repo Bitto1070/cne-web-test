@@ -1,0 +1,145 @@
+{
+	"kind": "class",
+	"name": "EventNumber",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "final",
+			"name": "ALIGN_NORMAL",
+			"type": "Int",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "ALIGN_CENTER",
+			"type": "Int",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "digits",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "FRAME_POINT",
+			"type": "Int",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "FRAME_NEGATIVE",
+			"type": "Int",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "align",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spacing",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "number",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "align",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "spacing",
+					"type": "Float",
+					"optional": false,
+					"def": "6"
+				},
+				{
+					"name": "precision",
+					"type": "Int",
+					"optional": false,
+					"def": "3"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, number:Float, ?align:Int, spacing:Float = 6, precision:Int = 3) {\r\n\t\tsuper(x, y);\r\n\t\tthis.digits = [];\r\n\t\tthis.align = align == null ? ALIGN_NORMAL : align;\r\n\t\tthis.spacing = spacing;\r\n\r\n\t\tif (number == 0) {\r\n\t\t\tthis.digits.insert(0, 0);\r\n\t\t}\r\n\t\telse {\r\n\t\t\tvar decimals:Float = FlxMath.roundDecimal(Math.abs(number % 1), precision);\r\n\t\t\tif (decimals > 0) this.digits.insert(0, FRAME_POINT);\r\n\t\t\twhile(decimals > 0) {\r\n\t\t\t\tthis.digits.push(Math.floor(decimals * 10));\r\n\t\t\t\tdecimals = FlxMath.roundDecimal((decimals * 10) % 1, precision);\r\n\t\t\t}\r\n\r\n\t\t\tvar ints = Std.int(Math.abs(number));\r\n\t\t\tif (ints == 0) this.digits.insert(0, 0);\r\n\t\t\twhile (ints > 0) {\r\n\t\t\t\tthis.digits.insert(0, ints % 10);\r\n\t\t\t\tints = Std.int(ints / 10);\r\n\t\t\t}\r\n\r\n\t\t\tif (number < 0) {\r\n\t\t\t\tthis.digits.insert(0, FRAME_NEGATIVE);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tloadGraphic(Paths.image('editors/charter/event-icons/components/eventNums'), true, 6, 7);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numWidth",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numHeight",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateHitbox",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateHitbox():Void {\r\n\t\tvar numWidth = this.numWidth;\r\n\t\tvar numHeight = this.numHeight;\r\n\t\twidth = numWidth;\r\n\t\theight = numHeight;\r\n\t\toffset.set(-0.5 * (numWidth - spacing * digits.length), -0.5 * (numHeight - frameHeight));\r\n\t\tcenterOrigin();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

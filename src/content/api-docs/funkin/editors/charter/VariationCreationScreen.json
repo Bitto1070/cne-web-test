@@ -1,0 +1,42 @@
+{
+	"kind": "class",
+	"name": "VariationCreationScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "parentMeta",
+			"type": "ChartMetaData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "parent",
+					"type": "ChartMetaData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onSave",
+					"type": "SongCreationData -> Null<String -> Void> -> Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(parent:ChartMetaData, ?onSave:SongCreationData -> Null<String -> Void> -> Void) {\r\n\t\tsuper(onSave);\r\n\t\tthis.parentMeta = parent;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

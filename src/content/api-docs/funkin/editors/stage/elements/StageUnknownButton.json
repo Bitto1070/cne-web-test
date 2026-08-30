@@ -1,0 +1,211 @@
+{
+	"kind": "class",
+	"name": "StageUnknownButton",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "lowMemory",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "highMemory",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "basic",
+			"type": "FlxBasic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "basic",
+					"type": "FlxBasic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// to allow it to be saved\r\n\r\n\tpublic function new(x:Float,y:Float, basic:FlxBasic, xml:Access) {\r\n\t\tthis.basic = basic;\r\n\t\tsuper(x, y, xml);\r\n\r\n\t\tif (xml.x.parent != null) {\r\n\t\t\tlowMemory = xml.x.parent.nodeName == \"low-memory\";\r\n\t\t\thighMemory = xml.x.parent.nodeName == \"high-memory\";\r\n\t\t}\r\n\r\n\t\tcolor = 0xff000000;\r\n\r\n\t\tvisibilityButton.exists = false;\r\n\t\tmembers.remove(visibilityButton);\r\n\r\n\t\tvisibilityIcon.exists = false;\r\n\t\tmembers.remove(visibilityIcon);\r\n\r\n\t\tsetEditAdvanced();\r\n\t\tupdateInfo();\r\n\r\n\t\tdummy = new FunkinSprite();\r\n\t\tdummy.extra.set(StageEditor.exID(\"lowMemory\"), lowMemory);\r\n\t\tdummy.extra.set(StageEditor.exID(\"highMemory\"), highMemory);\r\n\t\tdummy.extra.set(StageEditor.exID(\"button\"), this);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateInfo() {\r\n\t\tsuper.updateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSprite",
+			"args": [],
+			"ret": "FunkinSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getSprite():FunkinSprite {\r\n\t\treturn dummy;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "canRender",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function canRender() {\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSelect",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onSelect() {\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onEdit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onEdit() {\r\n\t\tFlxG.state.openSubState(new StageUnknownEditScreen(this));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onDelete",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onDelete() {\r\n\t\tbasic.destroy();\r\n\t\tdummy.destroy();\r\n\t\txml.x.parent.removeChild(xml.x);\r\n\t\tStageEditor.instance.stageSpritesWindow.remove(this);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onVisiblityToggle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onVisiblityToggle() {\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getName",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getName():String {\r\n\t\treturn xml.name;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPos",
+			"args": [],
+			"ret": "FlxPoint",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPos():FlxPoint {\r\n\t\treturn FlxPoint.get(0, 0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getInfoText",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getInfoText():String {\r\n\t\treturn TU.translate(\"stageElement.unknown\", [getName()]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updatePos() {\r\n\t\tsuper.updatePos();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

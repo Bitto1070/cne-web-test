@@ -1,0 +1,22 @@
+{
+	"kind": "class",
+	"name": "AdvancedAppearanceOptions",
+	"pkg": "funkin.options.categories",
+	"doc": null,
+	"meta": [
+		"@:privateAccess"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('optionsMenu.advanced', 'optionsTree.appearance.advanced-desc', 'AppearanceOptions.Advanced.');\r\n\r\n\t\tadd(new ArrayOption(getNameID('quality'), getDescID('quality'),\r\n\t\t\t[0, 1, 2], [getID('quality-low'), getID('quality-high'), getID('quality-custom')],\r\n\t\t\t'quality', __changeQuality\r\n\t\t));\r\n\r\n\t\tfor (option in (qualityOptions = [\r\n\t\t\tnew Checkbox(getNameID('antialiasing'), getDescID('antialiasing'), 'antialiasing', __changeAntialiasing),\r\n\t\t\tnew Checkbox(getNameID('lowMemoryMode'), getDescID('lowMemoryMode'), 'lowMemoryMode'),\r\n\t\t\tnew Checkbox(getNameID('gameplayShaders'), getDescID('gameplayShaders'), 'gameplayShaders')\r\n\t\t])) \r\n\t\t\tadd(option);\r\n\r\n\t\tadd(new Checkbox(getNameID('gpuOnlyBitmaps'), getDescID('gpuOnlyBitmaps'), 'gpuOnlyBitmaps'));\r\n\r\n\t\tupdateQualityOptions();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

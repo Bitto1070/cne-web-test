@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "AssetTreeInfo",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper(\"Asset Libraries Tree Info\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\r\n\t\tif ((lastUpdateTime += FlxG.rawElapsed) < 1)\r\n\t\t\treturn;\r\n\r\n\t\tlastUpdateTime = 0;\r\n\r\n\t\tvar text = \"Not initialized yet\\n\";\r\n\t\tif (Paths.assetsTree != null){\r\n\t\t\ttext = \"\";\r\n\t\t\tvar buf = new StringBuf();\r\n\t\t\tfor(l in Paths.assetsTree.libraries) {\r\n\t\t\t\tvar l = AssetsLibraryList.getCleanLibrary(l);\r\n\r\n\t\t\t\tvar tag = l.tag.toString().toUpperCase();\r\n\r\n\t\t\t\tStringMacro.addLine(buf, '[${tag}] ');\r\n\r\n\t\t\t\tvar className = Type.getClassName(Type.getClass(l));\r\n\t\t\t\tclassName = className.substr(className.lastIndexOf(\".\") + 1);\r\n\r\n\t\t\t\t#if TRANSLATIONS_SUPPORT\r\n\t\t\t\tif (l is TranslatedAssetLibrary) {\r\n\t\t\t\t\tStringMacro.addLine(buf, '${className} - ${cast(l, TranslatedAssetLibrary).langFolder} for (${cast(l, TranslatedAssetLibrary).forLibrary.modName})\\n');\r\n\t\t\t\t} else #end if (l is ScriptedAssetLibrary) {\r\n\t\t\t\t\tStringMacro.addLine(buf, '${className} - ${cast(l, ScriptedAssetLibrary).scriptName} (${cast(l, ScriptedAssetLibrary).modName} | ${cast(l, ScriptedAssetLibrary).libName} | ${cast(l, ScriptedAssetLibrary).prefix})\\n');\r\n\t\t\t\t} else if (l is IModsAssetLibrary) {\r\n\t\t\t\t\tStringMacro.addLine(buf, '${className} - ${cast(l, IModsAssetLibrary).modName} - ${cast(l, IModsAssetLibrary).libName} (${cast(l, IModsAssetLibrary).prefix})\\n');\r\n\t\t\t\t} else {\r\n\t\t\t\t\tStringMacro.addLine(buf, '${Std.string(l)}\\n');\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\ttext = buf.toString();\r\n\t\t\tif (text != \"\")\r\n\t\t\t\ttext = text.substr(0, text.length-1);\r\n\t\t}\r\n\r\n\t\tthis.text.text = text;\r\n\t\tsuper.__enterFrame(t);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

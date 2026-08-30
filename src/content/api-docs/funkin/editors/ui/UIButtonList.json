@@ -1,0 +1,255 @@
+{
+	"kind": "class",
+	"name": "UIButtonList",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "buttons",
+			"type": "FlxTypedGroup<T>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "addButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "addIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "buttonCameras",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraSpacing",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "buttonSpacing",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "buttonSize",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "buttonOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dragging",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dragCallback",
+			"type": "(T,Int,Int)->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "windowName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttonSize",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttonOffset",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "buttonSpacing",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, width:Int, height:Int, windowName:String, buttonSize:FlxPoint, ?buttonOffset:FlxPoint, ?buttonSpacing:Float) {\r\n\t\tif (buttonSpacing != null) this.buttonSpacing = buttonSpacing;\r\n\t\tthis.buttonSize = buttonSize;\r\n\t\tif (buttonOffset != null) this.buttonOffset = buttonOffset;\r\n\t\tsuper(x, y, width, height, windowName);\r\n\r\n\t\tbuttonCameras = new FlxCamera(Std.int(x), Std.int(y+cameraSpacing), width, height-cameraSpacing-1);\r\n\t\tFlxG.cameras.add(buttonCameras, false);\r\n\t\tbuttonCameras.bgColor = 0;\r\n\r\n\t\taddButton = new UIButton(25, 16, null, null, Std.int(this.buttonSize.x));\r\n\t\taddButton.autoAlpha = false;\r\n\t\taddButton.color = 0xFF00FF00;\r\n\t\taddButton.cameras = [buttonCameras];\r\n\r\n\t\taddIcon = new FlxSprite(addButton.x + addButton.bHeight / 2, addButton.y + (32/2) - 8).loadGraphic(Paths.image('editors/charter/add-button'));\r\n\t\taddIcon.antialiasing = false;\r\n\t\taddButton.members.push(addIcon);\r\n\t\tcontent.add(addButton);\r\n\r\n\t\tcontent.add(buttons);\r\n\t\tnextscrollY = buttonCameras.scroll.y = -this.buttonSpacing;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "add",
+			"args": [
+				{
+					"name": "button",
+					"type": "T",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function add(button:T) {\r\n\t\tbutton.ID = buttons.members.length;\r\n\t\tbuttons.add(button);\r\n\t\tcurMovingInterval = 0;\r\n\t\tnextscrollY += button.bHeight;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "insert",
+			"args": [
+				{
+					"name": "button",
+					"type": "T",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "position",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function insert(button:T, position:Int) {\r\n\t\tbutton.ID = position;\r\n\t\tbuttons.insert(position, button);\r\n\t\tnextscrollY += button.bHeight;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "remove",
+			"args": [
+				{
+					"name": "button",
+					"type": "T",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function remove(button:T) {\r\n\t\tnextscrollY -= button.bHeight;\r\n\t\tbuttons.remove(button, true);\r\n\t\tbutton.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButtonsPos",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateButtonsPos(elapsed:Float) {\r\n\t\tvar endButtonY:Float = 0;\r\n\t\tfor (i => button in buttons.members) {\r\n\t\t\tif (button == null) continue;\r\n\t\t\t\r\n\t\t\tif (curMoving != button) {\r\n\t\t\t\tbutton.setPosition(\r\n\t\t\t\t\t(bWidth/2) - (buttonSize.x/2) + buttonOffset.x,\r\n\t\t\t\t\tCoolUtil.fpsLerp(button.y, endButtonY + buttonOffset.y, 0.25));\r\n\t\t\t}\r\n\t\t\tendButtonY += button.bHeight+buttonSpacing;\r\n\t\t\tif (button.hovered && FlxG.mouse.justPressed) curMoving = button;\r\n\t\t}\r\n\r\n\t\tif (addButton != null)\r\n\t\t\taddButton.setPosition(\r\n\t\t\t\t(bWidth/2) - (buttonSize.x/2) + buttonOffset.x,\r\n\t\t\t\tCoolUtil.fpsLerp(addButton.y, endButtonY + buttonOffset.y, 0.25));\r\n\r\n\t\tif (curMoving != null) {\r\n\t\t\tcurMovingInterval += FlxG.mouse.deltaY;\r\n\t\t\tif (Math.abs(curMovingInterval) > addButton.bHeight / 2) {\r\n\t\t\t\tcurMovingInterval = 999;\r\n\t\t\t\tvar mousePos = FlxG.mouse.getWorldPosition(buttonCameras);\r\n\t\t\t\tcurMoving.y = CoolUtil.fpsLerp(curMoving.y, mousePos.y - (curMoving.bHeight / 2), 0.3);\r\n\t\t\t\tbuttons.sort(function(o, a:T, b:T) return FlxSort.byValues(o, a.y + (a.bHeight / 2), b.y + (a.bHeight / 2)), -1);\r\n\t\t\t\tmousePos.put();\r\n\t\t\t}\r\n\t\t\tif (FlxG.mouse.justReleased) {\r\n\t\t\t\tcurMoving = null;\r\n\t\t\t\tcurMovingInterval = 0;\r\n\t\t\t}\r\n\t\t}\r\n\t\taddIcon.x = addButton.x + addButton.bWidth / 2 - addIcon.width / 2;\r\n\t\taddIcon.y = addButton.y + addButton.bHeight / 2 - addIcon.height / 2;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tupdateButtonsPos(elapsed);\r\n\t\tdragging = Math.abs(curMovingInterval) > addButton.bHeight / 2;\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tnextscrollY = CoolUtil.bound(nextscrollY - (hovered ? FlxG.mouse.wheel : 0) * 12, -buttonSpacing, Math.max((addButton.y + 32 + (buttonSpacing*1.5)) - buttonCameras.height, -buttonSpacing));\r\n\r\n\t\tif (curMoving != null && dragging) {\r\n\t\t\tvar mousePos = FlxG.mouse.getWorldPosition(buttonCameras);\r\n\t\t\tnextscrollY -= Math.min((bHeight - 100) - mousePos.y, 0) / 8;\r\n\t\t\tnextscrollY += Math.min(mousePos.y - 100, 0) / 8;\r\n\t\t\tmousePos.put();\r\n\t\t}\r\n\r\n\t\tbuttonCameras.scroll.y = FlxMath.lerp(buttonCameras.scroll.y, nextscrollY, 1/3);\r\n\r\n\t\tfor (i => button in buttons.members) {\r\n\t\t\tif (button == null) continue;\r\n\t\t\tbutton.selectable = button.shouldPress = (hovered && !dragging);\r\n\t\t\tbutton.cameras = [buttonCameras];\r\n\t\t\tif (button.ID != i) {\r\n\t\t\t\tif (dragCallback != null) dragCallback(cast button, button.ID, i);\r\n\t\t\t\tbutton.ID = i; // Ok back to normal :D\r\n\t\t\t}\r\n\t\t}\r\n\t\taddButton.selectable = (hovered && !dragging);\r\n\r\n\t\tif (__lastDrawCameras[0] != null) {\r\n\t\t\t// -1 on each vertical sides for the little gap at the bottom of the window\r\n\t\t\tbuttonCameras.height = bHeight - cameraSpacing - 2;\r\n\t\t\tbuttonCameras.x = __lastDrawCameras[0].x + x - __lastDrawCameras[0].scroll.x;\r\n\t\t\tbuttonCameras.y = __lastDrawCameras[0].y + y + cameraSpacing - __lastDrawCameras[0].scroll.y+1;\r\n\t\t\tbuttonCameras.zoom = __lastDrawCameras[0].zoom;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

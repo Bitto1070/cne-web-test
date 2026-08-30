@@ -1,0 +1,154 @@
+{
+	"kind": "class",
+	"name": "PlayerSettings",
+	"pkg": "funkin.options",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "numPlayers",
+			"type": "Dynamic",
+			"access": "default, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numAvatars",
+			"type": "Dynamic",
+			"access": "default, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "solo",
+			"type": "PlayerSettings",
+			"access": "default, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "player1",
+			"type": "PlayerSettings",
+			"access": "default, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "player2",
+			"type": "PlayerSettings",
+			"access": "default, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "onAvatarAdd",
+			"type": "Dynamic",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "onAvatarRemove",
+			"type": "Dynamic",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onAvatarAdd",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onAvatarRemove",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "id",
+			"type": "Int",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "controls",
+			"type": "Controls",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "controls",
+			"type": "Controls",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setKeyboardScheme",
+			"args": [
+				{
+					"name": "scheme",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setKeyboardScheme(scheme)\r\n\t{\r\n\t\tcontrols.setKeyboardScheme(scheme);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function init():Void\r\n\t{\r\n\t\tif (solo == null)\r\n\t\t{\r\n\t\t\tsolo = new PlayerSettings(0, Solo);\r\n\t\t}\r\n\t\tif (player1 == null)\r\n\t\t{\r\n\t\t\tplayer1 = new PlayerSettings(0, Duo(true));\r\n\t\t\t++numPlayers;\r\n\t\t}\r\n\t\tif (player2 == null)\r\n\t\t{\r\n\t\t\tplayer2 = new PlayerSettings(0, Duo(false));\r\n\t\t\t++numPlayers;\r\n\t\t}\r\n\r\n\t\tvar numGamepads = FlxG.gamepads.numActiveGamepads;\r\n\t\tif (numGamepads > 0)\r\n\t\t{\r\n\t\t\tvar gamepad = FlxG.gamepads.getByID(0);\r\n\t\t\tif (gamepad == null)\r\n\t\t\t\tthrow 'Unexpected null gamepad. id:0';\r\n\r\n\t\t\tplayer1.controls.addDefaultGamepad(0);\r\n\t\t}\r\n\r\n\t\tif (numGamepads > 1)\r\n\t\t{\r\n\t\t\tif (player2 == null)\r\n\t\t\t{\r\n\t\t\t\tplayer2 = new PlayerSettings(1, None);\r\n\t\t\t\t++numPlayers;\r\n\t\t\t}\r\n\r\n\t\t\tvar gamepad = FlxG.gamepads.getByID(1);\r\n\t\t\tif (gamepad == null)\r\n\t\t\t\tthrow 'Unexpected null gamepad. id:0';\r\n\r\n\t\t\tplayer2.controls.addDefaultGamepad(1);\r\n\t\t}\r\n\r\n\t\t// DeviceManager.init();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "static public function reset()\r\n\t{\r\n\t\tplayer1 = null;\r\n\t\tplayer2 = null;\r\n\t\tnumPlayers = 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,39 @@
+{
+	"kind": "final class",
+	"name": "RatingUpdateEvent",
+	"pkg": "funkin.backend.scripting.events.gameplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "rating",
+			"type": "Null<ComboRating>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "New combo (may be null if no ratings were found)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "oldRating",
+			"type": "Null<ComboRating>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Old combo (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

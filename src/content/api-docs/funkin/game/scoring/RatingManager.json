@@ -1,0 +1,182 @@
+{
+	"kind": "class",
+	"name": "RatingManager",
+	"pkg": "funkin.game.scoring",
+	"doc": {
+		"text": "Judges note hits and returns a rating.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "onRatingAdded",
+			"type": "FlxTypedSignal<Rating->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onRatingRemoved",
+			"type": "FlxTypedSignal<Rating->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hitWindows",
+			"type": "StringMap<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingData",
+			"type": "Array<Rating>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastHitWindow",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "preset",
+					"type": "WindowPreset",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?preset:WindowPreset):Void\r\n\t{\r\n\t\tvar usedPreset = preset != null ? preset : WindowPreset.DEFAULT;\r\n\t\thitWindows = HitWindowData.getWindows(usedPreset);\r\n\t\tinitDefaultData(hitWindows);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "judgeNote",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Rating",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function judgeNote(time:Float):Rating\r\n\t{\r\n\t\tfor (i => rating in ratingData)\r\n\t\t{\r\n\t\t\tif (rating.hittable && rating.window > -1 && time <= rating.window)\r\n\t\t\t{\r\n\t\t\t\treturn rating;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn ratingData.last();\r\n\t}",
+			"doc": {
+				"text": "Returns a rating based on a wimdow of time.",
+				"params": {
+					"time": "The timing window to judge."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "initDefaultData",
+			"args": [
+				{
+					"name": "windows",
+					"type": "StringMap<Float>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function initDefaultData(windows:StringMap<Float>)\r\n\t{\r\n\t\tinline function getWindow(name:String):Float\r\n\t\t{\r\n\t\t\treturn windows.exists(name) ? windows.get(name) : -1;\r\n\t\t}\r\n\r\n\t\taddRating({name: \"sick\", window: getWindow(\"sick\"), accuracy: 1, score: 300, splash: true});\r\n\t\taddRating({name: \"good\", window: getWindow(\"good\"), accuracy: 0.75, score: 200, health: 0.015});\r\n\t\taddRating({name: \"bad\", window: getWindow(\"bad\"), accuracy: 0.45, score: 100, health: 0});\r\n\t\taddRating({name: \"shit\", window: getWindow(\"shit\"), accuracy: 0.25, score: 50, health: -0.05, breaksCombo: Flags.SHITS_BREAK_COMBO});\r\n\t}",
+			"doc": {
+				"text": "Initializes the default rating data containing the four judgements.\n\n\"Sick\", \"Good\", \"Bad\", \"Shit\"",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addRating",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addRating(data:Dynamic)\r\n\t{\r\n\t\tif (data == null || data.name == null) return;\r\n\r\n\t\tvar name = data.name.toLowerCase();\r\n\t\tvar window = data.window != null\r\n\t\t\t? data.window\r\n\t\t\t: (hitWindows.exists(name) ? hitWindows.get(name) : -1);\r\n\r\n\t\tif (window > lastHitWindow) lastHitWindow = window;\r\n\r\n\t\tvar newRating:Rating = {\r\n\t\t\tname: name,\r\n\t\t\twindow: window,\r\n\t\t\taccuracy: data.accuracy != null ? data.accuracy : 1,\r\n\t\t\tscore: data.score != null ? data.score : 0,\r\n\t\t\thealth: data.health != null ? data.health : 0.023,\r\n\t\t\tsplash: data.splash == true,\r\n\t\t\tbreaksCombo: data.breaksCombo == true,\r\n\t\t\thittable: data.hittable != null ? data.hittable : true\r\n\t\t};\r\n\r\n\t\tvar existingIndex = -1;\r\n\t\tfor (i in 0...ratingData.length)\r\n\t\t\tif (ratingData[i].name == name)\r\n\t\t\t\texistingIndex = i;\r\n\r\n\t\tif (existingIndex >= 0)\r\n\t\t\tratingData[existingIndex] = newRating;\r\n\t\telse\r\n\t\t\tratingData.push(newRating);\r\n\r\n\t\tratingData.sort((a, b) -> Reflect.compare(a.window, b.window));\r\n\t\tonRatingAdded.dispatch(newRating);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeRating",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function removeRating(name:String):Void\r\n\t{\r\n\t\tif (name == null) return;\r\n\t\tname = name.toLowerCase();\r\n\t\tvar toRemove = ratingData.filter(r -> r.name == name);\r\n\t\tfor (rating in toRemove) {\r\n\t\t\tratingData.remove(rating);\r\n\t\t\tonRatingRemoved.dispatch(rating);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getHitWindow",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getHitWindow(name:String):Float\r\n\t{\r\n\t\treturn hitWindows.exists(name) ? hitWindows.get(name) : -1;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

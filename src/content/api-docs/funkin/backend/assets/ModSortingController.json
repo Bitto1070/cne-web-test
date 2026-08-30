@@ -1,0 +1,45 @@
+{
+	"kind": "class",
+	"name": "ModSortingController",
+	"pkg": "funkin.backend.assets",
+	"doc": {
+		"text": "This class performs the actual sorting for the mods list.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "sort",
+			"args": [
+				{
+					"name": "sortingOptions",
+					"type": "ModSortingOptions",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "list",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function sort(sortingOptions:ModSortingOptions, list:Array<String>):Void {\r\n        switch (sortingOptions.mode) {\r\n            case ModSortingMode.CLEAN: {}\r\n            case ModSortingMode.ALPHABETICAL: CoolUtil.sortAlphabetically(list);\r\n        }\r\n        if (sortingOptions.descending) list.reverse();\r\n    }",
+			"doc": {
+				"text": "Sort the mods list, according to the provided sorting options.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

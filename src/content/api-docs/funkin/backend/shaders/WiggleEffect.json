@@ -1,0 +1,85 @@
+{
+	"kind": "class",
+	"name": "WiggleEffect",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "shader",
+			"type": "WiggleShader",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "effectType",
+			"type": "WiggleEffectType",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveSpeed",
+			"type": "Float",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveFrequency",
+			"type": "Float",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveAmplitude",
+			"type": "Float",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new():Void\r\n\t{\r\n\t\tshader.uTime.value = [0];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function update(elapsed:Float):Void\r\n\t{\r\n\t\tshader.uTime.value[0] += elapsed;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

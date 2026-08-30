@@ -1,0 +1,18 @@
+{
+	"kind": "final class",
+	"name": "DanceEvent",
+	"pkg": "funkin.backend.scripting.events.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "danced",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

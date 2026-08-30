@@ -1,0 +1,505 @@
+{
+	"kind": "final class",
+	"name": "NoteMissEvent",
+	"pkg": "funkin.backend.scripting.events.note",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "animCancelled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "deleteNote",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "stunned",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "resetCombo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "playMissSound",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "note",
+			"type": "Note",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note that has been missed",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "score",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "misses",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "muteVocals",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthGain",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The amount of health that'll be gained from missing that note. If called from `onPlayerMiss`, the value will be negative.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "missSound",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "missVolume",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostMiss",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gfSad",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gfSadAnim",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forceGfAnim",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forceAnim",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the animation should be forced to play (if it's null it will be forced based on the sprite's data xml, if it has one).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Suffix of the animation. \"miss\" for miss notes, \"-alt\" for alt notes, \"\" for normal ones.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Character that pressed the note.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characters",
+			"type": "Array<Character>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Characters that pressed the note.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playerID",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Character is a player",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteType",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note Type name (null if default note)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "direction",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Direction of the press (0 = Left, 1 = Down, 2 = Up, 3 = Right)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accuracy",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Accuracy gained from pressing this note. From 0 to 1. null means no accuracy is gained.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventMissSound",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventMissSound() {\r\n\t\tplayMissSound = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the miss sound from played.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelMissSound",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelMissSound() {preventMissSound();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventResetCombo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventResetCombo() {\r\n\t\tresetCombo = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the combo from being reset.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelResetCombo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelResetCombo() {preventResetCombo();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventStunned",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventStunned() {\r\n\t\tstunned = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the default sing animation from being played.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelStunned",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelStunned() {preventStunned();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventAnim",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventAnim() {\r\n\t\tanimCancelled = true;\r\n\t}",
+			"doc": {
+				"text": "Prevents the default sing animation from being played.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelAnim",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelAnim() {preventAnim();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventDeletion",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventDeletion() {\r\n\t\tdeleteNote = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the note from being deleted.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelDeletion",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelDeletion() {preventDeletion();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventVocalsUnmute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventVocalsUnmute() {\r\n\t\tmuteVocals = true;\r\n\t}",
+			"doc": {
+				"text": "Prevents the vocals volume from being set to 1 after pressing the note.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelVocalsUnmute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelVocalsUnmute() {preventVocalsUnmute();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventVocalsMute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventVocalsMute() {\r\n\t\tmuteVocals = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the vocals volume from being muted in case its a parameter of `onPlayerMiss`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelVocalsMute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelVocalsMute() {preventVocalsMute();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		}
+	]
+}

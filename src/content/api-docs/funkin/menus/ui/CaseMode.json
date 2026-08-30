@@ -1,0 +1,29 @@
+{
+	"kind": "enum abstract",
+	"name": "CaseMode",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "fromString",
+			"args": [
+				{
+					"name": "value",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "CaseMode",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:from\r\n\tpublic static function fromString(value:String):CaseMode\r\n\t\treturn switch(value) {\r\n\t\t\tcase \"none\": NONE;\r\n\t\t\tcase \"upper\": UPPER;\r\n\t\t\tcase \"lower\": LOWER;\r\n\t\t\tdefault: NONE;\r\n\t\t}\r\n}\r\n\r\nenum abstract ColorMode(ByteInt) from ByteInt to ByteInt {\r\n\tvar TINT = 0;",
+			"doc": null,
+			"meta": [
+				"@:from"
+			]
+		}
+	]
+}

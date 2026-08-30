@@ -1,0 +1,90 @@
+{
+	"kind": "class",
+	"name": "DummyScript",
+	"pkg": "funkin.backend.scripting",
+	"doc": {
+		"text": "Simple class for empty scripts or scripts whose language isn't imported yet.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "variables",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "v",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function get(v:String) {return variables.get(v);}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set",
+			"args": [
+				{
+					"name": "v",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "v2",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function set(v:String, v2:Dynamic) {return variables.set(v, v2);}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onCall",
+			"args": [
+				{
+					"name": "method",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parameters",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onCall(method:String, parameters:Array<Dynamic>):Dynamic {\r\n\t\tvar func = variables.get(method);\r\n\t\tif (Reflect.isFunction(func))\r\n\t\t\treturn (parameters != null && parameters.length > 0) ? Reflect.callMethod(null, func, parameters) : func();\r\n\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

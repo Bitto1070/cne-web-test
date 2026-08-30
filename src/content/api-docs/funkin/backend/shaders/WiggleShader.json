@@ -1,0 +1,24 @@
+{
+	"kind": "class",
+	"name": "WiggleShader",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "')\r\n\tpublic function new()\r\n\t{\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:glFragmentSource('\r\n#pragma header\r\n//uniform float tx, ty; // x,y waves phase\r\nuniform float uTime;\r\n\r\nconst int EFFECT_TYPE_DREAMY = 0;\r\nconst int EFFECT_TYPE_WAVY = 1;\r\nconst int EFFECT_TYPE_HEAT_WAVE_HORIZONTAL = 2;\r\nconst int EFFECT_TYPE_HEAT_WAVE_VERTICAL = 3;\r\nconst int EFFECT_TYPE_FLAG = 4;\r\n\r\nuniform int effectType;\r\n\r\n/**\r\n* How fast the waves move over time\r\n*/\r\nuniform float uSpeed;\r\n\r\n/**\r\n* Number of waves over time\r\n*/\r\nuniform float uFrequency;\r\n\r\n/**\r\n* How much the pixels are going to stretch over the waves\r\n*/\r\nuniform float uWaveAmplitude;\r\n\r\nvec2 sineWave(vec2 pt)\r\n{\r\n\tfloat x = 0.0;\r\n\tfloat y = 0.0;\r\n\r\n\tif (effectType == EFFECT_TYPE_DREAMY)\r\n\t{\r\n\t\tfloat offsetX = sin(pt.y * uFrequency + uTime * uSpeed) * uWaveAmplitude;\r\n\t\tpt.x += offsetX; // * (pt.y - 1.0); // <- Uncomment to stop bottom part of the screen from moving\r\n\t}\r\n\telse if (effectType == EFFECT_TYPE_WAVY)\r\n\t{\r\n\t\tfloat offsetY = sin(pt.x * uFrequency + uTime * uSpeed) * uWaveAmplitude;\r\n\t\tpt.y += offsetY; // * (pt.y - 1.0); // <- Uncomment to stop bottom part of the screen from moving\r\n\t}\r\n\telse if (effectType == EFFECT_TYPE_HEAT_WAVE_HORIZONTAL)\r\n\t{\r\n\t\tx = sin(pt.x * uFrequency + uTime * uSpeed) * uWaveAmplitude;\r\n\t}\r\n\telse if (effectType == EFFECT_TYPE_HEAT_WAVE_VERTICAL)\r\n\t{\r\n\t\ty = sin(pt.y * uFrequency + uTime * uSpeed) * uWaveAmplitude;\r\n\t}\r\n\telse if (effectType == EFFECT_TYPE_FLAG)\r\n\t{\r\n\t\ty = sin(pt.y * uFrequency + 10.0 * pt.x + uTime * uSpeed) * uWaveAmplitude;\r\n\t\tx = sin(pt.x * uFrequency + 5.0 * pt.y + uTime * uSpeed) * uWaveAmplitude;\r\n\t}\r\n\r\n\treturn vec2(pt.x + x, pt.y + y);\r\n}\r\n\r\nvoid main()\r\n{\r\n\tvec2 uv = sineWave(openfl_TextureCoordv);\r\n\tgl_FragColor = texture2D(bitmap, uv);\r\n}')"
+			]
+		}
+	]
+}

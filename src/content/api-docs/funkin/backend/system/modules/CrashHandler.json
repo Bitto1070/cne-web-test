@@ -1,0 +1,38 @@
+{
+	"kind": "final class",
+	"name": "CrashHandler",
+	"pkg": "funkin.backend.system.modules",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tLib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);\r\n\t\t#if cpp\r\n\t\tuntyped __global__.__hxcpp_set_critical_error_handler(onError);\r\n\t\t#elseif hl\r\n\t\thl.Api.setErrorHandler(onError);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onUncaughtError",
+			"args": [
+				{
+					"name": "e",
+					"type": "UncaughtErrorEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function onUncaughtError(e:UncaughtErrorEvent) {\r\n\t\tvar m:String = e.error;\r\n\t\tif (Std.isOfType(e.error, Error)) {\r\n\t\t\tvar err:Error = cast e.error;\r\n\t\t\tm = '${err.message}';\r\n\t\t} else if (Std.isOfType(e.error, ErrorEvent)) {\r\n\t\t\tvar err:ErrorEvent = cast e.error;\r\n\t\t\tm = '${err.text}';\r\n\t\t}\r\n\t\tvar stack = CallStack.exceptionStack();\r\n\t\tvar stackLabel:String = \"\";\r\n\t\tfor(e in stack) {\r\n\t\t\tswitch(e) {\r\n\t\t\t\tcase CFunction: stackLabel += \"Non-Haxe (C) Function\";\r\n\t\t\t\tcase Module(c): stackLabel += 'Module ${c}';\r\n\t\t\t\tcase FilePos(parent, file, line, col):\r\n\t\t\t\t\tswitch(parent) {\r\n\t\t\t\t\t\tcase Method(cla, func):\r\n\t\t\t\t\t\t\tstackLabel += '(${file}) ${cla.split(\".\").last()}.$func() - line $line';\r\n\t\t\t\t\t\tcase _:\r\n\t\t\t\t\t\t\tstackLabel += '(${file}) - line $line';\r\n\t\t\t\t\t}\r\n\t\t\t\tcase LocalFunction(v):\r\n\t\t\t\t\tstackLabel += 'Local Function ${v}';\r\n\t\t\t\tcase Method(cl, m):\r\n\t\t\t\t\tstackLabel += '${cl} - ${m}';\r\n\t\t\t}\r\n\t\t\tstackLabel += \"\\r\\n\";\r\n\t\t}\r\n\r\n\t\te.preventDefault();\r\n\t\te.stopPropagation();\r\n\t\te.stopImmediatePropagation();\r\n\r\n\t\tNativeAPI.showMessageBox(\"Codename Engine Crash Handler\", 'Uncaught Error:$m\\n\\n$stackLabel', MSG_ERROR);\r\n\t\t#if sys\r\n\t\tSys.exit(1);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

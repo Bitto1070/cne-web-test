@@ -1,0 +1,83 @@
+{
+	"kind": "class",
+	"name": "StoryWeeklist",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "weeks",
+			"type": "Array<WeekData>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getWeeksFromSource",
+			"args": [
+				{
+					"name": "source",
+					"type": "funkin.backend.assets.AssetSource",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useTxt",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "loadCharactersData",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getWeeksFromSource(source:funkin.backend.assets.AssetSource, useTxt:Bool = true, loadCharactersData:Bool = true) {\r\n\t\tvar path:String = Paths.txt('weeks/weeks');\r\n\t\tvar weeksFound:Array<String> = useTxt && Paths.assetsTree.existsSpecific(path, \"TEXT\", source) ? CoolUtil.coolTextFile(path) :\r\n\t\t\t[for (c in Paths.getFolderContent('data/weeks/weeks/', false, source)) if (Path.extension(c).toLowerCase() == \"xml\") Path.withoutExtension(c)];\r\n\r\n\t\tif (weeksFound.length > 0) {\r\n\t\t\tfor (w in weeksFound) {\r\n\t\t\t\tvar week = Week.loadWeek(w, loadCharactersData);\r\n\t\t\t\tif (week != null) weeks.push(week);\r\n\t\t\t}\r\n\t\t\treturn false;\r\n\t\t}\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "useTxt",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "loadCharactersData",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function get(useTxt:Bool = true, loadCharactersData:Bool = true) {\r\n\t\tvar weekList = new StoryWeeklist();\r\n\r\n\t\tswitch(Flags.WEEKS_LIST_MOD_MODE) {\r\n\t\t\tcase 'prepend':\r\n\t\t\t\tweekList.getWeeksFromSource(MODS, useTxt, loadCharactersData);\r\n\t\t\t\tweekList.getWeeksFromSource(SOURCE, useTxt, loadCharactersData);\r\n\t\t\tcase 'append':\r\n\t\t\t\tweekList.getWeeksFromSource(SOURCE, useTxt, loadCharactersData);\r\n\t\t\t\tweekList.getWeeksFromSource(MODS, useTxt, loadCharactersData);\r\n\t\t\tdefault /*case 'override'*/:\r\n\t\t\t\tif (weekList.getWeeksFromSource(MODS, useTxt, loadCharactersData))\r\n\t\t\t\t\tweekList.getWeeksFromSource(SOURCE, useTxt, loadCharactersData);\r\n\t\t}\r\n\r\n\t\treturn weekList;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

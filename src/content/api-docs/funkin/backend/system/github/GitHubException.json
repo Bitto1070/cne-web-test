@@ -1,0 +1,51 @@
+{
+	"kind": "class",
+	"name": "GitHubException",
+	"pkg": "funkin.backend.system.github",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "apiMessage",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "documentationUrl",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "apiMessage",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "documentationUrl",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(apiMessage:String, documentationUrl:String) {\r\n\t\tsuper('[GitHubException] ${apiMessage} (Check ${documentationUrl})');\r\n\t\tthis.apiMessage = apiMessage;\r\n\t\tthis.documentationUrl = documentationUrl;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

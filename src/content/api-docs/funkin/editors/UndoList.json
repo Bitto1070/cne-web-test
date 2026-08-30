@@ -1,0 +1,120 @@
+{
+	"kind": "class",
+	"name": "UndoList",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "undoList",
+			"type": "Array<T>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "redoList",
+			"type": "Array<T>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "unsaved",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_unsaved",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function get_unsaved():Bool\r\n\t\treturn undoList.length != savedLength;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addToUndo",
+			"args": [
+				{
+					"name": "c",
+					"type": "T",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function addToUndo(c:T) {\r\n\t\tredoList = [];\r\n\t\tundoList.insert(0, c);\r\n\t\twhile(undoList.length > Options.maxUndos)\r\n\t\t\tundoList.pop();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "undo",
+			"args": [],
+			"ret": "T",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function undo():T {\r\n\t\tvar undo = undoList.shift();\r\n\t\tif (undo != null)\r\n\t\t\tredoList.insert(0, undo);\r\n\t\treturn undo;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "redo",
+			"args": [],
+			"ret": "T",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function redo():T {\r\n\t\tvar redo = redoList.shift();\r\n\t\tif (redo != null)\r\n\t\t\tundoList.insert(0, redo);\r\n\t\treturn redo;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "save",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function save()\r\n\t\tsavedLength = undoList.length;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clear",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function clear() {\r\n\t\tundoList = [];\r\n\t\tredoList = [];\r\n\t\tsave();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

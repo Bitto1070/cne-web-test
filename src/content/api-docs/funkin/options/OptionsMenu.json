@@ -1,0 +1,53 @@
+{
+	"kind": "class",
+	"name": "OptionsMenu",
+	"pkg": "funkin.options",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "mainOptions",
+			"type": "Array<OptionCategory>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateBG",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateBG() {\r\n\t\tvar scaleX:Float = FlxG.width / bg.width;\r\n\t\tvar scaleY:Float = FlxG.height / bg.height;\r\n\t\tbg.scale.x = bg.scale.y = Math.max(scaleX, scaleY) * 1.15;\r\n\t\tbg.screenCenter();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseOptionsFromXML",
+			"args": [
+				{
+					"name": "screen",
+					"type": "TreeMenuScreen",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<FlxSprite>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// XML STUFF\r\n\tpublic function parseOptionsFromXML(screen:TreeMenuScreen, xml:Access):Array<FlxSprite> {\r\n\t\tvar options:Array<FlxSprite> = [];\r\n\r\n\t\tfor(node in xml.elements) {\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"separator\":\r\n\t\t\t\t\toptions.push(new Separator(node.has.height ? Std.parseFloat(node.att.height) : 67));\r\n\t\t\t}\r\n\r\n\t\t\tif (!node.has.name) {\r\n\t\t\t\tLogs.warn(\"An option node requires a name attribute.\");\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tvar name = node.getAtt(\"name\");\r\n\t\t\tvar desc = node.getAtt(\"desc\").getDefault(\"optionsMenu.desc-missing\");\r\n\t\t\tif (screen.prefix?.length > 0) {\r\n\t\t\t\tname = screen.prefix + name;\r\n\t\t\t\tif (node.has.desc) desc = screen.prefix + desc;\r\n\t\t\t}\r\n\r\n\t\t\tswitch(node.name) {\r\n\t\t\t\tcase \"checkbox\":\r\n\t\t\t\t\tif (!node.has.id) {\r\n\t\t\t\t\t\tLogs.warn(\"A checkbox option requires an \\\"id\\\" for option saving.\");\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t}\r\n\t\t\t\t\toptions.push(new Checkbox(name, desc, node.att.id, null, FlxG.save.data));\r\n\t\t\t\tcase \"number\":\r\n\t\t\t\t\tif (!node.has.id) {\r\n\t\t\t\t\t\tLogs.warn(\"A number option requires an \\\"id\\\" for option saving.\");\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t}\r\n\t\t\t\t\tvar step = node.has.change ? Std.parseFloat(node.att.change) : (node.has.step ? Std.parseFloat(node.att.step) : null);\r\n\t\t\t\t\toptions.push(new NumOption(name, desc, Std.parseFloat(node.att.min), Std.parseFloat(node.att.max), step, node.att.id, null, FlxG.save.data));\r\n\t\t\t\tcase \"choice\":\r\n\t\t\t\t\tif (!node.has.id) {\r\n\t\t\t\t\t\tLogs.warn(\"A choice option requires an \\\"id\\\" for option saving.\");\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tvar optionOptions:Array<Dynamic> = [];\r\n\t\t\t\t\tvar optionDisplayOptions:Array<String> = [];\r\n\r\n\t\t\t\t\tfor(choice in node.elements) {\r\n\t\t\t\t\t\toptionOptions.push(choice.att.value);\r\n\t\t\t\t\t\toptionDisplayOptions.push(choice.att.name);\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tif(optionOptions.length > 0)\r\n\t\t\t\t\t\toptions.push(new ArrayOption(name, desc, optionOptions, optionDisplayOptions, node.att.id, null, FlxG.save.data));\r\n\t\t\t\tcase 'radio':\r\n\t\t\t\t\tif (!node.has.id) {\r\n\t\t\t\t\t\tLogs.warn(\"A radio option requires an \\\"id\\\" for option saving.\");\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t}\r\n\t\t\t\t\tvar f = Std.parseFloat(node.att.value);\r\n\t\t\t\t\toptions.push(new RadioButton(screen, name, desc, node.att.id, Math.isNaN(f) ? node.att.value : f, null, FlxG.save.data, node.has.forId ? node.att.forId : null));\r\n\t\t\t\tcase 'slider':\r\n\t\t\t\t\tif (!node.has.id) {\r\n\t\t\t\t\t\tLogs.warn(\"A slider option requires an \\\"id\\\" for option saving.\");\r\n\t\t\t\t\t\tcontinue;\r\n\t\t\t\t\t}\r\n\t\t\t\t\tvar step = node.has.change ? Std.parseFloat(node.att.change) : (node.has.step ? Std.parseFloat(node.att.step) : null);\r\n\t\t\t\t\tvar segments = node.has.segments ? Std.parseInt(node.att.segments) : 5;\r\n\t\t\t\t\toptions.push(new SliderOption(name, desc, Std.parseFloat(node.att.min), Std.parseFloat(node.att.max), step, segments, node.att.id, Std.parseInt(node.att.barWidth), null, FlxG.save.data));\r\n\t\t\t\tcase \"menu\":\r\n\t\t\t\t\toptions.push(new TextOption(name, desc, ' >', () -> {\r\n\t\t\t\t\t\tvar screen = new TreeMenuScreen(name, desc, node.getAtt(\"prefix\").getDefault(\"\"));\r\n\t\t\t\t\t\tfor (o in parseOptionsFromXML(screen, node)) screen.add(o);\r\n\t\t\t\t\t\taddMenu(screen);\r\n\t\t\t\t\t}));\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn options;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

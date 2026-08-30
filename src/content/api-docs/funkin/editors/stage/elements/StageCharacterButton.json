@@ -1,0 +1,213 @@
+{
+	"kind": "class",
+	"name": "StageCharacterButton",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "char",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charScale",
+			"type": "Float",
+			"access": "get, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "char",
+					"type": "Character",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float,y:Float, char:Character, xml:Access) {\r\n\t\tthis.char = char;\r\n\t\tsuper(x,y, xml);\r\n\r\n\t\tcolor = 0xff7aa8ff;\r\n\r\n\t\thasAdvancedEdit = true;\r\n\r\n\t\tupdateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateInfo() {\r\n\t\tchar.visible = !isHidden;\r\n\t\tchar.scale.scale(1 / charScale);\r\n\t\tsuper.updateInfo();\r\n\t\tchar.scale.scale(charScale);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSprite",
+			"args": [],
+			"ret": "FunkinSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getSprite():FunkinSprite {\r\n\t\treturn char;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaults",
+			"args": [],
+			"ret": "Map<String, Dynamic>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function getDefaults():Map<String, Dynamic> {\r\n\t\treturn [\r\n\t\t\t\"flip\" => false,\r\n\t\t\t\"flipX\" => false,\r\n\t\t\t\"camxoffset\" => 0,\r\n\t\t\t\"camyoffset\" => 0,\r\n\t\t\t\"spacingx\" => 0,\r\n\t\t\t\"spacingy\" => 0,\r\n\t\t\t\"scale\" => 1,\r\n\t\t\t\"scroll\" => 1,\r\n\t\t\t\"zoomfactor\" => 1,\r\n\t\t\t\"alpha\" => 1,\r\n\t\t\t\"angle\" => 0,\r\n\t\t\t\"skew\" => 0\r\n\t\t];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPointAttributes",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function getPointAttributes():Array<String> {\r\n\t\treturn [\"scale\", \"scroll\", \"skew\"];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAttributeOrder",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function getAttributeOrder():Array<String> {\r\n\t\treturn [\r\n\t\t\t\"name\",\r\n\t\t\t\"x\",\r\n\t\t\t\"y\",\r\n\t\t\t\"camxoffset\",\r\n\t\t\t\"camyoffset\",\r\n\t\t\t\"scale\",\r\n\t\t\t\"scalex\",\r\n\t\t\t\"scaley\",\r\n\t\t\t\"scroll\",\r\n\t\t\t\"scrollx\",\r\n\t\t\t\"scrolly\",\r\n\t\t\t\"zoomfactor\",\r\n\t\t\t\"alpha\",\r\n\t\t\t\"angle\",\r\n\t\t\t\"skewx\",\r\n\t\t\t\"skewy\",\r\n\t\t\t\"flip\",\r\n\t\t\t\"flipX\"\r\n\t\t];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSelect",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onSelect() {\r\n\t\tStageEditor.instance.selectSprite(char);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onEdit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onEdit() {\r\n\t\tif(!FlxG.keys.pressed.SHIFT) {\r\n\t\t\tFlxG.state.openSubState(new StageCharacterEditScreen(this));\r\n\t\t} else {\r\n\t\t\tFlxG.state.openSubState(new StageXMLEditScreen(this.xml, updateInfo, \"Character\"));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onDelete",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onDelete() {\r\n\t\tif (char.name.startsWith(\"NO_DELETE_\")) {\r\n\t\t\tvar text = translate(\"requiredPosition\");\r\n\t\t\tif (char.name == \"NO_DELETE_girlfriend\" && FlxG.random.bool(1))\r\n\t\t\t\ttext = translate(\"noDeleteGirlfriend\");\r\n\t\t\tUIState.state.displayNotification(new UIBaseNotification(text, 2, BOTTOM_LEFT));\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tchar.destroy();\r\n\t\txml.x.parent.removeChild(xml.x);\r\n\t\tStageEditor.instance.xmlMap.remove(char);\r\n\t\tStageEditor.instance.stageSpritesWindow.remove(this);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onVisiblityToggle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onVisiblityToggle() {\r\n\t\tisHidden = !isHidden;\r\n\t\tupdateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getName",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getName():String {\r\n\t\treturn char.name.replace(\"NO_DELETE_\", \"\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPos",
+			"args": [],
+			"ret": "FlxPoint",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPos():FlxPoint {\r\n\t\treturn FlxPoint.get(char.x, char.y);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updatePos() {\r\n\t\tsuper.updatePos();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "UpdaterStep",
+	"pkg": "funkin.backend.system.updating",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

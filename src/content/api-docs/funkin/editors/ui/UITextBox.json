@@ -1,0 +1,288 @@
+{
+	"kind": "class",
+	"name": "UITextBox",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "label",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "position",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "multiline",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "caretSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onChange",
+			"type": "String->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": "320"
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": "32"
+				},
+				{
+					"name": "multiline",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "small",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, text:String = \"\", width:Int = 320, height:Int = 32, multiline:Bool = false, small:Bool = false) {\r\n\t\tsuper(x, y, width, height, 'editors/ui/inputbox${small ? \"-small\" : \"\"}');\r\n\r\n\t\tlabel = new UIText(0, 0, width, text, small ? 12 : 15);\r\n\t\tmembers.push(label);\r\n\r\n\t\tcaretSpr = new FlxSprite(0, 0);\r\n\t\tcaretSpr.makeGraphic(1, 1, -1);\r\n\t\tcaretSpr.scale.set(1, label.size);\r\n\t\tcaretSpr.updateHitbox();\r\n\t\tmembers.push(caretSpr);\r\n\t\tthis.multiline = multiline;\r\n\t\tposition = text.length;\r\n\r\n\t\tcursor = IBEAM;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tif (selectable && hovered && FlxG.mouse.justReleased && __lastDrawCameras.length > 0) {\r\n\t\t\t// get caret pos\r\n\t\t\tvar pos = FlxG.mouse.getScreenPosition(__lastDrawCameras[0], FlxPoint.get());\r\n\t\t\tpos.x -= label.x;\r\n\t\t\tpos.y -= label.y;\r\n\r\n\t\t\tif (pos.x < 0)\r\n\t\t\t\tposition = 0;\r\n\t\t\telse {\r\n\t\t\t\tvar index = label.textField.getCharIndexAtPoint(pos.x, pos.y);\r\n\t\t\t\tif (index > -1)\r\n\t\t\t\t\tposition = index;\r\n\t\t\t\telse\r\n\t\t\t\t\tposition = label.text.length;\r\n\t\t\t}\r\n\r\n\t\t\tpos.put();\r\n\t\t}\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tvar selected = selectable && focused;\r\n\t\tif (autoAlpha) {\r\n\t\t\tif (selectable) {\r\n\t\t\t\talpha = label.alpha = 1;\r\n\t\t\t} else {\r\n\t\t\t\talpha = label.alpha = 0.4;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar off = multiline ? 4 : ((bHeight - label.height) / 2);\r\n\t\tlabel.follow(this, label.autoSize ? (bWidth - label.textField.width) / 2 : 4, off);\r\n\t\tframesOffset = (selected ? 18 : (hovered ? 9 : 0));\r\n\t\t@:privateAccess {\r\n\t\t\tif (selected) {\r\n\t\t\t\tif (!__wasFocused) {\r\n\t\t\t\t\tFlxG.stage.window.textInputEnabled = true;\r\n\t\t\t\t\t__wasFocused = true;\r\n\t\t\t\t}\r\n\t\t\t\tcaretSpr.alpha = (FlxG.game.ticks % 666) >= 333 ? 1 : 0;\r\n\r\n\t\t\t\tvar curPos = switch (position) {\r\n\t\t\t\t\tcase 0:\r\n\t\t\t\t\t\tFlxPoint.get(0, 0);\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t\t\tif (position >= label.text.length) {\r\n\t\t\t\t\t\t\tlabel.textField.__getCharBoundaries(label.text.length - 1, cacheRect);\r\n\t\t\t\t\t\t\tFlxPoint.get(cacheRect.x + cacheRect.width, cacheRect.y);\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tlabel.textField.__getCharBoundaries(position, cacheRect);\r\n\t\t\t\t\t\t\tFlxPoint.get(cacheRect.x, cacheRect.y);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t};\r\n\t\t\t\tcaretSpr.follow(this, 4 + curPos.x, off + curPos.y);\r\n\t\t\t\tcurPos.put();\r\n\t\t\t} else {\r\n\t\t\t\tif (__wasFocused) {\r\n\t\t\t\t\tFlxG.stage.window.textInputEnabled = false;\r\n\t\t\t\t\t__wasFocused = false;\r\n\t\t\t\t\tif (onChange != null)\r\n\t\t\t\t\t\tonChange(label.text);\r\n\t\t\t\t}\r\n\t\t\t\tcaretSpr.alpha = 0;\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isSeperator",
+			"args": [
+				{
+					"name": "char",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function isSeperator(char:String):Bool\r\n\t\treturn seperators.contains(char);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "findWholeWord",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "pos",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "isDelete",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Null<Array<Int>>",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function findWholeWord(text:String, pos:Int, ?isDelete:Bool = false):Null<Array<Int>> {\r\n\t\tif (text.length == 0)\r\n\t\t\treturn null;\r\n\t\t\r\n\t\tvar start = pos;\r\n\t\tvar end = pos;\r\n\r\n\t\twhile (!isDelete && start > 0 && !isSeperator(text.charAt(start - 1)))\r\n\t\t\tstart--;\r\n\r\n\t\twhile (end < text.length && !isSeperator(text.charAt(end)))\r\n\t\t\tend++;\r\n\r\n\t\tif (end == pos && isSeperator(text.charAt(end - 1)))\r\n\t\t\tstart--;\r\n\r\n\t\treturn [start, end];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onKeyDown",
+			"args": [
+				{
+					"name": "e",
+					"type": "KeyCode",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "modifier",
+					"type": "KeyModifier",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onKeyDown(e:KeyCode, modifier:KeyModifier) {\r\n\t\tswitch (e) {\r\n\t\t\tcase RETURN:\r\n\t\t\t\tfocused = false;\r\n\t\t\t\tif (onChange != null)\r\n\t\t\t\t\tonChange(label.text);\r\n\t\t\tcase LEFT:\r\n\t\t\t\tif (modifier.ctrlKey) {\r\n\t\t\t\t\tif (position == 0)\r\n\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\tvar wordBounds = findWholeWord(label.text, position);\r\n\t\t\t\t\tif (wordBounds != null) {\r\n\t\t\t\t\t\tposition = position == wordBounds[0] ? wordBounds[0] - 1 : wordBounds[0];\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tposition = 0;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tchangeSelection(-1);\r\n\t\t\tcase RIGHT:\r\n\t\t\t\tif (modifier.ctrlKey) {\r\n\t\t\t\t\tif (position == label.text.length)\r\n\t\t\t\t\t\treturn;\r\n\r\n\t\t\t\t\tvar wordBounds = findWholeWord(label.text, position);\r\n\t\t\t\t\tif (wordBounds != null) {\r\n\t\t\t\t\t\tposition = position == wordBounds[1] ? wordBounds[1] + 1 : wordBounds[1];\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tposition = label.text.length;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tchangeSelection(1);\r\n\t\t\tcase BACKSPACE:\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_TEXTREMOVE_SOUND);\r\n\r\n\t\t\t\tif (modifier.ctrlKey) {\r\n\t\t\t\t\tvar wordBounds = findWholeWord(label.text, position);\r\n\t\t\t\t\tif (wordBounds != null) {\r\n\t\t\t\t\t\tlabel.text = label.text.substr(0, wordBounds[0]) + label.text.substr(wordBounds[1]);\r\n\t\t\t\t\t\tposition = wordBounds[0];\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (position > 0) {\r\n\t\t\t\t\tlabel.text = label.text.substr(0, position - 1) + label.text.substr(position);\r\n\t\t\t\t\tchangeSelection(-1);\r\n\t\t\t\t}\r\n\t\t\tcase DELETE:\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_TEXTREMOVE_SOUND);\r\n\r\n\t\t\t\tif (modifier.ctrlKey) {\r\n\t\t\t\t\tvar wordBounds = findWholeWord(label.text, position, true);\r\n\t\t\t\t\tif (wordBounds != null) {\r\n\t\t\t\t\t\tlabel.text = label.text.substr(0, wordBounds[0]) + label.text.substr(wordBounds[1]);\r\n\t\t\t\t\t\tposition = wordBounds[0];\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (position < label.text.length) {\r\n\t\t\t\t\tlabel.text = label.text.substr(0, position) + label.text.substr(position + 1);\r\n\t\t\t\t}\r\n\t\t\tcase HOME:\r\n\t\t\t\tposition = 0;\r\n\t\t\tcase END:\r\n\t\t\t\tposition = label.text.length;\r\n\t\t\tcase V:\r\n\t\t\t\t// Hey lj here, fixed copying because before we checked if the modifier was left or right ctrl\r\n\t\t\t\t// but somehow it gave a int outside of the KeyModifier's range :sob:\r\n\t\t\t\t// apparently there is a boolean that just checks for you. yw :D\r\n\r\n\t\t\t\t// if we are not holding ctrl, ignore\r\n\t\t\t\tif (!modifier.ctrlKey) {\r\n\t\t\t\t    UIState.playEditorSound(Flags.DEFAULT_EDITOR_TEXTTYPE_SOUND);\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_PASTE_SOUND);\r\n\t\t\t\t\r\n\t\t\t\t// we pasting\r\n\t\t\t\tvar data:String = Clipboard.generalClipboard.getData(TEXT_FORMAT);\r\n\t\t\t\tif (data != null)\r\n\t\t\t\t\tonTextInput(data);\r\n\t\t\tcase C:\r\n\t\t\t\t// if we are not holding ctrl, ignore\r\n\t\t\t\tif (!modifier.ctrlKey) {\r\n\t\t\t\t    UIState.playEditorSound(Flags.DEFAULT_EDITOR_TEXTTYPE_SOUND);\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_COPY_SOUND);\r\n\r\n\t\t\t\t// copying\r\n\t\t\t\tClipboard.generalClipboard.setData(TEXT_FORMAT, label.text);\r\n\t\t\tcase X:\r\n\t\t\t\t// if we are not holding ctrl, ignore\r\n\t\t\t\tif (!modifier.ctrlKey) {\r\n\t\t\t\t    UIState.playEditorSound(Flags.DEFAULT_EDITOR_TEXTTYPE_SOUND);\r\n\t\t\t\t\treturn;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_CUT_SOUND);\r\n\r\n\t\t\t\t// cutting\r\n\t\t\t\tClipboard.generalClipboard.setData(TEXT_FORMAT, label.text);\r\n\t\t\t\tposition = 0;\r\n\t\t\t\tlabel.text = \"\";\r\n\t\t\tdefault:\r\n\t\t\t\tif (modifier.ctrlKey || modifier.altKey || modifier.shiftKey)\r\n\t\t\t\t\treturn;\r\n\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_TEXTTYPE_SOUND);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSelection",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeSelection(change:Int) {\r\n\t\tposition = Std.int(FlxMath.bound(position + change, 0, label.text.length));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onKeyUp",
+			"args": [
+				{
+					"name": "e",
+					"type": "KeyCode",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "modifier",
+					"type": "KeyModifier",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onKeyUp(e:KeyCode, modifier:KeyModifier) {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onTextInput",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onTextInput(text:String):Void {\r\n\t\tlabel.text = label.text.substr(0, position) + text + label.text.substr(position);\r\n\t\tposition += text.length;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onTextEdit",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "start",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "end",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// untested, but this should be a fix for if the text wont type\r\n\tpublic function onTextEdit(text:String, start:Int, end:Int):Void {\r\n\t\tlabel.text = label.text.substr(0, position) + text + label.text.substr(position);\r\n\t\tposition += text.length;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

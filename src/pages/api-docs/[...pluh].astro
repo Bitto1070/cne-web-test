@@ -74,7 +74,7 @@ const deprecated = entry.fields.filter((a:any) => (isDeprecated(a)));
 </style>
 <APIPage title={pluh.replaceAll('/', '.')}>
     {entry.kind} <span class="phantommuff" style="font-size: 2em; margin-left: 0.25em;">{entry.name}</span>
-    <hr/>{entry?.doc?.text?.split('\n').map((c:any) => (<p>{c}</p>)) ?? ''}
+    <hr/>{(entry?.doc?.text != null) && <Fragment set:html={md.render(entry.doc.text)}/>}
     <br/>
     {
     (vars.length > 0) && (

@@ -1,0 +1,18 @@
+{
+	"kind": "final class",
+	"name": "EventGameEvent",
+	"pkg": "funkin.backend.scripting.events.gameplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "event",
+			"type": "ChartEvent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

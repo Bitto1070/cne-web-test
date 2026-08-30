@@ -1,0 +1,664 @@
+{
+	"kind": "class",
+	"name": "StrumLine",
+	"pkg": "funkin.game",
+	"doc": {
+		"text": "Group of strums, that contains the strums and notes.\nUsed in PlayState.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "onHit",
+			"type": "FlxTypedSignal<NoteHitEvent->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Signal that triggers whenever a note is hit. Similar to onPlayerHit and onDadHit, except strumline specific.\nTo add a listener, do\n`strumLine.onHit.add(function(e:NoteHitEvent) {});`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onMiss",
+			"type": "FlxTypedSignal<NoteMissEvent->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Signal that triggers whenever a note is missed. Similar to onPlayerMiss, except strumline specific.\nTo add a listener, do\n`strumLine.onMiss.add(function(e:NoteMissEvent) {});`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onNoteUpdate",
+			"type": "FlxTypedSignal<NoteUpdateEvent->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Signal that triggers whenever a note is being updated. Similar to onNoteUpdate, except strumline specific.\nTo add a listener, do\n`strumLine.onNoteUpdate.add(function(e:NoteUpdateEvent) {});`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onNoteDelete",
+			"type": "FlxTypedSignal<SimpleNoteEvent->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Signal that triggers whenever a note is being deleted. Similar to onNoteDelete, except strumline specific.\nTo add a listener, do\n`strumLine.onNoteDelete.add(function(e:SimpleNoteEvent) {});`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characters",
+			"type": "Array<Character>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all of the characters \"attached\" to those strums.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cpu",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever this strumline is controlled by cpu or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "opponentSide",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever this strumline is from the opponent side or the player side.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "controls",
+			"type": "Controls",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Controls assigned to this strumline.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "ChartStrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Chart JSON data assigned to this StrumLine (Codename format)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostTapping",
+			"type": "Null<Bool>",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever Ghost Tapping is enabled.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:isVar"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "notes",
+			"type": "NoteGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Group of all of the notes in this strumline. Using `forEach` on this group will only loop through the first notes for performance reasons.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "altAnim",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever alt animation is enabled on this strumline.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animSuffix",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Which animation suffix on characters that should be used when hitting notes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultAnimSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The current animation suffix the strumline should use. Note that setting this will only take effect upon the alt. animation being reset.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumAnimPrefix",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "TODO: Write documentation about this being a variable that can help when making multi key",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vocals",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Vocals sound (Vocals.ogg). Used for individual vocals per strumline.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "extra",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Extra data that can be added to the strum line.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumScale",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The scale of the strums.\nIf called after generate, the strums wont be scaled.\nYou can only change it in the Charter.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "characters",
+					"type": "Array<Character>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "startingPos",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "strumScale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "cpu",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "opponentSide",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "controls",
+					"type": "Controls",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "vocalPrefix",
+					"type": "String",
+					"optional": true,
+					"def": "\"\""
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(characters:Array<Character>, startingPos:FlxPoint, strumScale:Float, cpu:Bool = false, opponentSide:Bool = true, ?controls:Controls, ?vocalPrefix:String = \"\") {\r\n\t\tsuper();\r\n\t\tthis.characters = characters;\r\n\t\tthis.startingPos = startingPos;\r\n\t\tthis.strumScale = strumScale;\r\n\t\tthis.cpu = cpu;\r\n\t\tthis.opponentSide = opponentSide;\r\n\t\tthis.controls = controls;\r\n\t\tthis.notes = new NoteGroup();\r\n\r\n\t\tvar v = Paths.voices(PlayState.SONG.meta.name, PlayState.difficulty, vocalPrefix);\r\n\t\tvocals = vocalPrefix != \"\" ? FlxG.sound.load(Options.streamedVocals ? Assets.getMusic(v) : v) : new FlxSound();\r\n\t\tvocals.persist = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generate",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "startTime",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function generate(strumLine:ChartStrumLine, ?startTime:Float) {\r\n\t\t// TODO: implement double generate call support if needed\r\n\r\n\t\tvar total = 0;\r\n\t\tif (strumLine.notes != null) for(note in strumLine.notes) {\r\n\t\t\tif (startTime != null && startTime > note.time)\r\n\t\t\t\tcontinue;\r\n\r\n\t\t\ttotal++;\r\n\r\n\t\t\tif (note.sLen > Conductor.stepCrochet * 0.75) {\r\n\t\t\t\tvar len:Float = note.sLen;\r\n\t\t\t\twhile(len > 10) {\r\n\t\t\t\t\ttotal++;\r\n\t\t\t\t\tlen -= Math.min(len, Conductor.stepCrochet);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tnotes.preallocate(total);\r\n\r\n\t\tvar il = 0;\r\n\r\n\t\tvar prev:Note = null;\r\n\r\n\t\tif (strumLine.notes != null) for(note in strumLine.notes) {\r\n\t\t\tif (startTime != null && startTime > note.time)\r\n\t\t\t\tcontinue;\r\n\r\n\t\t\tnotes.members[total-(il++)-1] = prev = new Note(this, note, false, prev);\r\n\r\n\t\t\tif (note.sLen > Conductor.stepCrochet * 0.75) {\r\n\t\t\t\tvar len:Float = note.sLen;\r\n\t\t\t\tvar curLen:Float = 0;\r\n\t\t\t\twhile(len > 10) {\r\n\t\t\t\t\tcurLen = Math.min(len, Conductor.stepCrochet);\r\n\t\t\t\t\tnotes.members[total-(il++)-1] = prev = new Note(this, note, true, curLen, note.sLen - len, prev);\r\n\t\t\t\t\tlen -= curLen;\r\n\r\n\t\t\t\t\tif (prev != null && prev.sustainParent != null)\r\n\t\t\t\t\t\tprev.sustainParent.tailCount++;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tnotes.sortNotes();\r\n\r\n\t\tvar scrollSpeed = strumLine.scrollSpeed;\r\n\t\tif(scrollSpeed == null) if (PlayState.instance != null) scrollSpeed = PlayState.instance.scrollSpeed;\r\n\t\tif(scrollSpeed == null) scrollSpeed = 1;\r\n\r\n\t\t// TODO: Make this work by accounting zoom and scroll speed changes  - Nex\r\n\t\t/*var limit = FlxG.height / 0.45;\r\n\t\tnotes.limit = limit / scrollSpeed;\r\n\t\t\tOR\r\n\t\tnotes.limit = Flags.DEFAULT_NOTE_MS_LIMIT / scrollSpeed;*/\r\n\t}",
+			"doc": {
+				"text": "Generates the notes for the strumline.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tnotes.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tsuper.draw();\r\n\t\tnotes.cameras = cameras;\r\n\t\tnotes.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateNotes",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateNotes() {\r\n\t\t__updateNote_songPos = Conductor.songPosition;\r\n\t\tif(__updateNote_event == null) __updateNote_event = PlayState.instance.__updateNote_event;\r\n\t\tnotes.forEach(updateNote);\r\n\t}",
+			"doc": {
+				"text": "Updates the notes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateNote",
+			"args": [
+				{
+					"name": "daNote",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateNote(daNote:Note) {\r\n\t\t__updateNote_strum = members[daNote.noteData];\r\n\t\tif (__updateNote_strum == null) return;\r\n\r\n\t\t__updateNote_event.recycle(daNote, FlxG.elapsed, __updateNote_strum);\r\n\t\tonNoteUpdate.dispatch(__updateNote_event);\r\n\t\tif (__updateNote_event.cancelled) return;\r\n\r\n\t\tif (__updateNote_event.__updateHitWindow) {\r\n\t\t\tvar hitWindow = Flags.USE_LEGACY_TIMING ? PlayState.instance.hitWindow : PlayState.instance.ratingManager.lastHitWindow;\r\n\t\t\tdaNote.canBeHit = (daNote.strumTime > __updateNote_songPos - (hitWindow * daNote.latePressWindow)\r\n\t\t\t\t&& daNote.strumTime < __updateNote_songPos + (hitWindow * daNote.earlyPressWindow));\r\n\r\n\t\t\tif (daNote.strumTime < __updateNote_songPos - hitWindow && !daNote.wasGoodHit)\r\n\t\t\t\tdaNote.tooLate = true;\r\n\t\t}\r\n\r\n\t\tif (cpu && __updateNote_event.__autoCPUHit && !daNote.avoid && !daNote.wasGoodHit && daNote.strumTime < __updateNote_songPos)\r\n\t\t\tPlayState.instance.goodNoteHit(this, daNote);\r\n\r\n\t\tif (daNote.wasGoodHit && daNote.isSustainNote && daNote.strumTime + daNote.sustainLength < __updateNote_songPos && !daNote.noSustainClip) {\r\n\t\t\tdeleteNote(daNote);\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tif (daNote.tooLate) {\r\n\t\t\tif (!cpu) PlayState.instance.noteMiss(this, daNote);\r\n\t\t\telse deleteNote(daNote);\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\r\n\t\tif (__updateNote_event.strum == null) return;\r\n\t\tif (__updateNote_event.__reposNote) __updateNote_event.strum.updateNotePosition(daNote);\r\n\r\n\t\tif (daNote.isSustainNote) {\r\n\t\t\tdaNote.updateSustain(__updateNote_event.strum);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Updates a note.\nThis updates the position, state, and handles the input.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateInput",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateInput(id:Int = 0) {\r\n\t\tupdateNotes();\r\n\r\n\t\tif (cpu) return;\r\n\r\n\t\tfinal membersLength = members.length;\r\n\r\n\t\tif (__pressed.length != membersLength) {\r\n\t\t\t__pressed.resize(membersLength);\r\n\t\t\t__justPressed.resize(membersLength);\r\n\t\t\t__justReleased.resize(membersLength);\r\n\t\t}\r\n\r\n\t\tif (__notePerStrum.length != membersLength)\r\n\t\t\t__notePerStrum = cast new haxe.ds.Vector(membersLength); // [for(_ in 0...members.length) null];\r\n\r\n\t\tfor (i in 0...membersLength) {\r\n\t\t\t__pressed[i] = members[i].__getPressed(this);\r\n\t\t\t__justPressed[i] = members[i].__getJustPressed(this);\r\n\t\t\t__justReleased[i] = members[i].__getJustReleased(this);\r\n\t\t}\r\n\r\n\t\tvar event = EventManager.get(InputSystemEvent).recycle(__pressed, __justPressed, __justReleased, this, id);\r\n\t\tif (PlayState.instance != null) PlayState.instance.gameAndCharsEvent(\"onInputUpdate\", event);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\t__pressed = CoolUtil.getDefault(event.pressed, []);\r\n\t\t__justPressed = CoolUtil.getDefault(event.justPressed, []);\r\n\t\t__justReleased = CoolUtil.getDefault(event.justReleased, []);\r\n\r\n\t\tif (__pressed.contains(true)) {\r\n\t\t\tif (__justPressed.contains(true)) {\r\n\t\t\t\tnotes.forEachAlive(__inputProcessJustPressed);\r\n\r\n\t\t\t\tfor (k => pr in __justPressed)\r\n\t\t\t\t{\r\n\t\t\t\t\tvar note = __notePerStrum[k];\r\n\r\n\t\t\t\t\tif (note != null) {\r\n\t\t\t\t\t\tPlayState.instance.goodNoteHit(this, note);\r\n\t\t\t\t\t\t__notePerStrum[k] = null;\r\n\t\t\t\t\t} else if (pr && !ghostTapping)\r\n\t\t\t\t\t\tPlayState.instance.noteMiss(this, null, k, ID);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tfor (c in characters)\r\n\t\t\t\tif (c.lastAnimContext != DANCE)\r\n\t\t\t\t\tc.__lockAnimThisFrame = true;\r\n\r\n\t\t\tnotes.forEachAlive(__inputProcessPressed);\r\n\t\t}\r\n\r\n\t\tfor (i => s in members) s.updatePlayerInput(__pressed[i], __justPressed[i], __justReleased[i]);\r\n\r\n\t\tPlayState.instance.gameAndCharsEvent(\"onPostInputUpdate\", event);\r\n\t}",
+			"doc": {
+				"text": "Updates the input for the strumline, and handles the input.",
+				"params": {
+					"id": "The ID of the strum"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addHealth",
+			"args": [
+				{
+					"name": "health",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function addHealth(health:Float)\r\n\t\tPlayState.instance.health += health * (opponentSide ? -1 : 1);",
+			"doc": {
+				"text": "Adds/removes health to/from the strumline.\nIf the strumline is an opponent strumline, it will subtract the health, otherwise it will add the health.",
+				"params": {
+					"health": "The amount of health to add/remove"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generateStrums",
+			"args": [
+				{
+					"name": "amount",
+					"type": "Int",
+					"optional": false,
+					"def": "-1"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function generateStrums(amount:Int = -1) {\r\n\t\tif(amount == -1) amount = Flags.DEFAULT_STRUM_AMOUNT;\r\n\t\tfor (i in 0...amount)\r\n\t\t\tadd(createStrum(i));\r\n\t}",
+			"doc": {
+				"text": "Generates strums, and adds them to the strumline.",
+				"params": {
+					"amount": "The amount of strums to generate (-1 for the default amount)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createStrum",
+			"args": [
+				{
+					"name": "i",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animPrefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "spritePath",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "playIntroAnimation",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createStrum(i:Int, ?animPrefix:String, ?spritePath:String, ?playIntroAnimation:Bool) {\r\n\t\tif (animPrefix == null)\r\n\t\t\tanimPrefix = strumAnimPrefix[i % strumAnimPrefix.length];\r\n\t\tvar babyArrow:Strum = new Strum(startingPos.x + (Note.swagWidth * strumScale * (data.strumSpacing != null ? data.strumSpacing : 1) * i), startingPos.y + (Note.swagWidth*0.5) - (Note.swagWidth * strumScale * 0.5));\r\n\t\tbabyArrow.ID = i;\r\n\t\tbabyArrow.strumLine = this;\r\n\r\n\t\tif(data.scrollSpeed != null)\r\n\t\t\tbabyArrow.scrollSpeed = data.scrollSpeed;\r\n\r\n\t\tvar event = EventManager.get(StrumCreationEvent).recycle(babyArrow, PlayState.instance.strumLines.members.indexOf(this), i, animPrefix);\r\n\t\tevent.__doAnimation = playIntroAnimation == null ? (!MusicBeatState.skipTransIn && (PlayState.instance != null ? PlayState.instance.introLength > 0 : true)) : playIntroAnimation;\r\n\t\tif (spritePath != null) event.sprite = spritePath;\r\n\t\tif (PlayState.instance != null) event = PlayState.instance.gameAndCharsEvent(\"onStrumCreation\", event);\r\n\r\n\t\tif (!event.cancelled) {\r\n\t\t\tbabyArrow.frames = Paths.getFrames(event.sprite);\r\n\t\t\tbabyArrow.animation.addByPrefix('green', 'arrowUP');\r\n\t\t\tbabyArrow.animation.addByPrefix('blue', 'arrowDOWN');\r\n\t\t\tbabyArrow.animation.addByPrefix('purple', 'arrowLEFT');\r\n\t\t\tbabyArrow.animation.addByPrefix('red', 'arrowRIGHT');\r\n\r\n\t\t\tbabyArrow.antialiasing = true;\r\n\t\t\tbabyArrow.setGraphicSize(Std.int((babyArrow.width * Flags.DEFAULT_NOTE_SCALE) * strumScale));\r\n\r\n\t\t\tbabyArrow.animation.addByPrefix('static', 'arrow${event.animPrefix.toUpperCase()}');\r\n\t\t\tbabyArrow.animation.addByPrefix('pressed', '${event.animPrefix} press', 24, false);\r\n\t\t\tbabyArrow.animation.addByPrefix('confirm', '${event.animPrefix} confirm', 24, false);\r\n\t\t}\r\n\r\n\t\tbabyArrow.cpu = cpu;\r\n\t\tbabyArrow.updateHitbox();\r\n\t\tbabyArrow.scrollFactor.set();\r\n\r\n\t\tif (event.__doAnimation)\r\n\t\t{\r\n\t\t\tbabyArrow.y -= 10;\r\n\t\t\tbabyArrow.alpha = 0;\r\n\t\t\tFlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i * (4 / (data.keyCount != null ? data.keyCount : 4)))});\r\n\t\t}\r\n\t\tbabyArrow.playAnim('static');\r\n\r\n\t\tinsert(i, babyArrow);\r\n\r\n\t\tif (PlayState.instance != null) PlayState.instance.gameAndCharsEvent(\"onPostStrumCreation\", event);\r\n\r\n\t\treturn babyArrow;\r\n\t}",
+			"doc": {
+				"text": "Creates a strum and returns the created strum (needs to be added manually).",
+				"params": {
+					"i": "Index of the strum",
+					"animPrefix": "(Optional) Animation prefix (`left` = `arrowLEFT`, `left press`, `left confirm`).",
+					"spritePath": "(Optional) The sprite's graphic path if you don't want the default one.",
+					"playIntroAnimation": "(Optional) Whenever the intro animation should be played, by default might be `true` under certain conditions."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteNote",
+			"args": [
+				{
+					"name": "note",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function deleteNote(note:Note) {\r\n\t\tif (note == null) return;\r\n\t\tvar event:SimpleNoteEvent = EventManager.get(SimpleNoteEvent).recycle(note);\r\n\t\tonNoteDelete.dispatch(event);\r\n\t\tif (!event.cancelled) {\r\n\t\t\tif (note.isSustainNote && note.sustainParent != null && note.sustainParent.tailCount > 0)\r\n\t\t\t\tnote.sustainParent.tailCount--;\r\n\t\t\tnote.kill();\r\n\t\t\tnotes.remove(note, true);\r\n\t\t\tnote.destroy();\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Deletes a note from this strumline.",
+				"params": {
+					"note": "Note to delete"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "calculateStartingXPos",
+			"args": [
+				{
+					"name": "hudXRatio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spacing",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keyCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function calculateStartingXPos(hudXRatio:Float, scale:Float, spacing:Float, keyCount:Int) {\r\n\t\treturn (FlxG.width * hudXRatio) - ((Note.swagWidth * scale * ((keyCount/2)-0.5) * spacing) + Note.swagWidth * 0.5 * scale);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "calculateStartingXPosFromInitialWidth",
+			"args": [
+				{
+					"name": "hudXRatio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spacing",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keyCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function calculateStartingXPosFromInitialWidth(hudXRatio:Float, scale:Float, spacing:Float, keyCount:Int) {\r\n\t\treturn (FlxG.initialWidth * hudXRatio) - ((Note.swagWidth * scale * ((keyCount/2)-0.5) * spacing) + Note.swagWidth * 0.5 * scale);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

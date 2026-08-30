@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "CharterGridSeperatorBase",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "lastConductorSprY",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastCameraZoom",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function draw() {\r\n\r\n\t\t//should only need to recalculate once per frame and will be shared across each instance\r\n\t\trecalculateBeats();\r\n\r\n\t\tdrawTimeSignatureChangeGaps();\r\n\r\n\t\tif (Options.charterShowBeats) drawBeats();\r\n\t\tif (Options.charterShowSections) drawMeasures();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

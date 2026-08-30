@@ -1,0 +1,183 @@
+{
+	"kind": "class",
+	"name": "SliderOption",
+	"pkg": "funkin.options.type",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "changedCallback",
+			"type": "Float->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "min",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "max",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "currentValue",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "optionName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "slider",
+			"type": "Slider",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dynamicWidth",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "min",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "max",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "segments",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "optionName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "barWidth",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "-1"
+				},
+				{
+					"name": "changedCallback",
+					"type": "Float->Void",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "parent",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(text:String, desc:String, min:Float, max:Float, step:Float = 1, ?segments:Int, ?optionName:String, barWidth = -1,\r\n\t\t?changedCallback:Float->Void = null, ?parent:Dynamic)\r\n\t{\r\n\t\tthis.changedCallback = changedCallback;\r\n\t\tthis.min = min;\r\n\t\tthis.max = max;\r\n\t\tthis.step = step;\r\n\t\tthis.optionName = optionName;\r\n\t\tthis.parent = parent = parent != null ? parent : Options;\r\n\r\n\t\tif (Reflect.field(parent, optionName) != null) currentValue = Reflect.field(parent, optionName);\r\n\r\n\t\tslider = new Slider(12, 0, getValue(), (dynamicWidth = barWidth < 0) ? 600 : barWidth, segments);\r\n\t\tslider.scale.set(0.75, 0.75);\r\n\t\tslider.updateHitbox();\r\n\r\n\t\tsuper(text, desc);\r\n\t\tadd(slider);\r\n\t\tslider.y = Math.floor(__text.y + (__text.height - slider.height) * 0.5 + 2);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeValue",
+			"args": [
+				{
+					"name": "change",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeValue(change:Float):Void {\r\n\t\tif (locked) return;\r\n\t\tif (currentValue == (currentValue = FlxMath.bound(currentValue + change * step, min, max))) return;\r\n\r\n\t\tReflect.setField(parent, optionName, currentValue);\r\n\t\tif (changedCallback != null) changedCallback(currentValue);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		}
+	]
+}

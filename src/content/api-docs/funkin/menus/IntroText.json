@@ -1,0 +1,47 @@
+{
+	"kind": "class",
+	"name": "IntroText",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "lines",
+			"type": "Array<OneOfTwo<String, TitleStateImage>>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "lines",
+					"type": "Array<OneOfTwo<String, TitleStateImage>>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?lines:Array<OneOfTwo<String, TitleStateImage>>) {\r\n\t\tthis.lines = lines;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "show",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function show() {\r\n\t\tvar state = cast(FlxG.state, TitleState);\r\n\t\tstate.deleteCoolText();\r\n\t\tif (lines == null) return;\r\n\t\tfor(e in lines) {\r\n\t\t\tif (e is String) {\r\n\t\t\t\tvar text = cast(e, String);\r\n\t\t\t\tfor(k=>e in state.curWacky) text = text.replace('{introText${k+1}}', e);\r\n\t\t\t\tstate.addMoreText(text);\r\n\t\t\t} else if (e is Dynamic) {\r\n\t\t\t\tvar image:TitleStateImage = e;\r\n\t\t\t\tif (image.path == null) continue;\r\n\r\n\t\t\t\tvar scale:Float = image.scale.getDefault(1);\r\n\r\n\t\t\t\tvar yPos:Float = 200;\r\n\t\t\t\tif(state.textGroup.members.length > 0) {\r\n\t\t\t\t\tvar lastLine:FlxSprite = cast state.textGroup.members[state.textGroup.members.length-1];\r\n\t\t\t\t\tyPos = lastLine.y + lastLine.height + 10;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tvar sprite = new FlxSprite(0, yPos).loadAnimatedGraphic(Paths.image(image.path));\r\n\t\t\t\tsprite.flipX = image.flipX.getDefault(false);\r\n\t\t\t\tsprite.flipY = image.flipY.getDefault(false);\r\n\t\t\t\tsprite.scale.set(scale, scale);\r\n\t\t\t\tsprite.updateHitbox();\r\n\t\t\t\tsprite.screenCenter(X);\r\n\t\t\t\tsprite.antialiasing = true;\r\n\t\t\t\tstate.textGroup.add(sprite);\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"kind": "class",
+	"name": "OptimizedBitmapData",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [
+		"@:deprecated(\"Use openfl.display.BitmapData.toHardware instead.\")"
+	],
+	"fields": []
+}

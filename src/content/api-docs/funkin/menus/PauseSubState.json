@@ -1,0 +1,80 @@
+{
+	"kind": "class",
+	"name": "PauseSubState",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pauseScript",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectCall",
+			"type": "NameEvent->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "game",
+			"type": "PlayState",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "items",
+					"type": "Array<String>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "selectCall",
+					"type": "NameEvent->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?items:Array<String>, ?selectCall:NameEvent->Void) {\r\n\t\tsuper();\r\n\t\tmenuItems = items != null ? items : Flags.DEFAULT_PAUSE_ITEMS.copy();\r\n\t\tthis.selectCall = selectCall;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "selectOption",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function selectOption() {\r\n\t\tvar event = EventManager.get(NameEvent).recycle(menuItems[curSelected]);\r\n\t\tif (selectCall != null) selectCall(event);\r\n\t\tpauseScript.call(\"onSelectOption\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tswitch (event.name)\r\n\t\t{\r\n\t\t\tcase \"Resume\":\r\n\t\t\t\tclose();\r\n\t\t\tcase \"Restart Song\":\r\n\t\t\t\tparentDisabler.reset();\r\n\t\t\t\tgame.registerSmoothTransition();\r\n\t\t\t\tFlxG.resetState();\r\n\t\t\tcase \"Change Controls\":\r\n\t\t\t\tpersistentDraw = false;\r\n\t\t\t\topenSubState(new KeybindsOptions());\r\n\t\t\tcase \"Change Options\":\r\n\t\t\t\tFlxG.switchState(new OptionsMenu((_) -> FlxG.switchState(new PlayState())));\r\n\t\t\tcase \"Exit to charter\":\r\n\t\t\t\tFlxG.switchState(new Charter(PlayState.SONG.meta.name, PlayState.difficulty, PlayState.variation, false));\r\n\t\t\tcase \"Exit to menu\":\r\n\t\t\t\tif (PlayState.chartingMode && Charter.undos.unsaved)\r\n\t\t\t\t\tgame.saveWarn(false);\r\n\t\t\t\telse {\r\n\t\t\t\t\tif (Charter.instance != null) Charter.instance.__clearStatics();\r\n\r\n\t\t\t\t\t// prevents certain notes to disappear early when exiting  - Nex\r\n\t\t\t\t\tgame.strumLines.forEachAlive(function(grp) grp.notes.__forcedSongPos = Conductor.songPosition);\r\n\r\n\t\t\t\t\tCoolUtil.playMenuSong();\r\n\t\t\t\t\tFlxG.switchState(PlayState.isStoryMode ? new StoryMenuState() : new FreeplayState());\r\n\t\t\t\t}\r\n\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

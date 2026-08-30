@@ -1,0 +1,193 @@
+{
+	"kind": "final class",
+	"name": "WindowUtils",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "title",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "prefix",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "suffix",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "preventClosing",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onClosing",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetClosing",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function resetClosing() __triedClosing = false;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:dox(hide) public static inline function init() {\r\n\t\tLib.application.window.onClose.add(function () {\r\n\t\t\tif (preventClosing && !__triedClosing) {\r\n\t\t\t\tLib.application.window.onClose.cancel();\r\n\t\t\t\t__triedClosing = true;\r\n\t\t\t}\r\n\t\t\tif (onClosing != null) onClosing();\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "resetTitle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function resetTitle() {\r\n\t\tresetAffixes(false);\r\n\t\ttitle = Flags.TITLE;\r\n\t}",
+			"doc": {
+				"text": "Resets the window title to the application name and resets the prefix and suffix.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetAffixes",
+			"args": [
+				{
+					"name": "update",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function resetAffixes(update = true) {\r\n\t\tprefix = suffix = \"\";\r\n\t\tif (update) updateTitle();\r\n\t}",
+			"doc": {
+				"text": "Resets the prefix and suffix.",
+				"params": {
+					"update": "Should it update window title."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setWindow",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "image",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function setWindow(?title:String, ?image:String)\r\n\t{\r\n\t\t// TODO: Implement ICON SIZES in Flags.\r\n\t\tWindowUtils.title = title != null ? title : (Flags.WINDOW_TITLE_USE_MOD_NAME ? Flags.MOD_NAME : Flags.TITLE);\r\n\r\n\t\tvar iconPath = image != null ? image : Flags.MOD_ICON;\r\n\t\tif (Assets.exists(Paths.image(iconPath))) Lib.application.window.setIcon(lime.graphics.Image.fromBytes(Assets.getBytes(Paths.image(iconPath))));\r\n\t}",
+			"doc": {
+				"text": "Sets the window title and icon.",
+				"params": {
+					"title": "The title to set.",
+					"image": "The image to set as the icon."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateTitle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function updateTitle()\r\n\t\tLib.application.window.title = '$prefix$title$suffix';",
+			"doc": {
+				"text": "Updates the window title to have the current title and prefix/suffix.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "endfix",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "winTitle",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		}
+	]
+}

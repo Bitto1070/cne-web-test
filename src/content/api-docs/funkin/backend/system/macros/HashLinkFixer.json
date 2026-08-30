@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "HashLinkFixer",
+	"pkg": "funkin.backend.system.macros",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "build",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function build():Array<Field> {\r\n\t\tfinal fields = Context.getBuildFields(), clRef = Context.getLocalClass();\r\n\r\n\t\tif (clRef == null) return fields;\r\n\t\tfinal cl = clRef.get();\r\n\r\n\t\tif (\r\n\t\t\tcl.isAbstract || cl.isExtern || cl.isInterface || cl.params.length > 0 ||\r\n\t\t\tcl.name.endsWith(\"_Impl_\") || cl.name.endsWith(\"_HSX\") || cl.name.endsWith(\"_HSC\")\r\n\t\t) return fields;\r\n\r\n\t\tfinal pos = Context.currentPos();\r\n\t\tfor (i in 0...fields.length) {\r\n\t\t\tfinal f = fields[i];\r\n\t\t\tif (f == null || f.name == 'new') continue;\r\n\r\n\t\t\tswitch (f.kind) {\r\n\t\t\t\tcase FFun(func):\r\n\t\t\t\t\tif (func == null) continue;\r\n\r\n\t\t\t\t\tvar hlNativeMeta = null;\r\n\t\t\t\t\tfinal cleanMeta = f.meta.filter((m) -> {\r\n\t\t\t\t\t\tif (m.name != ':hlNative') return true;\r\n\t\t\t\t\t\telse {\r\n\t\t\t\t\t\t\thlNativeMeta = m;\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t});\r\n\t\t\t\t\tif (hlNativeMeta == null) continue;\r\n\r\n\t\t\t\t\tswitch (hlNativeMeta.params) {\r\n\t\t\t\t\t\tcase []: hlNativeMeta.params = [macro \"std\", macro $v{f.name}];\r\n\t\t\t\t\t\tcase [_.expr => EConst(CString(name))]: hlNativeMeta.params = [macro \"std\", macro $v{name}];\r\n\t\t\t\t\t\tcase [_.expr => EConst(CFloat(version))]:\r\n\t\t\t\t\t\t\tfinal curVersion = Context.definedValue(\"hl_ver\");\r\n\t\t\t\t\t\t\tif (curVersion != null && version > curVersion) {\r\n\t\t\t\t\t\t\t\tif (f.meta.filter((m) -> return m.name == \":noExpr\").length > 0)\r\n\t\t\t\t\t\t\t\t\tContext.error(\"Missing function body\", hlNativeMeta.pos);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\thlNativeMeta.params = [macro \"std\", macro $v{f.name}];\r\n\t\t\t\t\t\tdefault:\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tfinal name = 'hlf_${f.name}';\r\n\t\t\t\t\tfields.push({\r\n\t\t\t\t\t\tname: name,\r\n\t\t\t\t\t\tpos: pos,\r\n\t\t\t\t\t\tkind: FFun({ret: func.ret, params: func.params, expr: func.expr, args: func.args}),\r\n\t\t\t\t\t\taccess: f.access.filter((a) -> return a != APublic && a != APrivate).concat([APrivate]),\r\n\t\t\t\t\t\tmeta: [hlNativeMeta]\r\n\t\t\t\t\t});\r\n\r\n\t\t\t\t\tfinal args = func.args == null ? [] : [for (a in func.args) macro $i{a.name}];\r\n\r\n\t\t\t\t\tf.meta = cleanMeta;\r\n\t\t\t\t\tfunc.expr = args.length == 0 ? macro $i{name}() : macro $i{name}($a{args});\r\n\t\t\t\t\tif (func.ret != null && !func.ret.match(TPath({name: 'Void'})))\r\n\t\t\t\t\t\tfunc.expr = macro return ${func.expr};\r\n\t\t\t\tdefault:\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

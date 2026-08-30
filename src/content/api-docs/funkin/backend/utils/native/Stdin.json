@@ -1,0 +1,86 @@
+{
+	"kind": "class",
+	"name": "Stdin",
+	"pkg": "funkin.backend.utils.native",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "p",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(p:Dynamic) {\r\n\t\tthis.p = p;\r\n\t\tbuf = haxe.io.Bytes.alloc(1);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function close() {\r\n\t\tsuper.close();\r\n\t\tNativeProcess.process_stdin_close(p);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "writeByte",
+			"args": [
+				{
+					"name": "c",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function writeByte(c) {\r\n\t\tbuf.set(0, c);\r\n\t\twriteBytes(buf, 0, 1);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "writeBytes",
+			"args": [
+				{
+					"name": "buf",
+					"type": "haxe.io.Bytes",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "pos",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "len",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function writeBytes(buf:haxe.io.Bytes, pos:Int, len:Int):Int {\r\n\t\ttry {\r\n\t\t\treturn NativeProcess.process_stdin_write(p, buf.getData(), pos, len);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tthrow new haxe.io.Eof();\r\n\t\t}\r\n\t\treturn 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

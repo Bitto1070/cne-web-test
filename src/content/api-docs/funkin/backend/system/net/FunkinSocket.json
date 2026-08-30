@@ -1,0 +1,252 @@
+{
+	"kind": "class",
+	"name": "FunkinSocket",
+	"pkg": "funkin.backend.system.net",
+	"doc": null,
+	"meta": [
+		"@:keep"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "socket",
+			"type": "SysSocket",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "metrics",
+			"type": "Metrics",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "FAST_SEND",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "BLOCKING",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "host",
+			"type": "Host",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "port",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "_host",
+					"type": "String",
+					"optional": true,
+					"def": "\"127.0.0.1\""
+				},
+				{
+					"name": "_port",
+					"type": "Int",
+					"optional": true,
+					"def": "5000"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?_host:String = \"127.0.0.1\", ?_port:Int = 5000) {\r\n\t\tFAST_SEND = true;\r\n\t\tBLOCKING = false;\r\n\t\tthis.host = new Host(_host);\r\n\t\tthis.port = _port;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "readAll",
+			"args": [],
+			"ret": "Null<Bytes>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// Reading Area\r\n\tpublic function readAll():Null<Bytes> {\r\n\t\ttry {\r\n\t\t\tvar bytes = this.socket.input.readAll();\r\n\t\t\tif (bytes == null) return null;\r\n\t\t\tmetrics.updateBytesReceived(bytes.length);\r\n\t\t\treturn bytes;\r\n\t\t} catch(e) { }\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "readLine",
+			"args": [],
+			"ret": "Null<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function readLine():Null<String> {\r\n\t\ttry {\r\n\t\t\tvar bytes = this.socket.input.readLine();\r\n\t\t\tif (bytes == null) return null;\r\n\t\t\tmetrics.updateBytesReceived(bytes.length);\r\n\t\t\treturn bytes;\r\n\t\t} catch(e) { }\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "read",
+			"args": [
+				{
+					"name": "nBytes",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Null<Bytes>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function read(nBytes:Int):Null<Bytes> {\r\n\t\ttry {\r\n\t\t\tvar bytes = this.socket.input.read(nBytes);\r\n\t\t\tif (bytes == null) return null;\r\n\t\t\tmetrics.updateBytesReceived(bytes.length);\r\n\t\t\treturn bytes;\r\n\t\t} catch(e) { }\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "readBytes",
+			"args": [
+				{
+					"name": "bytes",
+					"type": "Bytes",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function readBytes(bytes:Bytes):Int {\r\n\t\ttry {\r\n\t\t\tvar length = this.socket.input.readBytes(bytes, 0, bytes.length);\r\n\t\t\tmetrics.updateBytesReceived(length);\r\n\t\t\treturn length;\r\n\t\t} catch(e) { }\r\n\t\treturn 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepare",
+			"args": [
+				{
+					"name": "nbytes",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// Writing Area\r\n\tpublic function prepare(nbytes:Int):Void { socket.output.prepare(nbytes); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "write",
+			"args": [
+				{
+					"name": "bytes",
+					"type": "Bytes",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function write(bytes:Bytes):Bool {\r\n\t\ttry {\r\n\t\t\tthis.socket.output.write(bytes);\r\n\t\t\tmetrics.updateBytesSent(bytes.length);\r\n\t\t\treturn true;\r\n\t\t} catch (e) { }\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "writeString",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function writeString(str:String):Bool {\r\n\t\ttry {\r\n\t\t\tthis.socket.output.writeString(str);\r\n\t\t\tmetrics.updateBytesSent(Bytes.ofString(str).length);\r\n\t\t\treturn true;\r\n\t\t} catch(e) { }\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "bind",
+			"args": [
+				{
+					"name": "expectingConnections",
+					"type": "Int",
+					"optional": true,
+					"def": "1"
+				}
+			],
+			"ret": "FunkinSocket",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function bind(?expectingConnections:Int = 1):FunkinSocket {\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.logText('[FunkinSocket] ', BLUE),\r\n\t\t\tLogs.logText('Binding to ', NONE), Logs.logText(host.toString(), YELLOW), Logs.logText(':', NONE), Logs.logText(Std.string(port), CYAN),\r\n\t\t]);\r\n\t\tsocket.bind(host, port);\r\n\t\tsocket.listen(expectingConnections);\r\n\t\treturn this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "connect",
+			"args": [],
+			"ret": "FunkinSocket",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function connect():FunkinSocket {\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.logText('[FunkinSocket] ', BLUE),\r\n\t\t\tLogs.logText('Connecting to ', NONE), Logs.logText(host.toString(), YELLOW), Logs.logText(':', NONE), Logs.logText(Std.string(port), CYAN),\r\n\t\t]);\r\n\t\tsocket.connect(host, port);\r\n\t\treturn this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function close() {\r\n\t\ttry {\r\n\t\t\tif (socket != null) socket.close();\r\n\t\t\tLogs.traceColored([\r\n\t\t\t\tLogs.logText('[FunkinSocket] ', BLUE),\r\n\t\t\t\tLogs.logText('Closing socket from ', NONE), Logs.logText(host.toString(), YELLOW), Logs.logText(':', NONE), Logs.logText(Std.string(port), CYAN),\r\n\t\t\t]);\r\n\t\t} catch(e) {\r\n\t\t\tLogs.traceColored([\r\n\t\t\t\tLogs.logText('[FunkinSocket] ', BLUE),\r\n\t\t\t\tLogs.logText('Failed to close socket: ${e}', NONE),\r\n\t\t\t]);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function destroy() { close(); }",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

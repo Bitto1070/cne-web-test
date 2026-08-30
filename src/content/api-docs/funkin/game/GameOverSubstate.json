@@ -1,0 +1,173 @@
+{
+	"kind": "class",
+	"name": "GameOverSubstate",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "characterName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameOverSong",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameOverSongBPM",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lossSFXName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "retrySFX",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "player",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameoverScript",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "game",
+			"type": "PlayState",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "GameOverSubstate",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lossSFX",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "character",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "player",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "gameOverSong",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "lossSFX",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "retrySFX",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, ?character:String, player:Bool = true, ?gameOverSong:String, ?lossSFX:String, ?retrySFX:String)\r\n\t{\r\n\t\tsuper();\r\n\t\tthis.x = x;\r\n\t\tthis.y = y;\r\n\t\tthis.player = player;\r\n\t\tthis.characterName = character != null ? character : Flags.DEFAULT_GAMEOVER_CHARACTER;\r\n\t\tthis.gameOverSong = gameOverSong != null ? gameOverSong : Flags.DEFAULT_GAMEOVER_MUSIC;\r\n\t\tthis.lossSFXName = lossSFX != null ? lossSFX : Flags.DEFAULT_GAMEOVERSFX_SOUND;\r\n\t\tthis.retrySFX = retrySFX != null ? retrySFX : Flags.DEFAULT_GAMEOVEREND_SOUND;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create()\r\n\t{\r\n\t\tsuper.create();\r\n\r\n\t\tif (FlxG.sound.music != null)\r\n\t\t\tFlxG.sound.music.stop();\r\n\r\n\t\tgameoverScript = Script.create(Paths.script(script));\r\n\t\tgameoverScript.setParent(instance = this);\r\n\t\tgameoverScript.load();\r\n\r\n\t\tvar event = EventManager.get(GameOverCreationEvent).recycle(x, y, characterName, player, gameOverSong, gameOverSongBPM, lossSFXName, retrySFX);\r\n\t\tgameoverScript.call('create', [event]);\r\n\r\n\t\tx = event.x;\r\n\t\ty = event.y;\r\n\t\tcharacterName = event.character;\r\n\t\tplayer = event.player;\r\n\t\tgameOverSong = event.gameOverSong;\r\n\t\tgameOverSongBPM = event.bpm;\r\n\t\tlossSFXName = event.lossSFX;\r\n\t\tretrySFX = event.retrySFX;\r\n\r\n\t\tif (__cancelDefault = event.cancelled)\r\n\t\t\treturn;\r\n\r\n\t\tcharacter = new Character(x, y, characterName, player);\r\n\t\tcharacter.danceOnBeat = false;\r\n\t\tcharacter.playAnim('firstDeath');\r\n\t\tadd(character);\r\n\r\n\t\tvar camPos = character.getCameraPosition();\r\n\t\tcamFollow = new FlxObject(camPos.x, camPos.y, 1, 1);\r\n\t\tadd(camFollow);\r\n\t\tFlxG.camera.target = camFollow;\r\n\r\n\t\tlossSFX = FlxG.sound.play(Paths.sound(lossSFXName));\r\n\t\tConductor.changeBPM(gameOverSongBPM);\r\n\t\tcancelConductorUpdate = true;\r\n\r\n\t\tDiscordUtil.call(\"onGameOver\", []);\r\n\t\tgameoverScript.call(\"postCreate\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,196 @@
+{
+	"kind": "class",
+	"name": "FileAttributeWrapper",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Currently only for Windows, but planned to work on other platforms later.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getValue",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function getValue():Int\r\n\t{\r\n\t\treturn flags;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "flags",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(flags:Int)\r\n\t{\r\n\t\tthis.flags = flags == -1 ? 0 : flags;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function toString():String\r\n\t{\r\n\t\treturn FlxStringUtil.getDebugString([\r\n\t\t\tfor (field in Reflect.fields(this))\r\n\t\t\t{\r\n\t\t\t\tLabelValuePair.weak(field, Reflect.getProperty(this, field));\r\n\t\t\t}\r\n\t\t]);\r\n\t}",
+			"doc": {
+				"text": "Returns a string representation of the attributes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isArchived",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isHidden",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isNormal",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isNotContentIndexed",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isOffline",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isReadOnly",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isSystem",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isTemporary",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isCompressed",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isDevice",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isDirectory",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isEncrypted",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isReparsePoint",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isSparseFile",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isNothing",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

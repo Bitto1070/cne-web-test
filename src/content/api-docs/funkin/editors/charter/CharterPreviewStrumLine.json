@@ -1,0 +1,153 @@
+{
+	"kind": "class",
+	"name": "CharterPreviewStrumLine",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spacing",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keyCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scrollSpeed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, scale:Float, spacing:Float, keyCount:Int, scrollSpeed:Float){\r\n\t\tsuper();\r\n\t\tupdatePos(x, y, scale, spacing, keyCount, scrollSpeed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generateStrums",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spacing",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keyCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scrollSpeed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function generateStrums(x:Float, y:Float, scale:Float, spacing:Float, keyCount:Int, scrollSpeed:Float){\r\n\t\tfor (member in members){\r\n\t\t\tmember.destroy();\r\n\t\t}\r\n\t\tclear();\r\n\t\t\t\r\n\t\tvar strumAnimPrefix = [\"left\", \"down\", \"up\", \"right\"];\r\n\t\tfor (i in 0...keyCount){\r\n\t\t\tvar strum = new FlxSprite();\r\n\t\t\tstrum.frames = Paths.getFrames(\"game/notes/default\");\r\n\t\t\tstrum.setGraphicSize(Std.int((strum.width * Flags.DEFAULT_NOTE_SCALE) * scale));\r\n\t\t\tstrum.updateHitbox();\r\n\r\n\t\t\tvar animPrefix = strumAnimPrefix[i % 4];\r\n\t\t\tstrum.animation.addByPrefix('static', 'arrow${animPrefix.toUpperCase()}');\r\n\t\t\tstrum.animation.play('static');\r\n\t\t\tstrum.alpha = 0.4;\r\n\t\t\tadd(strum);\r\n\t\t}\r\n\r\n\t\tnote = new FlxSprite();\r\n\t\tnote.frames = Paths.getFrames(\"game/notes/default\");\r\n\t\tnote.setGraphicSize(Std.int((note.width * Flags.DEFAULT_NOTE_SCALE) * scale));\r\n\t\tnote.updateHitbox();\r\n\t\tnote.animation.addByPrefix('purple', 'purple0');\r\n\t\tnote.animation.play('purple');\r\n\t\tnote.alpha = 0.4;\r\n\t\tadd(note);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spacing",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keyCount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scrollSpeed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updatePos(x:Float, y:Float, scale:Float, spacing:Float, keyCount:Int, scrollSpeed:Float){\r\n\t\tif (members.length-1 != keyCount) //strumline + note\r\n\t\t\tgenerateStrums(x, y, scale, spacing, keyCount, scrollSpeed);\r\n\r\n\t\tfor (i in 0...keyCount){\r\n\t\t\tvar strum = members[i];\r\n\r\n\t\t\tstrum.x = CoolUtil.fpsLerp(strum.x, x + (Note.swagWidth * scale * spacing * i), 0.2);\r\n\t\t\tstrum.y = CoolUtil.fpsLerp(strum.y, y + (Note.swagWidth*0.5) - (Note.swagWidth * scale * 0.5), 0.2);\r\n\t\t\tstrum.scale.x = strum.scale.y = CoolUtil.fpsLerp(strum.scale.x, Flags.DEFAULT_NOTE_SCALE * scale, 0.2);\r\n\t\t\tstrum.updateHitbox();\r\n\t\t}\r\n\r\n\r\n\t\tscroll = CoolUtil.fpsLerp(scroll, scrollSpeed, 0.2);\r\n\t\tnoteTime -= FlxG.elapsed * scroll * 1000 * 0.45;\r\n\t\tif (noteTime <= 0.0)\r\n\t\t\tnoteTime = FlxG.initialHeight;\r\n\r\n\t\tnote.x = members[0].x;\r\n\t\tnote.y = members[0].y + noteTime;\r\n\t\tnote.scale.x = note.scale.y = members[0].scale.x;\r\n\t\tnote.updateHitbox();\r\n\t\tnote.alpha = CoolUtil.fpsLerp(note.alpha, scrollSpeed == 0.0 ? 0.0 : 0.4, 0.2);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,219 @@
+{
+	"kind": "class",
+	"name": "KeybindsOptions",
+	"pkg": "funkin.options.keybinds",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "KeybindsOptions",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "translate",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function translate(id:String, ?args:Array<Dynamic>)\r\n\t\treturn TU.translate(id, args);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "settingCam",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "p2Selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSelected",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canSelect",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "alphabets",
+			"type": "FlxTypedGroup<KeybindSetting>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bg",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "coloredBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteColors",
+			"type": "Array<FlxColor>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camFollow",
+			"type": "FlxObject",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "categories",
+			"type": "Array<ControlsCategory>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultCategories",
+			"type": "Array<ControlsCategory>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isSubState",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t\tinstance = this;\r\n\r\n\t\tisSubState = FlxG.state != this;\r\n\t\talphabets = new FlxTypedGroup<KeybindSetting>();\r\n\t\tbg = new FlxSprite(-80).loadAnimatedGraphic(Paths.image(isSubState ? 'menus/menuTransparent' : 'menus/menuBGBlue'));\r\n\t\tcoloredBG = new FlxSprite(-80).loadAnimatedGraphic(Paths.image('menus/menuDesat'));\r\n\t\tfor(bg in [bg, coloredBG]) {\r\n\t\t\tbg.scrollFactor.set();\r\n\t\t\tbg.scale.set(1.15, 1.15);\r\n\t\t\tbg.updateHitbox();\r\n\t\t\tbg.screenCenter();\r\n\t\t\tbg.antialiasing = true;\r\n\t\t\tadd(bg);\r\n\t\t}\r\n\t\tcoloredBG.alpha = 0;\r\n\r\n\t\tif (isSubState) {\r\n\t\t\t// is substate, opened from pause menu\r\n\t\t\tif (settingCam == null) {\r\n\t\t\t\tsettingCam = new FlxCamera();\r\n\t\t\t\tsettingCam.bgColor = 0xAA000000;\r\n\t\t\t\tFlxG.cameras.add(settingCam, false);\r\n\t\t\t}\r\n\t\t\tcameras = [settingCam];\r\n\t\t\tbg.alpha = 0;\r\n\t\t\tsettingCam.follow(camFollow, LOCKON, 0.125);\r\n\t\t} else {\r\n\t\t\tFlxG.camera.follow(camFollow, LOCKON, 0.125);\r\n\t\t}\r\n\r\n\t\tfor (category in defaultCategories) categories.push(category);\r\n\r\n\t\tvar customCategories = loadCustomCategories();\r\n\t\tfor (i in customCategories) categories.push(i);\r\n\r\n\t\tvar k:Int = 0;\r\n\t\tfor (category in categories) {\r\n\t\t\tif (category.devModeOnly && !Options.devMode) continue;\r\n\r\n\t\t\tk++;\r\n\t\t\tvar translationPrefix:String = (category.custom != null) ? '' : 'KeybindsOptions.';\r\n\r\n\t\t\tvar categoryToTranslate:String = translationPrefix + category.name;\r\n\t\t\tvar translatedCategory:String = TU.exists(categoryToTranslate) ? translate(categoryToTranslate) : category.name;\r\n\t\t\tvar title = new Alphabet(0, k * 75, translatedCategory, \"bold\");\r\n\t\t\ttitle.screenCenter(X);\r\n\t\t\tadd(title);\r\n\r\n\t\t\tk++;\r\n\t\t\tfor (e in category.settings) {\r\n\t\t\t\tvar sparrowIcon:String = null;\r\n\t\t\t\tvar sparrowAnim:String = null;\r\n\t\t\t\tif (e.sparrowIcon != null) sparrowIcon = e.sparrowIcon;\r\n\t\t\t\tif (e.sparrowAnim != null) sparrowAnim = e.sparrowAnim;\r\n\r\n\t\t\t\tvar nameToTranslate:String = translationPrefix + e.name;\r\n\t\t\t\tvar translatedName:String = TU.exists(nameToTranslate) ? translate(nameToTranslate) : e.name;\r\n\t\t\t\tvar text = new KeybindSetting(100, k * 75, translatedName, e.control, sparrowIcon, sparrowAnim, e.custom == null ? false : e.custom);\r\n\t\t\t\tif (!isSubState)\r\n\t\t\t\t\ttext.bind1.color = text.bind2.color = FlxColor.BLACK;\r\n\t\t\t\talphabets.add(text);\r\n\t\t\t\tk++;\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd(alphabets);\r\n\t\tadd(camFollow);\r\n\r\n\t\tFlxG.sound.volumeUpKeys = [];\r\n\t\tFlxG.sound.volumeDownKeys = [];\r\n\t\tFlxG.sound.muteKeys = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tif (settingCam != null) FlxG.cameras.remove(settingCam);\r\n\t\tinstance = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (isSubState) bg.alpha = lerp(bg.alpha, 0.1, 0.125);\r\n\t\telse {\r\n\t\t\tif (curSelected < 4) {\r\n\t\t\t\tif (coloredBG.alpha == 0)\r\n\t\t\t\t\tcoloredBG.color = noteColors[curSelected];\r\n\t\t\t\telse\r\n\t\t\t\t\tcoloredBG.color = CoolUtil.lerpColor(coloredBG.color, noteColors[curSelected], 0.0625);\r\n\r\n\t\t\t\tcoloredBG.alpha = lerp(coloredBG.alpha, 1, 0.0625);\r\n\t\t\t} else\r\n\t\t\t\tcoloredBG.alpha = lerp(coloredBG.alpha, 0, 0.0625);\r\n\t\t}\r\n\r\n\t\tif (canSelect) {\r\n\t\t\tchangeSelection((controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0));\r\n\r\n\t\t\tif (controls.BACK) {\r\n\t\t\t\tif (isSubState) close();\r\n\t\t\t\telse {\r\n\t\t\t\t\tMusicBeatState.skipTransIn = true;\r\n\t\t\t\t\tFlxG.switchState(new OptionsMenu());\r\n\t\t\t\t}\r\n\t\t\t\tControlsUtil.resetCustomControls();\r\n\t\t\t\tOptions.applyKeybinds();\r\n\t\t\t\tControlsUtil.loadCustomControls();\r\n\t\t\t\tOptions.save();\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\r\n\t\t\tif (controls.ACCEPT && !skipThisFrame) {\r\n\t\t\t\tif (alphabets.members[curSelected] != null) {\r\n\t\t\t\t\tcanSelect = false;\r\n\t\t\t\t\tCoolUtil.playMenuSFX(CONFIRM);\r\n\t\t\t\t\talphabets.members[curSelected].changeKeybind(function() {\r\n\t\t\t\t\t\tcanSelect = true;\r\n\t\t\t\t\t}, function() {\r\n\t\t\t\t\t\tcanSelect = true;\r\n\t\t\t\t\t}, p2Selected);\r\n\t\t\t\t}\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\r\n\t\t\tif (controls.LEFT_P || controls.RIGHT_P) {\r\n\t\t\t\tif (alphabets.members[curSelected] != null) {\r\n\t\t\t\t\tCoolUtil.playMenuSFX(SCROLL, 0.7);\r\n\t\t\t\t\talphabets.members[curSelected].p2Selected = (p2Selected = !p2Selected);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tsuper.update(elapsed);\r\n\t\tskipThisFrame = false;\r\n\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSelection",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeSelection(change:Int) {\r\n\t\tif (change != 0) CoolUtil.playMenuSFX(SCROLL, 0.4);\r\n\r\n\t\tcurSelected = FlxMath.wrap(curSelected + change, 0, alphabets.length-1);\r\n\t\talphabets.forEach(function(e) {\r\n\t\t\te.alpha = 0.45;\r\n\t\t});\r\n\t\tif (alphabets.members[curSelected] != null) {\r\n\t\t\tvar alphabet = alphabets.members[curSelected];\r\n\t\t\talphabet.p2Selected = p2Selected;\r\n\t\t\talphabet.alpha = 1;\r\n\t\t\tvar minH = FlxG.height / 2;\r\n\t\t\tvar maxH = alphabets.members[alphabets.length-1].y + alphabets.members[alphabets.length-1].height - (FlxG.height / 2);\r\n\t\t\tif (minH < maxH)\r\n\t\t\t\tcamFollow.setPosition(FlxG.width / 2, CoolUtil.bound(alphabet.y + (alphabet.height / 2) - 35, minH, maxH));\r\n\t\t\telse\r\n\t\t\t\tcamFollow.setPosition(FlxG.width / 2, FlxG.height / 2);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadCustomCategories",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadCustomCategories() {\r\n\t\tvar customCategories:Array<ControlsCategory> = [];\r\n\r\n\t\tvar xmlPath = Paths.xml(\"config/controls\");\r\n\t\tfor(source in [funkin.backend.assets.AssetSource.SOURCE, funkin.backend.assets.AssetSource.MODS]) {\r\n\t\t\tif (Paths.assetsTree.existsSpecific(xmlPath, \"TEXT\", source)) {\r\n\t\t\t\tvar access:Access = null;\r\n\t\t\t\ttry {\r\n\t\t\t\t\taccess = new Access(Xml.parse(Paths.assetsTree.getSpecificAsset(xmlPath, \"TEXT\", source)).firstElement());\r\n\t\t\t\t} catch(e) {\r\n\t\t\t\t\tLogs.trace('Error while parsing controls.xml: ${Std.string(e)}', ERROR);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (access != null) {\r\n\t\t\t\t\tfor (category in access.elements) {\r\n\t\t\t\t\t\tif (!category.has.name) continue;\r\n\r\n\t\t\t\t\t\tvar cat:ControlsCategory = {\r\n\t\t\t\t\t\t\tname: category.getAtt(\"name\"),\r\n\t\t\t\t\t\t\tcustom: true,\r\n\t\t\t\t\t\t\tsettings: []\r\n\t\t\t\t\t\t};\r\n\r\n\t\t\t\t\t\tfor (control in category.elements) {\r\n\t\t\t\t\t\t\tif (control.has.menuName && control.has.saveName) {\r\n\t\t\t\t\t\t\t\tcat.settings.push({\r\n\t\t\t\t\t\t\t\t\tname: control.getAtt(\"menuName\"),\r\n\t\t\t\t\t\t\t\t\tcontrol: control.getAtt(\"saveName\"),\r\n\t\t\t\t\t\t\t\t\tcustom: true,\r\n\t\t\t\t\t\t\t\t\tsparrowIcon: control.getAtt(\"menuIcon\").getDefault(null),\r\n\t\t\t\t\t\t\t\t\tsparrowAnim: control.getAtt(\"menuAnim\").getDefault(null)\r\n\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tcustomCategories.push(cat);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn customCategories;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

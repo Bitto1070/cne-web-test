@@ -1,0 +1,33 @@
+{
+	"kind": "class",
+	"name": "PlaytestingWarningSubstate",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "closingWindow",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttons",
+					"type": "Array<WarningButton>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(closingWindow:Bool, buttons:Array<WarningButton>) {\r\n\t\tsuper();\r\n\t\twindowClosing = closingWindow;\r\n\t\tbuttonsData = buttons;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

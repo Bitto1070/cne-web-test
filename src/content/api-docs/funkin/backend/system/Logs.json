@@ -1,0 +1,296 @@
+{
+	"kind": "final class",
+	"name": "Logs",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "nativeTrace",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tLog.trace = function(v:Dynamic, ?infos:Null<haxe.PosInfos>) {\r\n\t\t\tvar data = [\r\n\t\t\t\tlogText('${infos.fileName}:${infos.lineNumber}: ', CYAN),\r\n\t\t\t\tlogText(Std.string(v))\r\n\t\t\t];\r\n\r\n\t\t\tif (infos.customParams != null) {\r\n\t\t\t\tfor (i in infos.customParams) {\r\n\t\t\t\t\tdata.push(\r\n\t\t\t\t\t\tlogText(\",\" + Std.string(i))\r\n\t\t\t\t\t);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\ttraceColored(data, TRACE);\r\n\t\t};\r\n\r\n\t\tLogFrontEnd.onLogs = function(data, style, fireOnce) {\r\n\t\t\tvar prefix = \"[FLIXEL]\";\r\n\t\t\tvar color:ConsoleColor = LIGHTGRAY;\r\n\t\t\tvar level:Level = INFO;\r\n\t\t\tif (style == LogStyle.CONSOLE)  // cant place a switch here as these aren't inline values  - Nex\r\n\t\t\t{\r\n\t\t\t\tprefix = \"> \";\r\n\t\t\t\tcolor = WHITE;\r\n\t\t\t\tlevel = INFO;\r\n\t\t\t}\r\n\t\t\telse if (style == LogStyle.ERROR)\r\n\t\t\t{\r\n\t\t\t\tprefix = \"[FLIXEL]\";\r\n\t\t\t\tcolor = RED;\r\n\t\t\t\tlevel = ERROR;\r\n\t\t\t}\r\n\t\t\telse if (style == LogStyle.NORMAL)\r\n\t\t\t{\r\n\t\t\t\tprefix = \"[FLIXEL]\";\r\n\t\t\t\tcolor = WHITE;\r\n\t\t\t\tlevel = INFO;\r\n\t\t\t}\r\n\t\t\telse if (style == LogStyle.NOTICE)\r\n\t\t\t{\r\n\t\t\t\tprefix = \"[FLIXEL]\";\r\n\t\t\t\tcolor = GREEN;\r\n\t\t\t\tlevel = VERBOSE;\r\n\t\t\t}\r\n\t\t\telse if (style == LogStyle.WARNING)\r\n\t\t\t{\r\n\t\t\t\tprefix = \"[FLIXEL]\";\r\n\t\t\t\tcolor = YELLOW;\r\n\t\t\t\tlevel = WARNING;\r\n\t\t\t}\r\n\r\n\t\t\tvar d:Dynamic = data;\r\n\t\t\tif (!(d is Array))\r\n\t\t\t\td = [d];\r\n\t\t\tvar a:Array<Dynamic> = d;\r\n\t\t\tvar strs = [for(e in a) Std.string(e)];\r\n\t\t\tfor(e in strs)\r\n\t\t\t{\r\n\t\t\t\tLogs.trace('$prefix $e', level, color);\r\n\t\t\t}\r\n\t\t};\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareColoredTrace",
+			"args": [
+				{
+					"name": "text",
+					"type": "Array<LogText>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "level",
+					"type": "Level",
+					"optional": false,
+					"def": "INFO"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function prepareColoredTrace(text:Array<LogText>, level:Level = INFO) {\r\n\t\tvar time = Date.now();\r\n\t\tvar superCoolText = [\r\n\t\t\tlogText('[  '),\r\n\t\t\tlogText('${Std.string(time.getHours()).addZeros(2)}:${Std.string(time.getMinutes()).addZeros(2)}:${Std.string(time.getSeconds()).addZeros(2)}', DARKMAGENTA),\r\n\t\t\tlogText('  |'),\r\n\t\t\tswitch (level)\r\n\t\t\t{\r\n\t\t\t\tcase WARNING:\tlogText('   WARNING   ', DARKYELLOW);\r\n\t\t\t\tcase ERROR:\t\tlogText('    ERROR    ', DARKRED);\r\n\t\t\t\tcase TRACE:\t\tlogText('    TRACE    ', GRAY);\r\n\t\t\t\tcase VERBOSE:\tlogText('   VERBOSE   ', DARKMAGENTA);\r\n\t\t\t\tcase SUCCESS:\tlogText('   SUCCESS   ', GREEN);\r\n\t\t\t\tcase FAILURE:\tlogText('   FAILURE   ', RED);\r\n\t\t\t\tdefault:\t\tlogText(' INFORMATION ', CYAN);\r\n\t\t\t},\r\n\t\t\tlogText('] ')\r\n\t\t];\r\n\t\tfor(k=>e in superCoolText)\r\n\t\t\ttext.insert(k, e);\r\n\t\treturn text;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "logText",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "LIGHTGRAY"
+				}
+			],
+			"ret": "LogText",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function logText(text:String, color:ConsoleColor = LIGHTGRAY):LogText {\r\n\t\treturn {\r\n\t\t\ttext: text,\r\n\t\t\tcolor: color\r\n\t\t};\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__showInConsole",
+			"args": [
+				{
+					"name": "text",
+					"type": "Array<LogText>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function __showInConsole(text:Array<LogText>) {\r\n\t\t#if (sys && !mobile)\r\n\t\twhile(__showing) {\r\n\t\t\tSys.sleep(0.05);\r\n\t\t}\r\n\t\t__showing = true;\r\n\t\tfor(t in text) {\r\n\t\t\tNativeAPI.setConsoleColors(t.color);\r\n\t\t\tSys.print(t.text);\r\n\t\t}\r\n\t\tNativeAPI.setConsoleColors();\r\n\t\tSys.println(\"\\r\");\r\n\t\t__showing = false;\r\n\t\t#elseif mobile\r\n\t\twhile(__showing) {\r\n\t\t\tSys.sleep(0.05);\r\n\t\t}\r\n\t\t__showing = true;\r\n\t\t@:privateAccess\r\n\t\tSys.print([for(t in text) t.text].join(\"\"));\r\n\t\t__showing = false;\r\n\t\t#else\r\n\t\t@:privateAccess\r\n\t\tnativeTrace([for(t in text) t.text].join(\"\"));\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "traceColored",
+			"args": [
+				{
+					"name": "text",
+					"type": "Array<LogText>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "level",
+					"type": "Level",
+					"optional": false,
+					"def": "INFO"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function traceColored(text:Array<LogText>, level:Level = INFO)\r\n\t\t__showInConsole(prepareColoredTrace(text, level));",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "trace",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "level",
+					"type": "Level",
+					"optional": false,
+					"def": "INFO"
+				},
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "LIGHTGRAY"
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function trace(text:String, level:Level = INFO, color:ConsoleColor = LIGHTGRAY, ?prefix:String) {\r\n\t\tvar text = [logText(text, color)];\r\n\t\tif(prefix != null) text.insert(0, getPrefix(prefix));\r\n\t\ttraceColored(text, level);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPrefix",
+			"args": [
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function getPrefix(prefix:String)\r\n\t\treturn logText('[${prefix}] ', BLUE);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "infos",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "LIGHTGRAY"
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function infos(text:String, color:ConsoleColor = LIGHTGRAY, ?prefix:String)\r\n\t\tLogs.trace(text, INFO, color, prefix);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "verbose",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "LIGHTGRAY"
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function verbose(text:String, color:ConsoleColor = LIGHTGRAY, ?prefix:String)\r\n\t\tif (Main.verbose) Logs.trace(text, VERBOSE, color, prefix);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "warn",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "YELLOW"
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function warn(text:String, color:ConsoleColor = YELLOW, ?prefix:String)\r\n\t\tLogs.trace(text, WARNING, color, prefix);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "error",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "RED"
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function error(text:String, color:ConsoleColor = RED, ?prefix:String)\r\n\t\tLogs.trace(text, ERROR, color, prefix);",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

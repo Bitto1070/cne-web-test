@@ -1,0 +1,63 @@
+{
+	"kind": "class",
+	"name": "EditorTreeMenuScreen",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "objects",
+					"type": "Array<FlxSprite>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "newButton",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "newButtonDesc",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "newCallback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, desc:String, ?prefix:String, ?objects:Array<FlxSprite>,\r\n\t\t?newButton:String, ?newButtonDesc:String, ?newCallback:Void->Void)\r\n\t{\r\n\t\tsuper(name, desc, prefix, objects);\r\n\t\tif (newCallback != null) {\r\n\t\t\tinsert(0, new funkin.options.type.NewOption(getID(newButton), getID(newButtonDesc), newCallback));\r\n\t\t\tcurSelected = 1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

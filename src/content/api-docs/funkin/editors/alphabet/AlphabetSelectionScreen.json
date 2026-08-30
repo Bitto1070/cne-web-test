@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "AlphabetSelectionScreen",
+	"pkg": "funkin.editors.alphabet",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('editor.alphabet.name', 'editor.alphabet.selection.desc', 'editor.alphabet.selection.', 'newTypeface', 'newTypefaceDesc', () -> {\r\n\t\t\tparent.openSubState(new UIWarningSubstate(translate('warnings.notImplemented-title'), translate('warnings.notImplemented-body'), [\r\n\t\t\t\t{label: TU.translate(\"editor.ok\"), color: 0xFFFF0000, onClick: (t) -> {}}\r\n\t\t\t]));\r\n\t\t});\r\n\r\n\t\tvar modsList:Array<String> = [];\r\n\t\tfor (file in Paths.getFolderContent('data/alphabet/', true, BOTH)) // mods ? MODS : BOTH\r\n\t\t\tif (Path.extension(file) == \"xml\") modsList.push(CoolUtil.getFilename(file));\r\n\r\n\t\tfor (typeface in modsList)\r\n\t\t\tadd(new AlphabetIconOption(typeface, getID('acceptTypeface'), typeface, () -> FlxG.switchState(new AlphabetEditor(typeface))));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

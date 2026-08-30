@@ -1,0 +1,60 @@
+{
+	"kind": "final class",
+	"name": "ShaderResizeFix",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "doResizeFix",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tFlxG.signals.gameResized.add((w:Int, h:Int) -> {fixSpritesShadersSizes();});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixSpritesShadersSizes",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function fixSpritesShadersSizes() {\r\n\t\tif (!doResizeFix) return;\r\n\r\n\t\tfixSpriteShaderSize(Main.instance);\r\n\t\tif (FlxG.game != null) fixSpriteShaderSize(FlxG.game);\r\n\r\n\t\tif (FlxG.cameras == null) return;\r\n\t\tfor (cam in FlxG.cameras.list) {\r\n\t\t\t@:privateAccess\r\n\t\t\tif (cam != null && (cam._filters != null && cam._filters.length > 0))\r\n\t\t\t\tfixSpriteShaderSize(cam.flashSprite);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fixSpriteShaderSize",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "Sprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function fixSpriteShaderSize(sprite:Sprite) // Shout out to Ne_Eo for bringing this to my attention\r\n\t{\r\n\t\tif (sprite == null) return;\r\n\r\n\t\t@:privateAccess {\r\n\t\t\tsprite.__cacheBitmap = null;\r\n\t\t\tsprite.__cacheBitmapData = null;\r\n\t\t\tsprite.__cacheBitmapData2 = null;\r\n\t\t\tsprite.__cacheBitmapData3 = null;\r\n\t\t\tsprite.__cacheBitmapColorTransform = null;\r\n\t\t}\r\n\t}\r\n}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

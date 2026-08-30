@@ -1,0 +1,51 @@
+{
+	"kind": "class",
+	"name": "ScriptPathInfo",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "file",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "library",
+			"type": "AssetLibrary",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "file",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "library",
+					"type": "AssetLibrary",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(file:String, library:AssetLibrary) {\r\n\t\tthis.file = file;\r\n\t\tthis.library = library;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,172 @@
+{
+	"kind": "class",
+	"name": "CharterEventGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stopThisFuckingShitDudeIstg",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsBackdrop",
+			"type": "EventBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsRowText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "autoSort",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tif (!CharterEventGroup.stopThisFuckingShitDudeIstg) filterEvents();\r\n\t\tif (autoSort && members.length != __lastSort)\r\n\t\t\tsortEvents();\r\n\r\n\t\teventsRowText.y = FlxMath.lerp(eventsRowText.y, -40 + (members[0] != null ? Math.min(members[0].y, 0) : 0), 1/10);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "remove",
+			"args": [
+				{
+					"name": "v",
+					"type": "CharterEvent",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "CharterEvent",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function remove(v:CharterEvent, force:Bool = true):CharterEvent {\r\n\t\tv.ID = -1;\r\n\t\treturn super.remove(v, force);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tfor (event in members) {\r\n\t\t\tevent.eventsBackdrop = eventsBackdrop;\r\n\t\t\tevent.snappedToGrid = true;\r\n\t\t\tevent.cameras = cameras;\r\n\t\t}\r\n\t\tsuper.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sortEvents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function sortEvents() {\r\n\t\t__lastSort = members.length;\r\n\t\tthis.sort(sortEventsFilter);\r\n\t\tupdateEventsIDs();\r\n\t\tupdateEventsBackdrop();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateEventsIDs",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateEventsIDs()\r\n\t\tfor (i => n in members) n.ID = i;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateEventsBackdrop",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateEventsBackdrop()\r\n\t\tfor (event in members)\r\n\t\t\tevent.eventsBackdrop = eventsBackdrop;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "filterEvents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function filterEvents() {\r\n\t\tfor (event in members)\r\n\t\t\tif (event.events.length == 0) {\r\n\t\t\t\tremove(event, true);\r\n\t\t\t\tevent.kill();\r\n\t\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sortEventsFilter",
+			"args": [
+				{
+					"name": "i",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "e1",
+					"type": "CharterEvent",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "e2",
+					"type": "CharterEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function sortEventsFilter(i:Int, e1:CharterEvent, e2:CharterEvent)\r\n\t\treturn FlxSort.byValues(FlxSort.ASCENDING, e1.step, e2.step);",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

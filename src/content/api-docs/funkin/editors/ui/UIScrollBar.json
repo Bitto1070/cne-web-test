@@ -1,0 +1,164 @@
+{
+	"kind": "class",
+	"name": "UIScrollBar",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "length",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "start",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "size",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "thumb",
+			"type": "UISliceSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "thumbIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "value",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onChange",
+			"type": "Float->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "length",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "start",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": "20"
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, length:Float, start:Float, size:Float, w:Int = 20, ?h:Int) {\r\n\t\tsuper(x, y, Paths.image(\"editors/ui/scrollbar-bg\"));\r\n\t\tscale.y = h.getDefault(Std.int(FlxG.height - y));\r\n\t\talpha = 0.5;\r\n\t\tupdateHitbox();\r\n\t\tthis.start = start;\r\n\t\tthis.size = size;\r\n\t\tthis.length = length;\r\n\r\n\t\tthumb = new UISliceSprite(0, 0, w, h, 'editors/ui/scrollbar');\r\n\t\tthumb.cursor = CLICK;\r\n\t\tmembers.push(thumb);\r\n\r\n\t\tthumbIcon = new FlxSprite(0, 0, Paths.image('editors/ui/scrollbar-icon'));\r\n\t\tmembers.push(thumbIcon);\r\n\r\n\t\tFlxG.stage.window.onFocusOut.add(onWindowFocusOut);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isScrolling",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tvar lastHovered = hovered;\r\n\t\tvar lastHoveredThumb = thumb.hovered;\r\n\t\tsuper.update(elapsed);\r\n\t\tthumb.follow(this, 0, FlxMath.remapToRange(start, -(size/2), length + size, 0, height));\r\n\t\tthumb.bHeight = Std.int(FlxMath.remapToRange(size, -(size/2), length + size, 0, height));\r\n\r\n\t\tthumbIcon.follow(thumb, 0, Std.int((thumb.bHeight - thumbIcon.height) / 2));\r\n\t\tthumbIcon.alpha = thumb.bHeight > 30 ? 1 : 0;\r\n\r\n\t\tif ((lastHovered || lastHoveredThumb) && FlxG.mouse.justPressed) isScrolling = true;\r\n\r\n\t\tif (isScrolling) {\r\n\t\t\tthumb.framesOffset = 18;\r\n\t\t\tvar mousePos = FlxG.mouse.getScreenPosition(__lastDrawCameras[0], FlxPoint.get());\r\n\t\t\tvar yPos = CoolUtil.bound(FlxMath.remapToRange(mousePos.y, y, y+height, -(size/2), length + size), 0, length);\r\n\t\t\tif (yPos >= 0 && yPos < length) {\r\n\t\t\t\tvalue = yPos;\r\n\t\t\t\tif (onChange != null)\r\n\t\t\t\t\tonChange(value);\r\n\t\t\t}\r\n\t\t\tmousePos.put();\r\n\t\t} \r\n\t\tif (FlxG.mouse.justReleased && isScrolling) {\r\n\t\t\tisScrolling = false;\r\n\t\t\tthumb.framesOffset = lastHoveredThumb ? 9 : 0;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tFlxG.stage.window.onFocusOut.remove(onWindowFocusOut);\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,160 @@
+{
+	"kind": "class",
+	"name": "RegionEffect",
+	"pkg": "funkin.menus.ui.effects",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "effectTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "speed",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "enabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "regionMin",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "regionMax",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetRegions",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function resetRegions() {\r\n\t\tregionMin.splice(0, regionMin.length);\r\n\t\tregionMax.splice(0, regionMax.length);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addRegion",
+			"args": [
+				{
+					"name": "min",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "max",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addRegion(min:Int, max:Int) {\r\n\t\tregionMin.push(min);\r\n\t\tregionMax.push(max);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "willModify",
+			"args": [
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "lineIndex",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "renderData",
+					"type": "AlphabetRenderData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function willModify(index:Int, lineIndex:Int, renderData:AlphabetRenderData):Bool {\r\n\t\tif (!enabled) return false;\r\n\r\n\t\tif (regionMin.length == 0) regionMin.push(0);\r\n\t\tif (regionMax.length == 0) regionMax.push(-1);\r\n\r\n\t\tfor (i in 0...Std.int(Math.min(regionMin.length, regionMax.length))) {\r\n\t\t\tvar min = (regionMin[i] < 0) ? renderData.parent.text.length - regionMin[i] : regionMin[i];\r\n\t\t\tvar max = (regionMax[i] < 0) ? renderData.parent.text.length - regionMax[i] : regionMax[i];\r\n\t\t\tif (index >= min && index <= max)\r\n\t\t\t\treturn true;\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "modify",
+			"args": [
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "lineIndex",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "renderData",
+					"type": "AlphabetRenderData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function modify(index:Int, lineIndex:Int, renderData:AlphabetRenderData):Void {}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

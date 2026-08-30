@@ -1,0 +1,137 @@
+{
+	"kind": "class",
+	"name": "CharterEventAdd",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "sprAlpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curCharterEvent",
+			"type": "CharterEvent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sideText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "global",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "global",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(global:Bool) {\r\n\t\tsuper(0, 0, 100, 34, 'editors/charter/event-spr-add');\r\n\r\n\t\tthis.global = global;\r\n\t\tflipX = (global != Options.charterSwapEventSides);\r\n\r\n\t\tsideText = new UIText(0, -40, 0, TU.translate(\"charter.eventType-\" + (global ? \"global\" : \"local\")), 12);\r\n\t\tsideText.alignment = \"center\"; sideText.alpha = 0.75;\r\n\r\n\t\ttext = new UIText(0, 0, 0, \"\");\r\n\t\tmembers.push(text);\r\n\r\n\t\tcursor = CLICK;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onHovered",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onHovered() {\r\n\t\tsuper.onHovered();\r\n\t\tif (FlxG.mouse.justReleased && FlxG.state.subState == null) {\r\n\t\t\tif (curCharterEvent != null)\r\n\t\t\t\tCharter.instance.openSubState(new CharterEventScreenNew(curCharterEvent));\r\n\t\t\telse {\r\n\t\t\t\tCharterEventGroup.stopThisFuckingShitDudeIstg = true;\r\n\t\t\t\tvar chartEvent = new CharterEvent(step, [], global);\r\n\t\t\t\tchartEvent.global = global;\r\n\r\n\t\t\t\tCharter.instance.createSelection([chartEvent]);\r\n\t\t\t\tCharter.instance.openSubState(new CharterEventScreenNew(chartEvent));\r\n\t\t\t\tsprAlpha = 0;\r\n\t\t\t\talpha = sprAlpha * 0.75;\r\n\t\t\t\ttext.alpha = sprAlpha;\r\n\r\n\t\t\t\tsideText.alpha = sprAlpha;\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (FlxG.state.subState != null) return;\r\n\t\ttext.follow(this, (global != Options.charterSwapEventSides) ? bWidth - text.width - (text.text == TU.translate(\"charter.addEvent\") ? 15 : 20) : 20, (bHeight - text.height) / 2);\r\n\t\tsideText.follow(this, (bWidth/2) - (sideText.fieldWidth/2), -(sideText.height + 2));\r\n\t\talpha = sprAlpha * 0.75;\r\n\t\ttext.alpha = sprAlpha;\r\n\r\n\t\tsideText.alpha = sprAlpha;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updatePos(step:Float) {\r\n\t\tif (FlxG.state.subState != null) return;\r\n\t\tcurCharterEvent = null;\r\n\t\tthis.step = step;\r\n\t\tthis.y = (step * 40) - (bHeight / 2);\r\n\t\ttext.text = TU.translate(\"charter.addEvent\");\r\n\t\tframesOffset = 0; bWidth = 37 + Math.ceil(text.width);\r\n\t\tx = (global != Options.charterSwapEventSides) ? Charter.instance.strumLines.members[Charter.instance.strumLines.members.length-1].x + (40*Charter.instance.strumLines.members[Charter.instance.strumLines.members.length-1].keyCount) : -(bWidth);\r\n\t\tsideText.text = TU.translate(\"charter.eventType-\" + (global ? \"global\" : \"local\"));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateEdit",
+			"args": [
+				{
+					"name": "event",
+					"type": "CharterEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateEdit(event:CharterEvent) {\r\n\t\tif (FlxG.state.subState != null) return;\r\n\t\tcurCharterEvent = event;\r\n\t\tthis.y = event.y;\r\n\t\ttext.text = TU.translate(\"charter.editEvent\");\r\n\t\tframesOffset = 9; bWidth = 27 + Math.ceil(text.width) + event.bWidth;\r\n\t\tx = (event.global != Options.charterSwapEventSides) ? Charter.instance.strumLines.members[Charter.instance.strumLines.members.length-1].x + (40*Charter.instance.strumLines.members[Charter.instance.strumLines.members.length-1].keyCount) : -(bWidth);\r\n\t\tsideText.text = TU.translate(\"charter.eventType-\" + (event.global ? \"global\" : \"local\"));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

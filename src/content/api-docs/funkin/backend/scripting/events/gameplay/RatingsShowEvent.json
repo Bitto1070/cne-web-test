@@ -1,0 +1,339 @@
+{
+	"kind": "final class",
+	"name": "RatingsShowEvent",
+	"pkg": "funkin.backend.scripting.events.gameplay",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "ratingSprite",
+			"type": "Null<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Rating sprite (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numberSprite",
+			"type": "Null<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Number sprite (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "comboSprite",
+			"type": "Null<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Combo sprite (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numScale",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Scale of combo numbers. (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numAntialiasing",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever antialiasing should be enabled on combo numbers. (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingScale",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Scale of the rating sprites. (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingAntialiasing",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever antialiasing should be enabled on ratings. (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingPrefix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Prefix of the rating sprite path. Defaults to \"game/score/\"",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Suffix of the rating sprite path.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "acceleration",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The sprite's acceleration.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "velocity",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "A FlxPoint which x or y properties preposition the sprites current velocity.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tweenDuration",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The duration of the sprite's alpha tween.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startDelay",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The start delay of the sprite's alpha tween.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayRating",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Rating sprites should be shown or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayNumbers",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Rating sprites should be shown or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayCombo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Combo sprite should be shown or not (like old Week 7 patches).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playTween",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether the sprite should be tweened or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numSpacing",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The amount of spacing for the combo numbers. (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "position",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The position of the sprite.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "resetSprite",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether to reset the sprite or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rating",
+			"type": "Null<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The rating name of the rating sprite. (may be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tween",
+			"type": "Null<FlxTween>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The FlxTween instance. (null before \"onPostRatingsShown\")",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

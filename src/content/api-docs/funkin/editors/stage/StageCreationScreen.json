@@ -1,0 +1,83 @@
+{
+	"kind": "class",
+	"name": "StageCreationScreen",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stageNameTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stagePathTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "voicesExplorer",
+			"type": "UIFileExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "onSave",
+					"type": "StageCreationData->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?onSave:StageCreationData->Void) {\r\n\t\tsuper();\r\n\t\tif (onSave != null) this.onSave = onSave;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\twinTitle = translate(\"win-title\");\r\n\r\n\t\twinWidth = 748 - 32 + 40;\r\n\t\twinHeight = 220;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String):UIText {\r\n\t\t\tvar text:UIText = new UIText(ui.x, ui.y - 24, 0, text);\r\n\t\t\tui.members.push(text);\r\n\t\t\treturn text;\r\n\t\t}\r\n\r\n\t\tvar stageInfo:UIText;\r\n\t\tadd(stageInfo = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, translate(\"title\"), 28));\r\n\r\n\t\tadd(stageNameTextBox = new UITextBox(stageInfo.x, stageInfo.y + stageInfo.height + 36, translate(\"stageName\")));\r\n\t\taddLabelOn(stageNameTextBox, translate(\"stageName\"));\r\n\r\n\t\tadd(stagePathTextBox = new UITextBox(stageNameTextBox.x + 320 + 26, stageNameTextBox.y, translate(\"stagePath\")));\r\n\t\taddLabelOn(stagePathTextBox, translate(\"stagePath\"));\r\n\r\n\t\tadd(saveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tsaveStageInfo();\r\n\t\t\tclose();\r\n\t\t}, 125));\r\n\r\n\t\tadd(closeButton = new UIButton(saveButton.x - 20 - saveButton.bWidth, saveButton.y, TU.translate(\"editor.cancel\"), close, 125));\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

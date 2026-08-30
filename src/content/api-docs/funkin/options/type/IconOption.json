@@ -1,0 +1,60 @@
+{
+	"kind": "class",
+	"name": "IconOption",
+	"pkg": "funkin.options.type",
+	"doc": {
+		"text": "Option type that has an icon.\nUsed for the credits menu.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "iconSpr",
+			"type": "HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "icon",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, desc:String, icon:String, callback:Void->Void) {\r\n\t\tsuper(name, desc, callback);\r\n\r\n\t\t__text.x = 100;\r\n\r\n\t\ticonSpr = new HealthIcon(icon, false);\r\n\t\ticonSpr.setPosition(90 - iconSpr.width, (__text.height - iconSpr.height) / 2);\r\n\t\ticonSpr.sprTracker = __text;\r\n\t\ticonSpr.sprTrackerAlignment = LEFT;\r\n\t\tif (Math.max(iconSpr.width, iconSpr.height) > 150) iconSpr.setUnstretchedGraphicSize(150, 150);\r\n\t\tadd(iconSpr);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

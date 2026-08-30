@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "GitarooPause",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new():Void\r\n\t{\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

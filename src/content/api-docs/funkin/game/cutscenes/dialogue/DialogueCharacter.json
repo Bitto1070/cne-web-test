@@ -1,0 +1,252 @@
+{
+	"kind": "class",
+	"name": "DialogueCharacter",
+	"pkg": "funkin.game.cutscenes.dialogue",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "charData",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curTween",
+			"type": "FlxTween",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curAnimContext",
+			"type": "DialogueCharAnimContext",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "positionName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "finishAnimCallback",
+			"type": "String->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultAnim",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defPath",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dialogueCharScript",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cutscene",
+			"type": "DialogueCutscene",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "position",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, position:String) {\r\n\t\tsuper();\r\n\r\n\t\tdialogueCharScript = Script.create(Paths.script('data/' + defPath + name));\r\n\t\tdialogueCharScript.setParent(this);\r\n\t\tdialogueCharScript.load();\r\n\r\n\t\tvar event = EventManager.get(DialogueCharStructureEvent).recycle(name, position, null);\r\n\t\tdialogueCharScript.call('create', [event]);  // Its not really create() since its inside new() but, nah, it makes no difference at least here  - Nex\r\n\t\tif(event.cancelled) return;\r\n\r\n\t\ttry {\r\n\t\t\tevent.charData = new Access(Xml.parse(Assets.getText(Paths.xml(defPath + event.name))).firstElement());\r\n\t\t\tdialogueCharScript.call('structureLoaded', [event]);\r\n\t\t\tif(event.cancelled) return;\r\n\t\t\tname = event.name;\r\n\t\t\tpositionName = event.position;\r\n\t\t\tcharData = event.charData;\r\n\r\n\t\t\tif(!charData.has.sprite) charData.x.set(\"sprite\", name);\r\n\t\t\tif(!charData.has.updateHitbox) charData.x.set(\"updateHitbox\", \"true\");\r\n\t\t\tXMLUtil.loadSpriteFromXML(this, charData, defPath, LOOP);\r\n\r\n\t\t\tanimation.finishCallback = (name:String) -> {\r\n\t\t\t\tif(finishAnimCallback != null) finishAnimCallback(name);\r\n\r\n\t\t\t\tif(name.endsWith(\"-show\") || name == 'show') hasAnimation(defaultAnim) ? playAnim(defaultAnim, true) : animation.stop();\r\n\t\t\t\telse if(name.endsWith(\"-hide\") || name == 'hide') alpha = 0;\r\n\t\t\t}\r\n\r\n\t\t\toffset.set(x, y + height);\r\n\t\t\tx = 0; y = 0;\r\n\t\t} catch(e) {\r\n\t\t\tvar message:String = e.toString();\r\n\t\t\tLogs.trace('Failed to load dialogue character $name: ${message}', ERROR, RED);\r\n\t\t\tdialogueCharScript.call(\"loadingError\", [message]);\r\n\t\t}\r\n\r\n\t\tvisible = false;\r\n\t\tdialogueCharScript.call(\"postCreate\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playAnim",
+			"args": [
+				{
+					"name": "AnimName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Force",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "Context",
+					"type": "PlayAnimContext",
+					"optional": false,
+					"def": "NONE"
+				},
+				{
+					"name": "Reversed",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Frame",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function playAnim(AnimName:String, ?Force:Bool, Context:PlayAnimContext = NONE, Reversed:Bool = false, Frame:Int = 0) {\r\n\t\tvar event = EventManager.get(PlayAnimEvent).recycle(AnimName, Force, Reversed, Frame, Context);\r\n\t\tdialogueCharScript.call(\"playAnim\", [event]);\r\n\t\tif(event.cancelled) return;\r\n\r\n\t\tsuper.playAnim(event.animName, event.force, event.context, event.reverse, event.startingFrame);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function beatHit(curBeat:Int) {\r\n\t\tsuper.beatHit(curBeat);\r\n\t\tdialogueCharScript.call(\"beatHit\", [curBeat]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tdialogueCharScript.call(\"update\", [elapsed]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "show",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animation",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function show(x:Float, y:Float, ?animation:String, force:Bool = false) {\r\n\t\tif(animation == null) animation = defaultAnim;\r\n\t\tvar lastAnimContext:DialogueCharAnimContext = force ? POPOUT : curAnimContext;\r\n\t\tcurAnimContext = POPIN;\r\n\r\n\t\tvar event = EventManager.get(DialogueCharShowEvent).recycle(x, y, animation, lastAnimContext);\r\n\t\tdialogueCharScript.call(\"show\", [event]);\r\n\t\tif (event.cancelled || event.lastAnimContext == curAnimContext) return;\r\n\r\n\t\tvisible = true;\r\n\t\tvar anim:String;\r\n\t\tif (hasAnimation(anim = '${event.animation}-show') || hasAnimation(anim = 'show')) {\r\n\t\t\tplayAnim(anim, true);\r\n\t\t\tsetPosition(event.x, event.y);\r\n\t\t\talpha = 1;\r\n\t\t} else {\r\n\t\t\tsetPosition(event.x, event.y + 100);\r\n\t\t\tif(curTween != null) curTween.cancel();\r\n\t\t\tplayAnim(event.animation, true);\r\n\t\t\talpha = 0;\r\n\t\t\tcurTween = FlxTween.tween(this, {alpha: 1, y: event.y}, 0.2, {ease: FlxEase.quintOut, onComplete: function(twn:FlxTween) dialogueCharScript.call(\"showTweenCompleted\", [twn])});\r\n\t\t}\r\n\t\tdialogueCharScript.call(\"postShow\", [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hide",
+			"args": [
+				{
+					"name": "animation",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hide(?animation:String, force:Bool = false) {\r\n\t\tif(animation == null) animation = defaultAnim;\r\n\t\tvar lastAnimContext:DialogueCharAnimContext = force ? POPIN : curAnimContext;\r\n\t\tcurAnimContext = POPOUT;\r\n\r\n\t\tvar event = EventManager.get(DialogueCharHideEvent).recycle(animation, lastAnimContext);\r\n\t\tdialogueCharScript.call(\"hide\", [event]);\r\n\t\tif (event.cancelled || event.lastAnimContext == curAnimContext) return;\r\n\r\n\t\tvar anim:String;\r\n\t\tif(hasAnimation(anim = '${event.animation}-hide') || hasAnimation(anim = 'hide')) playAnim(anim, true);\r\n\t\telse {\r\n\t\t\tif(curTween != null) curTween.cancel();\r\n\t\t\tcurTween = FlxTween.tween(this, {alpha: 0, y: y + 100}, 0.2, {ease: FlxEase.quintIn, onComplete: function(twn:FlxTween) dialogueCharScript.call(\"hideTweenCompleted\", [twn])});\r\n\t\t}\r\n\t\tdialogueCharScript.call(\"postHide\", [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

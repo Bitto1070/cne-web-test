@@ -1,0 +1,143 @@
+{
+	"kind": "class",
+	"name": "FlxInterpolateColor",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Additional class for FlxColor lerping.\nGets rid of precision issues with `FlxColor.interpolate`",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "red",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "green",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blue",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "alpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "color",
+			"type": "FlxColor",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function toString()\r\n\t\treturn '[FlxInterpolateColor - (R:${red} | G:${green} | B:${blue} | A:${alpha})]';",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(color:FlxColor) {\r\n\t\tthis.color = color;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "lerpTo",
+			"args": [
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function lerpTo(color:FlxColor, ratio:Float) {\r\n\t\tred = (color.redFloat - red) * ratio + red;\r\n\t\tgreen = (color.greenFloat - green) * ratio + green;\r\n\t\tblue = (color.blueFloat - blue) * ratio + blue;\r\n\t\talpha = (color.alphaFloat - alpha) * ratio + alpha;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fpsLerpTo",
+			"args": [
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "delta",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function fpsLerpTo(color:FlxColor, ratio:Float, ?delta:Float)\r\n\t\tlerpTo(color, CoolUtil.getFPSRatio(ratio, delta));",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

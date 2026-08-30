@@ -1,0 +1,44 @@
+{
+	"kind": "class",
+	"name": "CreditsMain",
+	"pkg": "funkin.menus.credits",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "updateBG",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateBG() {\r\n\t\tvar scaleX:Float = FlxG.width / bg.width;\r\n\t\tvar scaleY:Float = FlxG.height / bg.height;\r\n\t\tbg.scale.x = bg.scale.y = Math.max(scaleX, scaleY) * 1.15;\r\n\t\tbg.screenCenter();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseCreditsFromXML",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "source",
+					"type": "AssetSource",
+					"optional": false,
+					"def": "BOTH"
+				}
+			],
+			"ret": "Array<FlxSprite>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// XML STUFF\r\n\tpublic function parseCreditsFromXML(xml:Access, source:AssetSource = BOTH):Array<FlxSprite> {\r\n\t\tvar credsMenus:Array<FlxSprite> = [];\r\n\r\n\t\tfor(node in xml.elements) {\r\n\t\t\tvar desc = node.getAtt(\"desc\").getDefault(\"No Description\");\r\n\r\n\t\t\tif (node.name == \"github\") {\r\n\t\t\t\tif (!node.has.user) {\r\n\t\t\t\t\tLogs.warn(\"A github node requires a user attribute.\", \"CreditsMain\");\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tvar username = node.getAtt(\"user\");\r\n\t\t\t\tvar user:CreditsGitHubContributor = {  // Kind of forcing\r\n\t\t\t\t\tlogin: username,\r\n\t\t\t\t\thtml_url: 'https://github.com/$username',\r\n\t\t\t\t\tavatar_url: 'https://github.com/$username.png'\r\n\t\t\t\t};\r\n\t\t\t\tvar opt:GithubIconOption = new GithubIconOption(user, desc, null,\r\n\t\t\t\t\tnode.has.customName ? node.att.customName : null,\r\n\t\t\t\t\tnode.has.size ? Std.parseInt(node.att.size) : 96,\r\n\t\t\t\t\tnode.has.portrait ? node.att.portrait.toLowerCase() == \"false\" ? false : true : true\r\n\t\t\t\t);\r\n\t\t\t\tif (node.has.color)\r\n\t\t\t\t\t@:privateAccess opt.__text.color = FlxColor.fromString(node.att.color);\r\n\t\t\t\tcredsMenus.push(opt);\r\n\t\t\t} else {\r\n\t\t\t\tif (!node.has.name) {\r\n\t\t\t\t\tLogs.warn(\"A credit node requires a name attribute.\", \"CreditsMain\");\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\t\t\t\tvar name = node.getAtt(\"name\");\r\n\r\n\t\t\t\tswitch(node.name) {\r\n\t\t\t\t\tcase \"credit\":\r\n\t\t\t\t\t\tvar opt:PortraitOption = new PortraitOption(name, desc, function() if(node.has.url) CoolUtil.openURL(node.att.url),\r\n\t\t\t\t\t\t\tnode.has.icon && Paths.assetsTree.existsSpecific(Paths.image('credits/${node.att.icon}'), \"IMAGE\", source) ?\r\n\t\t\t\t\t\t\tFlxG.bitmap.add(Paths.image('credits/${node.att.icon}')) : null, node.has.size ? Std.parseInt(node.att.size) : 96,\r\n\t\t\t\t\t\t\tnode.has.portrait ? node.att.portrait.toLowerCase() == \"false\" ? false : true : true\r\n\t\t\t\t\t\t);\r\n\t\t\t\t\t\tif (node.has.color)\r\n\t\t\t\t\t\t\t@:privateAccess opt.__text.color = FlxColor.fromString(node.att.color);\r\n\t\t\t\t\t\tcredsMenus.push(opt);\r\n\r\n\t\t\t\t\tcase \"menu\":\r\n\t\t\t\t\t\tcredsMenus.push(new TextOption(name, desc, ' >', () -> addMenu(new TreeMenuScreen(name, desc, parseCreditsFromXML(node, source)))));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn credsMenus;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

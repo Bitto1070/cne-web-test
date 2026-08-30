@@ -1,0 +1,59 @@
+{
+	"kind": "abstract",
+	"name": "Selection",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [
+		"@:forward"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "array",
+					"type": "Array<ICharterSelectable>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function new(?array:Array<ICharterSelectable>)\r\n\t\tthis = array == null ? [] : array;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loop",
+			"args": [
+				{
+					"name": "onNote",
+					"type": "CharterNote->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onEvent",
+					"type": "CharterEvent->Void",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "draggableOnly",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "// too lazy to put this in every for loop so i made it a abstract\r\n\tpublic inline function loop(onNote:CharterNote->Void, ?onEvent:CharterEvent->Void, ?draggableOnly:Bool = true) {\r\n\t\tfor (s in this) {\r\n\t\t\tif (s is CharterNote && onNote != null && (draggableOnly ? s.draggable: true))\r\n\t\t\t\tonNote(cast s);\r\n\t\t\telse if (s is CharterEvent && onEvent != null && (draggableOnly ? s.draggable: true))\r\n\t\t\t\tonEvent(cast s);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

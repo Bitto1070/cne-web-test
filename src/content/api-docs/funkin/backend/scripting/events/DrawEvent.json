@@ -1,0 +1,8 @@
+{
+	"kind": "final class",
+	"name": "DrawEvent",
+	"pkg": "funkin.backend.scripting.events",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

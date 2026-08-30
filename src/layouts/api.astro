@@ -1,24 +1,162 @@
 ---
 import '../styles/code.css';
 import Page from '../components/Page.astro';
+import { getCollection } from "astro:content";
 
 interface Props {
     title?: string
 }
 
+const entries = await getCollection("api-docs");
+var collection = entries.map((a:any) => a.id);
+collection = collection.filter((a)=>a.includes('/')).concat(collection.filter((a)=>(!a.includes('/'))));
+
+// https://gist.github.com/stephanbogner/4b590f992ead470658a5ebf09167b03d
+function arrangeIntoTree(paths:any[]) {
+    // Adapted from http://brandonclapp.com/arranging-an-array-of-flat-paths-into-a-json-tree-like-structure/
+    var tree:any[] = [];
+
+    for (var i = 0; i < paths.length; i++) {
+        var path = paths[i];
+        var currentLevel = tree;
+        for (var j = 0; j < path.length; j++) {
+            var part = path[j];
+
+            var existingPath = findWhere(currentLevel, 'name', part);
+
+            if (existingPath) {
+                currentLevel = existingPath.children;
+            } else {
+                var newPart = {
+                    name: part,
+                    children: [],
+                }
+
+                currentLevel.push(newPart);
+                currentLevel = newPart.children;
+            }
+        }
+    }
+    return tree;
+
+    function findWhere(array:any, key:any, value:any) {
+        // Adapted from https://stackoverflow.com/questions/32932994/findwhere-from-underscorejs-to-jquery
+        var t = 0; // t is used as a counter
+        while (t < array.length && array[t][key] !== value) { t++; }; // find the index where the id is the as the aValue
+
+        if (t < array.length) {
+            return array[t]
+        } else {
+            return false;
+        }
+    }
+}
+
+var list = arrangeIntoTree(collection.map((a)=>a.split('/')));
+
+function stupid(a:any, root?:string):string {
+    var url = Astro.url.pathname.split('/');
+    while (url.length > 0) {
+        if (a.name == url[0]) {
+             break;
+        }
+        url.shift()
+    }
+    const shouldStartOpen = (url[0] == a.name);
+    
+    if (a.children.length > 0) {
+        return `
+        <div x-data="{show:${shouldStartOpen}}">
+            <div class="panel" style="padding: 2px; margin: 2px; display: flex; align-items: center; justify-content: space-between;">
+                <span data-name="${a.name}" class="what mem" style="font-weight: bold;">${a.name}</span>
+                <img data-name="${a.name}" class="what mem" src="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/'+"img/icons/pixel/menu.png"}" alt="Show/Hide" title="Show/Hide" width="16" height="16" x-on:click="show = !show" style="image-rendering: pixelated; cursor: pointer;"/>
+            </div>
+            <div x-show="show" style="display: flex; flex-direction: column; margin-left: 0.5em; padding-left: 0.5em; border-left: 2px solid var(--primary-color);">
+                ${a.children.map((b:any)=>stupid(b, root+a.name+'/')).join('\n')}
+            </div>
+        </div>
+        `
+    }
+    return `
+    <a data-name="${a.name}" href="${(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/api-docs/'+root+a.name+'/'}" class="what mem${shouldStartOpen ? ' selected' : ''}">
+        ${a.name}
+    </a>
+    `
+}
+
 const { title } = Astro.props;
 ---
+<style is:global>
+    .hidden {
+        display: none !important;
+    }
+    a.what {
+        text-decoration: none;
+        color: var(--text-color);
+        margin: 3px;
+        padding: 2px;
+        border-radius: 3px;
+        overflow-wrap: anywhere;
+        display: flex;
+    }
+    
+    a.what:hover {
+        background: linear-gradient(to right, transparent, var(--primary-color));
+        text-shadow: 1px 1px 2px var(--primary-color);
+    }
+    
+    a.what.selected {
+        background: var(--primary-color);
+        font-weight: bolder;
+    }
 
+    a.what.selected:hover {
+        background: linear-gradient(to right, var(--primary-color), rgb(from var(--primary-color) calc(r * 1.5) calc(g * 1.5) calc(b * 1.5)));
+    }
+</style>
 <Page title={title}>
     <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 12px; width: 100%; align-items: start;">
         <div class="subpanel" style="display: flex; padding: 3px; flex-direction: column; overflow-y: auto; height: calc(100vh - 64px - 36px); position: sticky; top: calc(64px + 12px);">
-            <input type="text" placeholder="Search..."/>
-            <hr style="display: flex; height: 0px; width: 100%;"/>
-            search goes here
-            (ADD THE STUFF LATER)
+            <input type="text" id="input" placeholder="Search..."/>
+            <a href={(import.meta.env.DEV?'':import.meta.env.BASE_URL)+'/api-docs/'} style="text-decoration: none; display: flex; width: 100%;">
+            <button style="margin: 2px; padding: 6px; border-radius: 5px; width: 100%;">
+                🏠 Go to Top Level
+            </button>
+            </a>
+            <hr style="display: flex; height: 0px; width: 90%;"/>
+            <div style="display: flex; flex-direction: column;">  
+            {
+                list[0].children.map((a:any) => <Fragment set:html={stupid(a, 'funkin/')} />)
+            }
+            </div>
         </div>
         <div class="panel">
             <slot/>
         </div>
     </div>
+    <script is:inline>
+        function fuzzy(q, s) {
+            q = q.toLowerCase(); s = s.toLowerCase();
+            if (!q) return true;
+            var i = 0;
+            for (var j = 0; j < s.length && i < q.length; j++) if (s[j] === q[i]) i++;
+            return i === q.length;
+        }
+        document.querySelector("#input").addEventListener("input", function () {
+            var q = this.value.trim();
+            document.querySelectorAll(".what").forEach(function (li) {
+                if (li.parentElement.classList.contains("mem")) return;
+                var cls = li.getAttribute("data-name") || "";
+                var classHit = fuzzy(q, cls);
+                var memberHit = false;
+                li.querySelectorAll(".mem > li").forEach(function (mli) {
+                    var hit = q !== "" && fuzzy(q, mli.getAttribute("data-name") || "");
+                    mli.classList.toggle("mhit", hit);
+                    if (hit) memberHit = true;
+                });
+                li.classList.toggle("hidden", !(classHit || memberHit) && q !== "");
+                li.classList.toggle("expanded", memberHit && q !== "");
+            });
+        });
+    </script>
 </Page>

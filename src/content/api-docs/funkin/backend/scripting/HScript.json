@@ -1,0 +1,223 @@
+{
+	"kind": "class",
+	"name": "HScript",
+	"pkg": "funkin.backend.scripting",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "interp",
+			"type": "Interp",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parser",
+			"type": "Parser",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "expr",
+			"type": "Expr",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "code",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "initParser",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function initParser() {\r\n\t\tvar parser = new Parser();\r\n\t\tparser.allowJSON = parser.allowMetadata = parser.allowTypes = true;\r\n\t\tparser.preprocessorValues = Script.getDefaultPreprocessors();\r\n\t\treturn parser;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onCreate",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onCreate(path:String) {\r\n\t\tsuper.onCreate(path);\r\n\r\n\t\tinterp = new Interp();\r\n\r\n\t\ttry {\r\n\t\t\tif(Assets.exists(rawPath)) code = Assets.getText(rawPath);\r\n\t\t} catch(e) Logs.error('Error while reading $path: ${Std.string(e)}');\r\n\r\n\t\tparser = getParser();\r\n\t\t//folderlessPath = Path.directory(path);\r\n\t\t__importedPaths = [path => true];\r\n\r\n\t\tinterp.errorHandler = _errorHandler;\r\n\t\tinterp.warnHandler = _warnHandler;\r\n\t\tinterp.importFailedCallback = importFailedCallback;\r\n\t\tinterp.staticVariables = Script.staticVariables;\r\n\t\tinterp.allowStaticVariables = interp.allowPublicVariables = true;\r\n\r\n\t\tinterp.variables.set(\"trace\", Reflect.makeVarArgs((args) -> {\r\n\t\t\tvar v:String = Std.string(args.shift());\r\n\t\t\tfor (a in args) v += \", \" + Std.string(a);\r\n\t\t\tthis.trace(v);\r\n\t\t}));\r\n\r\n\t\t#if GLOBAL_SCRIPT\r\n\t\tfunkin.backend.scripting.GlobalScript.call(\"onScriptCreated\", [this, \"hscript\"]);\r\n\t\t#end\r\n\t\tloadFromString(code);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadFromString",
+			"args": [
+				{
+					"name": "code",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function loadFromString(code:String) {\r\n\t\ttry {\r\n\t\t\tif (code != null && code.length > 0)\r\n\t\t\t\texpr = parser.parseString(code, fileName);\r\n\t\t} catch(e:Error) {\r\n\t\t\t_errorHandler(e);\r\n\t\t} catch(e) {\r\n\t\t\t_errorHandler(new Error(ECustom(e.toString()), 0, 0, fileName, 0));\r\n\t\t}\r\n\r\n\t\treturn this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setParent",
+			"args": [
+				{
+					"name": "parent",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function setParent(parent:Dynamic) {\r\n\t\tinterp.scriptObject = parent;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onLoad",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onLoad() {\r\n\t\t@:privateAccess\r\n\t\tinterp.execute(parser.mk(EBlock([]), 0, 0));\r\n\t\tif (expr != null) {\r\n\t\t\tinterp.execute(expr);\r\n\t\t\tcall(\"new\", []);\r\n\t\t}\r\n\r\n\t\t#if GLOBAL_SCRIPT\r\n\t\tfunkin.backend.scripting.GlobalScript.call(\"onScriptSetup\", [this, \"hscript\"]);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function reload() {\r\n\t\t// save variables\r\n\r\n\t\tinterp.allowStaticVariables = interp.allowPublicVariables = false;\r\n\t\tvar savedVariables:Map<String, Dynamic> = [];\r\n\t\tvar defaultVars = Script.getDefaultVariables(this);\r\n\t\tfor(k=>e in interp.variables) {\r\n\t\t\tif (!Reflect.isFunction(e) && !defaultVars.exists(k)) {\r\n\t\t\t\tsavedVariables[k] = e;\r\n\t\t\t}\r\n\t\t}\r\n\t\tvar oldParent = interp.scriptObject;\r\n\t\treturnParser(parser);\r\n\t\tonCreate(path);\r\n\r\n\t\tfor(k=>e in defaultVars)\r\n\t\t\tset(k, e);\r\n\r\n\t\tload();\r\n\t\tsetParent(oldParent);\r\n\r\n\t\tfor(k=>e in savedVariables)\r\n\t\t\tinterp.variables.set(k, e);\r\n\r\n\t\tinterp.allowStaticVariables = interp.allowPublicVariables = true;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "val",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function get(val:String):Dynamic {\r\n\t\treturn interp.variables.get(val);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set",
+			"args": [
+				{
+					"name": "val",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function set(val:String, value:Dynamic) {\r\n\t\tinterp.variables.set(val, value);\r\n\t\t// A runtime-injected variable may shadow a previously-cached VNotFound/type-resolve result, so drop stale cache entries.\r\n\t\tinterp.invalidateCache();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "trace",
+			"args": [
+				{
+					"name": "v",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function trace(v:Dynamic) {\r\n\t\tvar posInfo = interp.posInfos();\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.logText('${fileName}:${posInfo.lineNumber}: ', GREEN),\r\n\t\t\tLogs.logText(Std.isOfType(v, String) ? v : Std.string(v))\r\n\t\t], TRACE);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setPublicMap",
+			"args": [
+				{
+					"name": "map",
+					"type": "Map<String, Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function setPublicMap(map:Map<String, Dynamic>) {\r\n\t\tthis.interp.publicVariables = map;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function destroy() {\r\n\t\treturnParser(parser);\r\n\t\tparser = null;\r\n\t\tinterp = null;\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

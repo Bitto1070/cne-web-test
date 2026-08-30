@@ -1,0 +1,383 @@
+{
+	"kind": "class",
+	"name": "StageElementButton",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "visibilityButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "visibilityIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isHidden",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hasAdvancedEdit",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tagColor",
+			"type": "UISliceSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float,y:Float, xml:Access) {\r\n\t\tthis.xml = xml;\r\n\t\tsuper(x,y, getInfoText(), function () {\r\n\t\t\tonSelect();\r\n\t\t}, StageEditor.SPRITE_WINDOW_WIDTH, StageEditor.SPRITE_WINDOW_BUTTON_HEIGHT);\r\n\t\tautoAlpha = false;\r\n\r\n\t\ttagColor = new UISliceSprite(x, y, 10, StageEditor.SPRITE_WINDOW_BUTTON_HEIGHT, 'editors/ui/button');\r\n\t\ttagColor.alpha = 1; // Make entire sprite transparent\r\n\t\ttagColor.selectable = false;\r\n\t\ttagColor.active = false;\r\n\t\t//members.push(tagColor);\r\n\r\n\t\ttopAlpha = middleAlpha = bottomAlpha = 0.7;\r\n\r\n\t\tfield.alignment = LEFT;\r\n\r\n\t\tvisibilityButton = new UIButton(x+282+17, y, null, function () {\r\n\t\t\tonVisiblityToggle();\r\n\t\t}, 32);\r\n\t\tvisibilityButton.autoAlpha = false;\r\n\t\tmembers.push(visibilityButton);\r\n\r\n\t\tvisibilityIcon = new FlxSprite(visibilityButton.x + 8, visibilityButton.y + 8).loadGraphic(Paths.image('editors/stage/visible-icon'), true, 16, 16);\r\n\t\tvisibilityIcon.animation.add(\"visible\", [0]);\r\n\t\tvisibilityIcon.animation.add(\"invisible\", [1]);\r\n\t\tvisibilityIcon.animation.play(\"visible\");\r\n\t\tvisibilityIcon.antialiasing = false;\r\n\t\tvisibilityIcon.updateHitbox();\r\n\t\tmembers.push(visibilityIcon);\r\n\r\n\t\teditButton = new UIButton(visibilityButton.x+32+17, y, null, function () {\r\n\t\t\tonEdit();\r\n\t\t}, 32);\r\n\t\teditButton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\teditButton.color = FlxColor.YELLOW;\r\n\t\teditButton.autoAlpha = false;\r\n\t\tmembers.push(editButton);\r\n\r\n\t\teditIcon = new FlxSprite(editButton.x + 8, editButton.y + 10).loadGraphic(Paths.image('editors/stage/edit-button'), true, 16, 16);\r\n\t\teditIcon.animation.add(\"edit\", [0]);\r\n\t\teditIcon.animation.add(\"advanced\", [1]);\r\n\t\teditIcon.antialiasing = false;\r\n\t\tmembers.push(editIcon);\r\n\r\n\t\tdeleteButton = new UIButton(editButton.x+32+17, y, null, function () {\r\n\t\t\tonDelete();\r\n\t\t}, 32);\r\n\t\tdeleteButton.color = FlxColor.RED;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + 8, deleteButton.y + 8).loadGraphic(Paths.image('editors/stage/trash-icon'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\r\n\t\tsetEditNormal();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setEditNormal",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setEditNormal() {\r\n\t\teditIcon.animation.play(\"edit\");\r\n\t\teditButton.color = FlxColor.YELLOW;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setEditAdvanced",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setEditAdvanced() {\r\n\t\teditIcon.animation.play(\"advanced\");\r\n\t\teditButton.color = 0xFFFF5B0F;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\teditButton.selectable = visibilityButton.selectable = deleteButton.selectable = selectable;\r\n\t\teditButton.shouldPress = visibilityButton.shouldPress = deleteButton.shouldPress = shouldPress;\r\n\r\n\t\thovered = !deleteButton.hovered;\r\n\t\tupdatePos();\r\n\t\tsuper.update(elapsed);\r\n\t\tfield.x += 12;\r\n\r\n\t\tif(hasAdvancedEdit) {\r\n\t\t\tif(FlxG.keys.pressed.SHIFT) {\r\n\t\t\t\tsetEditAdvanced();\r\n\t\t\t} else {\r\n\t\t\t\tsetEditNormal();\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\ttagColor.color = color;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\t//if(_lastHovered != (_lastHovered = hovered && !pressed)) {\r\n\t\tif(_lastSelected != (_lastSelected = selected)) {\r\n\t\t\tupdateColorTransform();\r\n\t\t}\r\n\t\tsuper.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateColorTransform",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateColorTransform() {\r\n\t\tsuper.updateColorTransform();\r\n\r\n\t\tif(selected) {\r\n\t\t\tuseColorTransform = true;\r\n\t\t\tcolorTransform.setOffsets(70, 70, 70, 0);\r\n\t\t} else {\r\n\t\t\tcolorTransform.setOffsets(0, 0, 0, 0);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateInfo() {\r\n\t\tfield.text = getInfoText();\r\n\r\n\t\tvisibilityIcon.animation.play(isHidden ? \"invisible\" : \"visible\");\r\n\t\tvisibilityIcon.alpha = !isHidden ? 1 : 0.5;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updatePos() {\r\n\t\t// buttons\r\n\t\tvar spacing = 8;\r\n\t\tvar buttonY = y + (bHeight - 32) / 2;\r\n\t\tdeleteButton.x = bWidth - deleteButton.bWidth - spacing;\r\n\t\tdeleteButton.y = buttonY;\r\n\t\teditButton.x = deleteButton.x - editButton.bWidth - spacing;\r\n\t\teditButton.y = buttonY;\r\n\t\tvisibilityButton.x = editButton.x - visibilityButton.bWidth - spacing;\r\n\t\tvisibilityButton.y = buttonY;\r\n\t\t//deleteButton.x = (editButton.x = (visibilityButton.x = (x+282+17))+32+17)+32+17;\r\n\t\t//deleteButton.y = editButton.y = visibilityButton.y = y;\r\n\t\t// icons\r\n\t\tvisibilityIcon.x = visibilityButton.x + 8; visibilityIcon.y = visibilityButton.y + 8;\r\n\t\teditIcon.x = editButton.x + 8; editIcon.y = editButton.y + 8;\r\n\t\tdeleteIcon.x = deleteButton.x + 8; deleteIcon.y = deleteButton.y + 8;\r\n\r\n\t\ttagColor.x = x;// + bWidth - tagColor.bWidth;\r\n\t\ttagColor.y = y;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSprite",
+			"args": [],
+			"ret": "FunkinSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSprite():FunkinSprite {\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "canRender",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function canRender() {\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getName",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getName():String {\r\n\t\treturn \"UNKNOWN\";\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaults",
+			"args": [],
+			"ret": "Map<String, Dynamic>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getDefaults():Map<String, Dynamic> {\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPointAttributes",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getPointAttributes():Array<String> {\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAttributeOrder",
+			"args": [],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getAttributeOrder():Array<String> {\r\n\t\treturn [\"name\"];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSelect",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onSelect() {\r\n\t\t// TODO: implement\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onVisiblityToggle",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onVisiblityToggle() {\r\n\t\t// TODO: implement\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onEdit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onEdit() {\r\n\t\t// TODO: implement\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onDelete",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onDelete() {\r\n\t\t// TODO: implement\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPos",
+			"args": [],
+			"ret": "FlxPoint",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getPos():FlxPoint {\r\n\t\treturn FlxPoint.get(-1, -1);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getInfoText",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getInfoText():String {\r\n\t\tvar pos = getPos();\r\n\t\tvar text = '${getName()} (${CoolUtil.quantize(pos.x, 100)}, ${CoolUtil.quantize(pos.y, 100)})';\r\n\t\tvar sprite = getSprite();\r\n\t\tif(sprite != null) {\r\n\t\t\tvar scaleText = TU.getRaw(\"stageElement.scale\");\r\n\t\t\tvar scrollText = TU.getRaw(\"stageElement.scroll\");\r\n\t\t\ttext += '\\n${scaleText.format([CoolUtil.quantize(sprite.scale.x, 100), CoolUtil.quantize(sprite.scale.y, 100)])}';\r\n\t\t\ttext += '\\n${scrollText.format([CoolUtil.quantize(sprite.scrollFactor.x, 100), CoolUtil.quantize(sprite.scrollFactor.y, 100)])}';\r\n\t\t}\r\n\t\tpos.put();\r\n\t\treturn text;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cleanupXML",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function cleanupXML() {\r\n\t\tvar defaults = getDefaults();\r\n\t\tvar queuedPoints = [];\r\n\t\txml.x.attributeOrder = getAttributeOrder();\r\n\t\tfor (a in xml.x.attributes()) {\r\n\t\t\tvar attribIsPoint:Bool = isPoint(a);\r\n\t\t\tvar attrib = attribIsPoint ? a.substring(0, a.length - 1) : a;\r\n\r\n\t\t\tvar def:Dynamic = defaults[attrib];\r\n\t\t\tdef = def is Bool ? Std.string(def) : def;\r\n\r\n\t\t\tvar value:Dynamic = def is Float ? Std.parseFloat(xml.x.get(attrib)) : xml.x.get(attrib);\r\n\t\t\tif (value == def || (def is Float && Math.abs(def - value) < 0.001)) {\r\n\t\t\t\tif (!attribIsPoint || queuedPoints.contains(attrib))\r\n\t\t\t\t\txml.x.remove(a);\r\n\t\t\t\telse\r\n\t\t\t\t\tqueuedPoints.push(attrib);\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isPoint",
+			"args": [
+				{
+					"name": "attrib",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function isPoint(attrib:String):Bool {\r\n\t\tvar lastChar = attrib.charCodeAt(attrib.length - 1);\r\n\t\tvar points = getPointAttributes();\r\n\t\treturn (lastChar == 'x'.code || lastChar == 'y'.code) && points.contains(attrib.substring(0, attrib.length - 1));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

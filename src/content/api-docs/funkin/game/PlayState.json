@@ -1,0 +1,2708 @@
+{
+	"kind": "class",
+	"name": "PlayState",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [
+		"@:access(flixel.text.FlxText.FlxTextFormatRange)",
+		"@:access(funkin.game.StrumLine)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "PlayState",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current PlayState instance.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "SONG",
+			"type": "ChartData",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "SONG DATA (Chart, Metadata).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isStoryMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Whenever the song is being played in Story Mode.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storyWeek",
+			"type": "WeekData",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "The week data of the current week",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storyPlaylist",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "The remaining songs in the Story Mode playlist.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storyVariations",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "The remaining variations to play with the Story Mode",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficulty",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "The selected difficulty name.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "variation",
+			"type": "Null<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "The selected variation name. (It can be null)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fromMods",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Whenever the week is coming from the mods folder or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "chartingMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Whenever Charting Mode is enabled for this song.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "opponentMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Whenever the song is started with opponent mode on.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "coopMode",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Whenever the song is started with co-op mode on.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scripts",
+			"type": "ScriptPack",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Script Pack of all the scripts being ran.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLines",
+			"type": "FlxTypedGroup<StrumLine>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array of all the players in the stage.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deathCounter",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Death counter on current week (or song if from freeplay).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gameOverSong",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Game Over Song. (assets/music/gameOver.ogg).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lossSFX",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Game Over Song. (assets/sounds/gameOverSFX.ogg).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "retrySFX",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Game Over End SFX, used when retrying. (assets/sounds/gameOverEnd.ogg).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stage",
+			"type": "Stage",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current Stage.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "validScore",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the score will save when you beat the song.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canDie",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the player can die.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostTapping",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever Ghost Tapping is enabled.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canDadDie",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the opponent can die.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeed",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current scroll speed for all strums.\nTo set a scroll speed for a specific strum, use `strum.scrollSpeed`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "downscroll",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the game is in downscroll or not. (Can be set)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "inst",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Instrumental sound (Inst.ogg).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vocals",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Vocals sound (Vocals.ogg).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dad",
+			"type": "Character",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Dad character.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gf",
+			"type": "Character",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Girlfriend character.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "boyfriend",
+			"type": "Character",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Boyfriend character.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bf",
+			"type": "Character",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Boyfriend character.\nSame as boyfriend, just shorter.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "FlxObject",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Strum line position.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingNum",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Number of ratings.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camFollow",
+			"type": "FlxObject",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Object defining the camera follow target.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraFocusOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Point defining the camera follow offset.\nUsed for the \"Camera Movement\" event.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playerStrums",
+			"type": "StrumLine",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Player strums.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cpuStrums",
+			"type": "StrumLine",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "CPU strums.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "player",
+			"type": "StrumLine",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Shortcut to `playerStrums`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cpu",
+			"type": "StrumLine",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Shortcut to `cpuStrums`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "splashHandler",
+			"type": "SplashHandler",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note splashes container.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "muteVocalsOnMiss",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the vocals should be muted when a note is missed.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canAccessDebugMenus",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the player can press 7, 8 or 9 to access the debug menus.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "allowGitaroo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether or not to show the secret gitaroo pause.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "doIconBop",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether or not to bop the icons on beat.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSong",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current song name (lowercase).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSongID",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current song name (lowercase and spaces to dashes).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curStage",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Current stage name.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gfSpeed",
+			"type": "Int",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Interval at which Girlfriend dances.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "health",
+			"type": "Float",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Current health. Goes from 0 to maxHealth (defaults to 2).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "maxHealth",
+			"type": "Float",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Maximum health the player can have. Defaults to 2.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "combo",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current combo.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "comboBreaks",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the misses should show \"Combo Breaks\" instead of \"Misses\".",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthBarBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Health bar background.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthBar",
+			"type": "FlxBar",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Health bar.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "generatedMusic",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the music has been generated.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startingSong",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the song is currently being started.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconP1",
+			"type": "HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Player's icon.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconP2",
+			"type": "HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Opponent's icon.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconArray",
+			"type": "Array<HealthIcon>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Every active icon that will be updated during gameplay (defaults to `iconP1` and `iconP1` between `create` and `postCreate` in scripts).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camHUD",
+			"type": "HudCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Camera for the HUD (notes, misses).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camGame",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Camera for the game (stages, characters).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songScore",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The player's current score.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "misses",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The player's amount of misses.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accuracy",
+			"type": "Float",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "The player's accuracy (shortcut to `accuracyPressedNotes / totalAccuracyAmount`).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accuracyPressedNotes",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The number of pressed notes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "totalAccuracyAmount",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The total accuracy amount.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hits",
+			"type": "Map<String, Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Tracks how much of each rating was received.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scoreTxt",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "FunkinText that shows your score.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "missesTxt",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "FunkinText that shows your amount of misses.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accuracyTxt",
+			"type": "FunkinText",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "FunkinText that shows your accuracy.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "campaignScore",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Score for the current week.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "campaignMisses",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Misses for the current week.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "campaignAccuracy",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Accuracy for the current week.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "campaignAccuracyTotal",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "campaignAccuracyCount",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "campaignHits",
+			"type": "Map<String, Int>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Number of each rating received for the current week.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultCamZoom",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Camera zoom at which the game lerps to.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camGameZoomLerp",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Speed at which the game camera zoom lerps to.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camGameZoomMult",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The current multiplier for game camera zooming.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultHudZoom",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Camera zoom at which the hud lerps to.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camHUDZoomLerp",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Speed at which the hud camera zoom lerps to.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camHUDZoomMult",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The current multiplier for game camera zooming.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultZoom",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Camera zoom at which the cameras that zooms lerps to.\n(Only used if useCamZoomMult is on).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomLerp",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Speed at which the cameras that zooms zoom lerps to.\n(Only used if useCamZoomMult is on).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZooming",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever cam zooming is enabled, enables on a note hit if not cancelled.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomingInterval",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Interval of cam zooming (in conductor values).\nExample: If Interval is 1 and Beat Type is on MEASURE, it'll zoom every a measure.\nNOTE: Will set to 4 if not found any other time signatures unlike 4/4.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomingOffset",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Number of Conductor values to offset camZooming by.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomingEvery",
+			"type": "BeatType",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Beat type for interval of cam zooming.\nExample: If Beat Type is on STEP and Interval is 2, it'll zoom every 2 steps.\nNOTE: Will set to BEAT if not found any other time signatures unlike 4/4.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomingLastBeat",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Stores what was the last beat for the cam zooming intervals.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomingStrength",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "How strong the cam zooms should be (defaults to 1).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "maxCamZoomMult",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Default multiplier for `maxCamZoom`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "useCamZoomMult",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether it should use a implementation where it multiplies the current camera zoom instead.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camZoomingMult",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The current multiplier for camera zooming.\n(Only used if useCamZoomMult is on).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "maxCamZoom",
+			"type": "Float",
+			"access": "get, default",
+			"isStatic": false,
+			"doc": {
+				"text": "Maximum amount of zoom for the camera (based on `maxCamZoomMult` and the camera's zoom IF not set).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "daPixelZoom",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Zoom for the pixel assets.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "inCutscene",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the game is currently in a cutscene or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playCutscenes",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the game should play the cutscenes. Defaults to whenever the game is currently in Story Mode or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "seenCutscene",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Whenever the game has already played a specific cutscene for the current song. Check `startCutscene` for more details.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cutscene",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Cutscene script path.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "endCutscene",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "End cutscene script path.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curRating",
+			"type": "ComboRating",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Last rating (may be null).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startTimer",
+			"type": "FlxTimer",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Timer for the start countdown.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "events",
+			"type": "Array<ChartEvent>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Remaining events.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curCameraTarget",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current camera target. -1 means no automatic camera targeting.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "introLength",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Length of the intro countdown.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "introSprites",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array of sprites for the intro.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "introSounds",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array of sounds for the intro.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "paused",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the game is paused or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startedCountdown",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the countdown has started or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canPause",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the game can be paused or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accFormat",
+			"type": "FlxTextFormat",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Format for the accuracy rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "endingSong",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the song is ending or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "comboGroup",
+			"type": "RotatingSpriteGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Group containing all of the combo sprites.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingManager",
+			"type": "RatingManager",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Manager that helps judge note hits to return ratings.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultDisplayRating",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Rating sprites should be shown or not.\n\nNOTE: This is just a default value for the final value, the final value can be changed through notes hit events.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultDisplayCombo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Combo sprite should be shown or not (like old Week 7 patches).\n\nNOTE: This is just a default value for the final value, the final value can be changed through notes hit events.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "minDigitDisplay",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Minimum Combo Count to display the combo digits. Anything less than 0 means it won't be shown.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteTypesArray",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all of the note types names.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hitWindow",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Hit window, in milliseconds. A Legacy CNE Hit window configuration,\nDon't use this, it's for mods that still uses the old judgement timing, instead use ratingManager.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "comboRatings",
+			"type": "Array<ComboRating>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "All combo ratings.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "detailsText",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "detailsPausedText",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateRating",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateRating() {\r\n\t\tvar rating = null;\r\n\t\tvar acc = accuracy;  // caching since it has a getter with an operation  - Nex\r\n\r\n\t\tif (comboRatings != null && comboRatings.length > 0) for (e in comboRatings)\r\n\t\t\tif ((e.percent <= acc && e.maxMisses >= misses) && (rating == null || (rating.percent < e.percent && e.maxMisses >= misses)))\r\n\t\t\t\trating = e;\r\n\r\n\t\tvar event = gameAndCharsEvent(\"onRatingUpdate\", EventManager.get(RatingUpdateEvent).recycle(rating, curRating));\r\n\t\tif (!event.cancelled)\r\n\t\t\tcurRating = event.rating;\r\n\t}",
+			"doc": {
+				"text": "Updates the rating.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "callOnCharacters",
+			"args": [
+				{
+					"name": "func",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parameters",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function callOnCharacters(func:String, ?parameters:Array<Dynamic>) {\r\n\t\tif(strumLines != null) strumLines.forEachAlive(function (strLine:StrumLine) {\r\n\t\t\tif (strLine.characters != null) for (character in strLine.characters)\r\n\t\t\t\tif (character != null) character.scripts.call(func, parameters);\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "gameAndCharsCall",
+			"args": [
+				{
+					"name": "func",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parameters",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "charsFunc",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function gameAndCharsCall(func:String, ?parameters:Array<Dynamic>, ?charsFunc:String) {\r\n\t\tscripts.call(func, parameters);\r\n\t\tcallOnCharacters(charsFunc != null ? charsFunc : func, parameters);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "gameAndCharsEvent",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function gameAndCharsEvent<T:CancellableEvent>(func:String, ?event:T, ?charsFunc:String):T {\r\n\t\tscripts.event(func, event);\r\n\t\tcallOnCharacters(charsFunc != null ? charsFunc : func, [event]);\r\n\t\treturn event;\r\n\t}\r\n\r\n\t@:dox(hide) override public function create()\r\n\t{\r\n\t\tNote.__customNoteTypeExists = [];\r\n\r\n\t\t// SCRIPTING & DATA INITIALIZATION\r\n\t\t#if REGION\r\n\t\tinstance = this;\r\n\t\tif (FlxG.sound.music != null) FlxG.sound.music.stop();\r\n\r\n\t\tPauseSubState.script = Flags.DEFAULT_PAUSE_SCRIPT;\r\n\t\tGameOverSubstate.script = Flags.DEFAULT_GAMEOVER_SCRIPT;\r\n\t\t(scripts = new ScriptPack(\"PlayState\")).setParent(this);\r\n\r\n\t\tcamGame = camera;\r\n\t\tFlxG.cameras.add(camHUD = new HudCamera(), false);\r\n\t\tcamHUD.bgColor.alpha = 0;\r\n\r\n\t\tdownscroll = Options.downscroll;\r\n\r\n\t\tpersistentUpdate = true;\r\n\t\tpersistentDraw = true;\r\n\r\n\t\tif (SONG == null)\r\n\t\t\tSONG = Chart.parse('tutorial', difficulty = 'normal', variation = null);\r\n\r\n\t\tscrollSpeed = SONG.scrollSpeed;\r\n\r\n\t\tConductor.setupSong(SONG);\r\n\r\n\t\tdetailsText = isStoryMode ? (\"Story Mode: \" + storyWeek.name) : \"Freeplay\";\r\n\r\n\t\tfor (rating in [for (i in ratingManager.ratingData) i.name]) hits.set(rating, 0); // Ensure all keys exist as to prevent null errors.\r\n\t\tif (Options.ghostTapping) {\r\n\t\t\tcomboBreaks = false;\r\n\t\t\tfor (rating in ratingManager.ratingData)\r\n\t\t\t\tcomboBreaks = comboBreaks || rating.breaksCombo;\r\n\t\t} else\r\n\t\t\tcomboBreaks = true;\r\n\t\tratingManager.onRatingAdded.add(onRatingChange);\r\n\t\tratingManager.onRatingRemoved.add(onRatingChange);\r\n\r\n\t\t// Checks if cutscene files exists\r\n\t\tvar cutscenePath = Paths.script('songs/${SONG.meta.name}/cutscene');\r\n\t\tvar endCutscenePath = Paths.script('songs/${SONG.meta.name}/cutscene-end');\r\n\t\tif (Assets.exists(cutscenePath)) cutscene = cutscenePath;\r\n\t\tif (Assets.exists(endCutscenePath)) endCutscene = endCutscenePath;\r\n\r\n\t\t// String for when the game is paused\r\n\t\tdetailsPausedText = \"Paused - \" + detailsText;\r\n\t\t#end\r\n\r\n\t\t// CHARACTER INITIALIZATION\r\n\t\t#if REGION\r\n\t\tcomboGroup = new RotatingSpriteGroup(FlxG.width * 0.55, (FlxG.height * 0.5) - 60);\r\n\t\tcomboGroup.maxSize = Flags.DEFAULT_COMBO_GROUP_MAX_SIZE;\r\n\t\t#end\r\n\r\n\t\t// CAMERA FOLLOW, SCRIPTS & STAGE INITIALIZATION\r\n\t\t#if REGION\r\n\t\tcamFollow = new FlxObject(0, 0, 2, 2);\r\n\t\tadd(camFollow);\r\n\r\n\t\tcameraFocusOffset = FlxPoint.get();\r\n\r\n\t\tif (SONG.stage == null || SONG.stage.trim() == \"\") SONG.stage = Flags.DEFAULT_STAGE;\r\n\t\tadd(stage = new Stage(SONG.stage));\r\n\r\n\t\tif (!chartingMode || Options.charterEnablePlaytestScripts) {\r\n\t\t\tswitch(SONG.meta.name) {\r\n\t\t\t\t// case \"\":\r\n\t\t\t\t\t// ADD YOUR HARDCODED SCRIPTS HERE!\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tvar normal = 'songs/${SONG.meta.name}/scripts';\r\n\t\t\t\t\tvar scriptsFolders:Array<String> = [normal, normal + '/$difficulty/', 'data/charts/', 'songs/'];\r\n\r\n\t\t\t\t\tfor (folder in scriptsFolders) {\r\n\t\t\t\t\t\tfor (file in Paths.getFolderContent(folder, true, fromMods ? MODS : BOTH)) {\r\n\t\t\t\t\t\t\tif (folder == 'data/charts/')\r\n\t\t\t\t\t\t\t\tLogs.warn('data/charts/ is deprecated and will be removed in the future. Please move script $file to songs/', DARKYELLOW, \"PlayState\");\r\n\r\n\t\t\t\t\t\t\taddScript(file);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tvar songEvents:Array<String> = [];\r\n\t\t\t\t\tfor (event in SONG.events) songEvents.pushOnce(event.name);\r\n\r\n\t\t\t\t\tfor (file in Paths.getFolderContent('data/events/', true, fromMods ? MODS : BOTH)) {\r\n\t\t\t\t\t\tvar fileName:String = CoolUtil.getFilename(file);\r\n\t\t\t\t\t\tif (EventsData.eventsList.contains(fileName) && songEvents.contains(fileName)) {\r\n\t\t\t\t\t\t\taddScript(file);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tadd(comboGroup);\r\n\t\t#end\r\n\r\n\t\t// PRECACHING\r\n\t\t#if REGION\r\n\t\tfor(content in Paths.getFolderContent('images/game/score/', true, BOTH))\r\n\t\t\tgraphicCache.cache(Paths.getPath(content));\r\n\r\n\t\tfor(i in 1...4) {\r\n\t\t\tFlxG.sound.load(Paths.sound('missnote' + Std.string(i)));\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\t// STRUMS & NOTES INITIALIZATION\r\n\t\t#if REGION\r\n\t\tstrumLine = new FlxObject(0, 50, FlxG.width, 10);\r\n\t\tstrumLine.scrollFactor.set();\r\n\r\n\t\tgenerateSong(SONG);\r\n\r\n\t\tfor(noteType in SONG.noteTypes) {\r\n\t\t\tvar scriptPath = Paths.script('data/notes/${noteType}');\r\n\t\t\tif (Assets.exists(scriptPath) && !scripts.contains(scriptPath)) {\r\n\t\t\t\tvar script = Script.create(scriptPath);\r\n\t\t\t\tif (!(script is DummyScript)) {\r\n\t\t\t\t\tscripts.add(script);\r\n\t\t\t\t\tscript.load();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfor(i=>strumLine in SONG.strumLines) {\r\n\t\t\tif (strumLine == null) continue;\r\n\r\n\t\t\tvar chars = [];\r\n\t\t\tvar charPosName:String = strumLine.position == null ? (switch(strumLine.type) {\r\n\t\t\t\tcase 0: \"dad\";\r\n\t\t\t\tcase 1: \"boyfriend\";\r\n\t\t\t\tcase 2: \"girlfriend\";\r\n\t\t\t}) : strumLine.position;\r\n\t\t\tif (strumLine.characters != null) for(k=>charName in strumLine.characters) {\r\n\t\t\t\tvar char = new Character(0, 0, charName, stage.isCharFlipped(stage.characterPoses[charName] != null ? charName : charPosName, strumLine.type == 1));\r\n\t\t\t\tstage.applyCharStuff(char, charPosName, k);\r\n\t\t\t\tchars.push(char);\r\n\t\t\t}\r\n\r\n\t\t\tvar strOffset:Float = strumLine.strumLinePos != null ? strumLine.strumLinePos : (strumLine.type == 1 ? 0.75 : 0.25);\r\n\t\t\tvar strScale:Float = strumLine.strumScale != null ? strumLine.strumScale : 1;\r\n\t\t\tvar strSpacing:Float = strumLine.strumSpacing == null ? 1 : strumLine.strumSpacing;\r\n\t\t\tvar keyCount:Int = strumLine.keyCount == null ? 4 : strumLine.keyCount;\r\n\t\t\tvar strXPos:Float = StrumLine.calculateStartingXPos(strOffset, strScale, strSpacing, keyCount);\r\n\t\t\tvar startingPos:FlxPoint = strumLine.strumPos != null ?\r\n\t\t\t\tFlxPoint.get(strumLine.strumPos[0] == 0 ? strXPos : strumLine.strumPos[0], strumLine.strumPos[1]) :\r\n\t\t\t\tFlxPoint.get(strXPos, this.strumLine.y);\r\n\t\t\tvar strLine = new StrumLine(chars,\r\n\t\t\t\tstartingPos,\r\n\t\t\t\tstrumLine.strumScale == null ? 1 : strumLine.strumScale,\r\n\t\t\t\tstrumLine.type == 2 || (!coopMode && !((strumLine.type == 1 && !opponentMode) || (strumLine.type == 0 && opponentMode))),\r\n\t\t\t\tstrumLine.type != 1, coopMode ? ((strumLine.type == 1) != opponentMode ? controlsP1 : controlsP2) : controls,\r\n\t\t\t\tstrumLine.vocalsSuffix\r\n\t\t\t);\r\n\t\t\tstrLine.cameras = [camHUD];\r\n\t\t\tstrLine.data = strumLine;\r\n\t\t\tstrLine.visible = (strumLine.visible != false);\r\n\t\t\tstrLine.vocals.group = FlxG.sound.defaultMusicGroup;\r\n\t\t\tstrLine.ID = i;\r\n\t\t\tstrumLines.add(strLine);\r\n\t\t}\r\n\r\n\t\tadd(strumLines);\r\n\r\n\t\tsplashHandler = new SplashHandler();\r\n\t\tadd(splashHandler);\r\n\r\n\t\tscripts.set(\"SONG\", SONG);\r\n\t\tscripts.load();\r\n\t\tscripts.call(\"create\");\r\n\t\t#end\r\n\r\n\t\t// HUD INITIALIZATION & CAMERA INITIALIZATION\r\n\t\t#if REGION\r\n\t\tvar event = EventManager.get(AmountEvent).recycle(null);\r\n\t\tif (!gameAndCharsEvent(\"onPreGenerateStrums\", event).cancelled) {\r\n\t\t\tgenerateStrums(event.amount);\r\n\t\t\tgameAndCharsEvent(\"onPostGenerateStrums\", event);\r\n\t\t}\r\n\r\n\t\tfor(str in strumLines)\r\n\t\t\tstr.generate(str.data, (chartingMode && Charter.startHere) ? Charter.startTime : null);\r\n\r\n\t\tFlxG.camera.follow(camFollow, LOCKON, Flags.DEFAULT_CAMERA_FOLLOW_SPEED);\r\n\t\tFlxG.camera.zoom = defaultCamZoom;\r\n\t\t// camHUD.zoom = defaultHudZoom;\r\n\r\n\t\tif (smoothTransitionData != null && smoothTransitionData.stage == curStage) {\r\n\t\t\tFlxG.camera.scroll.set(smoothTransitionData.camX, smoothTransitionData.camY);\r\n\t\t\tFlxG.camera.zoom = smoothTransitionData.camZoom;\r\n\t\t\tMusicBeatState.skipTransIn = true;\r\n\t\t\tcamFollow.setPosition(smoothTransitionData.camFollowX, smoothTransitionData.camFollowY);\r\n\t\t} else {\r\n\t\t\tFlxG.camera.focusOn(camFollow.getPosition(FlxPoint.weak()));\r\n\t\t}\r\n\t\tsmoothTransitionData = null;\r\n\r\n\t\tFlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);\r\n\r\n\t\thealthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadAnimatedGraphic(Paths.image('game/healthBar'));\r\n\t\thealthBarBG.screenCenter(X);\r\n\t\thealthBarBG.scrollFactor.set();\r\n\t\tadd(healthBarBG);\r\n\r\n\t\thealthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,\r\n\t\t\t'health', 0, maxHealth);\r\n\t\thealthBar.scrollFactor.set();\r\n\t\tvar leftColor:Int = dad != null && dad.iconColor != null && Options.colorHealthBar ? dad.iconColor : (opponentMode ? 0xFF66FF33 : 0xFFFF0000);\r\n\t\tvar rightColor:Int = boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar ? boyfriend.iconColor : (opponentMode ? 0xFFFF0000 : 0xFF66FF33); // switch the colors\r\n\t\thealthBar.createFilledBar(leftColor, rightColor);\r\n\t\tadd(healthBar);\r\n\r\n\t\tif (Flags.DEFAULT_HEALTH != null) health = Flags.DEFAULT_HEALTH;\r\n\t\telse health = maxHealth / 2;\r\n\r\n\t\ticonArray.push(iconP1 = new HealthIcon(boyfriend != null ? boyfriend.getIcon() : Flags.DEFAULT_HEALTH_ICON, true));\r\n\t\ticonArray.push(iconP2 = new HealthIcon(dad != null ? dad.getIcon() : Flags.DEFAULT_HEALTH_ICON, false));\r\n\t\tfor (icon in iconArray) {\r\n\t\t\ticon.y = healthBar.y - (icon.height / 2);\r\n\t\t\tadd(icon);\r\n\t\t}\r\n\r\n\t\tscoreTxt = new FunkinText(healthBarBG.x + 50, healthBarBG.y + 30, Std.int(healthBarBG.width - 100), TEXT_GAME_SCORE.format([songScore]), 16);\r\n\t\tmissesTxt = new FunkinText(healthBarBG.x + 50, healthBarBG.y + 30, Std.int(healthBarBG.width - 100), TEXT_GAME_MISSES.format([misses]), 16);\r\n\t\taccuracyTxt = new FunkinText(healthBarBG.x + 50, healthBarBG.y + 30, Std.int(healthBarBG.width - 100), TEXT_GAME_ACCURACY.format([\"-%\", \"(N/A)\"]), 16);\r\n\t\taccuracyTxt.addFormat(accFormat, 0, 1);\r\n\r\n\t\tfor(text in [scoreTxt, missesTxt, accuracyTxt]) {\r\n\t\t\ttext.scrollFactor.set();\r\n\t\t\tadd(text);\r\n\t\t}\r\n\t\tscoreTxt.alignment = RIGHT;\r\n\t\tmissesTxt.alignment = CENTER;\r\n\t\taccuracyTxt.alignment = LEFT;\r\n\t\tif (updateRatingStuff != null)\r\n\t\t\tupdateRatingStuff();\r\n\r\n\t\tfor(e in [healthBar, healthBarBG, iconP1, iconP2, scoreTxt, missesTxt, accuracyTxt])\r\n\t\t\te.cameras = [camHUD];\r\n\t\t#end\r\n\r\n\t\tstartingSong = true;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfor(s in introSprites)\r\n\t\t\tif (s != null)\r\n\t\t\t\tgraphicCache.cache(Paths.image(s));\r\n\r\n\t\tfor(s in introSounds)\r\n\t\t\tif (s != null)\r\n\t\t\t\tFlxG.sound.load(Paths.sound(s));\r\n\r\n\t\tif (chartingMode) {\r\n\t\t\tWindowUtils.prefix = Charter.undos.unsaved ? Flags.UNDO_PREFIX : \"\";\r\n\t\t\tWindowUtils.suffix = TU.translate(\"playtesting.chartPlaytesting\");\r\n\r\n\t\t\tSaveWarning.showWarning = Charter.undos.unsaved;\r\n\t\t\tSaveWarning.selectionClass = CharterSelection;\r\n\t\t\tSaveWarning.warningFunc = saveWarn;\r\n\t\t\tSaveWarning.saveFunc = () -> Charter.saveEverything(false);\r\n\t\t}\r\n\t}\r\n\r\n\t@:dox(hide) public override function createPost() {\r\n\t\tstartCutscene(\"\", cutscene, null, true);\r\n\t\tsuper.createPost();\r\n\r\n\t\tupdateDiscordPresence();\r\n\r\n\t\t// Make icons appear in the correct spot during cutscenes\r\n\t\thealthBar.update(0);\r\n\t\tif (updateIconPositions != null && Flags.ICONS_AUTOPOSITION)\r\n\t\t\tupdateIconPositions();\r\n\r\n\t\t__updateNote_event = EventManager.get(NoteUpdateEvent);\r\n\r\n\t\tgameAndCharsCall(\"postCreate\", null, \"gamePostCreate\");\r\n\t}\r\n\r\n\t/**\r\n\t * Function used to update Discord Presence.\r\n\t *\r\n\t * This function is dynamic, which means you can do `updateDiscordPresence = function() {}` in scripts.\r\n\t */\r\n\tpublic dynamic function updateDiscordPresence()\r\n\t\tDiscordUtil.call(\"onPlayStateUpdate\", []);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) override public function create()\r\n\t{\r\n\t\tNote.__customNoteTypeExists = [];\r\n\r\n\t\t// SCRIPTING & DATA INITIALIZATION\r\n\t\t#if REGION\r\n\t\tinstance = this;\r\n\t\tif (FlxG.sound.music != null) FlxG.sound.music.stop();\r\n\r\n\t\tPauseSubState.script = Flags.DEFAULT_PAUSE_SCRIPT;\r\n\t\tGameOverSubstate.script = Flags.DEFAULT_GAMEOVER_SCRIPT;\r\n\t\t(scripts = new ScriptPack(\"PlayState\")).setParent(this);\r\n\r\n\t\tcamGame = camera;\r\n\t\tFlxG.cameras.add(camHUD = new HudCamera(), false);\r\n\t\tcamHUD.bgColor.alpha = 0;\r\n\r\n\t\tdownscroll = Options.downscroll;\r\n\r\n\t\tpersistentUpdate = true;\r\n\t\tpersistentDraw = true;\r\n\r\n\t\tif (SONG == null)\r\n\t\t\tSONG = Chart.parse('tutorial', difficulty = 'normal', variation = null);\r\n\r\n\t\tscrollSpeed = SONG.scrollSpeed;\r\n\r\n\t\tConductor.setupSong(SONG);\r\n\r\n\t\tdetailsText = isStoryMode ? (\"Story Mode: \" + storyWeek.name) : \"Freeplay\";\r\n\r\n\t\tfor (rating in [for (i in ratingManager.ratingData) i.name]) hits.set(rating, 0); // Ensure all keys exist as to prevent null errors.\r\n\t\tif (Options.ghostTapping) {\r\n\t\t\tcomboBreaks = false;\r\n\t\t\tfor (rating in ratingManager.ratingData)\r\n\t\t\t\tcomboBreaks = comboBreaks || rating.breaksCombo;\r\n\t\t} else\r\n\t\t\tcomboBreaks = true;\r\n\t\tratingManager.onRatingAdded.add(onRatingChange);\r\n\t\tratingManager.onRatingRemoved.add(onRatingChange);\r\n\r\n\t\t// Checks if cutscene files exists\r\n\t\tvar cutscenePath = Paths.script('songs/${SONG.meta.name}/cutscene');\r\n\t\tvar endCutscenePath = Paths.script('songs/${SONG.meta.name}/cutscene-end');\r\n\t\tif (Assets.exists(cutscenePath)) cutscene = cutscenePath;\r\n\t\tif (Assets.exists(endCutscenePath)) endCutscene = endCutscenePath;\r\n\r\n\t\t// String for when the game is paused\r\n\t\tdetailsPausedText = \"Paused - \" + detailsText;\r\n\t\t#end\r\n\r\n\t\t// CHARACTER INITIALIZATION\r\n\t\t#if REGION\r\n\t\tcomboGroup = new RotatingSpriteGroup(FlxG.width * 0.55, (FlxG.height * 0.5) - 60);\r\n\t\tcomboGroup.maxSize = Flags.DEFAULT_COMBO_GROUP_MAX_SIZE;\r\n\t\t#end\r\n\r\n\t\t// CAMERA FOLLOW, SCRIPTS & STAGE INITIALIZATION\r\n\t\t#if REGION\r\n\t\tcamFollow = new FlxObject(0, 0, 2, 2);\r\n\t\tadd(camFollow);\r\n\r\n\t\tcameraFocusOffset = FlxPoint.get();\r\n\r\n\t\tif (SONG.stage == null || SONG.stage.trim() == \"\") SONG.stage = Flags.DEFAULT_STAGE;\r\n\t\tadd(stage = new Stage(SONG.stage));\r\n\r\n\t\tif (!chartingMode || Options.charterEnablePlaytestScripts) {\r\n\t\t\tswitch(SONG.meta.name) {\r\n\t\t\t\t// case \"\":\r\n\t\t\t\t\t// ADD YOUR HARDCODED SCRIPTS HERE!\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tvar normal = 'songs/${SONG.meta.name}/scripts';\r\n\t\t\t\t\tvar scriptsFolders:Array<String> = [normal, normal + '/$difficulty/', 'data/charts/', 'songs/'];\r\n\r\n\t\t\t\t\tfor (folder in scriptsFolders) {\r\n\t\t\t\t\t\tfor (file in Paths.getFolderContent(folder, true, fromMods ? MODS : BOTH)) {\r\n\t\t\t\t\t\t\tif (folder == 'data/charts/')\r\n\t\t\t\t\t\t\t\tLogs.warn('data/charts/ is deprecated and will be removed in the future. Please move script $file to songs/', DARKYELLOW, \"PlayState\");\r\n\r\n\t\t\t\t\t\t\taddScript(file);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tvar songEvents:Array<String> = [];\r\n\t\t\t\t\tfor (event in SONG.events) songEvents.pushOnce(event.name);\r\n\r\n\t\t\t\t\tfor (file in Paths.getFolderContent('data/events/', true, fromMods ? MODS : BOTH)) {\r\n\t\t\t\t\t\tvar fileName:String = CoolUtil.getFilename(file);\r\n\t\t\t\t\t\tif (EventsData.eventsList.contains(fileName) && songEvents.contains(fileName)) {\r\n\t\t\t\t\t\t\taddScript(file);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tadd(comboGroup);\r\n\t\t#end\r\n\r\n\t\t// PRECACHING\r\n\t\t#if REGION\r\n\t\tfor(content in Paths.getFolderContent('images/game/score/', true, BOTH))\r\n\t\t\tgraphicCache.cache(Paths.getPath(content));\r\n\r\n\t\tfor(i in 1...4) {\r\n\t\t\tFlxG.sound.load(Paths.sound('missnote' + Std.string(i)));\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\t// STRUMS & NOTES INITIALIZATION\r\n\t\t#if REGION\r\n\t\tstrumLine = new FlxObject(0, 50, FlxG.width, 10);\r\n\t\tstrumLine.scrollFactor.set();\r\n\r\n\t\tgenerateSong(SONG);\r\n\r\n\t\tfor(noteType in SONG.noteTypes) {\r\n\t\t\tvar scriptPath = Paths.script('data/notes/${noteType}');\r\n\t\t\tif (Assets.exists(scriptPath) && !scripts.contains(scriptPath)) {\r\n\t\t\t\tvar script = Script.create(scriptPath);\r\n\t\t\t\tif (!(script is DummyScript)) {\r\n\t\t\t\t\tscripts.add(script);\r\n\t\t\t\t\tscript.load();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfor(i=>strumLine in SONG.strumLines) {\r\n\t\t\tif (strumLine == null) continue;\r\n\r\n\t\t\tvar chars = [];\r\n\t\t\tvar charPosName:String = strumLine.position == null ? (switch(strumLine.type) {\r\n\t\t\t\tcase 0: \"dad\";\r\n\t\t\t\tcase 1: \"boyfriend\";\r\n\t\t\t\tcase 2: \"girlfriend\";\r\n\t\t\t}) : strumLine.position;\r\n\t\t\tif (strumLine.characters != null) for(k=>charName in strumLine.characters) {\r\n\t\t\t\tvar char = new Character(0, 0, charName, stage.isCharFlipped(stage.characterPoses[charName] != null ? charName : charPosName, strumLine.type == 1));\r\n\t\t\t\tstage.applyCharStuff(char, charPosName, k);\r\n\t\t\t\tchars.push(char);\r\n\t\t\t}\r\n\r\n\t\t\tvar strOffset:Float = strumLine.strumLinePos != null ? strumLine.strumLinePos : (strumLine.type == 1 ? 0.75 : 0.25);\r\n\t\t\tvar strScale:Float = strumLine.strumScale != null ? strumLine.strumScale : 1;\r\n\t\t\tvar strSpacing:Float = strumLine.strumSpacing == null ? 1 : strumLine.strumSpacing;\r\n\t\t\tvar keyCount:Int = strumLine.keyCount == null ? 4 : strumLine.keyCount;\r\n\t\t\tvar strXPos:Float = StrumLine.calculateStartingXPos(strOffset, strScale, strSpacing, keyCount);\r\n\t\t\tvar startingPos:FlxPoint = strumLine.strumPos != null ?\r\n\t\t\t\tFlxPoint.get(strumLine.strumPos[0] == 0 ? strXPos : strumLine.strumPos[0], strumLine.strumPos[1]) :\r\n\t\t\t\tFlxPoint.get(strXPos, this.strumLine.y);\r\n\t\t\tvar strLine = new StrumLine(chars,\r\n\t\t\t\tstartingPos,\r\n\t\t\t\tstrumLine.strumScale == null ? 1 : strumLine.strumScale,\r\n\t\t\t\tstrumLine.type == 2 || (!coopMode && !((strumLine.type == 1 && !opponentMode) || (strumLine.type == 0 && opponentMode))),\r\n\t\t\t\tstrumLine.type != 1, coopMode ? ((strumLine.type == 1) != opponentMode ? controlsP1 : controlsP2) : controls,\r\n\t\t\t\tstrumLine.vocalsSuffix\r\n\t\t\t);\r\n\t\t\tstrLine.cameras = [camHUD];\r\n\t\t\tstrLine.data = strumLine;\r\n\t\t\tstrLine.visible = (strumLine.visible != false);\r\n\t\t\tstrLine.vocals.group = FlxG.sound.defaultMusicGroup;\r\n\t\t\tstrLine.ID = i;\r\n\t\t\tstrumLines.add(strLine);\r\n\t\t}\r\n\r\n\t\tadd(strumLines);\r\n\r\n\t\tsplashHandler = new SplashHandler();\r\n\t\tadd(splashHandler);\r\n\r\n\t\tscripts.set(\"SONG\", SONG);\r\n\t\tscripts.load();\r\n\t\tscripts.call(\"create\");\r\n\t\t#end\r\n\r\n\t\t// HUD INITIALIZATION & CAMERA INITIALIZATION\r\n\t\t#if REGION\r\n\t\tvar event = EventManager.get(AmountEvent).recycle(null);\r\n\t\tif (!gameAndCharsEvent(\"onPreGenerateStrums\", event).cancelled) {\r\n\t\t\tgenerateStrums(event.amount);\r\n\t\t\tgameAndCharsEvent(\"onPostGenerateStrums\", event);\r\n\t\t}\r\n\r\n\t\tfor(str in strumLines)\r\n\t\t\tstr.generate(str.data, (chartingMode && Charter.startHere) ? Charter.startTime : null);\r\n\r\n\t\tFlxG.camera.follow(camFollow, LOCKON, Flags.DEFAULT_CAMERA_FOLLOW_SPEED);\r\n\t\tFlxG.camera.zoom = defaultCamZoom;\r\n\t\t// camHUD.zoom = defaultHudZoom;\r\n\r\n\t\tif (smoothTransitionData != null && smoothTransitionData.stage == curStage) {\r\n\t\t\tFlxG.camera.scroll.set(smoothTransitionData.camX, smoothTransitionData.camY);\r\n\t\t\tFlxG.camera.zoom = smoothTransitionData.camZoom;\r\n\t\t\tMusicBeatState.skipTransIn = true;\r\n\t\t\tcamFollow.setPosition(smoothTransitionData.camFollowX, smoothTransitionData.camFollowY);\r\n\t\t} else {\r\n\t\t\tFlxG.camera.focusOn(camFollow.getPosition(FlxPoint.weak()));\r\n\t\t}\r\n\t\tsmoothTransitionData = null;\r\n\r\n\t\tFlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);\r\n\r\n\t\thealthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadAnimatedGraphic(Paths.image('game/healthBar'));\r\n\t\thealthBarBG.screenCenter(X);\r\n\t\thealthBarBG.scrollFactor.set();\r\n\t\tadd(healthBarBG);\r\n\r\n\t\thealthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,\r\n\t\t\t'health', 0, maxHealth);\r\n\t\thealthBar.scrollFactor.set();\r\n\t\tvar leftColor:Int = dad != null && dad.iconColor != null && Options.colorHealthBar ? dad.iconColor : (opponentMode ? 0xFF66FF33 : 0xFFFF0000);\r\n\t\tvar rightColor:Int = boyfriend != null && boyfriend.iconColor != null && Options.colorHealthBar ? boyfriend.iconColor : (opponentMode ? 0xFFFF0000 : 0xFF66FF33); // switch the colors\r\n\t\thealthBar.createFilledBar(leftColor, rightColor);\r\n\t\tadd(healthBar);\r\n\r\n\t\tif (Flags.DEFAULT_HEALTH != null) health = Flags.DEFAULT_HEALTH;\r\n\t\telse health = maxHealth / 2;\r\n\r\n\t\ticonArray.push(iconP1 = new HealthIcon(boyfriend != null ? boyfriend.getIcon() : Flags.DEFAULT_HEALTH_ICON, true));\r\n\t\ticonArray.push(iconP2 = new HealthIcon(dad != null ? dad.getIcon() : Flags.DEFAULT_HEALTH_ICON, false));\r\n\t\tfor (icon in iconArray) {\r\n\t\t\ticon.y = healthBar.y - (icon.height / 2);\r\n\t\t\tadd(icon);\r\n\t\t}\r\n\r\n\t\tscoreTxt = new FunkinText(healthBarBG.x + 50, healthBarBG.y + 30, Std.int(healthBarBG.width - 100), TEXT_GAME_SCORE.format([songScore]), 16);\r\n\t\tmissesTxt = new FunkinText(healthBarBG.x + 50, healthBarBG.y + 30, Std.int(healthBarBG.width - 100), TEXT_GAME_MISSES.format([misses]), 16);\r\n\t\taccuracyTxt = new FunkinText(healthBarBG.x + 50, healthBarBG.y + 30, Std.int(healthBarBG.width - 100), TEXT_GAME_ACCURACY.format([\"-%\", \"(N/A)\"]), 16);\r\n\t\taccuracyTxt.addFormat(accFormat, 0, 1);\r\n\r\n\t\tfor(text in [scoreTxt, missesTxt, accuracyTxt]) {\r\n\t\t\ttext.scrollFactor.set();\r\n\t\t\tadd(text);\r\n\t\t}\r\n\t\tscoreTxt.alignment = RIGHT;\r\n\t\tmissesTxt.alignment = CENTER;\r\n\t\taccuracyTxt.alignment = LEFT;\r\n\t\tif (updateRatingStuff != null)\r\n\t\t\tupdateRatingStuff();\r\n\r\n\t\tfor(e in [healthBar, healthBarBG, iconP1, iconP2, scoreTxt, missesTxt, accuracyTxt])\r\n\t\t\te.cameras = [camHUD];\r\n\t\t#end\r\n\r\n\t\tstartingSong = true;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfor(s in introSprites)\r\n\t\t\tif (s != null)\r\n\t\t\t\tgraphicCache.cache(Paths.image(s));\r\n\r\n\t\tfor(s in introSounds)\r\n\t\t\tif (s != null)\r\n\t\t\t\tFlxG.sound.load(Paths.sound(s));\r\n\r\n\t\tif (chartingMode) {\r\n\t\t\tWindowUtils.prefix = Charter.undos.unsaved ? Flags.UNDO_PREFIX : \"\";\r\n\t\t\tWindowUtils.suffix = TU.translate(\"playtesting.chartPlaytesting\");\r\n\r\n\t\t\tSaveWarning.showWarning = Charter.undos.unsaved;\r\n\t\t\tSaveWarning.selectionClass = CharterSelection;\r\n\t\t\tSaveWarning.warningFunc = saveWarn;\r\n\t\t\tSaveWarning.saveFunc = () -> Charter.saveEverything(false);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "createPost",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public override function createPost() {\r\n\t\tstartCutscene(\"\", cutscene, null, true);\r\n\t\tsuper.createPost();\r\n\r\n\t\tupdateDiscordPresence();\r\n\r\n\t\t// Make icons appear in the correct spot during cutscenes\r\n\t\thealthBar.update(0);\r\n\t\tif (updateIconPositions != null && Flags.ICONS_AUTOPOSITION)\r\n\t\t\tupdateIconPositions();\r\n\r\n\t\t__updateNote_event = EventManager.get(NoteUpdateEvent);\r\n\r\n\t\tgameAndCharsCall(\"postCreate\", null, \"gamePostCreate\");\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateDiscordPresence",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function updateDiscordPresence()\r\n\t\tDiscordUtil.call(\"onPlayStateUpdate\", []);",
+			"doc": {
+				"text": "Function used to update Discord Presence.\n\nThis function is dynamic, which means you can do `updateDiscordPresence = function() {}` in scripts.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "startCutscene",
+			"args": [
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "cutsceneScriptPath",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "checkSeen",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "canSkipTransIn",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function startCutscene(prefix:String = \"\", ?cutsceneScriptPath:String, ?callback:Void->Void, checkSeen:Bool = false, canSkipTransIn:Bool = true) {\r\n\t\tif (callback == null) callback = startCountdown;\r\n\t\tif ((checkSeen && seenCutscene) || !playCutscenes) {\r\n\t\t\tcallback();\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tvar songName = SONG.meta.name;\r\n\r\n\t\tif (cutsceneScriptPath == null)\r\n\t\t\tcutsceneScriptPath = Paths.script('songs/$songName/${prefix}cutscene');\r\n\r\n\t\tinCutscene = true;\r\n\t\tvar videoCutscene = Paths.video('$songName-${prefix}cutscene');\r\n\t\tvar videoCutsceneAlt = Paths.file('songs/$songName/${prefix}cutscene.${Flags.VIDEO_EXT}');\r\n\t\tvar dialogue = Paths.file('songs/$songName/${prefix}dialogue.xml');\r\n\t\tpersistentUpdate = true;\r\n\t\tvar toCall:Void->Void = function() {\r\n\t\t\tif(checkSeen) seenCutscene = true;\r\n\t\t\tcallback();\r\n\t\t}\r\n\r\n\t\tif (cutsceneScriptPath != null && Assets.exists(cutsceneScriptPath)) {\r\n\t\t\topenSubState(new ScriptedCutscene(cutsceneScriptPath, toCall));\r\n\t\t} else if (Assets.exists(dialogue)) {\r\n\t\t\tif (canSkipTransIn) MusicBeatState.skipTransIn = true;\r\n\t\t\topenSubState(new DialogueCutscene(dialogue, toCall));\r\n\t\t} else if (Assets.exists(videoCutsceneAlt)) {\r\n\t\t\tif (canSkipTransIn) MusicBeatState.skipTransIn = true;\r\n\t\t\tpersistentUpdate = false;\r\n\t\t\topenSubState(new VideoCutscene(videoCutsceneAlt, toCall));\r\n\t\t\tpersistentDraw = false;\r\n\t\t} else if (Assets.exists(videoCutscene)) {\r\n\t\t\tif (canSkipTransIn) MusicBeatState.skipTransIn = true;\r\n\t\t\tpersistentUpdate = false;\r\n\t\t\topenSubState(new VideoCutscene(videoCutscene, toCall));\r\n\t\t\tpersistentDraw = false;\r\n\t\t} else\r\n\t\t\tcallback();\r\n\t}",
+			"doc": {
+				"text": "Starts a cutscene.",
+				"params": {
+					"prefix": "Custom prefix. Using `midsong-` will require you to for example rename your video cutscene to `songs/song/midsong-cutscene.mp4` instead of `songs/song/cutscene.mp4`",
+					"cutsceneScriptPath": "Optional: Custom script path.",
+					"callback": "Callback called after the cutscene ended. If equals to `null`, `startCountdown` will be called.",
+					"checkSeen": "Bool that by default is false, if true and `seenCutscene` is also true, it won't play the cutscene but directly call `callback` (PS: `seenCutscene` becomes true if the cutscene gets played and `checkSeen` was true)",
+					"canSkipTransIn": "Bool that by default is true makes the in transition skip on certain types of cutscenes like dialogues."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "startCountdown",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function startCountdown():Void\r\n\t{\r\n\t\tif (!_startCountdownCalled) {\r\n\t\t\t_startCountdownCalled = true;\r\n\t\t\tinCutscene = false;\r\n\r\n\t\t\tif (gameAndCharsEvent(\"onStartCountdown\", new CancellableEvent()).cancelled) return;\r\n\t\t}\r\n\r\n\t\tstartedCountdown = true;\r\n\t\tConductor.songPosition = 0;\r\n\t\tConductor.songPosition -= Conductor.crochet * introLength - Conductor.songOffset;\r\n\r\n\t\tif(introLength > 0) {\r\n\t\t\tvar swagCounter:Int = 0;\r\n\t\t\tstartTimer = new FlxTimer().start(Conductor.crochet / 1000, (tmr:FlxTimer) -> {\r\n\t\t\t\tcountdown(swagCounter++);\r\n\t\t\t}, introLength);\r\n\t\t}\r\n\t\tgameAndCharsCall(\"onPostStartCountdown\");\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "countdown",
+			"args": [
+				{
+					"name": "swagCounter",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function countdown(swagCounter:Int) {\r\n\t\tvar event:CountdownEvent = gameAndCharsEvent(\"onCountdown\", EventManager.get(CountdownEvent).recycle(\r\n\t\t\tswagCounter,\r\n\t\t\t1,\r\n\t\t\tintroSounds[swagCounter],\r\n\t\t\tintroSprites[swagCounter],\r\n\t\t\t0.6, true, null, null, null));\r\n\r\n\t\tvar sprite:FlxSprite = null;\r\n\t\tvar sound:FlxSound = null;\r\n\t\tvar tween:FlxTween = null;\r\n\r\n\t\tif (!event.cancelled) {\r\n\t\t\tif (event.spritePath != null) {\r\n\t\t\t\tvar spr = event.spritePath;\r\n\t\t\t\tif (!Assets.exists(spr)) spr = Paths.image('$spr');\r\n\r\n\t\t\t\tsprite = new FunkinSprite().loadAnimatedGraphic(spr);\r\n\t\t\t\tsprite.scrollFactor.set();\r\n\t\t\t\tsprite.scale.set(event.scale, event.scale);\r\n\t\t\t\tsprite.updateHitbox();\r\n\t\t\t\tsprite.screenCenter();\r\n\t\t\t\tsprite.antialiasing = event.antialiasing;\r\n\t\t\t\tadd(sprite);\r\n\t\t\t\ttween = FlxTween.tween(sprite, {y: sprite.y + 100, alpha: 0}, Conductor.crochet / 1000, {\r\n\t\t\t\t\tease: FlxEase.cubeInOut,\r\n\t\t\t\t\tonComplete: function(twn:FlxTween)\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tsprite.destroy();\r\n\t\t\t\t\t\tremove(sprite, true);\r\n\t\t\t\t\t}\r\n\t\t\t\t});\r\n\t\t\t}\r\n\t\t\tif (event.soundPath != null) {\r\n\t\t\t\tvar sfx = event.soundPath;\r\n\t\t\t\tif (!Assets.exists(sfx)) sfx = Paths.sound(sfx);\r\n\t\t\t\tsound = FlxG.sound.play(sfx, event.volume);\r\n\t\t\t}\r\n\t\t}\r\n\t\tevent.sprite = sprite;\r\n\t\tevent.sound = sound;\r\n\t\tevent.spriteTween = tween;\r\n\t\tevent.cancelled = false;\r\n\r\n\t\tgameAndCharsEvent(\"onPostCountdown\", event);\r\n\t}",
+			"doc": {
+				"text": "Creates a fake countdown.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tvar notNull = stage != null;\r\n\t\tif (notNull) PlayState.instance.gameAndCharsCall(\"onStageDestroy\", [stage]);\r\n\t\tscripts.call(\"destroy\");\r\n\r\n\t\tfor (g in __cachedGraphics) g.decrementUseCount();\r\n\t\t@:privateAccess {\r\n\t\t\tfor (strumLine in strumLines.members) FlxG.sound.destroySound(strumLine.vocals);\r\n\t\t\tif (FlxG.sound.music != inst) FlxG.sound.destroySound(inst);\r\n\t\t\tFlxG.sound.destroySound(vocals);\r\n\t\t}\r\n\r\n\t\tif (notNull) {\r\n\t\t\tstage.destroySilently();\r\n\t\t\tremove(stage, true);\r\n\t\t}\r\n\r\n\t\tcameraFocusOffset.put();\r\n\r\n\t\tscripts = FlxDestroyUtil.destroy(scripts);\r\n\r\n\t\tsuper.destroy();\r\n\r\n\t\tWindowUtils.resetAffixes();\r\n\t\tSaveWarning.reset();\r\n\r\n\t\tinstance = null;\r\n\r\n\t\tNote.__customNoteTypeExists = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeedTween",
+			"type": "FlxTween",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:dox(hide)",
+				"@:deprecated(\"scrollSpeedTween is deprecated, use eventsTween['scrollSpeed'] instead\")"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getIconRPC",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getIconRPC():String\r\n\t\treturn SONG.meta.icon;",
+			"doc": {
+				"text": "Returns the Discord RPC icon.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onFocus",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\toverride public function onFocus():Void\r\n\t{\r\n\t\tgameAndCharsCall(\"onFocus\");\r\n\t\tupdateDiscordPresence();\r\n\t\tsuper.onFocus();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "onFocusLost",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\toverride public function onFocusLost():Void\r\n\t{\r\n\t\tgameAndCharsCall(\"onFocusLost\");\r\n\t\tupdateDiscordPresence();\r\n\t\tsuper.onFocusLost();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "pauseGame",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function pauseGame() {\r\n\t\tvar e = gameAndCharsEvent(\"onGamePause\", new CancellableEvent());\r\n\t\tif (e.cancelled) return;\r\n\r\n\t\tpersistentUpdate = false;\r\n\t\tpersistentDraw = true;\r\n\t\tpaused = true;\r\n\r\n\t\t// 1 / 1000 chance for Gitaroo Man easter egg\r\n\t\tif (!chartingMode && allowGitaroo && FlxG.random.bool(Flags.GITAROO_CHANCE))\r\n\t\t{\r\n\t\t\t// gitaroo man easter egg\r\n\t\t\tFlxG.switchState(new GitarooPause());\r\n\t\t}\r\n\t\telse {\r\n\t\t\topenSubState(new PauseSubState());\r\n\t\t}\r\n\r\n\t\tupdateDiscordPresence();\r\n\t}",
+			"doc": {
+				"text": "Pauses the game.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveWarn",
+			"args": [
+				{
+					"name": "closingWindow",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveWarn(closingWindow:Bool = true) {\r\n\t\tpersistentUpdate = false;\r\n\t\tpaused = true;\r\n\r\n\t\tvar state:FlxState = FlxG.state;\r\n\t\tif (FlxG.state.subState != null)\r\n\t\t\tstate = FlxG.state.subState;\r\n\r\n\t\tstate.openSubState(new PlaytestingWarningSubstate(closingWindow, [\r\n\t\t\t{\r\n\t\t\t\tlabel: closingWindow ? TU.translate(\"playtesting.exitGame\") : TU.translate(\"playtesting.exitToMenu\"),\r\n\t\t\t\tcolor: 0xFF0000,\r\n\t\t\t\tonClick: function(_) {\r\n\t\t\t\t\tif (!closingWindow) {\r\n\t\t\t\t\t\tif (SaveWarning.selectionClass != null) FlxG.switchState(Type.createInstance(SaveWarning.selectionClass, []));\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tWindowUtils.preventClosing = false; WindowUtils.resetClosing();\r\n\t\t\t\t\t\topenfl.system.System.exit(0);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: closingWindow ? TU.translate(\"playtesting.saveAndExitGame\") : TU.translate(\"playtesting.saveAndExitToMenu\"),\r\n\t\t\t\tcolor: 0xFFFF00,\r\n\t\t\t\tonClick: function(_) {\r\n\t\t\t\t\tif (SaveWarning.saveFunc != null) SaveWarning.saveFunc();\r\n\t\t\t\t\tif (!closingWindow) {\r\n\t\t\t\t\t\tif (SaveWarning.selectionClass != null) FlxG.switchState(Type.createInstance(SaveWarning.selectionClass, []));\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tWindowUtils.preventClosing = false; WindowUtils.resetClosing();\r\n\t\t\t\t\t\topenfl.system.System.exit(0);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: TU.translate(\"playtesting.cancel\"),\r\n\t\t\t\tcolor: 0xFFFFFF,\r\n\t\t\t\tonClick: function (_) {\r\n\t\t\t\t\tif (closingWindow) WindowUtils.resetClosing();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\toverride public function update(elapsed:Float)\r\n\t{\r\n\t\t_ONE_ARG[0] = elapsed;\r\n\t\tscripts.call(\"update\", _ONE_ARG);\r\n\r\n\t\tif (inCutscene) {\r\n\t\t\tsuper.update(elapsed);\r\n\t\t\tscripts.call(\"postUpdate\", _ONE_ARG);\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tif (updateRatingStuff != null)\r\n\t\t\tupdateRatingStuff();\r\n\r\n\t\tif (canAccessDebugMenus && chartingMode && controls.DEV_ACCESS)\r\n\t\t\tFlxG.switchState(new funkin.editors.charter.Charter(SONG.meta.name, difficulty, variation, false));\r\n\r\n\t\tif (Options.camZoomOnBeat && camZooming) {\r\n\t\t\tvar beat = Conductor.getBeats(camZoomingEvery, camZoomingInterval, camZoomingOffset);\r\n\t\t\tif (camZoomingLastBeat != beat) {\r\n\t\t\t\tcamZoomingLastBeat = beat;\r\n\t\t\t\tif (useCamZoomMult) {\r\n\t\t\t\t\tif (camZoomingMult < maxCamZoomMult) camZoomingMult += camZoomingStrength;\r\n\t\t\t\t}\r\n\t\t\t\telse if (FlxG.camera.zoom < maxCamZoom) {\r\n\t\t\t\t\tFlxG.camera.zoom += camGameZoomMult * camZoomingStrength;\r\n\t\t\t\t\tcamHUD.zoom += camHUDZoomMult * camZoomingStrength;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (doIconBop)\r\n\t\t\tfor (icon in iconArray)\r\n\t\t\t\tif (icon.updateBump != null)\r\n\t\t\t\t\ticon.updateBump();\r\n\r\n\t\tif (updateIconPositions != null)\r\n\t\t\tupdateIconPositions();\r\n\r\n\t\tif (startingSong) {\r\n\t\t\tif (startedCountdown && (Conductor.songPosition += Conductor.songOffset + elapsed * 1000) >= 0) {\r\n\t\t\t\tConductor.songPosition = Conductor.songOffset;\r\n\t\t\t\tstartSong();\r\n\t\t\t}\r\n\t\t}\r\n\t\telse if (FlxG.sound.music != null && (__vocalSyncTimer -= elapsed) < 0) {\r\n\t\t\t__vocalSyncTimer = 1;\r\n\r\n\t\t\tfinal instTime = FlxG.sound.music.getActualTime();\r\n\t\t\tvar isOffsync:Bool = vocals.loaded && Math.abs(instTime - vocals.getActualTime()) > 12;\r\n\t\t\tif (!isOffsync)\r\n\t\t\t\tfor (strumLine in strumLines.members)\r\n\t\t\t\t\tif ((isOffsync = strumLine.vocals.loaded && Math.abs(instTime - strumLine.vocals.getActualTime()) > 12))\r\n\t\t\t\t\t\tbreak;\r\n\r\n\t\t\tif (isOffsync) resyncVocals();\r\n\t\t}\r\n\r\n\t\twhile(events.length > 0 && events.last().time <= Conductor.songPosition)\r\n\t\t\texecuteEvent(events.pop());\r\n\r\n\t\tif (controls.PAUSE && startedCountdown && canPause)\r\n\t\t\tpauseGame();\r\n\r\n\t\tif (generatedMusic)\r\n\t\t\tmoveCamera();\r\n\r\n\t\tif (camZooming) {\r\n\t\t\tif (useCamZoomMult) {\r\n\t\t\t\tcamZoomingMult = lerp(camZoomingMult, defaultZoom, camZoomLerp) - defaultZoom;\r\n\t\t\t\tFlxG.camera.zoomMultiplier = camZoomingMult * camGameZoomMult + defaultZoom;\r\n\t\t\t\tcamHUD.zoomMultiplier = camZoomingMult * camHUDZoomMult + defaultZoom;\r\n\t\t\t\tcamZoomingMult += defaultZoom;\r\n\t\t\t}\r\n\t\t\tFlxG.camera.zoom = lerp(FlxG.camera.zoom, defaultCamZoom, camGameZoomLerp);\r\n\t\t\tcamHUD.zoom = lerp(camHUD.zoom, defaultHudZoom, camHUDZoomLerp);\r\n\t\t}\r\n\r\n\t\t// RESET = Quick Game Over Screen\r\n\t\tif (startedCountdown && controls.RESET)\r\n\t\t\tgameOver();\r\n\r\n\t\tif (health <= 0 && canDie)\r\n\t\t\tgameOver(boyfriend);\r\n\t\telse if (health >= maxHealth && canDadDie)\r\n\t\t\tgameOver(dad);\r\n\r\n\t\tif (!inCutscene)\r\n\t\t\tkeyShit();\r\n\r\n\t\t#if debug\r\n\t\tif (generatedMusic && FlxG.keys.justPressed.ONE)\r\n\t\t\tendSong();\r\n\t\t#end\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tscripts.call(\"postUpdate\", _ONE_ARG);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "moveCamera",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function moveCamera() if (strumLines.members[curCameraTarget] != null) {\r\n\t\tvar data:CamPosData = getStrumlineCamPos(curCameraTarget);\r\n\t\tdata.pos.add(cameraFocusOffset.x, cameraFocusOffset.y);\r\n\r\n\t\tif (data.amount > 0) {\r\n\t\t\tvar event = gameAndCharsEvent(\"onCameraMove\", EventManager.get(CamMoveEvent).recycle(data.pos, strumLines.members[curCameraTarget], data.amount));\r\n\t\t\tif (!event.cancelled)\r\n\t\t\t\tcamFollow.setPosition(event.position.x, event.position.y);\r\n\t\t}\r\n\t\tdata.put();\r\n\t}\r\n\r\n\t/**\r\n\t * Returns the camera position of the specified strumline.\r\n\t * @param strumLine The strumline to get the camera position of.\r\n\t * @param pos The position to put the camera position in. If `null`, a new FlxPoint will be created.\r\n\t * @param ignoreInvisible Whenever invisible characters should be ignored.\r\n\t**/\r\n\tpublic inline function getStrumlineCamPos(strumLine:Int, ?pos:FlxPoint = null, ?ignoreInvisible:Bool = true):CamPosData {\r\n\t\treturn getCharactersCamPos(strumLines.members[strumLine].characters, pos, ignoreInvisible);\r\n\t}\r\n\r\n\t/**\r\n\t * Returns the camera position of the specified characters.\r\n\t * @param chars The characters to get the camera position of.\r\n\t * @param pos The position to put the camera position in. If `null`, a new FlxPoint will be created.\r\n\t * @param ignoreInvisible Whenever invisible characters should be ignored.\r\n\t**/\r\n\tpublic dynamic function getCharactersCamPos(chars:Array<Character>, ?pos:FlxPoint = null, ?ignoreInvisible:Bool = true):CamPosData {\r\n\t\tif (pos == null) pos = FlxPoint.get();\r\n\t\tvar amount = 0;\r\n\t\tfor(c in chars) {\r\n\t\t\tif (c == null || (ignoreInvisible && !c.visible)) continue;\r\n\t\t\tvar cpos = c.getCameraPosition();\r\n\t\t\tpos.x += cpos.x;\r\n\t\t\tpos.y += cpos.y;\r\n\t\t\tamount++;\r\n\t\t\t//cpos.put(); // not actually in the pool, so no need\r\n\t\t}\r\n\t\tif (amount > 0) {\r\n\t\t\tpos.x /= amount;\r\n\t\t\tpos.y /= amount;\r\n\t\t}\r\n\t\treturn new CamPosData(pos, amount);\r\n\t}\r\n\r\n\r\n\tpublic var eventsTween:Map<String, FlxTween> = [];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStrumlineCamPos",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "pos",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "ignoreInvisible",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "CamPosData",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getStrumlineCamPos(strumLine:Int, ?pos:FlxPoint = null, ?ignoreInvisible:Bool = true):CamPosData {\r\n\t\treturn getCharactersCamPos(strumLines.members[strumLine].characters, pos, ignoreInvisible);\r\n\t}",
+			"doc": {
+				"text": "Returns the camera position of the specified strumline.",
+				"params": {
+					"strumLine": "The strumline to get the camera position of.",
+					"pos": "The position to put the camera position in. If `null`, a new FlxPoint will be created.",
+					"ignoreInvisible": "Whenever invisible characters should be ignored."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getCharactersCamPos",
+			"args": [
+				{
+					"name": "chars",
+					"type": "Array<Character>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "pos",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": "null"
+				},
+				{
+					"name": "ignoreInvisible",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "CamPosData",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function getCharactersCamPos(chars:Array<Character>, ?pos:FlxPoint = null, ?ignoreInvisible:Bool = true):CamPosData {\r\n\t\tif (pos == null) pos = FlxPoint.get();\r\n\t\tvar amount = 0;\r\n\t\tfor(c in chars) {\r\n\t\t\tif (c == null || (ignoreInvisible && !c.visible)) continue;\r\n\t\t\tvar cpos = c.getCameraPosition();\r\n\t\t\tpos.x += cpos.x;\r\n\t\t\tpos.y += cpos.y;\r\n\t\t\tamount++;\r\n\t\t\t//cpos.put(); // not actually in the pool, so no need\r\n\t\t}\r\n\t\tif (amount > 0) {\r\n\t\t\tpos.x /= amount;\r\n\t\t\tpos.y /= amount;\r\n\t\t}\r\n\t\treturn new CamPosData(pos, amount);\r\n\t}",
+			"doc": {
+				"text": "Returns the camera position of the specified characters.",
+				"params": {
+					"chars": "The characters to get the camera position of.",
+					"pos": "The position to put the camera position in. If `null`, a new FlxPoint will be created.",
+					"ignoreInvisible": "Whenever invisible characters should be ignored."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsTween",
+			"type": "Map<String, FlxTween>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "executeEvent",
+			"args": [
+				{
+					"name": "event",
+					"type": "ChartEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function executeEvent(event:ChartEvent) @:privateAccess {\r\n\t\tif (event == null || event.params == null) return;\r\n\r\n\t\tvar e = EventManager.get(EventGameEvent).recycle(event);\r\n\t\tgameAndCharsEvent(\"onEvent\", e);\r\n\t\tif (e.cancelled) return;\r\n\t\tvar event = e.event;\r\n\r\n\t\tswitch(event.name) {\r\n\t\t\tcase \"HScript Call\":\r\n\t\t\t\tvar scriptPacks:Array<ScriptPack> = [scripts, stateScripts];\r\n\t\t\t\tfor (strLine in strumLines.members) for (char in strLine.characters) scriptPacks.push(char.scripts);\r\n\t\t\t\tvar args:Array<String> = event.params[1].split(',');\r\n\r\n\t\t\t\tfor (pack in scriptPacks) {\r\n\t\t\t\t\tpack.call(event.params[0], args);\r\n\t\t\t\t\t//public functions\r\n\t\t\t\t\tif (pack.publicVariables.exists(event.params[0])) {\r\n\t\t\t\t\t\tvar func = pack.publicVariables.get(event.params[0]);\r\n\t\t\t\t\t\tif (func != null && Reflect.isFunction(func))\r\n\t\t\t\t\t\t\tReflect.callMethod(null, func, args);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\r\n\t\t\t\t//static functions\r\n\t\t\t\tif (Script.staticVariables.exists(event.params[0])) {\r\n\t\t\t\t\tvar func = Script.staticVariables.get(event.params[0]);\r\n\t\t\t\t\tif (func != null && Reflect.isFunction(func))\r\n\t\t\t\t\t\tReflect.callMethod(null, func, args);\r\n\t\t\t\t}\r\n\t\t\tcase \"Camera Movement\":\r\n\t\t\t\tvar tween = eventsTween.get(\"cameraMovement\");\r\n\t\t\t\tif (tween != null) {\r\n\t\t\t\t\tif (tween.onComplete != null) tween.onComplete(tween);\r\n\t\t\t\t\ttween.cancel();\r\n\t\t\t\t}\r\n\r\n\t\t\t\tcurCameraTarget = event.params[0];\r\n\r\n\t\t\t\tcameraFocusOffset.set(event.params[5], event.params[6]);\r\n\r\n\t\t\t\tmoveCamera();\r\n\r\n\t\t\t\tif (strumLines.members[curCameraTarget] != null) {\r\n\t\t\t\t\tif (event.params[1] == false) FlxG.camera.snapToTarget();\r\n\t\t\t\t\telse if (event.params[3] != null && event.params[3] != \"CLASSIC\") {  // making more nullchecks in this event because of the default save value being false  - Nex\r\n\t\t\t\t\t\tvar oldFollow = FlxG.camera.followEnabled;\r\n\t\t\t\t\t\tFlxG.camera.followEnabled = false;\r\n\t\t\t\t\t\teventsTween.set(\"cameraMovement\", FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x - FlxG.camera.width * 0.5, y: camFollow.y - FlxG.camera.height * 0.5},\r\n\t\t\t\t\t\t\t(Conductor.stepCrochet / 1000) * (event.params[2] == null ? 4 : event.params[2]), {\r\n\t\t\t\t\t\t\t\tease: CoolUtil.flxeaseFromString(event.params[3], event.params[4]),\r\n\t\t\t\t\t\t\t\tonComplete: (_) -> FlxG.camera.followEnabled = oldFollow\r\n\t\t\t\t\t\t\t})\r\n\t\t\t\t\t\t);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tcase \"Camera Position\":\r\n\t\t\t\tvar tween = eventsTween.get(\"cameraMovement\");\r\n\t\t\t\tif (tween != null) {\r\n\t\t\t\t\tif (tween.onComplete != null) tween.onComplete(tween);\r\n\t\t\t\t\ttween.cancel();\r\n\t\t\t\t}\r\n\r\n\t\t\t\tcurCameraTarget = -1;\r\n\t\t\t\tvar isOffset = event.params[6] == true;\r\n\t\t\t\tcamFollow.setPosition(isOffset ? (camFollow.x + event.params[0]) : event.params[0], isOffset ? (camFollow.y + event.params[1]) : event.params[1]);\r\n\r\n\t\t\t\tif (event.params[2] == false) FlxG.camera.snapToTarget();\r\n\t\t\t\telse if (event.params[4] != null && event.params[4] != \"CLASSIC\") {\r\n\t\t\t\t\tvar oldFollow = FlxG.camera.followEnabled;\r\n\t\t\t\t\tFlxG.camera.followEnabled = false;\r\n\t\t\t\t\teventsTween.set(\"cameraMovement\", FlxTween.tween(FlxG.camera.scroll, {x: camFollow.x - FlxG.camera.width * 0.5, y: camFollow.y - FlxG.camera.height * 0.5},\r\n\t\t\t\t\t\t(Conductor.stepCrochet / 1000) * (event.params[3] == null ? 4 : event.params[3]), {\r\n\t\t\t\t\t\t\tease: CoolUtil.flxeaseFromString(event.params[4], event.params[5]),\r\n\t\t\t\t\t\t\tonComplete: (_) -> FlxG.camera.followEnabled = oldFollow\r\n\t\t\t\t\t\t})\r\n\t\t\t\t\t);\r\n\t\t\t\t}\r\n\t\t\tcase \"Add Camera Zoom\":\r\n\t\t\t\tvar camera:FlxCamera = event.params[1] == \"camHUD\" ? camHUD : camGame;\r\n\t\t\t\tcamera.zoom += event.params[0];\r\n\t\t\tcase \"Camera Bop\":\r\n\t\t\t\tif (Options.camZoomOnBeat) {\r\n\t\t\t\t\tif (useCamZoomMult) {\r\n\t\t\t\t\t\tcamZoomingMult += event.params[0];\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tFlxG.camera.zoom += event.params[0] * camZoomingStrength;\r\n\t\t\t\t\t\tcamHUD.zoom += event.params[0] * camZoomingStrength;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tcase \"Camera Zoom\":\r\n\t\t\t\tvar cam = event.params[2] == \"camHUD\" ? camHUD : camGame;\r\n\t\t\t\tvar name = (event.params[2] == \"camHUD\" ? \"camHUD\" : \"camGame\") + \".zoom\";  // avoiding having different values from these 2  - Nex\r\n\t\t\t\tvar tween = eventsTween.get(name);\r\n\t\t\t\tif (tween != null) tween.cancel();\r\n\r\n\t\t\t\tvar finalZoom:Float = event.params[1] * (event.params[6] == 'direct' ? FlxCamera.defaultZoom : stage.defaultZoom);\r\n\t\t\t\tif (event.params[7] == true) finalZoom *= cam.zoom;\r\n\r\n\t\t\t\tif (event.params[0] == false) {\r\n\t\t\t\t\tcam.zoom = finalZoom;\r\n\t\t\t\t\tif (cam == camHUD) defaultHudZoom = finalZoom;\r\n\t\t\t\t\telse defaultCamZoom = finalZoom;\r\n\t\t\t\t} else if (event.params[4] == \"CLASSIC\") {\r\n\t\t\t\t\tif (cam == camHUD) defaultHudZoom = finalZoom;\r\n\t\t\t\t\telse defaultCamZoom = finalZoom;\r\n\t\t\t\t} else\r\n\t\t\t\t\teventsTween.set(name, FlxTween.tween(cam, {zoom: finalZoom}, (Conductor.stepCrochet / 1000) * event.params[3], {ease: CoolUtil.flxeaseFromString(event.params[4], event.params[5]), onUpdate: function(_) {\r\n\t\t\t\t\t\tif (cam == camHUD) defaultHudZoom = cam.zoom;\r\n\t\t\t\t\t\telse defaultCamZoom = cam.zoom;\r\n\t\t\t\t\t}, onComplete: _ -> {\r\n\t\t\t\t\t\tif (cam == camHUD) defaultHudZoom = finalZoom;\r\n\t\t\t\t\t\telse defaultCamZoom = finalZoom;\r\n\t\t\t\t\t}}));\r\n\t\t\tcase \"Camera Modulo Change\":\r\n\t\t\t\tcamZoomingInterval = event.params[0];\r\n\t\t\t\tcamZoomingStrength = event.params[1];\r\n\t\t\t\tif (event.params[2] != null) camZoomingEvery = switch (event.params[2].toUpperCase()) {\r\n\t\t\t\t\tcase \"STEP\": STEP;\r\n\t\t\t\t\tcase \"MEASURE\": MEASURE;\r\n\t\t\t\t\tdefault: BEAT;\r\n\t\t\t\t}\r\n\t\t\t\tif (event.params[3] != null) camZoomingOffset = event.params[3];\r\n\t\t\tcase \"Camera Flash\":\r\n\t\t\t\tvar camera:FlxCamera = event.params[3] == \"camHUD\" ? camHUD : camGame;\r\n\r\n\t\t\t\tif (event.params[0]) // reversed\r\n\t\t\t\t\tcamera.fade(event.params[1], (Conductor.stepCrochet / 1000) * event.params[2], false, () -> {camera._fxFadeAlpha = 0;}, true);\r\n\t\t\t\telse // Not Reversed\r\n\t\t\t\t\tcamera.flash(event.params[1], (Conductor.stepCrochet / 1000) * event.params[2], null, true);\r\n\t\t\tcase \"BPM Change\": // automatically handled by conductor\r\n\t\t\tcase \"Scroll Speed Change\":\r\n\t\t\t\tvar tween = eventsTween.get(\"scrollSpeedTween\");\r\n\t\t\t\tif (tween != null) tween.cancel();\r\n\r\n\t\t\t\tvar finalScroll:Float = event.params[1];\r\n\t\t\t\tif (event.params[5] == true) finalScroll *= scrollSpeed;\r\n\r\n\t\t\t\tif (event.params[0] == false)\r\n\t\t\t\t\tscrollSpeed = finalScroll;\r\n\t\t\t\telse\r\n\t\t\t\t\teventsTween.set(\"scrollSpeedTween\", FlxTween.tween(this, {scrollSpeed: finalScroll}, (Conductor.stepCrochet / 1000) * event.params[2], {ease: CoolUtil.flxeaseFromString(event.params[3], event.params[4])}));\r\n\t\t\tcase \"Alt Animation Toggle\":\r\n\t\t\t\tvar strLine = strumLines.members[event.params[2]];\r\n\t\t\t\tif (strLine != null) {\r\n\t\t\t\t\tstrLine.altAnim = cast event.params[0];\r\n\r\n\t\t\t\t\tif (strLine.characters != null) // Alt anim Idle\r\n\t\t\t\t\t\tfor (character in strLine.characters) {\r\n\t\t\t\t\t\t\tif (character == null) continue;\r\n\t\t\t\t\t\t\tcharacter.idleSuffix = event.params[1] ? strLine.defaultAnimSuffix : \"\";\r\n\t\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tcase \"Play Animation\":\r\n\t\t\t\tif (strumLines.members[event.params[0]] != null && strumLines.members[event.params[0]].characters != null)\r\n\t\t\t\t\tfor (char in strumLines.members[event.params[0]].characters)\r\n\t\t\t\t\t\tif (char != null && char.hasAnim(event.params[1])) char.playAnim(event.params[1], event.params[2], event.params[3] == \"NONE\" ? null : event.params[3]);\r\n\t\t\tcase \"Unknown\": // nothing\r\n\t\t}\r\n\r\n\t\tgameAndCharsEvent(\"onPostEvent\", e);\r\n\t}\r\n\r\n\t@:dox(hide)\r\n\tpublic var __updateNote_event:NoteUpdateEvent = null;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__updateNote_event",
+			"type": "NoteUpdateEvent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "gameOver",
+			"args": [
+				{
+					"name": "character",
+					"type": "Character",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "deathCharID",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "gameOverSong",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "lossSFX",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "retrySFX",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function gameOver(?character:Character, ?deathCharID:String, ?gameOverSong:String, ?lossSFX:String, ?retrySFX:String) {\r\n\t\tvar charToUse:Character = character.getDefault(opponentMode ? dad : boyfriend);  // Imma still make it check null later just in case dad or bf are also null for some weird scripts  - Nex\r\n\t\tvar event:GameOverEvent = gameAndCharsEvent(\"onGameOver\", EventManager.get(GameOverEvent).recycle(\r\n\t\t\tcharToUse == null ? 0 : charToUse.x,\r\n\t\t\tcharToUse == null ? 0 : charToUse.y,\r\n\t\t\tcharToUse,\r\n\t\t\tdeathCharID.getDefault(charToUse != null ? charToUse.gameOverCharacter : Flags.DEFAULT_GAMEOVER_CHARACTER),\r\n\t\t\tcharToUse != null ? charToUse.isPlayer : true,\r\n\t\t\tgameOverSong.getDefault(this.gameOverSong),\r\n\t\t\tlossSFX.getDefault(this.lossSFX),\r\n\t\t\tretrySFX.getDefault(this.retrySFX)\r\n\t\t));\r\n\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tif (character != null)\r\n\t\t\tcharacter.stunned = true;\r\n\r\n\t\tpersistentUpdate = false;\r\n\t\tpersistentDraw = false;\r\n\t\tpaused = true;\r\n\r\n\t\tvocals.stop();\r\n\t\tif (FlxG.sound.music != null)\r\n\t\t\tFlxG.sound.music.stop();\r\n\t\tfor (strumLine in strumLines.members) strumLine.vocals.stop();\r\n\r\n\t\tdeathCounter++;\r\n\r\n\t\topenSubState(new GameOverSubstate(event.x, event.y, event.deathCharID, event.isPlayer, event.gameOverSong, event.lossSFX, event.retrySFX));\r\n\r\n\t\tgameAndCharsEvent(\"onPostGameOver\", event);\r\n\t}",
+			"doc": {
+				"text": "Forces a game over.",
+				"params": {
+					"character": "Character which died. Default to `boyfriend`.",
+					"deathCharID": "Character ID (name) for game over. Default to whatever is specified in the character's XML.",
+					"gameOverSong": "Song for the game over screen. Default to `this.gameOverSong` (`gameOver`)",
+					"lossSFX": "SFX at the beginning of the game over (Mic drop). Default to `this.lossSFX` (`gameOverSFX`)",
+					"retrySFX": "SFX played whenever the player retries. Defaults to `retrySFX` (`gameOverEnd`)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "endSong",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function endSong():Void\r\n\t{\r\n\t\tif (gameAndCharsEvent(\"onSongEnd\", new CancellableEvent()).cancelled) return;\r\n\t\tendingSong = true;\r\n\t\tcanPause = false;\r\n\r\n\t\tfor (strumLine in strumLines.members) strumLine.vocals.stop();\r\n\t\tinst.stop();\r\n\t\tvocals.stop();\r\n\r\n\t\tif (validScore) {\r\n\t\t\t#if !switch\r\n\t\t\tFunkinSave.setSongHighscore(SONG.meta.name, difficulty, variation, {\r\n\t\t\t\tscore: songScore,\r\n\t\t\t\tmisses: misses,\r\n\t\t\t\taccuracy: accuracy,\r\n\t\t\t\thits: hits,\r\n\t\t\t\tdate: Date.now().toString()\r\n\t\t\t}, getSongChanges());\r\n\t\t\t#end\r\n\t\t}\r\n\r\n\t\tstartCutscene(\"end-\", endCutscene, nextSong, false, false);\r\n\t}",
+			"doc": {
+				"text": "Ends the song.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "nextSong",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function nextSong() {\r\n\t\tif (isStoryMode) {\r\n\t\t\tcampaignScore += songScore;\r\n\t\t\tcampaignMisses += misses;\r\n\t\t\tcampaignAccuracyTotal += accuracy;\r\n\t\t\tcampaignAccuracyCount++;\r\n\t\t\tfor (k => v in hits) campaignHits[k] += v;\r\n\t\t\tstoryPlaylist.shift();\r\n\t\t\tstoryVariations.shift();\r\n\r\n\t\t\tif (storyPlaylist.length <= 0) {\r\n\t\t\t\tFlxG.switchState(new StoryMenuState());\r\n\r\n\t\t\t\tif (validScore) {\r\n\t\t\t\t\t#if !switch\r\n\t\t\t\t\t// TODO: more week info saving\r\n\t\t\t\t\tFunkinSave.setWeekHighscore(storyWeek.id, difficulty, {\r\n\t\t\t\t\t\tscore: campaignScore,\r\n\t\t\t\t\t\tmisses: campaignMisses,\r\n\t\t\t\t\t\taccuracy: campaignAccuracy,\r\n\t\t\t\t\t\thits: campaignHits,\r\n\t\t\t\t\t\tdate: Date.now().toString()\r\n\t\t\t\t\t});\r\n\t\t\t\t\t#end\r\n\t\t\t\t}\r\n\t\t\t\tFlxG.save.flush();\r\n\t\t\t}\r\n\t\t\telse {\r\n\t\t\t\tLogs.infos('Loading next song (${storyPlaylist[0].toLowerCase()}/$difficulty/${storyVariations[0]})', \"PlayState\");\r\n\r\n\t\t\t\tregisterSmoothTransition();\r\n\r\n\t\t\t\t__loadSong(storyPlaylist[0], difficulty, storyVariations[0]);\r\n\t\t\t\tFlxG.switchState(new PlayState());\r\n\t\t\t}\r\n\t\t}\r\n\t\telse if (chartingMode)\r\n\t\t\tFlxG.switchState(new funkin.editors.charter.Charter(SONG.meta.name, difficulty, variation, false));\r\n\t\telse\r\n\t\t\tFlxG.switchState(new FreeplayState());\r\n\t}",
+			"doc": {
+				"text": "Immediately switches to the next song, or goes back to the Story/Freeplay menu.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "registerSmoothTransition",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function registerSmoothTransition() {\r\n\t\tsmoothTransitionData = {\r\n\t\t\tstage: curStage,\r\n\t\t\tcamX: FlxG.camera.scroll.x,\r\n\t\t\tcamY: FlxG.camera.scroll.y,\r\n\t\t\tcamFollowX: camFollow.x,\r\n\t\t\tcamFollowY: camFollow.y,\r\n\t\t\tcamZoom: FlxG.camera.zoom\r\n\t\t};\r\n\t\tMusicBeatState.skipTransIn = true;\r\n\t\tMusicBeatState.skipTransOut = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "noteMiss",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "StrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "note",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "direction",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "player",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function noteMiss(strumLine:StrumLine, note:Note, ?direction:Int, ?player:Int):Void\r\n\t{\r\n\t\tvar hasNote:Bool = note != null;\r\n\t\tvar playerID:Null<Int> = hasNote ? strumLines.members.indexOf(strumLine) : player;\r\n\t\tvar directionID:Null<Int> = hasNote ? note.strumID : direction;\r\n\t\tif (playerID == null || directionID == null || playerID == -1) return;\r\n\r\n\t\tif (hasNote) {\r\n\t\t\tif (Flags.SUSTAINS_AS_ONE_NOTE && note.isSustainNote) {\r\n\t\t\t\tstrumLine.deleteNote(note);\r\n\t\t\t\tif (note.sustainParent.wasGoodHit) {\r\n\t\t\t\t\tnote.sustainParent.wasGoodHit = false;\r\n\t\t\t\t\tnote.sustainParent.tooLate = true;\r\n\t\t\t\t\tnote = note.sustainParent;\r\n\t\t\t\t}\r\n\t\t\t\telse\r\n\t\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar event:NoteMissEvent = gameAndCharsEvent(\"onPlayerMiss\", EventManager.get(NoteMissEvent).recycle(note, -10, 1, muteVocalsOnMiss, hasNote ? ((note.isSustainNote && Flags.SUSTAINS_AS_ONE_NOTE) ? -0.1425 : -0.0475) : -0.04, Paths.sound(FlxG.random.getObject(Flags.DEFAULT_MISS_SOUNDS)), FlxG.random.float(0.1, 0.2), !hasNote, combo > 5, \"sad\", true, true, \"miss\", strumLines.members[playerID].characters, playerID, hasNote ? note.noteType : null, directionID, 0));\r\n\t\tstrumLine.onMiss.dispatch(event);\r\n\t\tif (event.cancelled) {\r\n\t\t\tgameAndCharsEvent(\"onPostPlayerMiss\", event);\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tif (strumLine != null) strumLine.addHealth(event.healthGain);\r\n\t\tif (gf != null && event.gfSad && gf.hasAnimation(event.gfSadAnim))\r\n\t\t\tgf.playAnim(event.gfSadAnim, event.forceGfAnim, MISS);\r\n\r\n\t\tif (event.resetCombo) combo = 0;\r\n\r\n\t\tsongScore += event.score;\r\n\t\tmisses += event.misses;\r\n\r\n\t\tif (event.playMissSound) FlxG.sound.play(event.missSound, event.missVolume);\r\n\r\n\t\tif (event.muteVocals) {\r\n\t\t\tvocals.volume = 0;\r\n\t\t\tstrumLine.vocals.volume = 0;\r\n\t\t}\r\n\r\n\t\tif (event.accuracy != null) {\r\n\t\t\taccuracyPressedNotes++;\r\n\t\t\ttotalAccuracyAmount += event.accuracy;\r\n\r\n\t\t\tupdateRating();\r\n\t\t}\r\n\r\n\t\tif (!event.animCancelled) {\r\n\t\t\tfor(char in event.characters) {\r\n\t\t\t\tif (char == null) continue;\r\n\r\n\t\t\t\tif(event.stunned) char.stunned = true;\r\n\t\t\t\tchar.playSingAnim(directionID, event.animSuffix, MISS, event.forceAnim);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (event.deleteNote && strumLine != null && hasNote)\r\n\t\t\tstrumLine.deleteNote(note);\r\n\r\n\t\tgameAndCharsEvent(\"onPostPlayerMiss\", event);\r\n\t}",
+			"doc": {
+				"text": "Misses a note",
+				"params": {
+					"strumLine": "The strumline the miss happened on.",
+					"note": "Note to miss.",
+					"direction": "Specify a custom direction in case note is null.",
+					"player": "Specify a custom player in case note is null."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getNoteType",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function getNoteType(id:Int):String {\r\n\t\treturn SONG.noteTypes[id-1];\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "goodNoteHit",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "StrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "note",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function goodNoteHit(strumLine:StrumLine, note:Note):Void\r\n\t{\r\n\t\tif(note == null || note.wasGoodHit) return;\r\n\r\n\t\tnote.wasGoodHit = true;\r\n\r\n\t\tvar noteDiff = Math.abs(Conductor.songPosition - note.strumTime), rating:Rating;\r\n\t\tif (!Flags.USE_LEGACY_TIMING) rating = ratingManager.judgeNote(noteDiff);\r\n\t\telse {\r\n\t\t\t(rating = _legacyRating).splash = false;\r\n\t\t\tif (noteDiff > hitWindow * 0.9) {\r\n\t\t\t\trating.window = hitWindow;\r\n\t\t\t\trating.name = \"shit\";\r\n\t\t\t\trating.score = 50;\r\n\t\t\t\trating.accuracy = 0.25;\r\n\t\t\t}\r\n\t\t\telse if (noteDiff > hitWindow * 0.75) {\r\n\t\t\t\trating.window = hitWindow * 0.9;\r\n\t\t\t\trating.name = \"bad\";\r\n\t\t\t\trating.score = 100;\r\n\t\t\t\trating.accuracy = 0.45;\r\n\t\t\t}\r\n\t\t\telse if (noteDiff > hitWindow * 0.2) {\r\n\t\t\t\trating.window = hitWindow * 0.75;\r\n\t\t\t\trating.name = \"good\";\r\n\t\t\t\trating.score = 200;\r\n\t\t\t\trating.accuracy = 0.75;\r\n\t\t\t}\r\n\t\t\telse {\r\n\t\t\t\trating.window = hitWindow * 0.2;\r\n\t\t\t\trating.name = \"sick\";\r\n\t\t\t\trating.score = 300;\r\n\t\t\t\trating.accuracy = 1;\r\n\t\t\t\trating.splash = true;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar event:NoteHitEvent;\r\n\t\tif (strumLine != null && !strumLine.cpu)\r\n\t\t\tevent = EventManager.get(NoteHitEvent).recycle(rating.breaksCombo, !note.isSustainNote, !note.isSustainNote, null, null, null, note, strumLine.characters, true, note.noteType, note.animSuffix.getDefault(note.strumID < strumLine.members.length ? strumLine.members[note.strumID].animSuffix : strumLine.animSuffix), null, null, note.strumID, rating.score, note.isSustainNote ? null : rating.accuracy, rating.health, rating.name, Options.splashesEnabled && !note.isSustainNote && rating.splash, null, null, null, null, null, iconP1);\r\n\t\telse\r\n\t\t\tevent = EventManager.get(NoteHitEvent).recycle(rating.breaksCombo, false, false, null, null, null, note, strumLine.characters, false, note.noteType, note.animSuffix.getDefault(note.strumID < strumLine.members.length ? strumLine.members[note.strumID].animSuffix : strumLine.animSuffix), null, null, note.strumID, 0, null, 0, rating.name, false, null, null, null, null, true, iconP2);\r\n\t\tevent.deleteNote = !note.isSustainNote; // work around, to allow sustain notes to be deleted\r\n\t\tevent = scripts.event(strumLine != null && !strumLine.cpu ? \"onPlayerHit\" : \"onDadHit\", event);\r\n\t\tstrumLine.onHit.dispatch(event);\r\n\t\tgameAndCharsEvent(\"onNoteHit\", event);\r\n\r\n\t\tnote.noSustainClip = !event.clipSustain;\r\n\r\n\t\tif (!event.cancelled) {\r\n\t\t\tif (!note.isSustainNote) {\r\n\t\t\t\tif (event.countScore) songScore += event.score;\r\n\t\t\t\tif (event.accuracy != null) {\r\n\t\t\t\t\taccuracyPressedNotes++;\r\n\t\t\t\t\ttotalAccuracyAmount += event.accuracy;\r\n\t\t\t\t\tupdateRating();\r\n\t\t\t\t}\r\n\t\t\t\tif (event.misses) {\r\n\t\t\t\t\tcombo = 0;\r\n\t\t\t\t\tmisses++;\r\n\t\t\t\t} else if (event.countAsCombo)\r\n\t\t\t\t\tcombo++;\r\n\r\n\t\t\t\tif (event.showRating || (event.showRating == null && event.player))\r\n\t\t\t\t{\r\n\t\t\t\t\tdisplayCombo(event);\r\n\t\t\t\t\tdisplayRatingNumbers(event);\r\n\t\t\t\t\tdisplayRating(event.rating, event);\r\n\t\t\t\t\tratingNum += 1;\r\n\t\t\t\t}\r\n\t\t\t\tif (event.player) hits[rating.name] += 1;\r\n\t\t\t}\r\n\r\n\t\t\tif (strumLine != null) strumLine.addHealth(event.healthGain);\r\n\r\n\t\t\tif (!event.animCancelled)\r\n\t\t\t\tfor(char in event.characters)\r\n\t\t\t\t\tif (char != null)\r\n\t\t\t\t\t\tchar.playSingAnim(event.direction, event.animSuffix, SING, event.forceAnim);\r\n\r\n\t\t\tif (event.note.__strum != null) {\r\n\t\t\t\tif (!event.strumGlowCancelled) event.note.__strum.press(event.note.strumTime);\r\n\t\t\t\tif (event.showSplash) splashHandler.showSplash(event.note.splash, event.note.__strum);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (event.unmuteVocals) {\r\n\t\t\tvocals.volume = 1;\r\n\t\t\tstrumLine.vocals.volume = 1;\r\n\t\t}\r\n\t\tif (event.enableCamZooming) camZooming = true;\r\n\t\tif (event.autoHitLastSustain) {\r\n\t\t\tif (note.nextSustain != null && note.nextSustain.nextSustain == null) {\r\n\t\t\t\t// its a tail!!\r\n\t\t\t\tnote.wasGoodHit = true;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (event.deleteNote) strumLine.deleteNote(note);\r\n\t\telse note.updateSustainClip();\r\n\r\n\t\tgameAndCharsEvent(\"onPostNoteHit\", event);\r\n\t}",
+			"doc": {
+				"text": "Hits a note",
+				"params": {
+					"note": "Note to hit."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "displayRating",
+			"args": [
+				{
+					"name": "myRating",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "evt",
+					"type": "NoteHitEvent",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function displayRating(myRating:String, ?evt:NoteHitEvent):Void \r\n\t{\r\n\t\tvar event:RatingsShowEvent = EventManager.get(RatingsShowEvent).recycle(comboGroup.recycleLoop(FlxSprite), null, null, null, null, 0.7, true, \"game/score/\", \"\", 550, FlxPoint.get(FlxG.random.int(0, 10), FlxG.random.int(140, 175)), 0.2, (Conductor.crochet * 0.001), true, false, false, true, null, FlxPoint.get(comboGroup.x + -40, comboGroup.y + -60), true, myRating, null);\r\n\t\tgameAndCharsEvent(\"onRatingsShown\", event);\r\n\r\n\t\tif (event.cancelled || !event.displayRating) { // TODO: Find a better way for this?\r\n\t\t\tevent.ratingSprite.kill();\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tvar hasEvent:Bool = evt != null;\r\n\r\n\t\tvar pre:String = hasEvent && evt.ratingPrefix != null ? evt.ratingPrefix : event.ratingPrefix;\r\n\t\tvar suf:String = hasEvent && evt.ratingSuffix != null ? evt.ratingSuffix : event.ratingSuffix;\r\n\r\n\t\tvar ratingScale:Float = hasEvent && evt.ratingScale != null ? evt.ratingScale : event.ratingScale;\r\n\r\n\t\tvar rating:FlxSprite = event.ratingSprite.loadAnimatedGraphic(Paths.image('${pre}${event.rating}${suf}'));\r\n\t\tif (event.resetSprite) {\r\n\t\t\tCoolUtil.resetSprite(rating, event.position.x, event.position.y);\r\n\t\t}\r\n\t\trating.acceleration.y = event.acceleration;\r\n\t\trating.velocity.y -= event.velocity.y;\r\n\t\trating.velocity.x -= event.velocity.x;\r\n\t\trating.scale.set(ratingScale, ratingScale);\r\n\t\trating.antialiasing = hasEvent && evt.ratingAntialiasing != null ? evt.ratingAntialiasing : event.ratingAntialiasing;\r\n\t\trating.updateHitbox();\r\n\r\n\t\tif (event.playTween) {\r\n\t\t\tevent.tween = FlxTween.tween(rating, {alpha: 0}, event.tweenDuration, {\r\n\t\t\t\tstartDelay: event.startDelay,\r\n\t\t\t\tonComplete: function(tween:FlxTween) {\r\n\t\t\t\t\trating.kill();\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}\r\n\t\tgameAndCharsEvent(\"onPostRatingsShown\", event);\r\n\r\n\t\tevent.velocity.put();\r\n\t\tevent.position.put();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "displayCombo",
+			"args": [
+				{
+					"name": "evt",
+					"type": "NoteHitEvent",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function displayCombo(?evt:NoteHitEvent):Void {\r\n\t\tif (minDigitDisplay >= 0 && (combo == 0 || combo >= minDigitDisplay)) {\r\n\t\t\tvar event:RatingsShowEvent = EventManager.get(RatingsShowEvent).recycle(null, null, comboGroup.recycleLoop(FlxSprite), null, null, 0.7, true, \"game/score/\", \"\", 600, FlxPoint.get(FlxG.random.int(0, 10), 150), 0.2, (Conductor.crochet * 0.001), false, false, evt != null && evt.displayCombo != null ? evt.displayCombo : defaultDisplayCombo, true, null, FlxPoint.get(comboGroup.x, comboGroup.y), true, null, null);\r\n\t\t\tgameAndCharsEvent(\"onRatingsShown\", event);\r\n\r\n\t\t\tif (event.cancelled || !event.displayCombo) { // TODO: Find a better way for this?\r\n\t\t\t\tevent.comboSprite.kill();\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\r\n\t\t\tvar hasEvent:Bool = evt != null;\r\n\r\n\t\t\tvar pre:String = hasEvent && evt.ratingPrefix != null ? evt.ratingPrefix : event.ratingPrefix;\r\n\t\t\tvar suf:String = hasEvent && evt.ratingSuffix != null ? evt.ratingSuffix : event.ratingSuffix;\r\n\r\n\t\t\tvar ratingScale:Float = hasEvent && evt.ratingScale != null ? evt.ratingScale : event.ratingScale;\r\n\r\n\t\t\tvar comboSpr:FlxSprite = event.comboSprite.loadAnimatedGraphic(Paths.image('${pre}combo${suf}'));\r\n\t\t\tif (event.resetSprite) {\r\n\t\t\t\tCoolUtil.resetSprite(comboSpr, event.position.x, event.position.y);\r\n\t\t\t}\r\n\t\t\tcomboSpr.acceleration.y = event.acceleration;\r\n\t\t\tcomboSpr.velocity.y -= event.velocity.y;\r\n\t\t\tcomboSpr.velocity.x += event.velocity.x;\r\n\t\t\tcomboSpr.scale.set(ratingScale, ratingScale);\r\n\t\t\tcomboSpr.antialiasing = hasEvent && evt.ratingAntialiasing != null ? evt.ratingAntialiasing : event.ratingAntialiasing;\r\n\t\t\tcomboSpr.updateHitbox();\r\n\r\n\t\t\tif (event.playTween) {\r\n\t\t\t\tevent.tween = FlxTween.tween(comboSpr, {alpha: 0}, event.tweenDuration, {\r\n\t\t\t\t\tonComplete: function(tween:FlxTween) {\r\n\t\t\t\t\t\tcomboSpr.kill();\r\n\t\t\t\t\t},\r\n\t\t\t\t\tstartDelay: event.startDelay\r\n\t\t\t\t});\r\n\t\t\t}\r\n\t\t\tgameAndCharsEvent(\"onPostRatingsShown\", event);\r\n\r\n\t\t\tevent.velocity.put();\r\n\t\t\tevent.position.put();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "displayRatingNumbers",
+			"args": [
+				{
+					"name": "evt",
+					"type": "NoteHitEvent",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function displayRatingNumbers(?evt:NoteHitEvent):Void {\r\n\t\tif (minDigitDisplay >= 0 && (combo == 0 || combo >= minDigitDisplay)) {\r\n\t\t\tvar separatedScore:String = Std.string(combo).addZeros(3);\r\n\t\t\tfor (i in 0...separatedScore.length)\r\n\t\t\t{\r\n\t\t\t\tvar event:RatingsShowEvent = EventManager.get(RatingsShowEvent).recycle(null, comboGroup.recycleLoop(FlxSprite), null, 0.5, true, null, null, \"game/score/\", \"\", FlxG.random.int(200, 300), FlxPoint.get(FlxG.random.float(-5, 5), FlxG.random.int(140, 160)), 0.2, (Conductor.crochet * 0.002), false, true, false, true, 43, FlxPoint.get(comboGroup.x - 90, comboGroup.y + 80), true, null, null);\r\n\t\t\t\tgameAndCharsEvent(\"onRatingsShown\", event);\r\n\r\n\t\t\t\tif (event.cancelled || !event.displayNumbers) { // TODO: Find a better way for this?\r\n\t\t\t\t\tevent.numberSprite.kill();\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\t\t\t\t\r\n\r\n\t\t\t\tvar hasEvent:Bool = evt != null;\r\n\r\n\t\t\t\tvar pre:String = hasEvent && evt.ratingPrefix != null ? evt.ratingPrefix : event.ratingPrefix;\r\n\t\t\t\tvar suf:String = hasEvent && evt.ratingSuffix != null ? evt.ratingSuffix : event.ratingSuffix;\r\n\r\n\t\t\t\tvar numScale:Float = hasEvent && evt.numScale != null ? evt.numScale : event.numScale;\r\n\r\n\t\t\t\tvar numScore:FlxSprite = event.numberSprite.loadAnimatedGraphic(Paths.image('${pre}num${separatedScore.charAt(i)}${suf}'));\r\n\t\t\t\tevent.position.x += event.numSpacing * i;\r\n\t\t\t\tif (event.resetSprite) {\r\n\t\t\t\t\tCoolUtil.resetSprite(numScore, event.position.x, event.position.y);\r\n\t\t\t\t}\r\n\t\t\t\tnumScore.antialiasing = hasEvent && evt.numAntialiasing != null ? evt.numAntialiasing : event.numAntialiasing;\r\n\t\t\t\tnumScore.scale.set(numScale, numScale);\r\n\t\t\t\tnumScore.updateHitbox();\r\n\r\n\t\t\t\tnumScore.acceleration.y = event.acceleration;\r\n\t\t\t\tnumScore.velocity.y -= event.velocity.y;\r\n\t\t\t\tnumScore.velocity.x = event.velocity.x;\r\n\r\n\t\t\t\tif (event.playTween) {\r\n\t\t\t\t\tevent.tween = FlxTween.tween(numScore, {alpha: 0}, event.tweenDuration, {\r\n\t\t\t\t\t\tonComplete: function(tween:FlxTween) {\r\n\t\t\t\t\t\t\tnumScore.kill();\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\tstartDelay: event.startDelay\r\n\t\t\t\t\t});\r\n\t\t\t\t}\r\n\t\t\t\tgameAndCharsEvent(\"onPostRatingsShown\", event);\r\n\r\n\t\t\t\tevent.velocity.put();\r\n\t\t\t\tevent.position.put();\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteNote",
+			"args": [
+				{
+					"name": "note",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function deleteNote(note:Note)\r\n\t\tif (note.strumLine != null)\r\n\t\t\tnote.strumLine.deleteNote(note);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addScript",
+			"args": [
+				{
+					"name": "file",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addScript(file:String) {\r\n\t\tvar ext = Path.extension(file).toLowerCase();\r\n\t\tif (Script.scriptExtensions.contains(ext))\r\n\t\t\tscripts.add(Script.create(file));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadWeek",
+			"args": [
+				{
+					"name": "weekData",
+					"type": "WeekData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadWeek(weekData:WeekData, ?difficulty:String) {\r\n\t\tif (difficulty == null) difficulty = Flags.DEFAULT_DIFFICULTY;\r\n\t\tstoryWeek = weekData;\r\n\t\tstoryPlaylist = [for (e in weekData.songs) e.name];\r\n\t\tstoryVariations = [for (e in weekData.songs) e.variation];\r\n\t\tisStoryMode = true;\r\n\t\tcampaignScore = 0;\r\n\t\tcampaignMisses = 0;\r\n\t\tcampaignAccuracyTotal = 0;\r\n\t\tcampaignAccuracyCount = 0;\r\n\t\tcampaignHits = [];\r\n\t\tchartingMode = coopMode = opponentMode = false;\r\n\t\t__loadSong(storyPlaylist[0], difficulty, storyVariations[0]);\r\n\t}",
+			"doc": {
+				"text": "Load a week into PlayState.",
+				"params": {
+					"weekData": "Week Data",
+					"difficulty": "Week Difficulty"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadSong",
+			"args": [
+				{
+					"name": "_name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "_difficulty",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "_variation",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "_opponentMode",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "_coopMode",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadSong(_name:String, ?_difficulty:String, ?_variation:Dynamic, _opponentMode:Bool = false, _coopMode:Bool = false) {\r\n\t\tif (_difficulty == null) difficulty = Flags.DEFAULT_DIFFICULTY;\r\n\t\tif (_variation is Bool) { // vackward cumpatibshit\r\n\t\t\t_coopMode = _opponentMode;\r\n\t\t\t_opponentMode = cast _variation;\r\n\t\t\t_variation = null;\r\n\t\t}\r\n\t\telse if (!(_variation is String)) _variation = null;\r\n\t\topponentMode = _opponentMode;\r\n\t\tcoopMode = _coopMode;\r\n\t\tisStoryMode = chartingMode = false;\r\n\t\t__loadSong(_name, _difficulty, cast _variation);\r\n\t}",
+			"doc": {
+				"text": "Loads a song into PlayState",
+				"params": {
+					"name": "Song name",
+					"difficulty": "Chart difficulty (if invalid, will load an empty chart)",
+					"variation": "Song Variation",
+					"opponentMode": "Whenever opponent mode is on",
+					"coopMode": "Whenever co-op mode is on."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__loadSong",
+			"args": [
+				{
+					"name": "_name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "_difficulty",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "_variation",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function __loadSong(_name:String, _difficulty:String, _variation:String) {\r\n\t\tdifficulty = _difficulty;\r\n\t\tvariation = _variation;\r\n\t\tseenCutscene = false;\r\n\t\tdeathCounter = 0;\r\n\r\n\t\tSONG = Chart.parse(_name, _difficulty, _variation);\r\n\t\tfromMods = SONG.fromMods;\r\n\t}",
+			"doc": {
+				"text": "(INTERNAL) Loads a song without resetting story mode/opponent mode/coop mode values.",
+				"params": {
+					"name": "Song name",
+					"difficulty": "Chart difficulty",
+					"variation": "Song Variation"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

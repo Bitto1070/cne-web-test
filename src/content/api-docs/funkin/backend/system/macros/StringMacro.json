@@ -1,0 +1,35 @@
+{
+	"kind": "class",
+	"name": "StringMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "addLine",
+			"args": [
+				{
+					"name": "buf",
+					"type": "Expr",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Expr>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Expr",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:dox(hide) public static macro function addLine(buf:Expr, args:Array<Expr>):Expr {\r\n\t\tvar exprs = [];\r\n\t\tfor (arg in args) {\r\n\t\t\tvar expanded = expandInterpolatedString(buf, arg);\r\n\t\t\tif (expanded != null) {\r\n\t\t\t\texprs = exprs.concat(expanded);\r\n\t\t\t} else {\r\n\t\t\t\texprs.push(macro $buf.add($arg));\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn macro $b{exprs};\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		}
+	]
+}

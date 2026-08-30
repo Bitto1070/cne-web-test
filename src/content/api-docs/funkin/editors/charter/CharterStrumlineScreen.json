@@ -1,0 +1,283 @@
+{
+	"kind": "class",
+	"name": "CharterStrumlineScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "strumLineID",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "ChartStrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charactersList",
+			"type": "UIButtonList<CharacterButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "typeDropdown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vocalsSuffixDropDown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stagePositionDropdown",
+			"type": "UIDropDown",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudScaleStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudXStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudYStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "visibleCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeedStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "usesChartScrollSpeed",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "keyCountStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hudSpacingStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterIcons",
+			"type": "Array<HealthIcon>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLineCam",
+			"type": "HudCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "previewStrumLine",
+			"type": "CharterPreviewStrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "previewBorder",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "strumLineID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "strumLine",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onSave",
+					"type": "ChartStrumLine->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(strumLineID:Int, strumLine:ChartStrumLine, ?onSave:ChartStrumLine->Void) {\r\n\t\tsuper();\r\n\t\tthis.strumLineID = strumLineID;\r\n\t\tthis.strumLine = strumLine;\r\n\t\tif (onSave != null) this.onSave = onSave;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tvar creatingStrumLine:Bool = strumLine == null;\r\n\r\n\t\tif (creatingStrumLine)\r\n\t\t\tstrumLine = {\r\n\t\t\t\tcharacters: [Flags.DEFAULT_OPPONENT],\r\n\t\t\t\ttype: OPPONENT,\r\n\t\t\t\tnotes: [],\r\n\t\t\t\tposition: \"dad\",\r\n\t\t\t\tvisible: true,\r\n\t\t\t\tkeyCount: 4\r\n\t\t\t};\r\n\r\n\t\twinTitle = TU.translate(\"charterStrumlineScreen.win-title\" + (creatingStrumLine ? \"-creating\" : \"-editing\"), [\"#\" + strumLineID]);\r\n\t\twinWidth = 720; winHeight = 400;\r\n\r\n\t\tFlxG.sound.music.pause();\r\n\t\tCharter.instance.vocals.pause();\r\n\t\tfor (strumLine in Charter.instance.strumLines.members) strumLine.vocals.pause();\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String)\r\n\t\t\tadd(new UIText(ui.x, ui.y - 24, 0, text));\r\n\r\n\t\tvar title:UIText;\r\n\t\tadd(title = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, TU.translate(\"charterStrumlineScreen.title\" + (creatingStrumLine ? \"-creating\" : \"-editing\")), 28));\r\n\r\n\t\tvar charFileList = Character.getList(true);\r\n\t\tif (charFileList.length == 0) charFileList = Character.getList(false);\r\n\r\n\t\tcharactersList = new UIButtonList<CharacterButton>(15, title.y + title.height + 36, 250, 269, null, FlxPoint.get(250, 54), null, 0);\r\n\t\tcharactersList.addButton.callback = () -> charactersList.add(new CharacterButton(0, 0, TU.translate(\"charterStrumLine.newChar\"), charFileList, charactersList));\r\n\t\tcharactersList.cameraSpacing = 0;\r\n\t\tfor (i in strumLine.characters)\r\n\t\t\tcharactersList.add(new CharacterButton(0, 0, i, charFileList, charactersList));\r\n\t\tadd(charactersList);\r\n\t\taddLabelOn(charactersList, TU.translate(\"charterStrumLine.characters\"));\r\n\r\n\t\tcharactersList.frames = Paths.getFrames('editors/ui/inputbox');\r\n\r\n\t\ttypeDropdown = new UIDropDown(charactersList.x + charactersList.bWidth + 16, charactersList.y, 200, 32, [\"OPPONENT\", \"PLAYER\", \"ADDITIONAL\"], strumLine.type);\r\n\t\tadd(typeDropdown);\r\n\t\taddLabelOn(typeDropdown, TU.translate(\"charterStrumLine.type\"));\r\n\r\n\t\tusesChartScrollSpeed = new UICheckbox(typeDropdown.x + 104, typeDropdown.y + 135, TU.translate(\"charterStrumLine.useChartScrollSpeed\"), strumLine.scrollSpeed == null);\r\n\t\tusesChartScrollSpeed.onChecked = function(b) {\r\n\t\t\tif(b)\r\n\t\t\t{\r\n\t\t\t\tscrollSpeedStepper.value = PlayState.SONG.scrollSpeed;\r\n\t\t\t\tscrollSpeedStepper.selectable = false;\r\n\t\t\t} else {\r\n\t\t\t\tscrollSpeedStepper.selectable = true;\r\n\t\t\t}\r\n\t\t}\r\n\t\tadd(usesChartScrollSpeed);\r\n\r\n\t\tscrollSpeedStepper = new UINumericStepper(typeDropdown.x, typeDropdown.y + 128, usesChartScrollSpeed.checked ? PlayState.SONG.scrollSpeed : strumLine.scrollSpeed, 0.1, 2, 0, 10, 82);\r\n\t\tif(usesChartScrollSpeed.checked)\r\n\t\t{\r\n\t\t\tscrollSpeedStepper.selectable = false;\r\n\t\t} else {\r\n\t\t\tscrollSpeedStepper.selectable = true;\r\n\t\t}\r\n\t\tadd(scrollSpeedStepper);\r\n\t\taddLabelOn(scrollSpeedStepper, TU.translate(\"charterStrumLine.scrollSpeed\"));\r\n\r\n\t\tvar stagePositionI = strumLine.position == null ? strumLine.type : [\"DAD\", \"BOYFRIEND\", \"GIRLFRIEND\"].indexOf(strumLine.position.toUpperCase());\r\n\r\n\t\tstagePositionDropdown = new UIDropDown(typeDropdown.x + 200 - 32 + 26, typeDropdown.y, 200, 32, [\"DAD\", \"BOYFRIEND\", \"GIRLFRIEND\"], stagePositionI);\r\n\t\tadd(stagePositionDropdown);\r\n\t\taddLabelOn(stagePositionDropdown, TU.translate(\"charterStrumLine.stagePos\"));\r\n\r\n\t\thudScaleStepper = new UINumericStepper(typeDropdown.x, typeDropdown.y + 64, strumLine.strumScale == null ? 1 : strumLine.strumScale, 0.001, 2, null, null, 84);\r\n\t\tadd(hudScaleStepper);\r\n\t\taddLabelOn(hudScaleStepper, TU.translate(\"charterStrumLine.scale\"));\r\n\r\n\t\thudSpacingStepper = new UINumericStepper(hudScaleStepper.x + 80 - 32 + 26, hudScaleStepper.y, strumLine.strumSpacing != null ? strumLine.strumSpacing : 1, 0.001, 10, null, null, 84);\r\n\t\tadd(hudSpacingStepper);\r\n\t\taddLabelOn(hudSpacingStepper, TU.translate(\"charterStrumLine.spacing\"));\r\n\r\n\t\tvar strOffset:Float = strumLine.strumLinePos == null ? (strumLine.type == 1 ? 0.75 : 0.25) : strumLine.strumLinePos;\r\n\r\n\t\tvar startingPos:FlxPoint = strumLine.strumPos == null ?\r\n\t\t\tFlxPoint.get(strOffset, 50) :\r\n\t\t\tFlxPoint.get(strOffset, strumLine.strumPos[1]);\r\n\r\n\t\thudXStepper = new UINumericStepper(hudSpacingStepper.x + 80, hudScaleStepper.y, startingPos.x, 0.01, 2, 0, 2, 84);\r\n\t\tadd(hudXStepper);\r\n\t\taddLabelOn(hudXStepper, TU.translate(\"charterStrumLine.hudPos\"));\r\n\r\n\t\tadd(new UIText(hudXStepper.x + 84 - 32 + 0, hudXStepper.y + 9, 0, \",\", 22));\r\n\r\n\t\thudYStepper = new UINumericStepper(hudXStepper.x + 84 - 32 + 26, hudXStepper.y, startingPos.y, 0.001, 2, null, null, 84);\r\n\t\tadd(hudYStepper);\r\n\r\n\t\tvisibleCheckbox = new UICheckbox(hudYStepper.x + hudYStepper.bWidth + 42, hudYStepper.y + 9, TU.translate(\"charterStrumLine.visible\"), strumLine.visible);\r\n\t\tadd(visibleCheckbox);\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tsaveStrumline();\r\n\t\t\tfor (grp in [Charter.instance.leftEventsGroup, Charter.instance.rightEventsGroup]) {\r\n\t\t\t\tfor (e in grp.members) e.refreshEventIcons();\r\n\t\t\t}\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20 - saveButton.bWidth, saveButton.y, TU.translate(\"editor.\" + (creatingStrumLine ? \"cancel\" : \"close\")), function() {\r\n\t\t\tif (creatingStrumLine && onSave != null) onSave(null);\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\r\n\t\tvar suffixList = [\"NONE\"];\r\n\t\tfor (i in Paths.getFolderContent('songs/${Charter.__song.toLowerCase()}/song'))\r\n\t\tif (i.startsWith(\"Voices\")) {\r\n\t\t\ti = haxe.io.Path.withoutExtension(i.substr(\"Voices\".length));\r\n\t\t\tif (i == \"\") continue;\r\n\t\t\tfor (j in PlayState.SONG.meta.difficulties) {\r\n\t\t\t\tif (i.endsWith('-${j.toLowerCase()}'))\r\n\t\t\t\t\tsuffixList.pushOnce(i.substring(0, i.length - j.length));\r\n\t\t\t\telse\r\n\t\t\t\t\tsuffixList.pushOnce(i);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvocalsSuffixDropDown = new UIDropDown(typeDropdown.x, hudScaleStepper.y + 128, 200, 32, suffixList, strumLine.vocalsSuffix != null && strumLine.vocalsSuffix != \"\" && Assets.exists(Paths.voices(Charter.__song.toLowerCase(), \"\", strumLine.vocalsSuffix)) ? suffixList.indexOf(strumLine.vocalsSuffix) : 0);\r\n\t\tadd(vocalsSuffixDropDown);\r\n\t\taddLabelOn(vocalsSuffixDropDown, TU.translate(\"charterStrumLine.vocalSuffix\"));\r\n\r\n\t\tkeyCountStepper = new UINumericStepper(stagePositionDropdown.x, vocalsSuffixDropDown.y, strumLine.keyCount != null ? strumLine.keyCount : 4, 1, 0, 1, 1000, 84);\r\n\t\tadd(keyCountStepper);\r\n\t\taddLabelOn(keyCountStepper, TU.translate(\"charterStrumLine.keyCount\"));\r\n\r\n\t\tstrumLineCam = new HudCamera();\r\n\t\tstrumLineCam.downscroll = Options.downscroll;\r\n\t\tstrumLineCam.bgColor = 0;\r\n\t\tstrumLineCam.alpha = 0;\r\n\t\tFlxG.cameras.add(strumLineCam, false);\r\n\t\tupdateStrumlineCam(FlxG.width, FlxG.height);\r\n\r\n\t\tpreviewStrumLine = new CharterPreviewStrumLine(0, 0, 0, 1, 4, 0);\r\n\t\tpreviewStrumLine.camera = strumLineCam;\r\n\t\tadd(previewStrumLine);\r\n\t\tFlxTween.tween(strumLineCam, {alpha: 1}, 0.25, {ease: FlxEase.cubeOut});\r\n\r\n\t\t//preview border\r\n\t\tpreviewBorder.push(new FlxSprite(-borderGap, -borderGap).makeSolid(FlxG.initialWidth + (borderGap*2), borderGap, 0x88FFFFFF));\r\n\t\tpreviewBorder.push(new FlxSprite(-borderGap, 0).makeSolid(borderGap, FlxG.initialHeight, 0x88FFFFFF));\r\n\t\tpreviewBorder.push(new FlxSprite(FlxG.initialWidth, 0).makeSolid(borderGap, FlxG.initialHeight, 0x88FFFFFF));\r\n\t\tpreviewBorder.push(new FlxSprite(-borderGap, FlxG.initialHeight).makeSolid(FlxG.initialWidth + (borderGap*2), borderGap, 0x88FFFFFF));\r\n\t\tfor (border in previewBorder) {\r\n\t\t\tborder.camera = strumLineCam;\r\n\t\t\tadd(border);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function update(elapsed:Float) {\r\n\t\tvar scrollSpeed:Float = 0.0;\r\n\t\tif (usesChartScrollSpeed.hovered || scrollSpeedStepper.hovered || scrollSpeedStepper.focused)\r\n\t\t\tscrollSpeed = scrollSpeedStepper.value;\r\n\r\n\t\tpreviewStrumLine.visible = visibleCheckbox.checked;\r\n\r\n\t\tvar xOffset:Float = StrumLine.calculateStartingXPosFromInitialWidth(hudXStepper.value, hudScaleStepper.value, hudSpacingStepper.value, Std.int(keyCountStepper.value));\r\n\t\tpreviewStrumLine.updatePos(xOffset, hudYStepper.value, hudScaleStepper.value, hudSpacingStepper.value, Std.int(keyCountStepper.value), scrollSpeed);\r\n\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tFlxTween.cancelTweensOf(strumLineCam);\r\n\t\tFlxG.cameras.remove(strumLineCam);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResize",
+			"args": [
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResize(width:Int, height:Int) {\r\n\t\tsuper.onResize(width, height);\r\n\t\tif (!UIState.resolutionAware) return;\r\n\r\n\t\tif ((width < FlxG.initialWidth || height < FlxG.initialHeight) && !Options.bypassEditorsResize) {\r\n\t\t\twidth = FlxG.initialWidth; height = FlxG.initialHeight;\r\n\t\t}\r\n\r\n\t\tupdateStrumlineCam(width, height);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,140 @@
+{
+	"kind": "class",
+	"name": "FunkinText",
+	"pkg": "funkin.backend",
+	"doc": null,
+	"meta": [
+		"@:access(animate.FlxAnimate)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "zoomFactor",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "zoomFactorEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angleFactor",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "angleFactorEnabled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "skew",
+			"type": "FlxPoint",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": {
+				"text": "Change the skew of your sprite's graphic.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "transformMatrix",
+			"type": "FlxMatrix",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": {
+				"text": "The matrix to use for rendering if `matrixExposed` is true.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "matrixExposed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether to draw the matrix exposed with `transformMatrix`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "X",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "Y",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "FieldWidth",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "Text",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "Size",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "Border",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, ?Size:Int, Border:Bool = true)\r\n\t{\r\n\t\tif (Size == null) Size = Flags.DEFAULT_FONT_SIZE;\r\n\r\n\t\tsuper(X, Y, FieldWidth, Text, Size);\r\n\r\n\t\tsetFormat(Paths.font(Flags.DEFAULT_FONT), Size, FlxColor.WHITE);\r\n\r\n\t\tif (Border)\r\n\t\t{\r\n\t\t\tborderStyle = OUTLINE;\r\n\t\t\tborderSize = 1;\r\n\t\t\tborderColor = 0xFF000000;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

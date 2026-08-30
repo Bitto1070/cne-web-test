@@ -1,0 +1,134 @@
+{
+	"kind": "class",
+	"name": "PropertyButton",
+	"pkg": "funkin.editors.extra",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "propertyText",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "valueText",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "property",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": "280"
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": "35"
+				},
+				{
+					"name": "nameWidth",
+					"type": "Int",
+					"optional": false,
+					"def": "100"
+				},
+				{
+					"name": "valueWidth",
+					"type": "Int",
+					"optional": false,
+					"def": "135"
+				},
+				{
+					"name": "inputHeight",
+					"type": "Int",
+					"optional": false,
+					"def": "25"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(property, value, parent, width:Int = 280, height:Int = 35, nameWidth:Int = 100, valueWidth:Int = 135, inputHeight:Int = 25) {\r\n\t\tsuper(0, 0, '', function () {}, width, height);\r\n\t\tmembers.push(propertyText = new UITextBox(5, 5, property, nameWidth, inputHeight));\r\n\t\tmembers.push(valueText = new UITextBox(propertyText.x + propertyText.bWidth + 10, 5, value, valueWidth, inputHeight));\r\n\r\n\t\tvar deleteSize = height - 5 * 2;\r\n\t\tdeleteButton = new UIButton(valueText.x + 135, bHeight/2 - (deleteSize/2), null, function () {\r\n\t\t\tparent.remove(this);\r\n\t\t}, deleteSize, deleteSize);\r\n\t\tdeleteButton.color = 0xFFFF0000;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x, deleteButton.y).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\r\n\t\tupdatePos();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed) {\r\n\t\tsuper.update(elapsed);\r\n\t\tupdatePos();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updatePos() {\r\n\t\tpropertyText.follow(this, 5, bHeight/2 - (propertyText.bHeight/2));\r\n\t\tvalueText.follow(this, propertyText.x + propertyText.bWidth, bHeight/2 - (valueText.bHeight/2));\r\n\t\t//deleteButton.follow(this, valueText.x + 135, bHeight/2 - (25/2));\r\n\t\tdeleteButton.follow(this, bWidth - deleteButton.bWidth - 5, bHeight/2 - deleteButton.bHeight/2);\r\n\t\tdeleteIcon.follow(deleteButton, deleteButton.bWidth / 2 - deleteIcon.width / 2, deleteButton.bHeight / 2 - deleteIcon.height / 2);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

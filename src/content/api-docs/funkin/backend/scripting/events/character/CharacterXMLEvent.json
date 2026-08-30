@@ -1,0 +1,39 @@
+{
+	"kind": "final class",
+	"name": "CharacterXMLEvent",
+	"pkg": "funkin.backend.scripting.events.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The character instance",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The xml",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

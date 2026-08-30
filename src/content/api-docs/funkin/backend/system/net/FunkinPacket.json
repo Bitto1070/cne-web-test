@@ -1,0 +1,251 @@
+{
+	"kind": "class",
+	"name": "FunkinPacket",
+	"pkg": "funkin.backend.system.net",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "status",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bytes",
+			"type": "Bytes",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fromJson",
+			"args": [
+				{
+					"name": "json",
+					"type": "OneOfTwo<String, haxe.DynamicAccess<Dynamic>>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FunkinPacket",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fromJson(json:OneOfTwo<String, haxe.DynamicAccess<Dynamic>>):FunkinPacket { return (new FunkinPacket().appendJson(json)); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "appendJson",
+			"args": [
+				{
+					"name": "json",
+					"type": "OneOfTwo<String, haxe.DynamicAccess<Dynamic>>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FunkinPacket",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function appendJson(json:OneOfTwo<String, haxe.DynamicAccess<Dynamic>>):FunkinPacket {\r\n\t\tvar parsedJson:haxe.DynamicAccess<Dynamic>;\r\n\t\tif (json is String) {\r\n\t\t\ttry {\r\n\t\t\t\tparsedJson = haxe.Json.parse(json);\r\n\t\t\t\tif (parsedJson == null) return this;\r\n\t\t\t\t\r\n\t\t\t} catch(e) {\r\n\t\t\t\tthis.set(\"message\", json);\r\n\t\t\t\treturn this;\r\n\t\t\t}\r\n\t\t} else parsedJson = json;\r\n\t\tfor (key => value in parsedJson) this.set(key, value);\r\n\t\treturn this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toJson",
+			"args": [],
+			"ret": "haxe.DynamicAccess<Dynamic>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toJson():haxe.DynamicAccess<Dynamic> {\r\n\t\tvar json:haxe.DynamicAccess<Dynamic> = {};\r\n\t\tfor (key => value in fields) json[key] = value;\r\n\t\treturn json;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stringify",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function stringify():String { return haxe.Json.stringify(toJson()); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toBytes",
+			"args": [],
+			"ret": "Bytes",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toBytes():Bytes {\r\n\t\tvar output = new BytesOutput();\r\n\t\toutput.writeString(haxe.Json.stringify(toJson()));\r\n\t\treturn output.getBytes();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Null<Dynamic>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function get(key:String):Null<Dynamic> { return fields.get(key); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function set(key:String, value:Dynamic):Void { fields.set(key, value); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function exists(key:String):Bool { return fields.exists(key); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "remove",
+			"args": [
+				{
+					"name": "key",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function remove(key:String):Bool { return fields.remove(key); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "keys",
+			"args": [],
+			"ret": "Iterator<String>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function keys():Iterator<String> { return fields.keys(); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "iterator",
+			"args": [],
+			"ret": "Iterator<Dynamic>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function iterator():Iterator<Dynamic> { return fields.iterator(); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "keyValueIterator",
+			"args": [],
+			"ret": "KeyValueIterator<String, Dynamic>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function keyValueIterator():KeyValueIterator<String, Dynamic> { return fields.keyValueIterator(); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "copy",
+			"args": [],
+			"ret": "FunkinPacket",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function copy():FunkinPacket { \r\n\t\tvar copy = new FunkinPacket();\r\n\t\tcopy.fields = this.fields.copy();\r\n\t\tcopy.status = this.status;\r\n\t\treturn copy;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clear",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function clear():Void { fields.clear(); }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function toString():String { return 'FunkinPacket (Status: $status)'; }",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,45 @@
+{
+	"kind": "class",
+	"name": "FlxFastTypedGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "maxSize",
+					"type": "Int",
+					"optional": true,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?maxSize:Int = 0) {\r\n\t\tsuper(maxSize);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "add",
+			"args": [
+				{
+					"name": "Object",
+					"type": "T",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "T",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function add(Object:T):T\r\n\t{\r\n\t\tif (Object == null)\r\n\t\t{\r\n\t\t\tFlxG.log.warn(\"Cannot add a `null` object to a FlxGroup.\");\r\n\t\t\treturn null;\r\n\t\t}\r\n\r\n\t\t// removed the check for multiple\r\n\t\t// removed the check for null reuse\r\n\r\n\t\t// If the group is full, return the Object\r\n\t\tif (maxSize > 0 && length >= maxSize)\r\n\t\t\treturn Object;\r\n\r\n\t\t// If we made it this far, we need to add the object to the group.\r\n\t\tmembers.push(Object);\r\n\t\tlength++;\r\n\r\n\t\tif (_memberAdded != null)\r\n\t\t\t_memberAdded.dispatch(Object);\r\n\r\n\t\treturn Object;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

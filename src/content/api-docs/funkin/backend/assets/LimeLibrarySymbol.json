@@ -1,0 +1,96 @@
+{
+	"kind": "class",
+	"name": "LimeLibrarySymbol",
+	"pkg": "funkin.backend.assets",
+	"doc": {
+		"text": "COPIED DIRECTLY FROM LIME SOURCE CAUSE LIME IS SO FUCKING DUMB!!",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "library",
+			"type": "lime.utils.AssetLibrary",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "libraryName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "symbolName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function new(id:String)\r\n\t{\r\n\t\tvar colonIndex = id.indexOf(\":\");\r\n\t\tlibraryName = id.substring(0, colonIndex);\r\n\t\tsymbolName = id.substring(colonIndex + 1);\r\n\t\tlibrary = lime.utils.Assets.getLibrary(libraryName);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isLocal",
+			"args": [
+				{
+					"name": "type",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function isLocal(?type)\r\n\t\treturn library.isLocal(symbolName, type);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "type",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function exists(?type)\r\n\t\treturn library.exists(symbolName, type);",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+	"kind": "final class",
+	"name": "DiscordPresenceUpdateEvent",
+	"pkg": "funkin.backend.scripting.events.discord",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "presence",
+			"type": "funkin.backend.utils.DiscordUtil.DPresence",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Object containing all of the data for the presence. Can be altered.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

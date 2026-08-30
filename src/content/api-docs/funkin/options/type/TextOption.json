@@ -1,0 +1,78 @@
+{
+	"kind": "class",
+	"name": "TextOption",
+	"pkg": "funkin.options.type",
+	"doc": {
+		"text": "Option type that has text.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "OPTION_VALUE_PREFIX",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "suffix",
+			"type": "String",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectCallback",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": true,
+					"def": "\"\""
+				},
+				{
+					"name": "selectCallback",
+					"type": "Void->Void",
+					"optional": true,
+					"def": "null"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(text:String, desc:String, ?suffix:String = \"\", ?selectCallback:Void->Void = null) {\r\n\t\t@:bypassAccessor this.suffix = suffix;\r\n\t\tthis.selectCallback = selectCallback;\r\n\r\n\t\t__text = new Alphabet(20, 20, \"\", \"bold\");\r\n\r\n\t\tsuper(text, desc);\r\n\t\tadd(__text);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "FileAttribute",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

@@ -1,0 +1,62 @@
+{
+	"kind": "class",
+	"name": "UISubstateWindow",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "onSubstateOpen",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onSubstateOpen() {\r\n\t\tsuper.onSubstateOpen();\r\n\t\tparent.persistentUpdate = false;\r\n\t\tparent.persistentDraw = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tfor(c in FlxG.cameras.list) {\r\n\t\t\t// Prevent adding a shader if it already has one\r\n\t\t\t@:privateAccess if(c._filters != null) {\r\n\t\t\t\tvar shouldSkip = false;\r\n\t\t\t\tfor(filter in c._filters) {\r\n\t\t\t\t\tif(filter is ShaderFilter) {\r\n\t\t\t\t\t\tvar filter:ShaderFilter = cast filter;\r\n\t\t\t\t\t\tif(filter.shader is CustomShader) {\r\n\t\t\t\t\t\t\tvar shader:CustomShader = cast filter.shader;\r\n\r\n\t\t\t\t\t\t\tif(shader.path == blurShader.path) {\r\n\t\t\t\t\t\t\t\tshouldSkip = true;\r\n\t\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tif(shouldSkip)\r\n\t\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tcamShaders.push(c);\r\n\t\t\tc.addShader(blurShader);\r\n\t\t}\r\n\r\n\t\tcamera = subCam = new FlxCamera();\r\n\t\tsubCam.bgColor = 0;\r\n\t\tsubCam.alpha = 0;\r\n\t\tsubCam.zoom = 0.1;\r\n\t\tFlxG.cameras.add(subCam, false);\r\n\r\n\t\twindowSpr = new UISliceSprite(0, 0, winWidth, winHeight, winSkin);\r\n\t\tadd(windowSpr);\r\n\r\n\t\tif(winTitle != null) {\r\n\t\t\tadd(titleSpr = new UIText(windowSpr.x + 25, windowSpr.y, windowSpr.bWidth - 50, winTitle, 15, -1));\r\n\t\t\ttitleSpr.y = windowSpr.y + ((30 - titleSpr.height) / 2);\r\n\t\t}\r\n\r\n\t\tFlxTween.tween(camera, {alpha: 1}, 0.25, {ease: FlxEase.cubeOut});\r\n\t\tFlxTween.tween(camera, {zoom: 1}, 0.66, {ease: FlxEase.elasticOut});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_WINDOWCLOSE_SOUND);\r\n\t\tsuper.destroy();\r\n\t\tfor(e in camShaders)\r\n\t\t\te.removeShader(blurShader);\r\n\r\n\t\tblurShader = null;\r\n\t\tFlxTween.cancelTweensOf(subCam);\r\n\t\tFlxG.cameras.remove(subCam);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tsubCam.scroll.set(Std.int(-(FlxG.width - windowSpr.bWidth) / 2), Std.int(-(FlxG.height - windowSpr.bHeight) / 2));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

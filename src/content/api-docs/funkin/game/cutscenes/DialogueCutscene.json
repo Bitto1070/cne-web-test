@@ -1,0 +1,291 @@
+{
+	"kind": "class",
+	"name": "DialogueCutscene",
+	"pkg": "funkin.game.cutscenes",
+	"doc": {
+		"text": "Substate made for dialogue cutscenes. To use it in a scripted cutscene, call `startDialogue`.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "dialoguePath",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dialogueData",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charMap",
+			"type": "Map<String, DialogueCharacter>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dialogueLines",
+			"type": "Array<DialogueLine>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curLine",
+			"type": "DialogueLine",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastLine",
+			"type": "DialogueLine",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dialogueBox",
+			"type": "DialogueBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dialogueCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMusic",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cutscene",
+			"type": "DialogueCutscene",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dialogueScript",
+			"type": "Script",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set_curLine",
+			"args": [
+				{
+					"name": "val",
+					"type": "DialogueLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function set_curLine(val:DialogueLine) {\r\n\t\tlastLine = curLine;\r\n\t\treturn curLine = val;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set_dialogueScript",
+			"args": [
+				{
+					"name": "val",
+					"type": "Script",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "// Backwards compat funcs  - Nex\r\n\tpublic inline function set_dialogueScript(val:Script) return script = val;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_dialogueScript",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function get_dialogueScript() return script;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "dialoguePath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(dialoguePath:String, callback:Void->Void) {\r\n\t\tsuper(this.dialoguePath = dialoguePath, callback);\r\n\r\n\t\tcamera = dialogueCamera = new FlxCamera();\r\n\t\tdialogueCamera.bgColor = 0;\r\n\t\tFlxG.cameras.add(dialogueCamera, false);\r\n\r\n\t\tcutscene = this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onErrorScriptLoading",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onErrorScriptLoading() {\r\n\t\t//Logs.trace('Could not find script for dialogue cutscene at \"${scriptPath}\"', WARNING, YELLOW);  // Too many warnings honestly, stawp  - Nex\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tadd(parentDisabler = new FunkinParentDisabler());  // MESS WITH THIS IN SCRIPTS TO RESUME PLAYSTATE'S TWEENS!!  - Nex\r\n\t\ttry {\r\n\t\t\tvar event = EventManager.get(DialogueStructureEvent).recycle(dialogueData);\r\n\t\t\tevent.dialogueData = new Access(Xml.parse(Assets.getText(dialoguePath)).firstElement());\r\n\t\t\tdialogueScript.call('structureLoaded', [event]);\r\n\t\t\tif (event.cancelled) return;\r\n\t\t\tdialogueData = event.dialogueData;\r\n\r\n\t\t\t// Add characters\r\n\t\t\tfor (char in dialogueData.nodes.char) {\r\n\t\t\t\tif (!char.has.name) continue;\r\n\t\t\t\tif (charMap.exists(char.att.name)) {\r\n\t\t\t\t\tLogs.warn('2 dialogue characters share the same name (${char.att.name}, ${char.att.name}). The old character has been replaced.');\r\n\t\t\t\t\tremove(charMap[char.att.name], true);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tvar leChar:DialogueCharacter = new DialogueCharacter(char.att.name, char.getAtt('position').getDefault('default'));\r\n\t\t\t\tif (char.has.defaultAnim) leChar.defaultAnim = char.att.defaultAnim;\r\n\t\t\t\tadd(charMap[char.att.name] = leChar);\r\n\t\t\t}\r\n\r\n\t\t\tvar useDef:Bool = false;\r\n\t\t\tif (dialogueData.has.forceBoxDefaultTxtSound && dialogueData.att.forceBoxDefaultTxtSound == \"true\")\r\n\t\t\t\tuseDef = true;\r\n\r\n\t\t\t// Add lines\r\n\t\t\tfor (node in dialogueData.nodes.line) {\r\n\t\t\t\tvar formats = XMLUtil.getTextFormats(XMLUtil.fixSpacingInNode(node));\r\n\t\t\t\tvar volume:Null<Float> = 0.8;\r\n\t\t\t\tvar line:DialogueLine = {\r\n\t\t\t\t\ttext: [for(x in formats) x.text].join(\"\"),\r\n\t\t\t\t\tformat: formats,\r\n\t\t\t\t\tchar: node.getAtt('char').getDefault('boyfriend'),\r\n\t\t\t\t\tbubble: node.getAtt('bubble').getDefault('normal'),\r\n\t\t\t\t\tcallback: node.getAtt('callback'),\r\n\t\t\t\t\tchangeDefAnim: node.getAtt('changeDefAnim'),\r\n\t\t\t\t\tspeed: Std.parseFloat(node.getAtt(\"speed\")).getDefault(0.05),\r\n\t\t\t\t\tmusicVolume: node.has.musicVolume ? (volume = Std.parseFloat(node.att.musicVolume).getDefault(0.8)) : null,\r\n\t\t\t\t\tchangeMusic: node.has.changeMusic ? FlxG.sound.load(Paths.music(node.att.changeMusic), volume, true) : null,\r\n\t\t\t\t\tplaySound: node.has.playSound ? FlxG.sound.load(Paths.sound(node.att.playSound)) : null,\r\n\t\t\t\t\tnextSound: node.has.nextSound ? FlxG.sound.load(Paths.sound(node.att.nextSound)) : null,\r\n\t\t\t\t\ttextSound: null\r\n\t\t\t\t};\r\n\r\n\t\t\t\tif (node.has.textSound) line.textSound = FlxG.sound.load(Paths.sound(node.att.textSound));\r\n\t\t\t\telse if (!useDef) {\r\n\t\t\t\t\tvar char:DialogueCharacter = charMap[line.char];\r\n\t\t\t\t\tif(char != null && char.charData != null && char.charData.has.textSound)\r\n\t\t\t\t\t\tline.textSound = FlxG.sound.load(Paths.sound(char.charData.att.textSound));\r\n\t\t\t\t}\r\n\r\n\t\t\t\tdialogueLines.push(line);\r\n\t\t\t}\r\n\r\n\t\t\t// Add dialogue box\r\n\t\t\tdialogueBox = new DialogueBox(dialogueData.getAtt(\"box\").getDefault(\"default\"));\r\n\t\t\tadd(dialogueBox);\r\n\t\t\tadd(dialogueBox.text);\r\n\r\n\t\t\tnext(true);\r\n\t\t} catch(e) {\r\n\t\t\tvar message:String = e.toString();\r\n\t\t\tLogs.trace('Error while loading dialogue at ${dialoguePath}: $message', ERROR, RED);\r\n\t\t\tdialogueScript.call(\"loadingError\", [message]);\r\n\t\t\tclose();\r\n\t\t}\r\n\r\n\t\tdialogueScript.call(\"postCreate\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pauseCheck",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function pauseCheck():Bool {\r\n\t\treturn super.pauseCheck() && !controls.ACCEPT;  // Avoids next() and pause() being called at the same time  - Nex\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tif(controls.ACCEPT) {\r\n\t\t\tif(dialogueBox.dialogueEnded) next();\r\n\t\t\telse dialogueBox.text.skip();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canProceed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Use this to cancel `next`!",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "next",
+			"args": [
+				{
+					"name": "playFirst",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function next(playFirst:Bool = false) {\r\n\t\tvar event = EventManager.get(DialogueNextLineEvent).recycle(playFirst);\r\n\t\tdialogueScript.call(\"next\", [event]);\r\n\t\tif(event.cancelled || !canProceed) return;\r\n\r\n\t\tif ((curLine = dialogueLines.shift()) == null) {\r\n\t\t\tif(lastLine != null && dialogueBox.hasAnimation(lastLine.bubble + \"-close\")) {\r\n\t\t\t\tdialogueBox.playBubbleAnim(lastLine.bubble, \"-close\");\r\n\t\t\t\tdialogueBox.animation.finishCallback = (_) -> close();\r\n\t\t\t} else {\r\n\t\t\t\tFlxG.sound.play(dialogueBox.nextSFX);\r\n\t\t\t\tclose();\r\n\t\t\t}\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tif (curLine.callback != null)\r\n\t\t\tdialogueScript.call(curLine.callback, [event.playFirst]);\r\n\r\n\t\tfor (k=>c in charMap)\r\n\t\t\tif (k != curLine.char)\r\n\t\t\t\tc.hide();\r\n\r\n\t\tvar char = charMap[curLine.char];\r\n\t\tif (char != null) {\r\n\t\t\tvar force:Bool;\r\n\t\t\tif(force = (curLine.changeDefAnim != null)) char.defaultAnim = curLine.changeDefAnim;\r\n\t\t\tdialogueBox.popupChar(char, force);\r\n\t\t}\r\n\r\n\t\tvar finalSuffix:String = event.playFirst && dialogueBox.hasAnimation(curLine.bubble + \"-firstOpen\") ? \"-firstOpen\" : dialogueBox.hasAnimation(curLine.bubble + \"-open\") ? \"-open\" : \"\";\r\n\t\tdialogueBox.playBubbleAnim(curLine.bubble, finalSuffix, curLine.text, curLine.format, curLine.speed, curLine.nextSound, curLine.textSound != null ? [curLine.textSound] : null, finalSuffix == \"-firstOpen\" || finalSuffix == \"-open\", !event.playFirst);\r\n\r\n\t\tif(curLine.playSound != null) curLine.playSound.play();\r\n\t\tif(curLine.changeMusic != null) {\r\n\t\t\tif(curMusic != null) curMusic.destroy();\r\n\t\t\tcurMusic = curLine.changeMusic;\r\n\t\t\tcurMusic.play();\r\n\t\t\tcurMusic.fadeIn(1, 0, curMusic.volume);\r\n\t\t} else if(curLine.musicVolume != null && curMusic != null) curMusic.volume = curLine.musicVolume;\r\n\r\n\t\tdialogueScript.call(\"postNext\", [event]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function close() {\r\n\t\tvar event = new CancellableEvent();\r\n\t\tfor (c in charMap) c.dialogueCharScript.call(\"close\", [event]);\r\n\t\tif (dialogueBox != null) dialogueBox.dialogueBoxScript.call(\"close\", [event]);\r\n\t\tdialogueScript.call(\"close\", [event]);\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tsuper.close();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tif (curMusic != null && !curMusic.persist) curMusic.destroy();\r\n\r\n\t\tsuper.destroy();\r\n\t\tif (cutscene == this) cutscene = null;\r\n\t\tFlxG.cameras.remove(dialogueCamera);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,118 @@
+{
+	"kind": "class",
+	"name": "CharacterCreationScreen",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "characterNameTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "imageExplorer",
+			"type": "UIImageExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "onSave",
+					"type": "(String, ImageSaveData, Xml)->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?onSave:(String, ImageSaveData, Xml)->Void) {\r\n\t\tsuper();\r\n\t\tif (onSave != null) this.onSave = onSave;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\twinTitle = translate(\"win-title\");\r\n\r\n\t\twinWidth = 360;\r\n\t\twinHeight = 520;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String):UIText {\r\n\t\t\tvar text:UIText = new UIText(ui.x, ui.y - 24, 0, text);\r\n\t\t\tui.members.push(text);\r\n\t\t\treturn text;\r\n\t\t}\r\n\r\n\t\tcharacterNameTextBox = new UITextBox(windowSpr.x + 20, windowSpr.y + 30 + 16 + 20, \"character\", 320);\r\n\t\tcharacterNameTextBox.onChange = (_) -> {checkRequired();};\r\n\t\tadd(characterNameTextBox);\r\n\t\taddLabelOn(characterNameTextBox, \"\").applyMarkup(\r\n\t\t\ttranslate(\"charName\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\timageExplorer = new UIImageExplorer(characterNameTextBox.x, characterNameTextBox.y + 30 + 16 + 20, null, 320, 58, (_, _) -> {onLoadImage();}, \"images/characters\");\r\n\t\tadd(imageExplorer);\r\n\t\taddLabelOn(imageExplorer, \"\").applyMarkup(\r\n\t\t\ttranslate(\"charImgName\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\t\timageExplorer.maxSize.y -= 100;\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tclose();\r\n\t\t\tcreateCharacter();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20 - saveButton.bWidth, saveButton.y, TU.translate(\"editor.cancel\"), function() {\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\r\n\t\tonLoadImage();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onLoadImage",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onLoadImage() {\r\n\t\trefreshWindowSize();\r\n\t\tcheckRequired();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshWindowSize",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function refreshWindowSize() {\r\n\t\tif (imageExplorer == null) return;\r\n\t\twindowSpr.bWidth = 20 + imageExplorer.bWidth + 20;\r\n\t\twindowSpr.bHeight = 30 + 16 + 20 + 32 + 30 + 10 + imageExplorer.bHeight + 14 + saveButton.bHeight + 14;\r\n\r\n\t\tsaveButton.x = windowSpr.x + windowSpr.bWidth - 20 - saveButton.bWidth;\r\n\t\tcloseButton.x = saveButton.x - 20 - closeButton.bWidth; \r\n\t\tcloseButton.y = saveButton.y = imageExplorer.y + imageExplorer.bHeight + 14;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "checkRequired",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function checkRequired() {\r\n\t\tsaveButton.selectable = characterNameTextBox.label.text.length > 0 && !CoolUtil.isMapEmpty(imageExplorer.imageFiles) && (imageExplorer.animationList.length > 0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createCharacter",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createCharacter() {\r\n\t\tvar imageSaveData:ImageSaveData = imageExplorer.getSaveData();\r\n\r\n\t\tvar xml:Xml = Xml.createElement(\"character\");\r\n\t\txml.attributeOrder = Character.characterProperties.copy();\r\n\r\n\t\txml.set(\"sprite\", '${imageSaveData.directory.length > 0 ? '${imageSaveData.directory}/' : \"\"}' + imageSaveData.imageName);\r\n\r\n\t\t// Look for animations >:D\r\n\t\tvar animationList:Array<String> = imageExplorer.animationList.copy();\r\n\t\tanimationList.sort((a, b) -> {\r\n\t\t\tvar lengthCompare = a.length - b.length;\r\n\t\t\tif (lengthCompare != 0) return lengthCompare;\r\n\r\n\t\t\t// Miss animations don't show up as regular if they are the same length as regular >:D\r\n\t\t\tvar aIsMiss = a.toLowerCase().contains(\"miss\");\r\n\t\t\tvar bIsMiss = b.toLowerCase().contains(\"miss\");\r\n\t\t\treturn aIsMiss == bIsMiss ? 0 : (aIsMiss ? 1 : -1);\r\n\t\t});\r\n\r\n\t\tvar animationsFound:Map<String, String> = [\r\n\t\t\t\"singLEFT\" => null,\r\n\t\t\t\"singRIGHT\" => null,\r\n\t\t\t\"singUP\" => null,\r\n\t\t\t\"singDOWN\" => null,\r\n\t\t\t\"idle\" => null\r\n\t\t];\r\n\r\n\t\tfor (anim => found in animationsFound) {\r\n\t\t\tvar animToLookFor:String = StringTools.replace(anim, \"sing\", \"\").toLowerCase();\r\n\t\t\tfor (imageAnim in animationList)\r\n\t\t\t\tif (imageAnim.toLowerCase().contains(animToLookFor)) {\r\n\t\t\t\t\tanimationsFound.set(anim, imageAnim);\r\n\t\t\t\t\tanimationList.remove(imageAnim);\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t\t// Add said animations >:D\r\n\t\tfor (anim => found in animationsFound) {\r\n\t\t\tvar animXml:Xml = Xml.createElement('anim');\r\n\t\t\tanimXml.attributeOrder = Character.characterAnimProperties;\r\n\r\n\t\t\tanimXml.set(\"name\", anim);\r\n\t\t\tanimXml.set(\"anim\", found.getDefault(animationList[0]));\r\n\r\n\t\t\txml.addChild(animXml);\r\n\t\t}\r\n\r\n\t\t// Do the rest only if not atlas (until we make it animations and not symbols >:D)\r\n\t\tif (!imageSaveData.isAtlas) {\r\n\t\t\tfor (imageAnim in animationList) {\r\n\t\t\t\tvar animXml:Xml = Xml.createElement('anim');\r\n\t\t\t\tanimXml.attributeOrder = Character.characterAnimProperties;\r\n\t\r\n\t\t\t\tanimXml.set(\"name\", imageAnim);\r\n\t\t\t\tanimXml.set(\"anim\", imageAnim);\r\n\t\r\n\t\t\t\txml.addChild(animXml);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (onSave != null) onSave(characterNameTextBox.label.text, imageSaveData, xml);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

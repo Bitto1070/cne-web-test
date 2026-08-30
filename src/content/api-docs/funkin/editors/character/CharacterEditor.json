@@ -1,0 +1,371 @@
+{
+	"kind": "class",
+	"name": "CharacterEditor",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "CharacterGhost",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "CharacterEditor",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenu",
+			"type": "Array<UIContextMenuOption>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenuSpr",
+			"type": "UITopMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "axisGizmo",
+			"type": "AxisGizmo",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterGizmo",
+			"type": "CharacterGizmos",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiGroup",
+			"type": "FlxTypedGroup<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraHoverDummy",
+			"type": "CameraHoverDummy",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterPropertiesWindow",
+			"type": "CharacterPropertiesWindow",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterAnimsWindow",
+			"type": "CharacterAnimsWindow",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gizmosCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animationText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "currentStage",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stage",
+			"type": "Stage",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageSprites",
+			"type": "Array<FlxBasic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stagePosition",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "undos",
+			"type": "UndoList<CharacterEditorChange>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "character",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(character:String) {\r\n\t\tsuper();\r\n\t\tif (character != null) __character = character;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tundos = new UndoList<CharacterEditorChange>();\r\n\r\n\t\tWindowUtils.suffix = \" (\" + TU.translate(\"editor.character.name\") + \")\";\r\n\t\tSaveWarning.selectionClass = CharacterSelection;\r\n\t\tSaveWarning.saveFunc = () -> {_file_save(null);};\r\n\r\n\t\ttopMenu = [\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.file\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.new\"),\r\n\t\t\t\t\t\tonSelect: _file_new,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.save\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, S],\r\n\t\t\t\t\t\tonSelect: _file_save,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveAs\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, S],\r\n\t\t\t\t\t\tonSelect: _file_saveas,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.exit\"),\r\n\t\t\t\t\t\tonSelect: _file_exit\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.edit\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.copyOffset\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, C],\r\n\t\t\t\t\t\tonSelect: _edit_copy_offset\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.pasteOffset\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, V],\r\n\t\t\t\t\t\tonSelect: _edit_paste_offset\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.undo\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, Z],\r\n\t\t\t\t\t\tonSelect: _edit_undo\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.redo\"),\r\n\t\t\t\t\t\tkeybinds: [[CONTROL, Y], [CONTROL, SHIFT, Z]],\r\n\t\t\t\t\t\tonSelect: _edit_redo\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.editInfo\"),\r\n\t\t\t\t\t\tcolor: 0xFF959829, icon: 4,\r\n\t\t\t\t\t\tonCreate: function (button:UIContextMenuOptionSpr) {button.label.offset.x = button.icon.offset.x = -2;},\r\n\t\t\t\t\t\tonSelect: _edit_info\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.editSprite\"),\r\n\t\t\t\t\t\tcolor: 0xFF959829, icon: 4,\r\n\t\t\t\t\t\tonCreate: function (button:UIContextMenuOptionSpr) {button.label.offset.x = button.icon.offset.x = -2;},\r\n\t\t\t\t\t\tonSelect: _edit_sprite\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.offset\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveLeft\"),\r\n\t\t\t\t\t\tkeybind: [LEFT],\r\n\t\t\t\t\t\tonSelect: _offsets_left,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveUp\"),\r\n\t\t\t\t\t\tkeybind: [UP],\r\n\t\t\t\t\t\tonSelect: _offsets_up,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveDown\"),\r\n\t\t\t\t\t\tkeybind: [DOWN],\r\n\t\t\t\t\t\tonSelect: _offsets_down,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveRight\"),\r\n\t\t\t\t\t\tkeybind: [RIGHT],\r\n\t\t\t\t\t\tonSelect: _offsets_right,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveExtraLeft\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, LEFT],\r\n\t\t\t\t\t\tonSelect: _offsets_extra_left,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveExtraUp\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, UP],\r\n\t\t\t\t\t\tonSelect: _offsets_extra_up,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveExtraDown\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, DOWN],\r\n\t\t\t\t\t\tonSelect: _offsets_extra_down,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.moveExtraRight\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, RIGHT],\r\n\t\t\t\t\t\tonSelect: _offsets_extra_right,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.dragOffsetsMouse\"),\r\n\t\t\t\t\t\tonSelect: _offsets_drag_offsets_mouse,\r\n\t\t\t\t\t\ticon: Options.characterDragging ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"offset.clearOffsets\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, R],\r\n\t\t\t\t\t\tonSelect: _offsets_clear,\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.stage\"),\r\n\t\t\t\tchilds: buildStagesUI()\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.view\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomIn\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADPLUS],\r\n\t\t\t\t\t\tonSelect: _view_zoomin\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomOut\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADMINUS],\r\n\t\t\t\t\t\tonSelect: _view_zoomout\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.resetZoom\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\tonSelect: _view_zoomreset\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.charHitbox\"),\r\n\t\t\t\t\t\tonSelect: _view_character_show_hitbox,\r\n\t\t\t\t\t\ticon: Options.characterHitbox ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.charCam\"),\r\n\t\t\t\t\t\tonSelect: _view_character_show_camera,\r\n\t\t\t\t\t\ticon: Options.characterCamera ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.axis\"),\r\n\t\t\t\t\t\tonSelect: _view_character_show_axis,\r\n\t\t\t\t\t\ticon: Options.characterAxis ? 1 : 0\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.animation\") + \" >\",\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"animation.playAnim\"),\r\n\t\t\t\t\t\tkeybind: [SPACE],\r\n\t\t\t\t\t\tonSelect: _animation_play,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"animation.stopAnim\"),\r\n\t\t\t\t\t\tonSelect: _animation_stop\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"animation.changeAnimUp\"),\r\n\t\t\t\t\t\tkeybind: [W],\r\n\t\t\t\t\t\tonSelect: _animation_up\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"animation.changeAnimDown\"),\r\n\t\t\t\t\t\tkeybind: [S],\r\n\t\t\t\t\t\tonSelect: _animation_down\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"animation.playAnimOnOffset\"),\r\n\t\t\t\t\t\tonSelect: _animation_toggle_anim_playing_offsets,\r\n\t\t\t\t\t\ticon: Options.playAnimOnOffset ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t];\r\n\r\n\t\tcharCamera = FlxG.camera;\r\n\r\n\t\tgizmosCamera = new FlxCamera();\r\n\t\tgizmosCamera.bgColor = 0;\r\n\t\tFlxG.cameras.add(gizmosCamera, false);\r\n\r\n\t\taxisGizmo = new AxisGizmo();\r\n\t\taxisGizmo.cameras = [gizmosCamera];\r\n\t\tadd(axisGizmo);\r\n\r\n\t\tcharacterGizmo = new CharacterGizmos();\r\n\t\tcharacterGizmo.boxGizmo = Options.characterHitbox;\r\n\t\tcharacterGizmo.cameraGizmo = Options.characterCamera;\r\n\t\tcharacterGizmo.cameras = [gizmosCamera];\r\n\r\n\t\tuiCamera = new FlxCamera();\r\n\t\tuiCamera.bgColor = 0;\r\n\r\n\t\tFlxG.cameras.add(uiCamera);\r\n\r\n\t\tcharacter = new CharacterGhost(0,0, __character, false, false);\r\n\t\tcharacter.debugMode = true;\r\n\t\tcharacter.cameras = [charCamera];\r\n\r\n\t\tcharacterGizmo.character = character;\r\n\t\tadd(characterGizmo);\r\n\r\n\t\tchangeCharacterIsPlayer(character.playerOffsets);\r\n\r\n\t\tadd(character);\r\n\r\n\t\tuiGroup.cameras = [uiCamera];\r\n\t\tadd(cameraHoverDummy = new CameraHoverDummy(uiGroup, FlxPoint.weak(0, 0)));\r\n\r\n\t\tcharacterPropertiesWindow = new CharacterPropertiesWindow((FlxG.width-(440)-16) - (((500-16)-(440))/2), 23+12+10, character);\r\n\t\tuiGroup.add(characterPropertiesWindow);\r\n\r\n\t\ttopMenuSpr = new UITopMenu(topMenu);\r\n\t\tuiGroup.add(topMenuSpr);\r\n\r\n\t\tanimationText = new UIText(0, 0, 0, \"\");\r\n\t\tuiGroup.add(animationText);\r\n\r\n\t\tcharacterAnimsWindow = new CharacterAnimsWindow((FlxG.width-(500-16)-16), characterPropertiesWindow.y+224+16, character);\r\n\t\tuiGroup.add(characterPropertiesWindow.animsWindow = characterAnimsWindow);\r\n\r\n\t\tadd(uiGroup);\r\n\r\n\t\tplayAnimation(character.getAnimOrder()[0]);\r\n\t\tchangeStage(\"stage\");\r\n\r\n\t\tif (Options.editorsResizable)\r\n\t\t\tUIState.setResolutionAware();\r\n\r\n\t\t_view_focus_character(null);\r\n\r\n\t\tif(Framerate.isLoaded) {\r\n\t\t\tFramerate.fpsCounter.alpha = 0.4;\r\n\t\t\tFramerate.memoryCounter.alpha = 0.4;\r\n\t\t\tFramerate.codenameBuildField.alpha = 0.4;\r\n\t\t}\r\n\r\n\t\tDiscordUtil.call(\"onEditorLoaded\", [\"Character Editor\", __character]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggingCharacter",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggingOffset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tif(FlxG.keys.justPressed.ANY && currentFocus == null)\r\n\t\t\tUIUtil.processShortcuts(topMenu);\r\n\r\n\t\tif (cameraHoverDummy.hovered && !draggingCharacter) {\r\n\t\t\tif (FlxG.mouse.wheel != 0) {\r\n\t\t\t\tzoom += 0.25 * FlxG.mouse.wheel;\r\n\t\t\t\t__camZoom = Math.pow(2, zoom);\r\n\t\t\t}\r\n\r\n\t\t\tif (FlxG.mouse.justReleasedRight) {\r\n\t\t\t\tvar mousePos = FlxG.mouse.getScreenPosition(uiCamera);\r\n\t\t\t\tcloseCurrentContextMenu();\r\n\t\t\t\topenContextMenu(topMenu[2].childs, null, mousePos.x, mousePos.y);\r\n\t\t\t}\r\n\r\n\t\t\tif (FlxG.mouse.pressed && !FlxG.mouse.justPressed) {\r\n\t\t\t\t_nextScroll.set(_nextScroll.x - FlxG.mouse.deltaScreenX, _nextScroll.y - FlxG.mouse.deltaScreenY);\r\n\t\t\t\tcameraHoverDummy.cursor = HAND;\r\n\t\t\t} else\r\n\t\t\t\tcameraHoverDummy.cursor = ARROW;\r\n\t\t} else if (!FlxG.mouse.pressed)\r\n\t\t\tcurrentCursor = ARROW;\r\n\r\n\t\tcharCamera.scroll.set(\r\n\t\t\tlerp(charCamera.scroll.x, _nextScroll.x, 0.35),\r\n\t\t\tlerp(charCamera.scroll.y, _nextScroll.y, 0.35)\r\n\t\t);\r\n\r\n\t\tcharCamera.zoom = lerp(charCamera.zoom, __camZoom*_cameraZoomMulti, 0.125);\r\n\r\n\t\tif (topMenuSpr.members[animationIndex] != null) {\r\n\t\t\tvar animationTopButton:UITopMenuButton = cast topMenuSpr.members[animationIndex];\r\n\t\t\tanimationText.x = animationTopButton.x + animationTopButton.bWidth + 6;\r\n\t\t\tanimationText.y = Std.int((animationTopButton.bHeight - animationText.height) / 2);\r\n\t\t}\r\n\t\tanimationText.text = '\"${characterFakeAnim}\"';\r\n\r\n\t\tStageEditor.calcSpriteBounds(character);\r\n\r\n\t\tif (Options.characterDragging)\r\n\t\t\thandleMouseOffsets();\r\n\r\n\t\tWindowUtils.prefix = undos.unsaved ? Flags.UNDO_PREFIX : \"\";\r\n\t\tSaveWarning.showWarning = undos.unsaved;\r\n\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResize",
+			"args": [
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResize(width:Int, height:Int) {\r\n\t\tsuper.onResize(width, height);\r\n\t\tif (!UIState.resolutionAware) return;\r\n\r\n\t\tif ((width < FlxG.initialWidth || height < FlxG.initialHeight) && !Options.bypassEditorsResize) {\r\n\t\t\twidth = FlxG.initialWidth; height = FlxG.initialHeight;\r\n\t\t}\r\n\r\n\t\tcharacterPropertiesWindow.x = (FlxG.width-(440)-16) - (((500-16)-(440))/2);\r\n\t\tcharacterAnimsWindow.x = (FlxG.width-(500-16)-16);\r\n\r\n\t\tcharacterAnimsWindow.bHeight = Std.int(FlxG.height-(characterPropertiesWindow.y+characterPropertiesWindow.bHeight)-(32));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeStagePosition",
+			"args": [
+				{
+					"name": "position",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeStagePosition(position:String) {\r\n\t\tif (stage != null && position != \"NONE\") {\r\n\t\t\tif (stage.characterPoses.exists(stagePosition))\r\n\t\t\t\tstage.characterPoses[stagePosition].revertCharacter(character);\r\n\t\r\n\t\t\tstagePosition = position.toLowerCase();\r\n\t\t\tremove(character);\r\n\t\r\n\t\t\tif (stage.characterPoses.exists(stagePosition))\r\n\t\t\t\tstage.applyCharStuff(character, stagePosition, 0);\r\n\t\t\t_animation_play(null);\r\n\t\t} else\r\n\t\t\tstagePosition = position.toLowerCase();\r\n\r\n\t\tcharacterPropertiesWindow.testAsDropDown.index = characterPropertiesWindow.testAsDropDown.options.indexOf(stagePosition.toUpperCase());\r\n\t\tcharacterPropertiesWindow.testAsDropDown.label.text = stagePosition.toUpperCase();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeCharacterDesginedAs",
+			"args": [
+				{
+					"name": "player",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeCharacterDesginedAs(player:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tif (stage == null) {\r\n\t\t\tchangeCharacterIsPlayer(player);\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tif (stage.characterPoses.exists(stagePosition))\r\n\t\t\tstage.characterPoses[stagePosition].revertCharacter(character);\r\n\r\n\t\tchangeCharacterIsPlayer(player);\r\n\t\tupdateCharacterStagePosition();\r\n\t\t_animation_play(null);\r\n\r\n\t\tcharacterPropertiesWindow.designedAsDropDown.index = characterPropertiesWindow.designedAsDropDown.options.indexOf(player ? \"BOYFRIEND\" : \"DAD\");\r\n\t\tcharacterPropertiesWindow.designedAsDropDown.label.text = player ? \"BOYFRIEND\" : \"DAD\";\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CCharEditDesignedAs(player));\r\n\t}\r\n\r\n\tpublic inline function updateCharacterStagePosition() {\r\n\t\tremove(character);\r\n\t\tif (stage.characterPoses.exists(stagePosition))\r\n\t\t\tstage.applyCharStuff(character, stagePosition, 0);\r\n\t}\r\n\r\n\tpublic function changeCharacterIsPlayer(player:Bool) @:privateAccess {\r\n\t\tif (character.__swappedLeftRightAnims)\r\n\t\t\tcharacter.swapLeftRightAnimations();\r\n\t\tif (character.isPlayer) \r\n\t\t\tcharacter.flipX = !character.__baseFlipped;\r\n\r\n\t\tcharacter.isPlayer = player;\r\n\t\tcharacter.fixChar(false, false);\r\n\t}\r\n\r\n\tfunction _view_zoomin(_) {\r\n\t\tzoom += 0.25;\r\n\t\t__camZoom = Math.pow(2, zoom);\r\n\t}\r\n\r\n\tfunction _view_zoomout(_) {\r\n\t\tzoom -= 0.25;\r\n\t\t__camZoom = Math.pow(2, zoom);\r\n\t}\r\n\r\n\tfunction _view_zoomreset(_) {\r\n\t\tzoom = 0;\r\n\t\t__camZoom = Math.pow(2, zoom);\r\n\t}\r\n\r\n\tfunction _view_character_show_hitbox(t) {\r\n\t\tt.icon = (Options.characterHitbox = !Options.characterHitbox) ? 1 : 0;\r\n\t\tcharacterGizmo.boxGizmo = Options.characterHitbox;\r\n\t}\r\n\r\n\tfunction _view_character_show_camera(t) {\r\n\t\tt.icon = (Options.characterCamera = !Options.characterCamera) ? 1 : 0;\r\n\t\tcharacterGizmo.cameraGizmo = Options.characterCamera;\r\n\t}\r\n\r\n\tfunction _view_character_show_axis(t) {\r\n\t\tt.icon = (Options.characterAxis = !Options.characterAxis) ? 1 : 0;\r\n\t\taxisGizmo.visible = Options.characterAxis;\r\n\t}\r\n\r\n\tfunction _view_focus_character(_) {\r\n\t\tif (character == null) return;\r\n\r\n\t\tvar characterMidpoint:FlxPoint = character.getMidpoint();\r\n\t\tcharacterMidpoint.x -= (FlxG.width/2)-character.globalOffset.x;\r\n\t\tcharacterMidpoint.y -= (FlxG.height/2)-character.globalOffset.y;\r\n\t\t_nextScroll.set(characterMidpoint.x, characterMidpoint.y);\r\n\t\tcharacterMidpoint.put();\r\n\t}\r\n\r\n\tvar zoom(default, set):Float = 0;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateCharacterStagePosition",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateCharacterStagePosition() {\r\n\t\tremove(character);\r\n\t\tif (stage.characterPoses.exists(stagePosition))\r\n\t\t\tstage.applyCharStuff(character, stagePosition, 0);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeCharacterIsPlayer",
+			"args": [
+				{
+					"name": "player",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeCharacterIsPlayer(player:Bool) @:privateAccess {\r\n\t\tif (character.__swappedLeftRightAnims)\r\n\t\t\tcharacter.swapLeftRightAnimations();\r\n\t\tif (character.isPlayer) \r\n\t\t\tcharacter.flipX = !character.__baseFlipped;\r\n\r\n\t\tcharacter.isPlayer = player;\r\n\t\tcharacter.fixChar(false, false);\r\n\t}\r\n\r\n\tfunction _view_zoomin(_) {\r\n\t\tzoom += 0.25;\r\n\t\t__camZoom = Math.pow(2, zoom);\r\n\t}\r\n\r\n\tfunction _view_zoomout(_) {\r\n\t\tzoom -= 0.25;\r\n\t\t__camZoom = Math.pow(2, zoom);\r\n\t}\r\n\r\n\tfunction _view_zoomreset(_) {\r\n\t\tzoom = 0;\r\n\t\t__camZoom = Math.pow(2, zoom);\r\n\t}\r\n\r\n\tfunction _view_character_show_hitbox(t) {\r\n\t\tt.icon = (Options.characterHitbox = !Options.characterHitbox) ? 1 : 0;\r\n\t\tcharacterGizmo.boxGizmo = Options.characterHitbox;\r\n\t}\r\n\r\n\tfunction _view_character_show_camera(t) {\r\n\t\tt.icon = (Options.characterCamera = !Options.characterCamera) ? 1 : 0;\r\n\t\tcharacterGizmo.cameraGizmo = Options.characterCamera;\r\n\t}\r\n\r\n\tfunction _view_character_show_axis(t) {\r\n\t\tt.icon = (Options.characterAxis = !Options.characterAxis) ? 1 : 0;\r\n\t\taxisGizmo.visible = Options.characterAxis;\r\n\t}\r\n\r\n\tfunction _view_focus_character(_) {\r\n\t\tif (character == null) return;\r\n\r\n\t\tvar characterMidpoint:FlxPoint = character.getMidpoint();\r\n\t\tcharacterMidpoint.x -= (FlxG.width/2)-character.globalOffset.x;\r\n\t\tcharacterMidpoint.y -= (FlxG.height/2)-character.globalOffset.y;\r\n\t\t_nextScroll.set(characterMidpoint.x, characterMidpoint.y);\r\n\t\tcharacterMidpoint.put();\r\n\t}\r\n\r\n\tvar zoom(default, set):Float = 0;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterFakeAnim",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playAnimation",
+			"args": [
+				{
+					"name": "anim",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function playAnimation(anim:String) @:privateAccess {\r\n\t\tcharacterFakeAnim = anim;\r\n\t\tif (characterAnimsWindow.animButtons[anim] != null && characterAnimsWindow.animButtons[anim].valid) {\r\n\t\t\tcharacter.playAnim(anim, true);\r\n\t\t\tcharacter.colorTransform.__identity();\r\n\t\t} else {\r\n\t\t\tvar validAnimation:String = characterAnimsWindow.findValid();\r\n\t\t\tif (validAnimation != null) character.playAnim(validAnimation, true);\r\n\t\t\t_animation_stop(null);\r\n\t\t\tcharacter.colorTransform.color = 0xFFEF0202;\r\n\t\t}\r\n\r\n\t\tfor(i in characterAnimsWindow.buttons.members)\r\n\t\t\ti.alpha = i.anim == anim ? 1 : 0.25;\r\n\t}\r\n\t#end\r\n}\r\n\r\nenum CharacterEditorChange {\r\n\tCCharEditPosition(oldPos:FlxPoint, newPos:FlxPoint);",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

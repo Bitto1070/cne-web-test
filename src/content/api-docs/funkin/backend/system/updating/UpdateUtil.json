@@ -1,0 +1,83 @@
+{
+	"kind": "class",
+	"name": "UpdateUtil",
+	"pkg": "funkin.backend.system.updating",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "lastUpdateCheck",
+			"type": "Null<UpdateCheckCallback>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#end\r\n\r\n\tpublic static function init() {\r\n\t\t// deletes old bak file if it exists\r\n\t\t#if sys\r\n\t\tvar bakPath = '${Path.withoutExtension(Sys.programPath())}.bak';\r\n\t\tif (FileSystem.exists(bakPath)) FileSystem.deleteFile(bakPath);\r\n\t\t#end\r\n\r\n\t\t#if (target.threaded)\r\n\t\t__waitCallbacks = [];\r\n\t\t__mutex = new Mutex();\r\n\r\n\t\t#if ALLOW_MULTITHREADING ThreadUtil.execAsync #else Thread.create #end(checkForUpdates.bind(true, false));\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "waitForUpdates",
+			"args": [
+				{
+					"name": "force",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "callback",
+					"type": "UpdateCheckCallback->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "lazy",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function waitForUpdates(force = false, callback:UpdateCheckCallback->Void, lazy = false) {\r\n\t\t#if (target.threaded)\r\n\t\tif (__mutex.tryAcquire()) {\r\n\t\t\t__mutex.release();\r\n\t\t\tif (__shouldCheck(lazy) || force) {\r\n\t\t\t\t__waitCallbacks.push(callback);\r\n\t\t\t\t#if ALLOW_MULTITHREADING ThreadUtil.execAsync #else Thread.create #end(checkForUpdates.bind(force, false));\r\n\t\t\t}\r\n\t\t\telse\r\n\t\t\t\tcallback(lastUpdateCheck);\r\n\t\t}\r\n\t\telse\r\n\t\t\t__waitCallbacks.push(callback);\r\n\t\t#else\r\n\t\tcallback(checkForUpdates(true, false));\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "checkForUpdates",
+			"args": [
+				{
+					"name": "force",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "lazy",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "UpdateCheckCallback",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function checkForUpdates(force = false, lazy = false):UpdateCheckCallback {\r\n\t\t#if (target.threaded)\r\n\t\tvar wasAcquired = !__mutex.tryAcquire();\r\n\t\tif (wasAcquired) __mutex.acquire();\r\n\r\n\t\tif ((!force || wasAcquired) && !__shouldCheck(lazy)) {\r\n\t\t\t__mutex.release();\r\n\t\t\treturn lastUpdateCheck;\r\n\t\t}\r\n\r\n\t\tlastUpdateCheck = __checkForUpdates();\r\n\t\t__mutex.release();\r\n\r\n\t\tFlxG.signals.preUpdate.addOnce(__callWaitCallbacks);\r\n\r\n\t\treturn lastUpdateCheck;\r\n\t\t#else\r\n\t\tif (!__shouldCheck(lazy)) return lastUpdateCheck;\r\n\t\treturn lastUpdateCheck = __checkForUpdates();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

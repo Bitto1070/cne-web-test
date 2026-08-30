@@ -1,0 +1,14 @@
+{
+	"kind": "enum abstract",
+	"name": "CoolSfx",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "SFXs to play using `CoolUtil.playMenuSFX`.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": []
+}

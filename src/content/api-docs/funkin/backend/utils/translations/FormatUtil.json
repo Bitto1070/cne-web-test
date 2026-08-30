@@ -1,0 +1,62 @@
+{
+	"kind": "final class",
+	"name": "FormatUtil",
+	"pkg": "funkin.backend.utils.translations",
+	"doc": {
+		"text": "The class used to format strings based on parameters.\n\nFor example if the parameter list is just an `Int` which is `9`, `You have been blue balled {0} times` becomes `You have been blue balled 9 times`.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "IFormatInfo",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function get(id:String):IFormatInfo {\r\n\t\tif (cache.exists(id))\r\n\t\t\treturn cache.get(id);\r\n\r\n\t\tvar fi:IFormatInfo = ParamFormatInfo.returnOnlyIfValid(id);\r\n\t\tif(fi == null) fi = new StrFormatInfo(id);\r\n\t\tcache.set(id, fi);\r\n\t\treturn fi;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStr",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "IFormatInfo",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getStr(id:String):IFormatInfo {\r\n\t\tif (cacheStr.exists(id))\r\n\t\t\treturn cacheStr.get(id);\r\n\r\n\t\tvar fi:IFormatInfo = new StrFormatInfo(id);\r\n\t\tcacheStr.set(id, fi);\r\n\t\treturn fi;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clear",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function clear():Void {\r\n\t\tcache.clear();\r\n\t\tcacheStr.clear();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

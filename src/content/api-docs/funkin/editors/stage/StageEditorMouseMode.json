@@ -1,0 +1,20 @@
+{
+	"kind": "enum abstract",
+	"name": "StageEditorMouseMode",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\treturn switch(cast this) {\r\n\t\t\tcase NONE: \"NONE\";\r\n\t\t\tcase SCALE_LEFT: \"SCALE_LEFT\";\r\n\t\t\tcase SCALE_BOTTOM: \"SCALE_BOTTOM\";\r\n\t\t\tcase SCALE_TOP: \"SCALE_TOP\";\r\n\t\t\tcase SCALE_RIGHT: \"SCALE_RIGHT\";\r\n\t\t\tcase SCALE_TOP_LEFT: \"SCALE_TOP_LEFT\";\r\n\t\t\tcase SCALE_TOP_RIGHT: \"SCALE_TOP_RIGHT\";\r\n\t\t\tcase SCALE_BOTTOM_LEFT: \"SCALE_BOTTOM_LEFT\";\r\n\t\t\tcase SCALE_BOTTOM_RIGHT: \"SCALE_BOTTOM_RIGHT\";\r\n\t\t\tcase MOVE_CENTER: \"MOVE_CENTER\";\r\n\t\t\tcase SKEW_LEFT: \"SKEW_LEFT\";\r\n\t\t\tcase SKEW_BOTTOM: \"SKEW_BOTTOM\";\r\n\t\t\tcase SKEW_TOP: \"SKEW_TOP\";\r\n\t\t\tcase SKEW_RIGHT: \"SKEW_RIGHT\";\r\n\t\t\tcase ROTATE: \"ROTATE\";\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

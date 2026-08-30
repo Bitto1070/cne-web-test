@@ -1,0 +1,43 @@
+{
+	"kind": "final class",
+	"name": "Mac",
+	"pkg": "funkin.backend.utils.native",
+	"doc": null,
+	"meta": [
+		"@:headerInclude('sys/sysctl.h')",
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getTotalRam",
+			"args": [],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "')\r\n\tpublic static function getTotalRam():Float\r\n\t{\r\n\t\treturn 0;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:functionCode('\r\n\tint mib [] = { CTL_HW, HW_MEMSIZE };\r\n\tint64_t value = 0;\r\n\tsize_t length = sizeof(value);\r\n\r\n\tif(-1 == sysctl(mib, 2, &value, &length, NULL, 0))\r\n\t\treturn -1; // An error occurred\r\n\r\n\treturn value / 1024 / 1024;\r\n\t')"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setMouseCursorIcon",
+			"args": [
+				{
+					"name": "icon",
+					"type": "CodeCursor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setMouseCursorIcon(icon:CodeCursor):Void\r\n\t{\r\n\t\tfinal valid:Bool = external.ExternalMac.setCursorIcon(icon.toInt(), null, 0, 0);\r\n\r\n\t\tif (!valid)\r\n\t\t\tMouse.cursor = icon.toOpenFL();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

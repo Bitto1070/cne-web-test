@@ -1,0 +1,55 @@
+{
+	"kind": "class",
+	"name": "CameraHoverDummy",
+	"pkg": "funkin.editors.extra",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "parent",
+					"type": "FlxBasic",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "scroll",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?parent:FlxBasic, scroll:FlxPoint) {\r\n\t\tsuper();\r\n\t\tthis.parent = parent;\r\n\t\tcameras = parent == null ? [FlxG.camera] : parent.cameras;\r\n\t\tscrollFactor.copyFrom(scroll);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButton",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateButton() {\r\n\t\tcamera.getViewRect(__rect);\r\n\t\tUIState.state.updateRectButtonHandler(this, __rect, onHovered);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\t@:privateAccess\r\n\t\t__lastDrawCameras = cameras.copy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

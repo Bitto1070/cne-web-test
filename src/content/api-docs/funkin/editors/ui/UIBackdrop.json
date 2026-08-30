@@ -1,0 +1,31 @@
+{
+	"kind": "class",
+	"name": "UIBackdrop",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tvar __oldPos = FlxPoint.get(x, y);\r\n\t\tvar __oldScroll = FlxPoint.get(scrollFactor.x, scrollFactor.y);\r\n\r\n\t\tx -= camera.scroll.x * scrollFactor.x;\r\n\t\ty -= camera.scroll.y * scrollFactor.y;\r\n\r\n\t\twhile(x > -width)\r\n\t\t\tx -= width;\r\n\t\twhile(y > -height)\r\n\t\t\ty -= height;\r\n\r\n\t\tvar defX = x;\r\n\r\n\t\twhile(y < FlxG.height) {\r\n\t\t\twhile(x < FlxG.width) {\r\n\t\t\t\tsuper.drawSuper();\r\n\t\t\t\tx += width;\r\n\t\t\t}\r\n\t\t\ty += height;\r\n\t\t\tx = defX;\r\n\t\t}\r\n\r\n\r\n\t\tsetPosition(__oldPos.x, __oldPos.y);\r\n\t\tscrollFactor.set(__oldScroll.x, __oldScroll.y);\r\n\t\t__oldPos.put();\r\n\t\t__oldScroll.put();\r\n\t\tdrawMembers();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,56 @@
+{
+	"kind": "class",
+	"name": "UIContextMenuOptionIcon",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "option",
+					"type": "UIContextMenuOption",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function new(option:UIContextMenuOption) {\r\n\t\tsuper();\r\n\t\tthis.option = option;\r\n\t\tloadGraphic(Paths.image('editors/ui/context-icons'), true, 20, 20);\r\n\t\tselectable = option.onIconClick != null;\r\n\t\tcursor = option.onIconClick != null ? CLICK : ARROW;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateIconState",
+			"args": [
+				{
+					"name": "state",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateIconState(state:Int) {\r\n\t\tif (_lastState == state) return;\r\n\t\t_lastState = state;\r\n\r\n\t\tvisible = state > 0;\r\n\t\tif (state > 0) {\r\n\t\t\tanimation.add('icon', [state-1], 0, true);\r\n\t\t\tanimation.play('icon');\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onHovered",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onHovered() {\r\n\t\tsuper.onHovered();\r\n\r\n\t\tif (FlxG.mouse.justReleased && option.onIconClick != null) {\r\n\t\t\toption.onIconClick(option);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

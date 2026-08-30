@@ -1,0 +1,35 @@
+{
+	"kind": "class",
+	"name": "MainState",
+	"pkg": "funkin.backend.system",
+	"doc": {
+		"text": "Simple state used for loading the game",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "initiated",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t\tif (!initiated) {\r\n\t\t\tMain.loadGameSettings();\r\n\t\t}\r\n\r\n\t\tinitiated = true;\r\n\r\n\t\t#if sys\r\n\t\tCoolUtil.deleteFolder('./.temp/'); // delete temp folder\r\n\t\t#end\r\n\t\tOptions.save();\r\n\r\n\t\tControlsUtil.resetCustomControls();\r\n\t\tFlxG.bitmap.reset();\r\n\t\tFlxG.sound.destroy(true);\r\n\t\tFlxG.sound.resetCache();\r\n\r\n\t\tPaths.assetsTree.reset();\r\n\r\n\t\t#if MOD_SUPPORT\r\n\t\tinline function isDirectory(path:String):Bool\r\n\t\t\treturn FileSystem.exists(path) && FileSystem.isDirectory(path);\r\n\r\n\t\tinline function ltrim(str:String, prefix:String):String\r\n\t\t\treturn str.substr(prefix.length).ltrim();\r\n\r\n\t\tinline function loadLib(path:String, name:String)\r\n\t\t\tPaths.assetsTree.addLibrary(ModsFolder.loadModLib(path, name));\r\n\r\n\t\tvar _lowPriorityAddons:Array<AddonInfo> = [];\r\n\t\tvar _highPriorityAddons:Array<AddonInfo> = [];\r\n\t\tvar _noPriorityAddons:Array<AddonInfo> = [];\r\n\r\n\t\tvar quick_modsPath = ModsFolder.modsPath + ModsFolder.currentModFolder;\r\n\r\n\t\t// handing if the loading mod (before it's properly loaded) is a compressed mod\r\n\t\t// we just need to use `Paths.assetsTree.hasCompressedLibrary` to complete valid checks for actual loaded compressed mods\r\n\t\tvar isZipMod = false;\r\n\t\t\r\n\t\t// If we know it's a compressed mod, then we can check if it's using the `cnemod` folder path.\r\n\t\t// All it is really is a folder with the mod's name, then a compressed file called \"cnemod.[zip|7z|rar|etc]\"\r\n\t\tvar isCneMod = false;\r\n\r\n\t\t// We are doing it like this because think about it: it's 1 for loop lol\r\n\t\t// We just need to know if any of these values is true, so if only one is true and we are not close to being done in the loop, that's fine.\r\n\t\t// \r\n\t\tfor (ext in Flags.ALLOWED_ZIP_EXTENSIONS) {\r\n\t\t\tif (FileSystem.exists(quick_modsPath+\".\"+ext)) isZipMod = true;\r\n\t\t\tif (FileSystem.exists(quick_modsPath+\"/cnemod.\"+ext)) isCneMod = true;\r\n\t\t\tif (isZipMod && isCneMod) break;\r\n\t\t}\r\n\t\t\r\n\t\t// We get the addons folder from relative space (`./`) and then our mod's addons.\r\n\t\tvar addonPaths = [\r\n\t\t\tModsFolder.addonsPath,\r\n\t\t\t// So to check the mod's addons folder, we need to decompress it. Which is impossible* in this stage of the loading library process.\r\n\t\t\t// TODO: Write a function when the library is loaded to decompress the contents and then load the libraries :)\r\n\t\t\t( (ModsFolder.currentModFolder != null && !isZipMod) ?\r\n\t\t\t\tquick_modsPath + \"/addons/\" : null\r\n\t\t\t)\r\n\t\t];\r\n\r\n\t\tfor (path in addonPaths) {\r\n\t\t\tif (path == null) continue;\r\n\t\t\tif (!isDirectory(path)) continue;\r\n\r\n\t\t\tfor (addon in FileSystem.readDirectory(path)) {\r\n\t\t\t\tif (!FileSystem.isDirectory(path + addon)) {\r\n\t\t\t\t\tif (Flags.ALLOWED_ZIP_EXTENSIONS.contains(Path.extension(addon))) addon = Path.withoutExtension(addon);\r\n\t\t\t\t\telse continue;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tvar data:AddonInfo = {\r\n\t\t\t\t\tname: addon,\r\n\t\t\t\t\tpath: path + addon\r\n\t\t\t\t};\r\n\r\n\t\t\t\tif (addon.startsWith(\"[LOW]\")) _lowPriorityAddons.insert(0, data);\r\n\t\t\t\telse if (addon.startsWith(\"[HIGH]\")) _highPriorityAddons.insert(0, data);\r\n\t\t\t\telse _noPriorityAddons.insert(0, data);\r\n\t\t\t}\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\t#if GLOBAL_SCRIPT\r\n\t\tfunkin.backend.scripting.GlobalScript.destroy();\r\n\t\t#end\r\n\t\tfunkin.backend.scripting.Script.staticVariables.clear();\r\n\r\n\t\t#if MOD_SUPPORT\r\n\t\tfor (addon in _lowPriorityAddons)\r\n\t\t\tloadLib(addon.path, ltrim(addon.name, \"[LOW]\"));\r\n\t\t\r\n\t\tif (ModsFolder.currentModFolder != null) {\r\n\t\t\t// isCneMod is a guarentee to be a zip mod because we just checked for it, so this will always load as a CompressedLibrary\r\n\t\t\tif (isCneMod)\r\n\t\t\t\tloadLib(quick_modsPath + \"/cnemod\", ModsFolder.currentModFolder);\r\n\t\t\telse\r\n\t\t\t\tloadLib(quick_modsPath, ModsFolder.currentModFolder);\r\n\t\t}\r\n\r\n\t\tfor (addon in _noPriorityAddons)\r\n\t\t\tloadLib(addon.path, addon.name);\r\n\r\n\t\tfor (addon in _highPriorityAddons)\r\n\t\t\tloadLib(addon.path, ltrim(addon.name, \"[HIGH]\"));\r\n\t\t#end\r\n\r\n\t\tFlags.reset();\r\n\t\tFlags.load();\r\n\t\tfunkin.savedata.FunkinSave.init();\r\n\r\n\t\tTranslationUtil.findAllLanguages();\r\n\t\tTranslationUtil.setLanguage(Flags.DISABLE_LANGUAGES ? Flags.DEFAULT_LANGUAGE : null);\r\n\t\tModsFolder.onModSwitch.dispatch(ModsFolder.currentModFolder); // Loads global.hx\r\n\t\tMusicBeatTransition.script = Flags.DEFAULT_TRANSITION_SCRIPT;\r\n\t\tWindowUtils.resetAffixes(false);\r\n\t\tWindowUtils.setWindow();\r\n\t\tMain.refreshAssets();\r\n\t\tDiscordUtil.init();\r\n\t\tEventsData.reloadEvents();\r\n\t\tControlsUtil.loadCustomControls();\r\n\t\tTitleState.initialized = false;\r\n\r\n\t\tif (Framerate.isLoaded)\r\n\t\t\tFramerate.instance.reload();\r\n\r\n\t\t#if sys\r\n\t\tCoolUtil.safeAddAttributes('./.temp/', NativeAPI.FileAttribute.HIDDEN);\r\n\t\t#end\r\n\r\n\t\tfor (lib in ModsFolder.getLoadedModsLibs()) {\r\n\t\t\tif (!(lib is ZipFolderLibrary)) continue;\r\n\t\t\tif (cast(lib, ZipFolderLibrary).PRELOAD_VIDEOS) cast(lib, ZipFolderLibrary).precacheVideos();\r\n\t\t}\r\n\r\n\t\tvar startState:Class<FlxState> = Flags.DISABLE_WARNING_SCREEN ? TitleState : funkin.menus.WarningState;\r\n\t\tvar outdatedAPI:Bool = (Flags.MOD_API_VERSION ?? Flags.CURRENT_API_VERSION) < Flags.CURRENT_API_VERSION;\r\n\t\t// In this case if the mod we just loaded a compressed modpack, we can't edit or modify files without decompressing it.\r\n\t\tif (Options.devMode && Options.allowConfigWarning && !isZipMod) {\r\n\t\t\tvar lib:ModsFolderLibrary;\r\n\t\t\tfor (e in Paths.assetsTree.libraries) if ((lib = cast AssetsLibraryList.getCleanLibrary(e)) is ModsFolderLibrary\r\n\t\t\t\t&& lib.modName == ModsFolder.currentModFolder)\r\n\t\t\t{\r\n\t\t\t\tif (!outdatedAPI && lib.exists(Paths.ini(\"config/modpack\"), lime.utils.AssetType.TEXT)) break;\r\n\r\n\t\t\t\tFlxG.switchState(new ModConfigWarning(lib, startState, outdatedAPI));\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tFlxG.switchState(cast Type.createInstance(startState, []));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "Level",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

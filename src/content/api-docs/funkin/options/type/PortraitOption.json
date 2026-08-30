@@ -1,0 +1,102 @@
+{
+	"kind": "class",
+	"name": "PortraitOption",
+	"pkg": "funkin.options.type",
+	"doc": {
+		"text": "Option type that has a portrait.\nUsed in the credits menu.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "portrait",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "graphic",
+					"type": "FlxGraphic",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Int",
+					"optional": false,
+					"def": "96"
+				},
+				{
+					"name": "usePortrait",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, desc:String, callback:Void->Void, ?graphic:FlxGraphic, size:Int = 96, usePortrait:Bool = true) {\r\n\t\tsuper(name, desc, callback);\r\n\t\t__text.x = 100;\r\n\r\n\t\tif (graphic != null) addPortrait(graphic, size, usePortrait);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addPortrait",
+			"args": [
+				{
+					"name": "graphic",
+					"type": "FlxGraphic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Int",
+					"optional": false,
+					"def": "96"
+				},
+				{
+					"name": "usePortrait",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addPortrait(graphic:FlxGraphic, size:Int = 96, usePortrait:Bool = true) {\r\n\t\tif (portrait == null) {\r\n\t\t\tportrait = new FlxSprite();\r\n\t\t\tportrait.antialiasing = true;\r\n\t\t\tif(usePortrait) portrait.shader = new CustomShader('engine/circleProfilePicture');\r\n\t\t\tadd(portrait);\r\n\t\t}\r\n\t\tportrait.loadGraphic(graphic);\r\n\t\tportrait.setUnstretchedGraphicSize(size, size, false);\r\n\t\tportrait.updateHitbox();\r\n\t\tportrait.setPosition(90 - portrait.width, 0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

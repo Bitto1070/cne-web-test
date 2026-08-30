@@ -1,0 +1,590 @@
+{
+	"kind": "class",
+	"name": "CharacterAnimButton",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "anim",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "valid",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "AnimData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "CharacterAnimsWindow",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animationDisplayBG",
+			"type": "UISliceSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "nameTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animTextBox",
+			"type": "UIAutoCompleteTextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animLabelCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "positionXStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "positionYStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fpsStepper",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "loopedCheckbox",
+			"type": "UICheckbox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "indicesTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "XYComma",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "editIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ghostIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "labels",
+			"type": "Map<UISprite, UIText>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "foldableButtons",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animData",
+					"type": "AnimData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "CharacterAnimsWindow",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, animData:AnimData, parent:CharacterAnimsWindow) {\r\n\t\tthis.anim = animData.name;\r\n\t\tthis.data = animData;\r\n\t\tthis.parent = parent;\r\n\t\tsuper(x,y, '${animData.name} (${animData.x}, ${animData.y})', function () {\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t\t}, Std.int(500-16-32), 208);\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String, ?size:Int):UIText {\r\n\t\t\tvar uiText:UIText = new UIText(ui.x, ui.y-18, 0, text, size);\r\n\t\t\tmembers.push(uiText); labels.set(ui, uiText);\r\n\t\t\treturn uiText;\r\n\t\t}\r\n\r\n\t\tautoAlpha = autoFrames = autoFollow = false;\r\n\r\n\t\tframes = Paths.getFrames('editors/ui/inputbox');\r\n\t\tfield.fieldWidth = 0; framesOffset = 9;\r\n\t\tfield.size = 14;\r\n\r\n\t\tanimationDisplayBG = new UISliceSprite(x+12, y+12+18+12, 128, 128, 'editors/ui/inputbox-small');\r\n\t\tmembers.push(animationDisplayBG);\r\n\t\tfoldableButtons.push(animationDisplayBG);\r\n\r\n\t\tnameTextBox = new UITextBox(animationDisplayBG.x+126+16, animationDisplayBG.y, animData.name, 104, 22, false, true);\r\n\t\tnameTextBox.onChange = (newName:String) -> {this.changeName(newName);};\r\n\t\tmembers.push(nameTextBox);\r\n\t\tfoldableButtons.push(nameTextBox);\r\n\t\taddLabelOn(nameTextBox, translate(\"name\"), 12);\r\n\r\n\t\tanimTextBox = new UIAutoCompleteTextBox(nameTextBox.x + 100, nameTextBox.y, animData.anim, 156, 22, false, true);\r\n\t\tanimTextBox.onChange = (newAnim:String) -> {this.changeAnim(newAnim);};\r\n\t\tmembers.push(animTextBox);\r\n\t\tfoldableButtons.push(animTextBox);\r\n\t\taddLabelOn(animTextBox, translate(\"anim\"), 12);\r\n\r\n\t\tpositionXStepper = new UINumericStepper(animTextBox.x, animTextBox.y+32+18, animData.x, 0.001, 2, null, null, 64, 22, true);\r\n\t\tpositionXStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess positionXStepper.__onChange(text);\r\n\t\t\tthis.changeOffset(positionXStepper.value, null);\r\n\t\t};\r\n\t\tmembers.push(positionXStepper);\r\n\t\tfoldableButtons.push(positionXStepper);\r\n\t\taddLabelOn(positionXStepper, translate(\"position\"), 12);\r\n\r\n\t\tmembers.push(XYComma = new UIText(positionXStepper.x+104-32+0, positionXStepper.y + 9, 0, \",\", 18));\r\n\t\tfoldableButtons.push(XYComma);\r\n\r\n\t\tpositionYStepper = new UINumericStepper(positionXStepper.x+104-32+26, positionXStepper.y, animData.y, 0.001, 2, null, null, 64, 22, true);\r\n\t\tpositionYStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess positionYStepper.__onChange(text);\r\n\t\t\tthis.changeOffset(null, positionYStepper.value);\r\n\t\t};\r\n\t\tmembers.push(positionYStepper);\r\n\t\tfoldableButtons.push(positionYStepper);\r\n\r\n\t\tfpsStepper = new UINumericStepper(animTextBox.x + 200 + 26, animTextBox.y, animData.fps, 0.1, 2, 1, 100, 52, 22, true);\r\n\t\tfpsStepper.onChange = (text:String) -> {\r\n\t\t\t@:privateAccess fpsStepper.__onChange(text);\r\n\t\t\tthis.changeFPS(fpsStepper.value);\r\n\t\t};\r\n\t\tmembers.push(fpsStepper);\r\n\t\tfoldableButtons.push(fpsStepper);\r\n\t\taddLabelOn(fpsStepper, translate(\"fps\"), 12);\r\n\r\n\t\tloopedCheckbox = new UICheckbox(fpsStepper.x + 82 - 32 + 26, fpsStepper.y, translate(\"looping\"), animData.loop, 0, true);\r\n\t\tloopedCheckbox.onChecked = (newLooping:Bool) -> {this.changeLooping(newLooping);};\r\n\t\tmembers.push(loopedCheckbox);\r\n\t\tfoldableButtons.push(loopedCheckbox);\r\n\r\n\t\tloopedCheckbox.x += 8; loopedCheckbox.y += 6;\r\n\r\n\t\tif (parent.character.isAnimate) {\r\n\t\t\tanimLabelCheckbox = new UICheckbox(loopedCheckbox.x, animTextBox.y + 26, translate(\"label\"), animData.label, 0, true);\r\n\t\t\tanimLabelCheckbox.onChecked = (newLabel:Bool) -> {this.changeLabel(newLabel);};\r\n\t\t\tmembers.push(animLabelCheckbox);\r\n\t\t\tfoldableButtons.push(animLabelCheckbox);\r\n\t\t}\r\n\r\n\t\tindicesTextBox = new UITextBox(nameTextBox.x, nameTextBox.y, CoolUtil.formatNumberRange(animData.indices.getDefault([]), \", \"), 278, 22, false, true);\r\n\t\tindicesTextBox.onChange = (text:String) -> {\r\n\t\t\tthis.changeIndicies(CoolUtil.parseNumberRange(text));\r\n\t\t}\r\n\t\tmembers.push(indicesTextBox);\r\n\t\tfoldableButtons.push(indicesTextBox);\r\n\t\taddLabelOn(indicesTextBox, translate(\"indices\"), 12);\r\n\r\n\t\tanimIcon = new FlxSprite(x-(10+16), y+8).loadGraphic(Paths.image(\"editors/character/anim-icons\"), true, 16, 12);\r\n\t\tanimIcon.animation.add(\"play\", [0]);\r\n\t\tanimIcon.animation.add(\"error\", [1]);\r\n\t\t// animIcon.color = 0xFFD60E0E;\r\n\t\tanimIcon.animation.play(\"play\");\r\n\t\tanimIcon.antialiasing = false;\r\n\t\tanimIcon.updateHitbox();\r\n\t\tmembers.push(animIcon);\r\n\r\n\t\tdeleteButton = new UIButton(0, 0, null, () -> {parent.deleteAnimation(this);}, 28*2,24);\r\n\t\tdeleteButton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\tdeleteButton.color = 0xFFAC3D3D;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(x-(10+16), y+8).loadGraphic(Paths.image(\"editors/deleter\"));\r\n\t\tdeleteIcon.color = 0xFFD60E0E;\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\r\n\t\teditButton = new UIButton(0, 0, null, () -> {\r\n\t\t\tif (!this.closed) UIUtil.confirmUISelections(this);\r\n\t\t\tthis.closed = !this.closed;\r\n\t\t}, 28,24);\r\n\t\teditButton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\teditButton.color = 0xFFAFAA12;\r\n\t\tmembers.push(editButton);\r\n\r\n\t\teditIcon = new FlxSprite().loadGraphic(Paths.image('editors/character/edit-button'));\r\n\t\t//editIcon.color = 0xFFE8E801;\r\n\t\teditIcon.antialiasing = false;\r\n\t\tmembers.push(editIcon);\r\n\r\n\t\tghostButton = new UIButton(0, 0, null, toggleGhost, 28, 24);\r\n\t\tghostButton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\tghostButton.color = 0xFFADADAD;\r\n\t\tghostButton.alpha = 0.5;\r\n\t\tmembers.push(ghostButton);\r\n\r\n\t\tghostIcon = new FlxSprite(x-(10+16), y+8).loadGraphic(Paths.image('editors/character/ghost'), true, 16, 12);\r\n\t\tghostIcon.animation.add(\"alive\", [0]);\r\n\t\tghostIcon.animation.add(\"dead\", [1]);\r\n\t\tghostIcon.animation.play(\"dead\");\r\n\t\tghostIcon.color = 0xFFADADAD;\r\n\t\tghostIcon.antialiasing = false;\r\n\t\tghostIcon.updateHitbox();\r\n\t\tmembers.push(ghostIcon);\r\n\r\n\t\tcheckValid();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButtonsPos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateButtonsPos() {\r\n\t\tanimIcon.follow(this, 22, (52/2) - (animIcon.height/2) + (animIcon.animation.name == \"error\" ? 2 : 0));\r\n\t\tfield.follow(this, 22+16+10, (52/2) - (field.height/2) + 1);\r\n\r\n\t\tdeleteButton.follow(this, 380, 14);\r\n\t\tdeleteIcon.follow(deleteButton, (deleteButton.bWidth/2)-6.5, (deleteButton.bHeight/2)-6);\r\n\r\n\t\teditButton.follow(this, 340, 14);\r\n\t\teditIcon.follow(editButton, (editButton.bWidth/2)-6,  (editButton.bHeight/2)-6);\r\n\r\n\t\tghostButton.follow(this, 300, 14);\r\n\t\tghostIcon.follow(ghostButton, (ghostButton.bWidth/2)-8, (ghostButton.bHeight/2)-6);\r\n\r\n\t\tanimationDisplayBG.follow(this, 16, 61);\r\n\t\tnameTextBox.follow(this, 158, 72);\r\n\t\tanimTextBox.follow(this, 282, 72);\r\n\r\n\t\tpositionXStepper.follow(this, 158, 118);\r\n\t\tpositionYStepper.follow(this, 218, 118);\r\n\t\tXYComma.follow(positionXStepper, 64-24, 6);\r\n\r\n\t\tfpsStepper.follow(this, 282, 118);\r\n\t\tloopedCheckbox.follow(this, 336, 122);\r\n\t\tanimLabelCheckbox?.follow(this, 336, 98);\r\n\r\n\t\tindicesTextBox.follow(this, 158, 164);\r\n\r\n\t\tfor (ui => text in labels) {\r\n\t\t\ttext.follow(ui, -(2+(ui is UICheckbox?12:0)), -(18+(ui is UICheckbox?6:0)));\r\n\t\t\ttext.visible = text.active = ui.visible;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tbHeight = closed ? 52 : 208;\r\n\r\n\t\tfor (button in foldableButtons)\r\n\t\t\tbutton.visible = button.active = !closed;\r\n\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeName",
+			"args": [
+				{
+					"name": "newName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeName(newName:String, addToUndo:Bool = true) @:privateAccess {\r\n\t\tif (newName == anim) return;\r\n\r\n\t\tif  (parent.character.getNameList().indexOf(newName) != -1) {\r\n\t\t\tnameTextBox.label.text = anim;\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tvar oldName:String = anim;\r\n\t\t\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.name = newName;\r\n\r\n\t\tparent.character.animation._animations.remove(anim);\r\n\t\tparent.character.animation._animations.set(newName, flxAnimation);\r\n\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tanimData.name = newName;\r\n\r\n\t\tparent.character.animDatas.remove(anim);\r\n\t\tparent.character.animDatas.set(newName, animData);\r\n\r\n\t\tvar animOffset:FlxPoint = parent.character.animOffsets[anim];\r\n\t\tparent.character.animOffsets.remove(anim);\r\n\t\tparent.character.animOffsets.set(newName, animOffset);\r\n\r\n\t\tvar displayFrame:DisplayAnimFrameEntry = parent.displayAnimsFramesList[anim];\r\n\t\tparent.displayAnimsFramesList.remove(anim);\r\n\t\tparent.displayAnimsFramesList.set(newName, displayFrame);\r\n\r\n\t\tvar animButton = parent.animButtons.get(this.anim);\r\n\t\tparent.animButtons.remove(this.anim);\r\n\t\tparent.animButtons.set(newName, animButton);\r\n\r\n\t\tthis.anim = newName;\r\n\t\tnameTextBox.label.text = newName;\r\n\t\tupdateText();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditName(ID, oldName, newName));\r\n\t}\r\n\r\n\tpublic function changeAnim(newAnim:String, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tif (newAnim == animData.anim) return;\r\n\r\n\t\tvar oldAnim:String = animData.anim;\r\n\t\tanimData.anim = newAnim;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.prefix = newAnim;\r\n\r\n\t\trefreshAnimation(__getFlxAnimation(), data);\r\n\r\n\t\tif (valid) {\r\n\t\t\tparent.buildAnimDisplay(anim, data);\r\n\t\t\tanimationDisplayBG.alpha = 1;\r\n\t\t} else {\r\n\t\t\tparent.removeAnimDisplay(anim);\r\n\t\t\tanimationDisplayBG.alpha = 0.4;\r\n\t\t}\r\n\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tanimTextBox.label.text = newAnim;\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditAnim(ID, oldAnim, newAnim));\r\n\t}\r\n\r\n\tpublic function changeOffset(newOffsetX:Null<Float>, newOffsetY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tif (newOffsetX != null && newOffsetY != null && newOffsetX == animData.x && newOffsetY == animData.y)\r\n\t\t\treturn;\r\n\t\t\r\n\t\tvar oldPosition:FlxPoint = FlxPoint.get(animData.x, animData.y);\r\n\r\n\t\tif (newOffsetX != null) animData.x = newOffsetX;\r\n\t\tif (newOffsetY != null) animData.y = newOffsetY;\r\n\r\n\t\tparent.character.animOffsets[anim].set(animData.x, animData.y);\r\n\r\n\t\tif (parent.character.getAnimName() == anim && Options.playAnimOnOffset)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tpositionXStepper.label.text = Std.string(animData.x);\r\n\t\tpositionYStepper.label.text = Std.string(animData.y);\r\n\r\n\t\tupdateText();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditOffset(ID, oldPosition, FlxPoint.get(animData.x, animData.y)));\r\n\t}\r\n\r\n\tpublic function changeFPS(newFPS:Float, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldFPS:Float = animData.fps;\r\n\t\tanimData.fps = newFPS;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.frameRate = newFPS;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tfpsStepper.label.text = Std.string(newFPS);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditFPS(ID, oldFPS, newFPS));\r\n\t}\r\n\r\n\tpublic function changeLooping(newLooping:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.loop = newLooping;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.looped = animData.loop;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tloopedCheckbox.checked = newLooping;\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLooping(ID, newLooping));\r\n\t}\r\n\r\n\tpublic function changeLabel(newLabel:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.label = newLabel;\r\n\r\n\t\tif (animLabelCheckbox != null)\r\n\t\t\tanimLabelCheckbox.checked = newLabel;\r\n\r\n\t\t__refreshAnimation();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLabel(ID, newLabel));\r\n\t}\r\n\r\n\tpublic function changeIndicies(indicies:Array<Int>, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldIndices:Array<Int> = animData.indices.copy();\r\n\r\n\t\tvar maxFrameIndex = parent.character.frames.frames.length - 1;\r\n\t\tfor (index in indicies) {\r\n\t\t\tif (index < 0 || index > maxFrameIndex) {\r\n\t\t\t\tLogs.trace('[changeIndicies] Invalid frame index $index (max allowed: $maxFrameIndex). Change aborted.', ERROR, RED);\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tanimData.indices = indicies;\r\n\r\n\t\ttry {\r\n\t\t\t__refreshAnimation();\r\n\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tLogs.trace('[changeIndicies] Error occurred: $e. Reverting to old indices.', WARNING, YELLOW);\r\n\r\n\t\t\tanimData.indices = oldIndices;\r\n\t\t\t__refreshAnimation();\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tindicesTextBox.label.text = animData.indices.join(\", \");\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimEditIndices(ID, oldIndices, indicies));\r\n\t}\r\n\r\n\tpublic function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}\r\n\r\n\tpublic function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}\r\n\r\n\tpublic inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeAnim",
+			"args": [
+				{
+					"name": "newAnim",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeAnim(newAnim:String, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tif (newAnim == animData.anim) return;\r\n\r\n\t\tvar oldAnim:String = animData.anim;\r\n\t\tanimData.anim = newAnim;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.prefix = newAnim;\r\n\r\n\t\trefreshAnimation(__getFlxAnimation(), data);\r\n\r\n\t\tif (valid) {\r\n\t\t\tparent.buildAnimDisplay(anim, data);\r\n\t\t\tanimationDisplayBG.alpha = 1;\r\n\t\t} else {\r\n\t\t\tparent.removeAnimDisplay(anim);\r\n\t\t\tanimationDisplayBG.alpha = 0.4;\r\n\t\t}\r\n\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tanimTextBox.label.text = newAnim;\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditAnim(ID, oldAnim, newAnim));\r\n\t}\r\n\r\n\tpublic function changeOffset(newOffsetX:Null<Float>, newOffsetY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tif (newOffsetX != null && newOffsetY != null && newOffsetX == animData.x && newOffsetY == animData.y)\r\n\t\t\treturn;\r\n\t\t\r\n\t\tvar oldPosition:FlxPoint = FlxPoint.get(animData.x, animData.y);\r\n\r\n\t\tif (newOffsetX != null) animData.x = newOffsetX;\r\n\t\tif (newOffsetY != null) animData.y = newOffsetY;\r\n\r\n\t\tparent.character.animOffsets[anim].set(animData.x, animData.y);\r\n\r\n\t\tif (parent.character.getAnimName() == anim && Options.playAnimOnOffset)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tpositionXStepper.label.text = Std.string(animData.x);\r\n\t\tpositionYStepper.label.text = Std.string(animData.y);\r\n\r\n\t\tupdateText();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditOffset(ID, oldPosition, FlxPoint.get(animData.x, animData.y)));\r\n\t}\r\n\r\n\tpublic function changeFPS(newFPS:Float, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldFPS:Float = animData.fps;\r\n\t\tanimData.fps = newFPS;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.frameRate = newFPS;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tfpsStepper.label.text = Std.string(newFPS);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditFPS(ID, oldFPS, newFPS));\r\n\t}\r\n\r\n\tpublic function changeLooping(newLooping:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.loop = newLooping;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.looped = animData.loop;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tloopedCheckbox.checked = newLooping;\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLooping(ID, newLooping));\r\n\t}\r\n\r\n\tpublic function changeLabel(newLabel:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.label = newLabel;\r\n\r\n\t\tif (animLabelCheckbox != null)\r\n\t\t\tanimLabelCheckbox.checked = newLabel;\r\n\r\n\t\t__refreshAnimation();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLabel(ID, newLabel));\r\n\t}\r\n\r\n\tpublic function changeIndicies(indicies:Array<Int>, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldIndices:Array<Int> = animData.indices.copy();\r\n\r\n\t\tvar maxFrameIndex = parent.character.frames.frames.length - 1;\r\n\t\tfor (index in indicies) {\r\n\t\t\tif (index < 0 || index > maxFrameIndex) {\r\n\t\t\t\tLogs.trace('[changeIndicies] Invalid frame index $index (max allowed: $maxFrameIndex). Change aborted.', ERROR, RED);\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tanimData.indices = indicies;\r\n\r\n\t\ttry {\r\n\t\t\t__refreshAnimation();\r\n\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tLogs.trace('[changeIndicies] Error occurred: $e. Reverting to old indices.', WARNING, YELLOW);\r\n\r\n\t\t\tanimData.indices = oldIndices;\r\n\t\t\t__refreshAnimation();\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tindicesTextBox.label.text = animData.indices.join(\", \");\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimEditIndices(ID, oldIndices, indicies));\r\n\t}\r\n\r\n\tpublic function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}\r\n\r\n\tpublic function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}\r\n\r\n\tpublic inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeOffset",
+			"args": [
+				{
+					"name": "newOffsetX",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "newOffsetY",
+					"type": "Null<Float>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeOffset(newOffsetX:Null<Float>, newOffsetY:Null<Float>, addToUndo:Bool = true) {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tif (newOffsetX != null && newOffsetY != null && newOffsetX == animData.x && newOffsetY == animData.y)\r\n\t\t\treturn;\r\n\t\t\r\n\t\tvar oldPosition:FlxPoint = FlxPoint.get(animData.x, animData.y);\r\n\r\n\t\tif (newOffsetX != null) animData.x = newOffsetX;\r\n\t\tif (newOffsetY != null) animData.y = newOffsetY;\r\n\r\n\t\tparent.character.animOffsets[anim].set(animData.x, animData.y);\r\n\r\n\t\tif (parent.character.getAnimName() == anim && Options.playAnimOnOffset)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tpositionXStepper.label.text = Std.string(animData.x);\r\n\t\tpositionYStepper.label.text = Std.string(animData.y);\r\n\r\n\t\tupdateText();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditOffset(ID, oldPosition, FlxPoint.get(animData.x, animData.y)));\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeFPS",
+			"args": [
+				{
+					"name": "newFPS",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeFPS(newFPS:Float, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldFPS:Float = animData.fps;\r\n\t\tanimData.fps = newFPS;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.frameRate = newFPS;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tfpsStepper.label.text = Std.string(newFPS);\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditFPS(ID, oldFPS, newFPS));\r\n\t}\r\n\r\n\tpublic function changeLooping(newLooping:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.loop = newLooping;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.looped = animData.loop;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tloopedCheckbox.checked = newLooping;\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLooping(ID, newLooping));\r\n\t}\r\n\r\n\tpublic function changeLabel(newLabel:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.label = newLabel;\r\n\r\n\t\tif (animLabelCheckbox != null)\r\n\t\t\tanimLabelCheckbox.checked = newLabel;\r\n\r\n\t\t__refreshAnimation();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLabel(ID, newLabel));\r\n\t}\r\n\r\n\tpublic function changeIndicies(indicies:Array<Int>, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldIndices:Array<Int> = animData.indices.copy();\r\n\r\n\t\tvar maxFrameIndex = parent.character.frames.frames.length - 1;\r\n\t\tfor (index in indicies) {\r\n\t\t\tif (index < 0 || index > maxFrameIndex) {\r\n\t\t\t\tLogs.trace('[changeIndicies] Invalid frame index $index (max allowed: $maxFrameIndex). Change aborted.', ERROR, RED);\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tanimData.indices = indicies;\r\n\r\n\t\ttry {\r\n\t\t\t__refreshAnimation();\r\n\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tLogs.trace('[changeIndicies] Error occurred: $e. Reverting to old indices.', WARNING, YELLOW);\r\n\r\n\t\t\tanimData.indices = oldIndices;\r\n\t\t\t__refreshAnimation();\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tindicesTextBox.label.text = animData.indices.join(\", \");\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimEditIndices(ID, oldIndices, indicies));\r\n\t}\r\n\r\n\tpublic function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}\r\n\r\n\tpublic function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}\r\n\r\n\tpublic inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeLooping",
+			"args": [
+				{
+					"name": "newLooping",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeLooping(newLooping:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.loop = newLooping;\r\n\r\n\t\tvar flxAnimation:FlxAnimation = __getFlxAnimation();\r\n\t\tflxAnimation.looped = animData.loop;\r\n\r\n\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\tloopedCheckbox.checked = newLooping;\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLooping(ID, newLooping));\r\n\t}\r\n\r\n\tpublic function changeLabel(newLabel:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.label = newLabel;\r\n\r\n\t\tif (animLabelCheckbox != null)\r\n\t\t\tanimLabelCheckbox.checked = newLabel;\r\n\r\n\t\t__refreshAnimation();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLabel(ID, newLabel));\r\n\t}\r\n\r\n\tpublic function changeIndicies(indicies:Array<Int>, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldIndices:Array<Int> = animData.indices.copy();\r\n\r\n\t\tvar maxFrameIndex = parent.character.frames.frames.length - 1;\r\n\t\tfor (index in indicies) {\r\n\t\t\tif (index < 0 || index > maxFrameIndex) {\r\n\t\t\t\tLogs.trace('[changeIndicies] Invalid frame index $index (max allowed: $maxFrameIndex). Change aborted.', ERROR, RED);\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tanimData.indices = indicies;\r\n\r\n\t\ttry {\r\n\t\t\t__refreshAnimation();\r\n\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tLogs.trace('[changeIndicies] Error occurred: $e. Reverting to old indices.', WARNING, YELLOW);\r\n\r\n\t\t\tanimData.indices = oldIndices;\r\n\t\t\t__refreshAnimation();\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tindicesTextBox.label.text = animData.indices.join(\", \");\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimEditIndices(ID, oldIndices, indicies));\r\n\t}\r\n\r\n\tpublic function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}\r\n\r\n\tpublic function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}\r\n\r\n\tpublic inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeLabel",
+			"args": [
+				{
+					"name": "newLabel",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeLabel(newLabel:Bool, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\r\n\t\tanimData.label = newLabel;\r\n\r\n\t\tif (animLabelCheckbox != null)\r\n\t\t\tanimLabelCheckbox.checked = newLabel;\r\n\r\n\t\t__refreshAnimation();\r\n\r\n\t\tif (addToUndo) CharacterEditor.undos.addToUndo(CAnimEditLabel(ID, newLabel));\r\n\t}\r\n\r\n\tpublic function changeIndicies(indicies:Array<Int>, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldIndices:Array<Int> = animData.indices.copy();\r\n\r\n\t\tvar maxFrameIndex = parent.character.frames.frames.length - 1;\r\n\t\tfor (index in indicies) {\r\n\t\t\tif (index < 0 || index > maxFrameIndex) {\r\n\t\t\t\tLogs.trace('[changeIndicies] Invalid frame index $index (max allowed: $maxFrameIndex). Change aborted.', ERROR, RED);\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tanimData.indices = indicies;\r\n\r\n\t\ttry {\r\n\t\t\t__refreshAnimation();\r\n\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tLogs.trace('[changeIndicies] Error occurred: $e. Reverting to old indices.', WARNING, YELLOW);\r\n\r\n\t\t\tanimData.indices = oldIndices;\r\n\t\t\t__refreshAnimation();\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tindicesTextBox.label.text = animData.indices.join(\", \");\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimEditIndices(ID, oldIndices, indicies));\r\n\t}\r\n\r\n\tpublic function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}\r\n\r\n\tpublic function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}\r\n\r\n\tpublic inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "changeIndicies",
+			"args": [
+				{
+					"name": "indicies",
+					"type": "Array<Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeIndicies(indicies:Array<Int>, addToUndo:Bool = true) @:privateAccess {\r\n\t\tvar animData:AnimData = parent.character.animDatas[anim];\r\n\t\tvar oldIndices:Array<Int> = animData.indices.copy();\r\n\r\n\t\tvar maxFrameIndex = parent.character.frames.frames.length - 1;\r\n\t\tfor (index in indicies) {\r\n\t\t\tif (index < 0 || index > maxFrameIndex) {\r\n\t\t\t\tLogs.trace('[changeIndicies] Invalid frame index $index (max allowed: $maxFrameIndex). Change aborted.', ERROR, RED);\r\n\t\t\t\treturn;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tanimData.indices = indicies;\r\n\r\n\t\ttry {\r\n\t\t\t__refreshAnimation();\r\n\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\t\t} catch (e:Dynamic) {\r\n\t\t\tLogs.trace('[changeIndicies] Error occurred: $e. Reverting to old indices.', WARNING, YELLOW);\r\n\r\n\t\t\tanimData.indices = oldIndices;\r\n\t\t\t__refreshAnimation();\r\n\t\t\tif (parent.character.getAnimName() == anim)\r\n\t\t\t\tCharacterEditor.instance.playAnimation(anim);\r\n\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tindicesTextBox.label.text = animData.indices.join(\", \");\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tCharacterEditor.undos.addToUndo(CAnimEditIndices(ID, oldIndices, indicies));\r\n\t}\r\n\r\n\tpublic function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}\r\n\r\n\tpublic function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}\r\n\r\n\tpublic function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}\r\n\r\n\tpublic inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "toggleGhost",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toggleGhost() {\r\n\t\tif (valid && parent.ghosts.indexOf(anim) == -1) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTENABLE_SOUND); \r\n\t\t\tparent.ghosts.push(anim);\r\n\t\t\tghostIcon.animation.play(\"alive\", true);\r\n\t\t\tghostIcon.color = 0xFFFFFFFF;\r\n\t\t} else {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARACTER_GHOSTDISABLE_SOUND);\r\n\t\t\tparent.ghosts.remove(anim);\r\n\t\t\tghostIcon.animation.play(\"dead\", true);\r\n\t\t\tghostIcon.color = 0xFFADADAD;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tupdateButtonsPos();\r\n\t\tsuper.draw();\r\n\r\n\t\tif (!closed && parent.displayAnimsFramesList.exists(anim)) {\r\n\t\t\tvar displayData:DisplayAnimFrameEntry = parent.displayAnimsFramesList.get(anim);\r\n\t\t\tparent.displayWindowSprite.frame = displayData.frame;\r\n\r\n\t\t\tparent.displayWindowSprite.scale.x = parent.displayWindowSprite.scale.y = displayData.scale;\r\n\t\t\tparent.displayWindowSprite.updateHitbox();\r\n\r\n\t\t\tparent.displayWindowSprite.follow(\r\n\t\t\t\tthis, 16+(128/2)-((parent.displayWindowSprite.frame.sourceSize.x*displayData.scale)/2),\r\n\t\t\t\t8+32+8+2+11+(128/2)-((parent.displayWindowSprite.frame.sourceSize.y*displayData.scale)/2)\r\n\t\t\t);\r\n\t\t\tparent.displayWindowSprite.draw();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateText",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateText() {\r\n\t\tfield.applyMarkup(\r\n\t\t\t'${anim} ' + (valid ? '(${parent.character.animOffsets[anim].x}, ${parent.character.animOffsets[anim].y})' : \"|(Invalid Animation!!!)|\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFF29797), \"|\")]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "validate",
+			"args": [
+				{
+					"name": "isValid",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function validate(isValid:Bool = true) {\r\n\t\tvar wasValid:Bool = valid;\r\n\t\tthis.valid = isValid;\r\n\r\n\t\tanimIcon.animation.play(valid ? \"play\" :\"error\");\r\n\t\tcolor = valid ? 0xFFFFFFFF : 0xFFD60E0E;\r\n\r\n\t\tghostIcon.visible = ghostButton.visible = isValid;\r\n\t\tXYComma.alpha = isValid ? 1 : 0.4;\r\n\t\tfor (uiElement in [nameTextBox, positionXStepper, positionYStepper, fpsStepper, loopedCheckbox, indicesTextBox]) {\r\n\t\t\tuiElement.selectable = isValid;\r\n\t\t\tif (labels[uiElement] != null)\r\n\t\t\t\tlabels[uiElement].alpha = isValid ? 1 : 0.4;\r\n\t\t}\r\n\t\tif (!valid) toggleGhost();\r\n\t\tupdateText();\r\n\r\n\t\tif (!wasValid && isValid && CharacterEditor.instance.characterFakeAnim == anim)\r\n\t\t\tCharacterEditor.instance.playAnimation(this.anim);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "invalidate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function invalidate()\r\n\t\tvalidate(false);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__getFlxAnimation",
+			"args": [],
+			"ret": "Null<FlxAnimation> @:privateAccess",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function __getFlxAnimation():Null<FlxAnimation> @:privateAccess {\r\n\t\tif (!parent.character.animation._animations.exists(anim)) {\r\n\t\t\tfinal flxanim = new FlxAnimation(parent.character.animation, anim, [], data.fps, data.loop);\r\n\t\t\tflxanim.prefix = data.anim; // sobbing\r\n\r\n\t\t\tparent.character.animation._animations.set(anim, flxanim);\r\n\t\t\tparent.character.animDatas.set(anim, data);\r\n\t\t}\r\n\t\treturn parent.character.animation._animations[anim];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshAnimation",
+			"args": [
+				{
+					"name": "anim",
+					"type": "FlxAnimation",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "animData",
+					"type": "AnimData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function refreshAnimation(anim:FlxAnimation, animData:AnimData) @:privateAccess {\r\n\t\tvar refreshed:Bool = false;\r\n\r\n\t\tparent.character.animation.remove(animData.name);\r\n\t\tparent.character.animation._curAnim = null;\r\n\r\n\t\tXMLUtil.addAnimToSprite(parent.character, animData);\r\n\r\n\t\tvar anim = parent.character.animation.getByName(animData.name);\r\n\t\t\r\n\t\tif (anim != null && anim.frames.length > 0) {\r\n\t\t\tvalidate();\r\n\t\t\tparent.character.animation.play(animData.name);\r\n\t\t}\r\n\t\telse\r\n\t\t\tinvalidate();\r\n\t}\r\n\r\n\t@:noCompletion function __refreshAnimation() @:privateAccess {\r\n\t\trefreshAnimation(__getFlxAnimation(), data);\r\n\r\n\t\tif (valid) {\r\n\t\t\tparent.buildAnimDisplay(anim, data);\r\n\t\t\tanimationDisplayBG.alpha = 1;\r\n\t\t} else {\r\n\t\t\tparent.removeAnimDisplay(anim);\r\n\t\t\tanimationDisplayBG.alpha = 0.4;\r\n\t\t}\r\n\t}\r\n\r\n\tpublic inline function checkValid()\r\n\t\t__refreshAnimation();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "checkValid",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function checkValid()\r\n\t\t__refreshAnimation();",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

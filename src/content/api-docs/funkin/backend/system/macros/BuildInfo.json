@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "BuildInfo",
+	"pkg": "funkin.backend.system.macros",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "printBuildInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function printBuildInfo() {\r\n\t\tif(haxe.macro.Context.defined(\"display\") || haxe.macro.Context.defined(\"display-details\")) return;\r\n\t\tvar haxeVersion = haxe.macro.Context.definedValue(\"haxe\").trim();\r\n\t\tvar sleepChangeVersion = false;\r\n\r\n\t\tSys.println('[ BUILD INFO ]');\r\n\t\tSys.println('Haxe Version: ${haxeVersion}');\r\n\t\ttry {\r\n\t\t\tvar lastBuiltWith:Null<String> = null;\r\n\t\t\tvar compiling = #if final \"release\" #elseif debug \"debug\" #else \"release\" #end;\r\n\t\t\tvar target = #if hl \"hl\"\r\n\t\t\t\t#elseif html5 \"html5\"\r\n\t\t\t\t#elseif ios \"ios\"\r\n\t\t\t\t#elseif android \"android\"\r\n\t\t\t\t#elseif windows \"windows\"\r\n\t\t\t\t#elseif (mac || macos) \"macos\"\r\n\t\t\t\t#elseif linux \"linux\"\r\n\t\t\t\t#else \"\"\r\n\t\t\t\t#end;\r\n\t\t\tif(target == \"\") throw \"Unknown target\";\r\n\t\t\tvar exportPath = Sys.getCwd() + \"/export/\" + compiling + \"/\" + target + \"/\";\r\n\t\t\texportPath += \"obj/Options.txt\";\r\n\r\n\t\t\tvar options = sys.io.File.getContent(exportPath);\r\n\t\t\tfor(option in options.split(\"\\n\")) {\r\n\t\t\t\tif(option.startsWith(\"haxe=\")) {\r\n\t\t\t\t\tlastBuiltWith = option.substr(5).trim();\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif(lastBuiltWith != null && lastBuiltWith.length > 0 && lastBuiltWith != haxeVersion) {\r\n\t\t\t\tSys.println('Last Built With Haxe: ${lastBuiltWith} [!!!! MAKE SURE IF YOU SWITCHED VERSIONS YOU DELETE EXPORT FOLDERS !!!!]');\r\n\t\t\t\tsleepChangeVersion = true;\r\n\t\t\t}\r\n\t\t} catch(e) {}\r\n\t\tvar targetPlatform = #if html5 \"Web (HTML5)\"\r\n\t\t\t#elseif ios \"iOS\"\r\n\t\t\t#elseif android \"Android\"\r\n\t\t\t#elseif windows \"Windows\"\r\n\t\t\t#elseif (mac || macos) \"Mac\"\r\n\t\t\t#elseif linux \"Linux\"\r\n\t\t\t#else \"Unknown\"\r\n\t\t\t#end;\r\n\r\n\t\tif(haxe.macro.Context.defined(\"hl\")) {\r\n\t\t\ttargetPlatform = \"Hashlink (\" + targetPlatform + \")\";\r\n\t\t}\r\n\t\tSys.println('Target Platform: ' + targetPlatform);\r\n\t\tSys.println('Build Date: ${Date.now().toString()}');\r\n\t\tSys.println('');\r\n\r\n\t\tif(sleepChangeVersion) {\r\n\t\t\tSys.println('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');\r\n\t\t\tSys.println('!!!! MAKE SURE IF YOU SWITCHED VERSIONS YOU DELETE EXPORT FOLDERS !!!!');\r\n\t\t\tSys.println('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');\r\n\t\t\tSys.println('');\r\n\t\t\tSys.sleep(5);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

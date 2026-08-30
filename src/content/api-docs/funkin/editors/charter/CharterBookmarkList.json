@@ -1,0 +1,58 @@
+{
+	"kind": "class",
+	"name": "CharterBookmarkList",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bookmarkList",
+			"type": "UIButtonList<BookmarkButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tFlxG.sound.music.pause();\r\n\t\tCharter.instance.vocals.pause();\r\n\r\n\t\twinTitle = TU.translate(\"charter.bookmarks.editBookmarkListTitle\");\r\n\t\twinWidth = 380;\r\n\t\twinHeight = 390;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tvar title:UIText;\r\n\t\tadd(title = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, TU.translate(\"charter.bookmarks.editBookmarksTitle\"), 28));\r\n\r\n\t\tbookmarkList = new UIButtonList<BookmarkButton>(20, title.y + title.height + 10, winWidth - 40, 342 - 85 - 16, null, FlxPoint.get(winWidth - 40, (342 - 85 - 16)/4), null, 0);\r\n\t\tbookmarkList.cameraSpacing = 0;\r\n\t\t\r\n\t\tfor (b in Charter.instance.getBookmarkList())\r\n\t\t\tbookmarkList.add(new BookmarkButton(0, 0, b, bookmarkList));\r\n\r\n\t\tadd(bookmarkList);\r\n\t\tbookmarkList.frames = Paths.getFrames('editors/ui/inputbox');\r\n\r\n\t\tbookmarkList.content.remove(bookmarkList.addButton); //i dont need it\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tsaveList();\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20, saveButton.y, TU.translate(\"editor.close\"), function() {\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t\tcloseButton.x -= closeButton.bWidth;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveList",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveList() {\r\n\t\tvar oldList:Array<ChartBookmark> = Charter.instance.getBookmarkList();\r\n\t\tvar newList:Array<ChartBookmark> = [for (btn in bookmarkList.buttons.members) {time: btn.bookmark.time, name: btn.textBox.label.text, color: btn.bookmark.color}];\r\n\t\t\r\n\t\tPlayState.SONG.bookmarks = newList;\r\n\t\tCharter.instance.updateBookmarks();\t\r\n\t\tCharter.undos.addToUndo(CEditBookmarks(oldList, newList));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

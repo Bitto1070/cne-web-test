@@ -1,0 +1,49 @@
+{
+	"kind": "class",
+	"name": "ZipWriter",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "flush",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function flush() {\r\n\t\to.flush();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "writeFile",
+			"args": [
+				{
+					"name": "entry",
+					"type": "Entry",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function writeFile(entry:Entry) {\r\n\t\twriteEntryHeader(entry);\r\n\t\to.writeFullBytes(entry.data, 0, entry.data.length);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function close() {\r\n\t\to.close();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,54 @@
+{
+	"kind": "class",
+	"name": "EditorTreeMenu",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bg",
+			"type": "FlxBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bgType",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bgMovement",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setBackgroundRotation",
+			"args": [
+				{
+					"name": "rotation",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function setBackgroundRotation(rotation:Float) {\r\n\t\tbg.rotation = rotation;\r\n\t\tbg.velocity.set(85, 0).degrees = bg.rotation;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

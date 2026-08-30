@@ -1,0 +1,54 @@
+{
+	"kind": "class",
+	"name": "AlphabetIconOption",
+	"pkg": "funkin.editors.alphabet",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "iconSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "desc",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "typeface",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, desc:String, typeface:String, callback:Void->Void) {\r\n\t\tsuper(name, desc, callback);\r\n\r\n\t\tvar xml = Xml.parse(Assets.getText(Paths.xml('alphabet/$typeface'))).firstElement();\r\n\t\tvar spritesheet = null;\r\n\t\tfor (node in xml.elements()) {\r\n\t\t\tif (node.nodeName == \"spritesheet\") {\r\n\t\t\t\tspritesheet = node.firstChild().nodeValue.trim();\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t// todo fix crash if invalid spritesheet;\r\n\r\n\t\ticonSpr = new FlxSprite();\r\n\t\ticonSpr.frames = Paths.getFrames(spritesheet);\r\n\t\ticonSpr.antialiasing = true;\r\n\t\tvar frameToUse = iconSpr.frames.frames[0];\r\n\t\tfor (frame in iconSpr.frames.frames) {\r\n\t\t\tif (frame.name.toUpperCase().startsWith(\"A\")) {\r\n\t\t\t\tframeToUse = frame;\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t\t}\r\n\t\ticonSpr.frame = frameToUse;\r\n\t\tif (xml.get(\"colorMode\") == \"offsets\") {\r\n\t\t\ticonSpr.colorTransform.color = -1;\r\n\t\t}\r\n\t\ticonSpr.setPosition(90 - iconSpr.width - 20, (__text.height - iconSpr.height) / 2);\r\n\t\tadd(iconSpr);\r\n\r\n\t\t__text.x = 100;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

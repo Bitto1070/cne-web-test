@@ -1,0 +1,45 @@
+{
+	"kind": "class",
+	"name": "RotatingSpriteGroup",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "recycleLoop",
+			"args": [
+				{
+					"name": "ObjectClass",
+					"type": "Class<FlxSprite>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "ObjectFactory",
+					"type": "Void->FlxSprite",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "Force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Revive",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "FlxSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function recycleLoop(?ObjectClass:Class<FlxSprite>, ?ObjectFactory:Void->FlxSprite, Force:Bool = false, Revive:Bool = true):FlxSprite {\r\n\t\t@:privateAccess {\r\n\t\t\tif (maxSize <= 0)\r\n\t\t\t\treturn super.recycle(ObjectClass, ObjectFactory, Force, Revive);\r\n\t\t\tif (group.members.length < maxSize)\r\n\t\t\t{\r\n\t\t\t\tif (ObjectFactory != null) return add(ObjectFactory());\r\n\t\t\t\tif (ObjectClass != null) return add(Type.createInstance(ObjectClass, []));\r\n\r\n\t\t\t\treturn null;\r\n\t\t\t}\r\n\t\t\tvar spr = group.members.shift();\r\n\t\t\tgroup.members.push(spr);\r\n\t\t\tif (Revive)\r\n\t\t\t\tspr.revive();\r\n\t\t\treturn spr;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

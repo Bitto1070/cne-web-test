@@ -1,0 +1,185 @@
+{
+	"kind": "class",
+	"name": "CharterAutoSaveUI",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "icon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "autosavingText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "progressBarBack",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "progressBar",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cancelButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cancelIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "showedAnimation",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cancelled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float) {\r\n\t\tsuper(x, y, 300, 46, \"editors/ui/inputbox\");\r\n\r\n\t\ticon = new FlxSprite(x+12, y+9).loadGraphic(Paths.image(\"editors/autosave-icons\"), true, 10, 10);\r\n\t\ticon.animation.add(\"icon\", [for(i in 0...3) i], 0, true);\r\n\t\ticon.animation.play(\"icon\"); icon.animation.curAnim.curFrame = 0;\r\n\t\tmembers.push(icon);\r\n\r\n\t\tmembers.push(autosavingText = new UIText(x+12+10+4, y+8, 0, TU.translate(\"editor.autosavingIn\", [\"?\", \"...\"]), 12));\r\n\r\n\t\tprogressBarBack = new FlxSprite(x + 10, y + bHeight - 20).makeGraphic(Std.int(bWidth-20), 10, 0x00000000, true);\r\n\t\tprogressBarBack.drawRoundRect(0, 0, progressBarBack.width, progressBarBack.height, 4, 6, 0xFF727272, null, {smoothing: false});\r\n\t\tprogressBarBack.drawRoundRect(1, 1, progressBarBack.width-2, progressBarBack.height-2, 4, 6, 0xFF0D0D0D, null, {smoothing: false});\r\n\t\tmembers.push(progressBarBack); progressBarBack.antialiasing = false;\r\n\r\n\t\tprogressBar = new FlxSprite(x + 10, y + bHeight - 20).makeGraphic(Std.int(bWidth-20), 10, 0x00000000, true);\r\n\t\tprogressBar.drawRoundRect(0, 0, progressBar.width, progressBar.height, 4, 6, 0xFF727272, null, {smoothing: false});\r\n\t\tprogressBar.drawRoundRect(1, 1, progressBar.width-2, progressBar.height-2, 4, 6, 0xFFFFFFFF, null, {smoothing: false});\r\n\t\tprogressBar.antialiasing = false; progressBar.clipRect = new FlxRect(0, 0, progressBar.width, progressBar.height);\r\n\t\tmembers.push(progressBar);\r\n\r\n\t\tcancelButton = new UIButton(x-(10+16), y+8, null, () -> {\r\n\t\t\tif (cancelled || !showedAnimation) return;\r\n\t\t\tcancelled = true; __timer.cancel(); __tween.cancel();\r\n\r\n\t\t\ticon.animation.curAnim.curFrame = 2;\r\n\t\t\t(new FlxTimer()).start(1, (_) -> {disappearAnimation(true);});\r\n\t\t\tautosavingText.text += \" \" + TU.translate(\"editor.autosavingCanceledSuffix\");\r\n\t\t\tcancelButton.visible = false;\r\n\t\t\tfor (member in [this, autosavingText]) member.color = 0xFFE67F7F;\r\n\t\t\tfor (member in [progressBar, progressBarBack]) member.color = 0xFFE67F7F;\r\n\t\t}, 24, 14);\r\n\t\tcancelButton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\tcancelButton.color = 0xFFAC3D3D; cancelButton.alpha = 0.2;\r\n\t\tmembers.push(cancelButton); cancelButton.visible = false;\r\n\r\n\t\tcancelIcon = new FlxSprite(x-(10+16), y+8).loadGraphic(Paths.image(\"editors/autosave-delete\"));\r\n\t\tcancelIcon.color = 0xFFD60E0E;\r\n\t\tmembers.push(cancelIcon);\r\n\r\n\t\talpha = 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "startAutoSave",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "successText",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function startAutoSave(time:Float, successText:String) {\r\n\t\tappearAnimation();\r\n\r\n\t\t__tween = FlxTween.num(0, 1, time, null, (v:Float) -> {\r\n\t\t\tif ((progress = v) < .95) {\r\n\t\t\t\tautosavingText.text = TU.translate(\"editor.autosavingIn\", [\r\n\t\t\t\t\tMath.min(Math.round(time), 1+Math.floor(Math.abs(time-(progress*time)))),\r\n\t\t\t\t\t\".\".repeat(Math.floor((progress*time*3)%4))\r\n\t\t\t\t]);\r\n\t\t\t}\r\n\t\t});\r\n\t\t__timer = new FlxTimer();\r\n\t\t__timer.start(time, (_) -> {\r\n\t\t\tautosavingText.text = successText; cancelButton.visible = false;\r\n\r\n\t\t\ticon.animation.curAnim.curFrame = 1;\r\n\t\t\tfor (member in [this, progressBar, progressBarBack, autosavingText]) member.color = 0xFFA3EC95;\r\n\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_AUTOSAVE_SOUND);\r\n\r\n\t\t\t(new FlxTimer()).start(1, (_) -> {disappearAnimation();});\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "progress",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tcancelButton.follow(this, bWidth-(10+24), 7);\r\n\t\tcancelButton.alpha = alpha * .7;\r\n\r\n\t\tcancelIcon.follow(cancelButton, 3.5+1, 2);\r\n\t\tcancelIcon.alpha = alpha;\r\n\r\n\t\tcancelIcon.visible = cancelButton.visible;\r\n\r\n\t\ticon.follow(this, 12, 9);\r\n\t\ticon.alpha = alpha;\r\n\r\n\t\tautosavingText.follow(this, 12+10+4, 8);\r\n\t\tautosavingText.alpha = alpha;\r\n\r\n\t\tfor (bar in [progressBar, progressBarBack]) {\r\n\t\t\tbar.follow(this, 10, bHeight-20);\r\n\t\t\tbar.alpha = alpha;\r\n\t\t}\r\n\t\tprogressBar.rawClipRect = progressBar.rawClipRect.set(0, 0, progressBar.frameWidth*progress,progressBar.frameHeight);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "appearAnimation",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function appearAnimation() {\r\n\t\tprogress = 0; icon.animation.curAnim.curFrame = 0;\r\n\t\tfor (member in [this, autosavingText, progressBar, progressBarBack]) member.color = 0xFFFFFFFF;\r\n\r\n\t\tx = -(320); alpha=0; FlxTween.cancelTweensOf(this); cancelled = false; cancelButton.visible = true;\r\n\t\tFlxTween.tween(this, {x: 20}, .4, {ease: FlxEase.circInOut});\r\n\t\tFlxTween.tween(this, {alpha: 1}, .3, {ease: FlxEase.sineOut, startDelay: .1});\r\n\r\n\t\tshowedAnimation = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "disappearAnimation",
+			"args": [
+				{
+					"name": "canned",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function disappearAnimation(?canned:Bool = false) {\r\n\t\tx = 20; alpha = 1; FlxTween.cancelTweensOf(this);\r\n\t\tif (canned) FlxTween.tween(this, {x: -320}, .4, {ease: FlxEase.circInOut});\r\n\t\tFlxTween.tween(this, {alpha: 0}, .3, {ease: FlxEase.sineOut});\r\n\r\n\t\tshowedAnimation = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

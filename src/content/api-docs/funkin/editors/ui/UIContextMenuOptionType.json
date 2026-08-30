@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "UIContextMenuOptionType",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

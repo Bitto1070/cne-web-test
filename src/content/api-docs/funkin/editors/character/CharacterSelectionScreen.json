@@ -1,0 +1,59 @@
+{
+	"kind": "class",
+	"name": "CharacterSelectionScreen",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "modsList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('editor.character.name', 'characterSelection.desc', 'characterSelection.', 'newCharacter', 'newCharacterDesc', () -> {\r\n\t\t\tparent.openSubState(new CharacterCreationScreen(createCharacter));\r\n\t\t});\r\n\r\n\t\tvar isMods:Bool = true;\r\n\t\tmodsList = Character.getList(true, true);\r\n\r\n\t\tif (modsList.length == 0) {\r\n\t\t\tmodsList = Character.getList(false, true);\r\n\t\t\tisMods = false;\r\n\t\t}\r\n\r\n\t\tfunction generateList(modsList:Array<String>, isMods:Bool, folderPath:String = \"\"):Array<FlxSprite> {\r\n\t\t\tvar list:Array<FlxSprite> = [];\r\n\r\n\t\t\tfor (char in modsList) {\r\n\t\t\t\tif (char.endsWith(\"/\")) {\r\n\t\t\t\t\tvar folderName = CoolUtil.getFilename(char.substr(0, char.length-1));\r\n\r\n\t\t\t\t\tlist.push(new TextOption(folderName, getID('acceptFolder'), ' >', () -> {\r\n\t\t\t\t\t\tvar newModsList = Character.getList(isMods, true, char);\r\n\t\t\t\t\t\tvar newList:Array<FlxSprite> = generateList(newModsList, isMods, folderPath + folderName + \"/\");\r\n\t\t\t\t\t\tparent.addMenu(new EditorTreeMenuScreen(folderPath + folderName, translate('desc-folder', [folderPath + folderName + \"/\"]), newList));\r\n\t\t\t\t\t}));\r\n\t\t\t\t}\r\n\t\t\t\telse {\r\n\t\t\t\t\tlist.push(new IconOption(char, getID('acceptCharacter'), Character.getIconFromCharName(folderPath + char, char), () -> {\r\n\t\t\t\t\t\tFlxG.switchState(new CharacterEditor(folderPath + char));\r\n\t\t\t\t\t}));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\treturn list;\r\n\t\t}\r\n\r\n\t\tfor (o in generateList(modsList, isMods)) add(o);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createCharacter",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "imageSaveData",
+					"type": "ImageSaveData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "xml",
+					"type": "Xml",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createCharacter(name:String, imageSaveData:ImageSaveData, xml:Xml) {\r\n\t\tvar characterAlreadyExists:Bool = modsList.contains(name);\r\n\t\tif (characterAlreadyExists) {\r\n\t\t\tparent.openSubState(new UIWarningSubstate(TU.translate('characterCreationScreen.warning.char-exists-title'), TU.translate('characterCreationScreen.warning.char-exists-body'), [\r\n\t\t\t\t{label: TU.translate('editor.ok'), color: 0xFFFF0000, onClick: (t) -> {}}\r\n\t\t\t]));\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\t// Save Data file\r\n\t\tvar characterPath:String = '${Paths.getAssetsRoot()}/data/characters/${name}.xml';\r\n\t\tCoolUtil.safeSaveFile(characterPath, \"<!DOCTYPE codename-engine-character>\\n\" + Printer.print(xml, true));\r\n\r\n\t\t// Save Image files \r\n\t\tUIImageExplorer.saveFilesGlobal(imageSaveData, '${Paths.getAssetsRoot()}/images/characters');\r\n\r\n\t\t// Add to Menu >:D\r\n\t\tvar option:IconOption = new IconOption(name, getID('acceptCharacter'), Character.getIconFromCharName(name), () -> {\r\n\t\t\tFlxG.switchState(new CharacterEditor(name));\r\n\t\t});\r\n\r\n\t\tinsert(1, option);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

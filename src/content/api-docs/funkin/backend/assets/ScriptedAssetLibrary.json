@@ -1,0 +1,243 @@
+{
+	"kind": "class",
+	"name": "ScriptedAssetLibrary",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scriptName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "scriptName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": "null"
+				},
+				{
+					"name": "basePath",
+					"type": "String",
+					"optional": false,
+					"def": "\"./assets/\""
+				},
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": "\"assets\""
+				},
+				{
+					"name": "modName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(scriptName:String, args:Array<Dynamic> = null, basePath:String=\"./assets/\", libName:String=\"assets\", ?modName:String) {\r\n\t\tif(modName == null) modName = scriptName;\r\n\t\tsuper(basePath, libName, modName);\r\n\t\tthis.scriptName = scriptName;\r\n\t\tscript = Script.create(Paths.script(\"data/library/\" + scriptName));\r\n\t\tscript.setParent(this);\r\n\t\tscript.set(\"NULL\", nullValue); // hackyway\r\n\t\tscript.load();\r\n\t\tif(args == null) args = [];\r\n\t\tscript.call(\"create\", args);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getEditedTime",
+			"args": [
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Null<Float>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#if MOD_SUPPORT\r\n\tpublic override function getEditedTime(asset:String):Null<Float> {\r\n\t\tvar result:Dynamic = script.call(\"getEditedTime\", [asset]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.getEditedTime(asset);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAudioBuffer",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AudioBuffer",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getAudioBuffer(id:String):AudioBuffer {\r\n\t\tvar result:Dynamic = script.call(\"getAudioBuffer\", [id]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.getAudioBuffer(id);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBytes",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bytes",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getBytes(id:String):Bytes {\r\n\t\tvar result:Dynamic = script.call(\"getBytes\", [id]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.getBytes(id);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Font",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getFont(id:String):Font {\r\n\t\tvar result:Dynamic = script.call(\"getFont\", [id]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.getFont(id);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getImage",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Image",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getImage(id:String):Image {\r\n\t\tvar result:Dynamic = script.call(\"getImage\", [id]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.getImage(id);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPath",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPath(id:String):String {\r\n\t\tvar result:Dynamic = script.call(\"getPath\", [id]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.getPath(id);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__getFiles",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "folders",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __getFiles(folder:String, folders:Bool = false) {\r\n\t\tvar result:Dynamic = script.call(\"__getFiles\", [folder, folders]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.__getFiles(folder, folders);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function exists(asset:String, type:String):Bool {\r\n\t\tvar result:Dynamic = script.call(\"exists\", [asset, type]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? false : result;\r\n\t\t}\r\n\t\treturn super.exists(asset, type);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "list",
+			"args": [
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function list(type:String) {\r\n\t\tvar result:Dynamic = script.call(\"list\", [type]);\r\n\t\tif(result != null) {\r\n\t\t\treturn result == nullValue ? null : result;\r\n\t\t}\r\n\t\treturn super.list(type);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

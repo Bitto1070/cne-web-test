@@ -1,0 +1,177 @@
+{
+	"kind": "class",
+	"name": "TitleState",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [
+		"@:allow(funkin.backend.assets.ModsFolder)",
+		"@:allow(funkin.backend.system.MainState)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "curWacky",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blackScreen",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textGroup",
+			"type": "FlxGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function create():Void\r\n\t{\r\n\t\tcurWacky = FlxG.random.getObject(getIntroTextShit());\r\n\r\n\t\tMusicBeatState.skipTransIn = true;\r\n\r\n\t\tstartIntro();\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tDiscordUtil.call(\"onMenuLoaded\", [\"Title Screen\"]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getIntroTextShit",
+			"args": [],
+			"ret": "Array<Array<String>>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getIntroTextShit():Array<Array<String>>\r\n\t{\r\n\t\tvar fullText:String = Assets.getText(Paths.txt('titlescreen/introText'));\r\n\r\n\t\tvar firstArray:Array<String> = fullText.split('\\n');\r\n\t\tvar swagGoodArray:Array<Array<String>> = [];\r\n\r\n\t\tfor (i in firstArray)\r\n\t\t{\r\n\t\t\tswagGoodArray.push(i.split('--'));\r\n\t\t}\r\n\r\n\t\treturn swagGoodArray;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pressEnter",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function pressEnter() {\r\n\t\ttitleText.animation.play('press');\r\n\r\n\t\tFlxG.camera.flash(FlxColor.WHITE, 1);\r\n\t\tCoolUtil.playMenuSFX(CONFIRM, 0.7);\r\n\r\n\t\ttransitioning = true;\r\n\t\t// FlxG.sound.music.stop();\r\n\r\n\t\tnew FlxTimer().start(2, (_) -> goToMainMenu(false));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createCoolText",
+			"args": [
+				{
+					"name": "textArray",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createCoolText(textArray:Array<String>)\r\n\t{\r\n\t\tfor (i=>text in textArray)\r\n\t\t{\r\n\t\t\tif (text == \"\" || text == null) continue;\r\n\t\t\tvar money:Alphabet = new Alphabet(0, (i * 60) + 200, text, \"bold\");\r\n\t\t\tmoney.screenCenter(X);\r\n\t\t\ttextGroup.add(money);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addMoreText",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addMoreText(text:String)\r\n\t{\r\n\t\tvar coolText:Alphabet = new Alphabet(0, (textGroup.length * 60) + 200, text, \"bold\");\r\n\t\tcoolText.screenCenter(X);\r\n\t\ttextGroup.add(coolText);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteCoolText",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function deleteCoolText()\r\n\t{\r\n\t\twhile (textGroup.members.length > 0) {\r\n\t\t\ttextGroup.members[0].destroy();\r\n\t\t\ttextGroup.remove(textGroup.members[0], true);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "titleLength",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "titleLines",
+			"type": "Map<Int, IntroText>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "titleSprites",
+			"type": "Map<String, FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadXML",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadXML() {\r\n\t\ttry {\r\n\t\t\txml = new Access(Xml.parse(Assets.getText(Paths.xml('titlescreen/titlescreen'))).firstElement());\r\n\t\t\tif (xml.hasNode.intro) {\r\n\t\t\t\ttitleLines = [];\r\n\t\t\t\tif (xml.node.intro.has.length) titleLength = Std.parseInt(xml.node.intro.att.length).getDefault(16);\r\n\t\t\t\tfor(node in xml.nodes.sprites) {\r\n\t\t\t\t\tvar parentFolder:String = node.getAtt(\"folder\").getDefault(\"\");\r\n\t\t\t\t\tif (parentFolder != \"\" && !parentFolder.endsWith(\"/\")) parentFolder += \"/\";\r\n\t\t\t\t\tfor(sprNode in node.elements) {\r\n\t\t\t\t\t\tvar spr = XMLUtil.createSpriteFromXML(sprNode, parentFolder);\r\n\t\t\t\t\t\tswitch(sprNode.name) {\r\n\t\t\t\t\t\t\tcase \"press-enter\":\r\n\t\t\t\t\t\t\t\ttitleText = spr;\r\n\t\t\t\t\t\t\tdefault:\r\n\t\t\t\t\t\t\t\ttitleScreenSprites.add(spr);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tif(node.has.name) titleSprites[node.att.name] = spr;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tfor(text in xml.node.intro.nodes.text) {\r\n\t\t\t\t\tvar beat:Int = text.has.beat ? Std.parseInt(text.att.beat).getDefault(0) : 0;\r\n\t\t\t\t\tvar texts:Array<OneOfTwo<String, TitleStateImage>> = [];\r\n\t\t\t\t\tfor(node in text.elements) {\r\n\t\t\t\t\t\tswitch(node.name) {\r\n\t\t\t\t\t\t\tcase \"line\":\r\n\t\t\t\t\t\t\t\tif (!node.has.text) continue;\r\n\t\t\t\t\t\t\t\ttexts.push(node.att.text);\r\n\t\t\t\t\t\t\tcase \"introtext\":\r\n\t\t\t\t\t\t\t\tif (!node.has.line) continue;\r\n\t\t\t\t\t\t\t\ttexts.push('{introText${node.att.line}}');\r\n\t\t\t\t\t\t\tcase \"sprite\":\r\n\t\t\t\t\t\t\t\tif (!node.has.path) continue;\r\n\t\t\t\t\t\t\t\tvar name:String = node.has.name ? node.att.name : null;\r\n\t\t\t\t\t\t\t\tvar path:String = node.att.path;\r\n\t\t\t\t\t\t\t\tvar flipX:Bool = node.has.flipX ? node.att.flipX == \"true\" : false;\r\n\t\t\t\t\t\t\t\tvar flipY:Bool = node.has.flipY ? node.att.flipY == \"true\" : false;\r\n\t\t\t\t\t\t\t\tvar scale:Float = node.has.scale ? Std.parseFloat(node.att.scale).getDefault(1) : 1;\r\n\r\n\t\t\t\t\t\t\t\ttexts.push({\r\n\t\t\t\t\t\t\t\t\tname: name,\r\n\t\t\t\t\t\t\t\t\tpath: path,\r\n\t\t\t\t\t\t\t\t\tflipX: flipX,\r\n\t\t\t\t\t\t\t\t\tflipY: flipY,\r\n\t\t\t\t\t\t\t\t\tscale: scale\r\n\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\ttitleLines[beat] = new IntroText(texts);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t} catch(e) {\r\n\t\t\tLogs.error('Failed to load titlescreen XML: $e');\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "skipIntro",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function skipIntro():Void\r\n\t{\r\n\t\tif (!skippedIntro)\r\n\t\t{\r\n\t\t\tFlxG.camera.flash(FlxColor.WHITE, 4);\r\n\t\t\tremove(blackScreen);\r\n\t\t\tblackScreen.destroy();\r\n\t\t\tremove(textGroup);\r\n\t\t\tskippedIntro = true;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

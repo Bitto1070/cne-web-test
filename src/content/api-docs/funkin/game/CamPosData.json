@@ -1,0 +1,80 @@
+{
+	"kind": "class",
+	"name": "CamPosData",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "pos",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The camera position.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "amount",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The amount of characters that was involved in the calculation.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "pos",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "amount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(pos:FlxPoint, amount:Int) {\r\n\t\tthis.pos = pos;\r\n\t\tthis.amount = amount;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "put",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function put() {\r\n\t\tif(pos == null) return;\r\n\t\tpos.put();\r\n\t\tpos = null;\r\n\t}",
+			"doc": {
+				"text": "Puts the position back into the pool, making it reusable.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

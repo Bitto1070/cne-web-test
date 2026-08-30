@@ -1,0 +1,29 @@
+{
+	"kind": "class",
+	"name": "ZipReader",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "files",
+			"type": "List<Entry>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "read",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function read() {\r\n\t\tif (files != null) return files;\r\n\t\ttry {\r\n\t\t\tvar files = super.read();\r\n\t\t\treturn this.files = files;\r\n\t\t} catch(e) {\r\n\t\t}\r\n\t\treturn new List<Entry>();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

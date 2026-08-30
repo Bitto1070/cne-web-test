@@ -1,0 +1,269 @@
+{
+	"kind": "class",
+	"name": "AlphabetEditor",
+	"pkg": "funkin.editors.alphabet",
+	"doc": null,
+	"meta": [
+		"@:access(funkin.menus.ui.Alphabet)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "AlphabetEditor",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenu",
+			"type": "Array<UIContextMenuOption>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenuSpr",
+			"type": "UITopMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiGroup",
+			"type": "FlxTypedGroup<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "typeface",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(typeface:String) {\r\n\t\tsuper();\r\n\t\tif (typeface != null) __typeface = typeface;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "brokenWarning",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tape",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bigLetter",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curLetter",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "targetX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "queueReorder",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "componentList",
+			"type": "UIButtonList<ComponentButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "glyphCreateWindow",
+			"type": "UISliceSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "glyphChar",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "confirmGlyph",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteGlyph",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "infoWindow",
+			"type": "GlyphInfoWindow",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSelectedComponent",
+			"type": "AlphabetComponent",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSelectedData",
+			"type": "AlphabetLetterData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "outlineIdx",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultTmr",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charsForDefault",
+			"type": "Array<Array<String>>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tWindowUtils.suffix = \" (\" + translate(\"name\") + \")\";\r\n\t\tSaveWarning.selectionClass = AlphabetSelection;\r\n\t\tSaveWarning.saveFunc = () -> {_file_save(null);};\r\n\r\n\t\ttopMenu = [\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.file\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.save\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, S],\r\n\t\t\t\t\t\tonSelect: _file_save\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveAs\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, S],\r\n\t\t\t\t\t\tonSelect: _file_saveas\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.exit\"),\r\n\t\t\t\t\t\tonSelect: _file_exit\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t\t// TODO: add more options\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.edit\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t// TODO: add redo and undo\r\n\t\t\t\t\t/*{\r\n\t\t\t\t\t\tlabel: translate(\"edit.undo\"),\r\n\t\t\t\t\t\tonSelect: null\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.redo\"),\r\n\t\t\t\t\t\tonSelect: null\r\n\t\t\t\t\t},*/\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"glyph.deleteCurGlyph\"),\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Edit Main Data\", // TODO: add translations\r\n\t\t\t\t\t\tonSelect: _edit_main\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.view\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomIn\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADPLUS],\r\n\t\t\t\t\t\t//onSelect: _view_zoomin\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomOut\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADMINUS],\r\n\t\t\t\t\t\t//onSelect: _view_zoomout\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.resetZoom\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\t//onSelect: _view_zoomreset\r\n\t\t\t\t\t},\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: \"Tape\",\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Move Tape Left\",\r\n\t\t\t\t\t\tkeybind: [LEFT],\r\n\t\t\t\t\t\tonSelect: _tape_left\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Move Tape Right\",\r\n\t\t\t\t\t\tkeybind: [RIGHT],\r\n\t\t\t\t\t\tonSelect: _tape_right\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t}\r\n\t\t];\r\n\r\n\t\teditorCamera = FlxG.camera;\r\n\r\n\t\tuiCamera = new FlxCamera();\r\n\t\tuiCamera.bgColor = 0;\r\n\r\n\t\tFlxG.cameras.add(uiCamera, false);\r\n\r\n\t\tvar bg = new FlxSprite(0, 0).makeSolid(Std.int(FlxG.width + 100), Std.int(FlxG.height + 100), 0xFF7f7f7f);\r\n\t\tbg.cameras = [editorCamera];\r\n\t\tbg.scrollFactor.set();\r\n\t\tbg.screenCenter();\r\n\t\tadd(bg);\r\n\r\n\t\ttopMenuSpr = new UITopMenu(topMenu);\r\n\t\ttopMenuSpr.cameras = uiGroup.cameras = [uiCamera];\r\n\t\t\r\n\t\ttape = new Alphabet(0, 70, \"\", __typeface);\r\n\t\ttape.alignment = CENTER;\r\n\t\ttape.renderMode = MONOSPACE;\r\n\t\tadd(tape);\r\n\t\t\r\n\t\tbigLetter = new Alphabet(0, 0, \"\", \"<SKIP>\");\r\n\t\tbigLetter.copyData(tape);\r\n\t\tbigLetter.alignment = CENTER;\r\n\t\tbigLetter.scale.set(4, 4);\r\n\t\t// TODO: fix the offset issues, when not using updateHitbox\r\n\t\tbigLetter.updateHitbox();\r\n\t\tbigLetter.screenCenter();\r\n\t\tadd(bigLetter);\r\n\r\n\t\ttape.x = targetX;\r\n\r\n\t\tbrokenWarning = new UIText(0, 550, FlxG.width, \"\", 32);\r\n\t\tbrokenWarning.alignment = CENTER;\r\n\t\tbrokenWarning.color = 0xFFFF6969;\r\n\t\tadd(brokenWarning);\r\n\r\n\t\tglyphCreateWindow = new UISliceSprite(FlxG.width - 15, topMenuSpr.bHeight + 15, 200, 150, \"editors/ui/context-bg\");\r\n\t\tglyphCreateWindow.x -= glyphCreateWindow.bWidth;\r\n\t\tuiGroup.add(glyphCreateWindow);\r\n\r\n\t\tglyphChar = new UITextBox(glyphCreateWindow.x + 15, glyphCreateWindow.y + 15, \"\", glyphCreateWindow.bWidth - 30);\r\n\t\tglyphCreateWindow.members.push(glyphChar);\r\n\r\n\t\tconfirmGlyph = new UIButton(glyphChar.x, glyphChar.y + glyphChar.bHeight + 15, translate(\"glyph.newGlyph\"), function() {\r\n\t\t\tif (deleteGlyph.selectable) {\r\n\t\t\t\tcurLetter = tape.manualLetters.indexOf(lastChar) + charsForDefault.length;\r\n\t\t\t\tchangeLetter(0);\r\n\t\t\t} else {\r\n\t\t\t\ttape.manualLetters.push(lastChar);\r\n\t\t\t\ttape.text = \"\";\r\n\t\t\t\tfor (def in charsForDefault)\r\n\t\t\t\t\ttape.text += def[Std.int(Math.floor(defaultTmr) % def.length)] + \" \";\r\n\t\t\t\ttape.text += tape.manualLetters.join(\" \");\r\n\r\n\t\t\t\tfor (i in 0...tape.fastGetData(lastChar).components.length) {\r\n\t\t\t\t\tvar anim = bigLetter.text + i;\r\n\t\t\t\t\tbigLetter.animation.remove(anim);\r\n\t\t\t\t\ttape.animation.remove(anim);\r\n\t\t\t\t}\r\n\r\n\t\t\t\ttape.letterData.set(lastChar, {\r\n\t\t\t\t\tisDefault: false,\r\n\t\t\t\t\tadvance: Math.NaN,\r\n\t\t\t\t\tadvanceEmpty: true,\r\n\t\t\t\t\tcomponents: [],\r\n\t\t\t\t\tstartIndex: 0\r\n\t\t\t\t});\r\n\r\n\t\t\t\tcurLetter = tape.manualLetters.length - 1 + charsForDefault.length;\r\n\t\t\t\tchangeLetter(0);\r\n\t\t\t}\r\n\t\t}, glyphChar.bWidth);\r\n\t\tconfirmGlyph.selectable = false;\r\n\t\tglyphCreateWindow.members.push(confirmGlyph);\r\n\r\n\t\tdeleteGlyph = new UIButton(glyphChar.x, confirmGlyph.y + confirmGlyph.bHeight + 5, translate(\"glyph.deleteGlyph\"), function() {\r\n\t\t\tfinal charIdx = tape.manualLetters.indexOf(lastChar);\r\n\r\n\t\t\ttape.manualLetters.splice(charIdx, 1);\r\n\t\t\ttape.text = \"\";\r\n\t\t\tfor (def in charsForDefault)\r\n\t\t\t\ttape.text += def[Std.int(Math.floor(defaultTmr) % def.length)] + \" \";\r\n\t\t\ttape.text += tape.manualLetters.join(\" \");\r\n\r\n\t\t\tfor (i in 0...tape.fastGetData(lastChar).components.length) {\r\n\t\t\t\tvar anim = bigLetter.text + i;\r\n\t\t\t\tbigLetter.animation.remove(anim);\r\n\t\t\t\ttape.animation.remove(anim);\r\n\t\t\t}\r\n\t\t\ttape.letterData.remove(lastChar);\r\n\r\n\t\t\tchangeLetter((curLetter >= charIdx + charsForDefault.length) ? -1 : 0);\r\n\t\t}, glyphChar.bWidth);\r\n\t\tdeleteGlyph.color = FlxColor.RED;\r\n\t\tdeleteGlyph.selectable = false;\r\n\t\tglyphCreateWindow.members.push(deleteGlyph);\r\n\r\n\t\tinfoWindow = new GlyphInfoWindow();\r\n\t\tuiGroup.add(infoWindow);\r\n\r\n\t\tcomponentList = new UIButtonList<ComponentButton>(15, 720 - 170 - 15, 230, 170, \"Components:\", FlxPoint.get(230, 50), FlxPoint.get(0, 0), 0);\r\n\t\tcomponentList.dragCallback = (button, oldID, newID) -> {\r\n\t\t\tqueueReorder = true; // not do it for every button reordered\r\n\t\t}\r\n\t\tcomponentList.addButton.callback = () -> {\r\n\t\t\tcurSelectedComponent = {\r\n\t\t\t\tanim: \"\",\r\n\t\t\t\tx: 0,\r\n\t\t\t\ty: 0,\r\n\r\n\t\t\t\tshouldRotate: false,\r\n\t\t\t\tangle: 0,\r\n\t\t\t\tsin: 0,\r\n\t\t\t\tcos: 1,\r\n\r\n\t\t\t\tscaleX: 1,\r\n\t\t\t\tscaleY: 1,\r\n\t\t\t\t\r\n\t\t\t\tflipX: false,\r\n\t\t\t\tflipY: false,\r\n\r\n\t\t\t\thasColorMode: false,\r\n\t\t\t\tcolorMode: bigLetter.colorMode\r\n\t\t\t};\r\n\t\t\tcurSelectedData.components.push(curSelectedComponent);\r\n\t\t\tvar newButton = new ComponentButton(curSelectedComponent);\r\n\t\t\tcomponentList.add(newButton);\r\n\t\t\tnewButton.ID = componentList.buttons.members.length - 1; // readjust it because UIButtonList doesnt generate the id properly\r\n\t\t\tfindOutline();\r\n\t\t\tinfoWindow.updateInfo();\r\n\t\t}\r\n\r\n\t\tupdateTape();\r\n\t\tuiGroup.add(componentList);\r\n\r\n\t\tadd(topMenuSpr);\r\n\t\tadd(uiGroup);\r\n\r\n\t\tif(Framerate.isLoaded) {\r\n\t\t\tFramerate.fpsCounter.alpha = 0.4;\r\n\t\t\tFramerate.memoryCounter.alpha = 0.4;\r\n\t\t\tFramerate.codenameBuildField.alpha = 0.4;\r\n\t\t}\r\n\r\n\t\tDiscordUtil.call(\"onEditorLoaded\", [\"Alphabet Editor\", __typeface]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (glyphChar.label.text != lastChar) {\r\n\t\t\tif (glyphChar.label.text == \"\") {\r\n\t\t\t\tlastChar = \"\";\r\n\t\t\t\tconfirmGlyph.selectable = false;\r\n\t\t\t\tdeleteGlyph.selectable = false;\r\n\t\t\t\tconfirmGlyph.field.text = translate(\"glyph.newGlyph\");\r\n\t\t\t} else {\r\n\t\t\t\tglyphChar.label.text = lastChar = switch (tape.forceCase) {\r\n\t\t\t\t\tcase UPPER: glyphChar.label.text.charAt(glyphChar.label.text.length - 1).toUpperCase();\r\n\t\t\t\t\tcase LOWER: glyphChar.label.text.charAt(glyphChar.label.text.length - 1).toLowerCase();\r\n\t\t\t\t\tcase NONE: glyphChar.label.text.charAt(glyphChar.label.text.length - 1);\r\n\t\t\t\t};\r\n\t\t\t\t\r\n\t\t\t\tconfirmGlyph.selectable = true;\r\n\t\t\t\tdeleteGlyph.selectable = tape.manualLetters.contains(lastChar);\r\n\t\t\t\tconfirmGlyph.field.text = translate(deleteGlyph.selectable ? \"glyph.editGlyph\" : \"glyph.newGlyph\");\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (queueReorder) {\r\n\t\t\tqueueReorder = false;\r\n\t\t\tvar outlines = [];\r\n\t\t\tvar newList = [];\r\n\t\t\tfor (button in componentList.buttons.members) {\r\n\t\t\t\tvar com = button.component;\r\n\t\t\t\tif (com.outIndex != null) {\r\n\t\t\t\t\tvar out = curSelectedData.components[com.outIndex];\r\n\t\t\t\t\tout.refIndex = newList.length;\r\n\t\t\t\t\tcom.outIndex = outlines.length;\r\n\t\t\t\t\toutlines.push(out);\r\n\t\t\t\t}\r\n\t\t\t\tnewList.push(com);\r\n\t\t\t}\r\n\t\t\tcurSelectedData.components = outlines.concat(newList);\r\n\r\n\t\t\tfindOutline();\r\n\t\t\tfor (i in 0...curSelectedData.components.length) {\r\n\t\t\t\tvar anim = bigLetter.text + i;\r\n\t\t\t\tbigLetter.animation.remove(anim);\r\n\t\t\t\ttape.animation.remove(anim);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (currentFocus == null) {\r\n\t\t\tif(FlxG.keys.justPressed.ANY)\r\n\t\t\t\tUIUtil.processShortcuts(topMenu);\r\n\t\t\t\r\n\t\t\tif(curSelectedComponent != null) {\r\n\t\t\t\tif(FlxG.keys.pressed.K) {\r\n\t\t\t\t\tcurSelectedComponent.y -= 100 * elapsed;\r\n\t\t\t\t}\r\n\t\t\t\tif(FlxG.keys.pressed.I) {\r\n\t\t\t\t\tcurSelectedComponent.y += 100 * elapsed;\r\n\t\t\t\t}\r\n\t\t\t\tif(FlxG.keys.pressed.L) {\r\n\t\t\t\t\tcurSelectedComponent.x -= 100 * elapsed;\r\n\t\t\t\t}\r\n\t\t\t\tif(FlxG.keys.pressed.J) {\r\n\t\t\t\t\tcurSelectedComponent.x += 100 * elapsed;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\r\n\t\tvar lastIdx = Math.floor(defaultTmr);\r\n\t\tdefaultTmr += elapsed * 0.5;\r\n\t\tif (lastIdx != (lastIdx = Math.floor(defaultTmr))) {\r\n\t\t\ttape.text = \"\";\r\n\t\t\tfor (def in charsForDefault)\r\n\t\t\t\ttape.text += def[Std.int(lastIdx % def.length)] + \" \";\r\n\t\t\ttape.text += tape.manualLetters.join(\" \");\r\n\t\t}\r\n\t\ttape.x = lerp(tape.x, targetX, 0.25);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "findOutline",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function findOutline() {\r\n\t\toutlineIdx = -1;\r\n\t\tfor (i in curSelectedData.startIndex...curSelectedData.components.length) {\r\n\t\t\tvar com = curSelectedData.components[i];\r\n\t\t\tif (com.outIndex != null)\r\n\t\t\t\toutlineIdx = com.outIndex;\r\n\t\t\tif (com == curSelectedComponent)\r\n\t\t\t\tbreak;\r\n\t\t}\r\n\t\t++outlineIdx;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "checkForFailed",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function checkForFailed() {\r\n\t\tbigLetter.failedLetters.remove(bigLetter.text);\r\n\t\tcurSelectedData = bigLetter.fastGetData(bigLetter.text);\r\n\t\tbrokenWarning.text = \"\";\r\n\t\tbigLetter.draw();\r\n\t\tif (!bigLetter.failedLetters.contains(bigLetter.text))\r\n\t\t\treturn false;\r\n\r\n\t\tfor (i in 0...curSelectedData.components.length) {\r\n\t\t\tvar com = curSelectedData.components[i];\r\n\t\t\tif (!bigLetter.animation.exists(bigLetter.text + Std.string(i)))\r\n\t\t\t\tbrokenWarning.text += \" Unable to find: \" + com.anim + \"\\n\";\r\n\t\t}\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

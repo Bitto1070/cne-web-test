@@ -1,0 +1,57 @@
+{
+	"kind": "class",
+	"name": "StageXMLEditScreen",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveCallback",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "saveCallback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": "\"Unknown\""
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(xml:Access, saveCallback:Void->Void, type:String = \"Unknown\") {\r\n\t\tthis.xml = xml;\r\n\t\tthis.saveCallback = saveCallback;\r\n\t\tsuper(\"layouts/stage/xmlEditScreen\", [\r\n\t\t\t\"stage\" => StageEditor.instance.stage,\r\n\t\t\t\"xml\" => xml,\r\n\t\t\t\"exID\" => StageEditor.exID,\r\n\t\t\t\"type\" => type,\r\n\t\t\t\"translate\" => translate\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

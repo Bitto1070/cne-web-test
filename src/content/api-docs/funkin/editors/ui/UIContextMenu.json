@@ -1,0 +1,227 @@
+{
+	"kind": "class",
+	"name": "UIContextMenu",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "options",
+			"type": "Array<UIContextMenuOption>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "contextMenuOptions",
+			"type": "Array<UIContextMenuOptionSpr>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "separators",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "childContextMenu",
+			"type": "UIContextMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parentContextMenu",
+			"type": "UIContextMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventOutOfBoxClickDeletion",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function preventOutOfBoxClickDeletion() {\r\n\t\t__oobDeletion = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "options",
+					"type": "Array<UIContextMenuOption>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "UIContextMenuCallback",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": true,
+					"def": "100"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(options:Array<UIContextMenuOption>, callback:UIContextMenuCallback, x:Float, y:Float, ?w:Int = 100) {\r\n\t\tsuper();\r\n\t\tthis.options = options.getDefault([]);\r\n\t\tthis.x = x;\r\n\t\tthis.y = y;\r\n\t\tthis.w = w;\r\n\t\tthis.callback = callback;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t\tcamera = contextCam = new FlxCamera();\r\n\t\tcontextCam.bgColor = 0;\r\n\t\tcontextCam.alpha = 0;\r\n\t\tcontextCam.scroll.set(0, 7.5);\r\n\t\tFlxG.cameras.add(contextCam, false);\r\n\r\n\t\tbg = new UISliceSprite(x, y, w, 100, 'editors/ui/context-bg');\r\n\t\tbg.cameras = [contextCam];\r\n\t\tadd(bg);\r\n\r\n\t\tvar lastY:Float = bg.y + 4;\r\n\t\tfor(o in options) {\r\n\t\t\tif (o == null) {\r\n\t\t\t\tvar spr = new FlxSprite(bg.x + 8, lastY + 2).makeGraphic(1, 1, -1);\r\n\t\t\t\tspr.alpha = 0.3;\r\n\t\t\t\tseparators.push(spr);\r\n\t\t\t\tadd(spr);\r\n\t\t\t\tlastY += 5;\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tvar spr = new UIContextMenuOptionSpr(bg.x + 4, lastY, o, this);\r\n\t\t\tspr.cameras = [contextCam];\r\n\t\t\tlastY = spr.y + spr.bHeight;\r\n\t\t\tcontextMenuOptions.push(spr);\r\n\t\t\tadd(spr);\r\n\r\n\t\t\to.button = spr;\r\n\t\t\tif (o.onCreate != null) o.onCreate(spr);\r\n\t\t}\r\n\r\n\t\tvar maxW = bg.bWidth - 8;\r\n\t\tfor(o in contextMenuOptions)\r\n\t\t\tif (o.bWidth > maxW)\r\n\t\t\t\tmaxW = o.bWidth;\r\n\r\n\t\tfor(o in contextMenuOptions)\r\n\t\t\to.bWidth = maxW;\r\n\t\tfor(o in separators) {\r\n\t\t\to.scale.set(maxW - 8, 1);\r\n\t\t\to.updateHitbox();\r\n\t\t}\r\n\t\tbg.bWidth = maxW + 8;\r\n\t\tbg.bHeight = Std.int(lastY - bg.y + 4);\r\n\r\n\t\tif (bg.y + bg.bHeight > FlxG.height && bg.y > FlxG.height*0.5) {\r\n\t\t\tflipped = true;\r\n\t\t\tbg.y -= bg.bHeight;\r\n\t\t\tfor(o in contextMenuOptions)\r\n\t\t\t\to.y -= bg.bHeight;\r\n\t\t\tfor(o in separators)\r\n\t\t\t\to.y -= bg.bHeight;\r\n\t\t}\r\n\r\n\t\tif (bg.x + bg.bWidth > FlxG.width && bg.x > FlxG.width*0.5) {\r\n\t\t\tbg.x -= bg.bWidth;\r\n\t\t\tfor(o in contextMenuOptions)\r\n\t\t\t\to.x -= bg.bWidth;\r\n\t\t\tfor(o in separators)\r\n\t\t\t\to.x -= bg.bWidth;\r\n\t\t}\r\n\r\n\t\tfor(o in contextMenuOptions) {\r\n\t\t\to.postCreate();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "select",
+			"args": [
+				{
+					"name": "option",
+					"type": "UIContextMenuOption",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function select(option:UIContextMenuOption) {\r\n\t\tvar index = options.indexOf(option);\r\n\t\tif (option.onSelect != null)\r\n\t\t\toption.onSelect(option);\r\n\t\tif (callback != null)\r\n\t\t\tcallback(this, index, option);\r\n\t\tif (option.closeOnSelect == null ? true : option.closeOnSelect)\r\n\t\t\tcloseWithParents();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tif (__oobDeletion && FlxG.mouse.justPressed && !bg.hoveredByChild && !hoveringAnyChildren())\r\n\t\t\tcloseWithParents();\r\n\r\n\t\t__oobDeletion = true;\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (FlxG.mouse.wheel != 0.0)\r\n\t\t\tscroll = FlxMath.bound(scroll + (FlxG.mouse.wheel * -20.0), !flipped ? 0.0 : -Math.max(bg.bHeight - FlxG.height*0.5, 0.0), flipped ? 0.0 : Math.max(bg.bHeight - FlxG.height*0.5, 0.0));\r\n\r\n\t\tcontextCam.scroll.y = CoolUtil.fpsLerp(contextCam.scroll.y, scroll, 0.5);\r\n\t\tcontextCam.alpha = CoolUtil.fpsLerp(contextCam.alpha, 1, 0.25);\r\n\r\n\t\tif (parentContextMenu != null) {\r\n\t\t\tif (hoveringAnyParents() && parentContextMenu.lastHoveredOptionIndex != parentContextMenu.childContextMenuOptionIndex) {\r\n\t\t\t\tcloseWithChildren();\r\n\t\t\t\tparentContextMenu.childContextMenuOptionIndex = -1;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tFlxG.cameras.remove(contextCam);\r\n\t\tif (UIState.state.curContextMenu == this)\r\n\t\t\tUIState.state.curContextMenu = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openChildContextMenu",
+			"args": [
+				{
+					"name": "optionSpr",
+					"type": "UIContextMenuOptionSpr",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function openChildContextMenu(optionSpr:UIContextMenuOptionSpr) {\r\n\t\tvar index = contextMenuOptions.indexOf(optionSpr);\r\n\t\tif (index != childContextMenuOptionIndex) {\r\n\t\t\tchildContextMenuOptionIndex = index;\r\n\t\t\tvar child = new UIContextMenu(optionSpr.option.childs, null, optionSpr.x + optionSpr.bWidth + 4, optionSpr.y - 4);\r\n\t\t\tpersistentDraw = true;\r\n\t\t\tpersistentUpdate = true;\r\n\t\t\tchild.parentContextMenu = this;\r\n\t\t\tchildContextMenu = child;\r\n\t\t\topenSubState(child);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "closeWithParents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function closeWithParents() {\r\n\t\tclose();\r\n\t\tif (parentContextMenu != null) {\r\n\t\t\tparentContextMenu.closeWithParents();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "closeWithChildren",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function closeWithChildren() {\r\n\t\tif (childContextMenu != null) {\r\n\t\t\tchildContextMenu.closeWithChildren();\r\n\t\t}\r\n\t\tclose();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hoveringAnyParents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hoveringAnyParents() {\r\n\t\tif (parentContextMenu != null) {\r\n\t\t\treturn parentContextMenu.bg.hoveredByChild || parentContextMenu.hoveringAnyParents();\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hoveringAnyChildren",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hoveringAnyChildren() {\r\n\t\tif (childContextMenu != null) {\r\n\t\t\treturn childContextMenu.bg.hoveredByChild || childContextMenu.hoveringAnyChildren();\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

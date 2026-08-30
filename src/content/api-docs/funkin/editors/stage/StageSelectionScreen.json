@@ -1,0 +1,65 @@
+{
+	"kind": "class",
+	"name": "StageSelectionScreen",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stages",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "makeStageOption",
+			"args": [
+				{
+					"name": "stage",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "TextOption",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function makeStageOption(stage:String):TextOption {\r\n\t\treturn new TextOption(stage, getID('acceptStage'), () -> {\r\n\t\t\tFlxG.switchState(new StageEditor(stage));\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper('editor.stage.name', 'stageSelection.desc', 'stageSelection.', 'newStage', 'acceptNewStage', () -> {\r\n\t\t\tparent.openSubState(new StageCreationScreen(saveStage));\r\n\t\t});\r\n\r\n\t\tvar modsList:Array<String> = Stage.getList(true, true);\r\n\t\tfor (stage in (modsList.length == 0 ? Stage.getList(false, true) : modsList)) {\r\n\t\t\tstages.push(stage.toLowerCase());\r\n\t\t\tadd(makeStageOption(stage));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveStage",
+			"args": [
+				{
+					"name": "creation",
+					"type": "StageCreationData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function saveStage(creation:StageCreationData) {\r\n\t\tif (stages.contains(creation.name.toLowerCase())) {\r\n\t\t\tparent.openSubState(new UIWarningSubstate(TU.translate(\"stageCreationScreen.warnings.stage-exists-title\"), TU.translate(\"stageCreationScreen.warnings.stage-exists-body\"), [\r\n\t\t\t\t{label: TU.translate(\"editor.ok\"), color: 0xFFFF0000, onClick: (t) -> {}},\r\n\t\t\t]));\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\t#if sys\r\n\t\t// Save File\r\n\t\tCoolUtil.safeSaveFile('${Paths.getAssetsRoot()}/data/stages/${creation.name}.xml', '<!DOCTYPE codename-engine-stage>\\n<stage folder=\"${creation.path}\">\\n</stage>');\r\n\t\t#end\r\n\r\n\t\t// Add to List\r\n\t\tstages.push(creation.name.toLowerCase());\r\n\t\tparent.tree.last().insert(parent.tree.last().length - 1, makeStageOption(creation.name));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

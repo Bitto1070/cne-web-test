@@ -1,0 +1,359 @@
+{
+	"kind": "class",
+	"name": "StoryMenuState",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "characters",
+			"type": "Map<String, WeekData.WeekCharacter>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weeks",
+			"type": "Array<WeekData>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weekList",
+			"type": "StoryWeeklist",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scoreMessage",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scoreText",
+			"type": "FlxText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tracklist",
+			"type": "FlxText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weekTitle",
+			"type": "FlxText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curDifficulty",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curWeek",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficultySprites",
+			"type": "Map<String, FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "leftArrow",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rightArrow",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "blackBar",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weekBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "interpColor",
+			"type": "FlxInterpolateColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lerpScore",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "intendedScore",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canSelect",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "weekSprites",
+			"type": "FlxTypedGroup<MenuItem>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characterSprites",
+			"type": "FlxTypedGroup<FunkinSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t\tloadXMLs();\r\n\t\tpersistentUpdate = persistentDraw = true;\r\n\r\n\t\t// WEEK INFO\r\n\t\tblackBar = new FlxSprite(0, 0).makeSolid(FlxG.width, 56, 0xFFFFFFFF);\r\n\t\tblackBar.color = 0xFF000000;\r\n\t\tblackBar.updateHitbox();\r\n\r\n\t\tscoreText = new FunkinText(10, 10, 0, TU.translate(\"story.score\", [\"-\"]), 36);\r\n\t\tscoreText.setFormat(Paths.font(\"vcr.ttf\"), 32);\r\n\r\n\t\tweekTitle = new FlxText(10, 10, FlxG.width - 20, \"\", 32);\r\n\t\tweekTitle.setFormat(Paths.font(\"vcr.ttf\"), 32, FlxColor.WHITE, RIGHT);\r\n\t\tweekTitle.alpha = 0.7;\r\n\r\n\t\tweekBG = new FlxSprite(0, 56).makeSolid(FlxG.width, 400, 0xFFFFFFFF);\r\n\t\tweekBG.color = weeks.length > 0 ? weeks[0].bgColor : Flags.DEFAULT_WEEK_COLOR;\r\n\t\tweekBG.updateHitbox();\r\n\r\n\t\tweekSprites = new FlxTypedGroup<MenuItem>();\r\n\r\n\t\t// DUMBASS ARROWS\r\n\t\tvar assets = Paths.getFrames('menus/storymenu/assets');\r\n\t\tvar directions = [\"left\", \"right\"];\r\n\r\n\t\tleftArrow = new FlxSprite((FlxG.width + 400) / 2, weekBG.y + weekBG.height + 10 + 10);\r\n\t\trightArrow = new FlxSprite(FlxG.width - 10, weekBG.y + weekBG.height + 10 + 10);\r\n\t\tfor(k=>arrow in [leftArrow, rightArrow]) {\r\n\t\t\tvar dir = directions[k];\r\n\r\n\t\t\tarrow.frames = assets;\r\n\t\t\tarrow.animation.addByPrefix('idle', 'arrow $dir');\r\n\t\t\tarrow.animation.addByPrefix('press', 'arrow push $dir', 24, false);\r\n\t\t\tarrow.animation.play('idle');\r\n\t\t\tarrow.antialiasing = true;\r\n\t\t\tadd(arrow);\r\n\t\t}\r\n\t\trightArrow.x -= rightArrow.width;\r\n\r\n\t\ttracklist = new FunkinText(16, weekBG.y + weekBG.height + 44, Std.int(((FlxG.width - 400) / 2) - 80), TU.translate(\"story.tracks\"), 32);\r\n\t\ttracklist.alignment = CENTER;\r\n\t\ttracklist.color = 0xFFE55777;\r\n\r\n\t\tadd(weekSprites);\r\n\t\tfor (e in [blackBar, scoreText, weekTitle, weekBG, tracklist]) {\r\n\t\t\te.scrollFactor.set();\r\n\t\t\tadd(e);\r\n\t\t}\r\n\r\n\t\tadd(characterSprites = new FlxTypedGroup<FunkinSprite>());\r\n\r\n\t\tfor (i=>week in weeks) {\r\n\t\t\tvar spr:MenuItem = new MenuItem(0, (i * 120) + 480, 'menus/storymenu/weeks/${week.sprite}');\r\n\t\t\tweekSprites.add(spr);\r\n\r\n\t\t\tfor (e in week.difficulties) {\r\n\t\t\t\tvar le = e.toLowerCase();\r\n\t\t\t\tif (difficultySprites[le] == null) {\r\n\t\t\t\t\tvar diffSprite = new FlxSprite(leftArrow.x + leftArrow.width, leftArrow.y);\r\n\t\t\t\t\tdiffSprite.loadAnimatedGraphic(Paths.image('menus/storymenu/difficulties/${le}'));\r\n\t\t\t\t\tdiffSprite.setUnstretchedGraphicSize(Std.int(rightArrow.x - leftArrow.x - leftArrow.width), Std.int(leftArrow.height), false, 1);\r\n\t\t\t\t\tdiffSprite.antialiasing = true;\r\n\t\t\t\t\tdiffSprite.scrollFactor.set();\r\n\t\t\t\t\tadd(diffSprite);\r\n\r\n\t\t\t\t\tdifficultySprites[le] = diffSprite;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tinterpColor = new FlxInterpolateColor(weekBG.color);\r\n\r\n\t\t// default difficulty should be the middle difficulty in the array\r\n\t\t// to be consistent with base game and whatnot, you know the drill\r\n\t\tcurDifficulty = Math.floor(weeks[0].difficulties.length * 0.5);\r\n\t\t// debug stuff lol\r\n\t\tLogs.trace('Middle Difficulty for Week 1 is ${weeks[0].difficulties[curDifficulty]} (ID: $curDifficulty)');\r\n\r\n\t\tchangeWeek(0, true);\r\n\r\n\t\tDiscordUtil.call(\"onMenuLoaded\", [\"Story Menu\"]);\r\n\t\tCoolUtil.playMenuSong();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tlerpScore = lerp(lerpScore, intendedScore, 0.5);\r\n\t\tscoreText.text = TU.translate(\"story.score\", [Math.round(lerpScore)]);\r\n\r\n\t\tif (canSelect) {\r\n\t\t\tif (leftArrow != null && leftArrow.exists) leftArrow.animation.play(controls.LEFT ? 'press' : 'idle');\r\n\t\t\tif (rightArrow != null && rightArrow.exists) rightArrow.animation.play(controls.RIGHT ? 'press' : 'idle');\r\n\r\n\t\t\tif (controls.BACK) {\r\n\t\t\t\tgoBack();\r\n\t\t\t}\r\n\r\n\t\t\tchangeDifficulty((controls.LEFT_P ? -1 : 0) + (controls.RIGHT_P ? 1 : 0));\r\n\t\t\tchangeWeek((controls.UP_P ? -1 : 0) + (controls.DOWN_P ? 1 : 0) - FlxG.mouse.wheel);\r\n\r\n\t\t\tif (controls.ACCEPT)\r\n\t\t\t\tselectWeek();\r\n\t\t} else {\r\n\t\t\tfor(e in [leftArrow, rightArrow])\r\n\t\t\t\tif (e != null && e.exists)\r\n\t\t\t\t\te.animation.play('idle');\r\n\t\t}\r\n\r\n\t\tinterpColor.fpsLerpTo(weeks[curWeek].bgColor, 0.0625);\r\n\t\tweekBG.color = interpColor.color;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function beatHit(curBeat:Int) {\r\n\t\tsuper.beatHit(curBeat);\r\n\t\tif (characterSprites != null)  // reason why I wanted to use a MusicBeatGroup, but eh, whatever  - Nex\r\n\t\t\tcharacterSprites.forEachAlive(function(spr) spr.beatHit(curBeat));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "goBack",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function goBack() {\r\n\t\tvar event = event(\"onGoBack\", new CancellableEvent());\r\n\t\tif (!event.cancelled)\r\n\t\t\tFlxG.switchState(new MainMenuState());\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeWeek",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeWeek(change:Int, force:Bool = false) {\r\n\t\tif (change == 0 && !force) return;\r\n\r\n\t\tvar event = event(\"onChangeWeek\", EventManager.get(MenuChangeEvent).recycle(curWeek, FlxMath.wrap(curWeek + change, 0, weeks.length-1), change));\r\n\t\tif (event.cancelled) return;\r\n\t\tcurWeek = event.value;\r\n\r\n\t\tif (!force) CoolUtil.playMenuSFX();\r\n\t\tfor(k=>e in weekSprites.members) {\r\n\t\t\te.targetY = k - curWeek;\r\n\t\t\te.alpha = k == curWeek ? 1.0 : 0.6;\r\n\t\t}\r\n\t\ttracklist.text = '${TU.translate(\"story.tracks\")}\\n\\n${[for(e in weeks[curWeek].songs) if (!e.hide) e.displayName.getDefault(e.name).toUpperCase()].join('\\n')}';\r\n\t\tweekTitle.text = weeks[curWeek].name.getDefault(\"\");\r\n\r\n\t\tif (characterSprites != null) for (i in 0...3) {\r\n\t\t\tvar char = weeks[curWeek].chars[i];\r\n\t\t\tvar curChar:FunkinSprite = null;\r\n\t\t\tvar newChar = null;\r\n\r\n\t\t\tif (char == null || (newChar = characters[char.name]) == null) modifyCharacterAt(i);\r\n\t\t\telse if ((curChar = cast characterSprites.members[i]) == null || newChar.name != curChar.name) modifyCharacterAt(i, newChar);  // forcing the sprites to be FunkinSprite basically  - Nex\r\n\t\t}\r\n\r\n\t\tchangeDifficulty(0, true);\r\n\r\n\t\tMemoryUtil.clearMinor();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeDifficulty",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeDifficulty(change:Int, force:Bool = false) {\r\n\t\tif (change == 0 && !force) return;\r\n\r\n\t\tvar event = event(\"onChangeDifficulty\", EventManager.get(MenuChangeEvent).recycle(curDifficulty, FlxMath.wrap(curDifficulty + change, 0, weeks[curWeek].difficulties.length-1), change));\r\n\t\tif (event.cancelled) return;\r\n\t\tcurDifficulty = event.value;\r\n\r\n\t\tif (__oldDiffName != (__oldDiffName = weeks[curWeek].difficulties[curDifficulty].toLowerCase())) {\r\n\t\t\tfor(e in difficultySprites) e.visible = false;\r\n\r\n\t\t\tvar diffSprite = difficultySprites[__oldDiffName];\r\n\t\t\tif (diffSprite != null) {\r\n\t\t\t\tdiffSprite.visible = true;\r\n\r\n\t\t\t\tif (__lastDifficultyTween != null)\r\n\t\t\t\t\t__lastDifficultyTween.cancel();\r\n\t\t\t\tdiffSprite.alpha = 0;\r\n\t\t\t\tdiffSprite.y = leftArrow.y - 15;\r\n\r\n\t\t\t\t__lastDifficultyTween = FlxTween.tween(diffSprite, {y: leftArrow.y, alpha: 1}, 0.07);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tintendedScore = FunkinSave.getWeekHighscore(weeks[curWeek].id, weeks[curWeek].difficulties[curDifficulty]).score;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadXMLs",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadXMLs() {\r\n\t\tweekList = StoryWeeklist.get(true, false);  // will only load week files AND NOT characters too (we will load them later only if needed)!!  - Nex\r\n\t\tweeks = weekList.weeks;\r\n\t\tfor (week in weeks) for (char in week.chars) if (char != null)\r\n\t\t\taddCharacter(char.name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addCharacter",
+			"args": [
+				{
+					"name": "char",
+					"type": "OneOfTwo<String, WeekData.WeekCharacter>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addCharacter(char:OneOfTwo<String, WeekData.WeekCharacter>) {\r\n\t\t// better to use unsafe casts for going fast  - Nex\r\n\t\tvar charObj:WeekData.WeekCharacter = null;\r\n\t\tvar charName:String;\r\n\r\n\t\tcharName = char is String ? cast char : (charObj = cast char).name;\r\n\t\tif (characters[charName] != null) return;  // will load only if it can be saved inside the map  - Nex\r\n\t\tcharacters[charName] = charObj == null ? Week.loadWeekCharacter(charName) : charObj;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "modifyCharacterAt",
+			"args": [
+				{
+					"name": "i",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "data",
+					"type": "WeekData.WeekCharacter",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "FunkinSprite",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function modifyCharacterAt(i:Int, ?data:WeekData.WeekCharacter):FunkinSprite {\r\n\t\tvar curChar:FunkinSprite = null;\r\n\r\n\t\tif (characterSprites != null) {\r\n\t\t\tvar old = characterSprites.members[i];\r\n\t\t\tif (old != null) {\r\n\t\t\t\tcharacterSprites.remove(old);\r\n\t\t\t\told.destroy();\r\n\t\t\t}\r\n\r\n\t\t\tif (data != null) {\r\n\t\t\t\tcurChar = XMLUtil.createSpriteFromXML(data.xml, \"\", BEAT);\r\n\t\t\t\tcurChar.offset.x += curChar.x; curChar.offset.y += curChar.y;\r\n\t\t\t\tcurChar.setPosition((FlxG.width * 0.25) * (1 + i) - 150, 70);\r\n\t\t\t\tcurChar.playAnim(\"idle\", true, DANCE);\r\n\t\t\t\tcharacterSprites.insert(i, curChar);\r\n\t\t\t} else {\r\n\t\t\t\t//characterSprites.members[i] = null;  // cant add nulls to flxgroups, so   - Nex\r\n\t\t\t\tcharacterSprites.insert(i, new FunkinSprite()).visible = false;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn curChar;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "selectWeek",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function selectWeek() {\r\n\t\tvar event = event(\"onWeekSelect\", EventManager.get(WeekSelectEvent).recycle(weeks[curWeek], weeks[curWeek].difficulties[curDifficulty], curWeek, curDifficulty));\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tcanSelect = false;\r\n\t\tCoolUtil.playMenuSFX(CONFIRM);\r\n\r\n\t\tif (characterSprites != null)\r\n\t\t\tcharacterSprites.forEachAlive(function(spr) spr.playAnim(\"confirm\", true, LOCK));\r\n\r\n\t\tPlayState.loadWeek(event.week, event.difficulty);\r\n\r\n\t\tnew FlxTimer().start(1, function(tmr:FlxTimer)\r\n\t\t{\r\n\t\t\tFlxG.switchState(new PlayState());\r\n\t\t});\r\n\t\tweekSprites.members[event.weekID].startFlashing();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

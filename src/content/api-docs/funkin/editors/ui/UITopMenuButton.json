@@ -1,0 +1,127 @@
+{
+	"kind": "class",
+	"name": "UITopMenuButton",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "label",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "contextMenu",
+			"type": "Array<UIContextMenuOption>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "UITopMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMenu",
+			"type": "UIContextMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UITopMenu",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "label",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "contextMenu",
+					"type": "Array<UIContextMenuOption>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, parent:UITopMenu, label:String, contextMenu:Array<UIContextMenuOption>) {\r\n\t\tsuper(x, y, 0, 23, \"editors/ui/menu-item\");\r\n\t\tthis.contextMenu = contextMenu;\r\n\t\tthis.parent = parent;\r\n\t\tcursor = CLICK;\r\n\r\n\t\tthis.label = new UIText(4, 0, 0, label);\r\n\t\tthis.label.alignment = CENTER;\r\n\t\tbWidth = Std.int(this.label.fieldWidth = this.label.frameWidth + 8);\r\n\t\tmembers.push(this.label);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tlabel.follow(this, 0, Std.int((bHeight - label.height) / 2));\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif(FlxG.mouse.released) {\r\n\t\t\tif(justClosed > 0)\r\n\t\t\t\tjustClosed -= 1;\r\n\t\t}\r\n\r\n\t\tvar opened = curMenu != null ? curMenu.contextMenuOpened() : false;\r\n\r\n\t\tif(opened && FlxG.mouse.justPressed) {\r\n\t\t\t__rect.set(x, y, bWidth, bHeight);\r\n\t\t\tif(UIState.state.isOverlapping(this, __rect)) {\r\n\t\t\t\tcurMenu.close();\r\n\t\t\t\tjustClosed = 2;\r\n\t\t\t\topened = false;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (!autoAnim) return;\r\n\t\talpha = (hovered || opened) ? 1 : 0;\r\n\t\tframesOffset = opened ? 9 : 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onHovered",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onHovered() {\r\n\t\tsuper.onHovered();\r\n\t\tif (curMenu != null && curMenu.contextMenuOpened()) {\r\n\t\t\tUIState.state.curContextMenu.preventOutOfBoxClickDeletion();\r\n\t\t} else {\r\n\t\t\tif (/*(parent != null && !parent.anyMenuOpened) || */FlxG.mouse.justReleased && justClosed == 0) {\r\n\t\t\t\topenContextMenu();\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openContextMenu",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function openContextMenu() {\r\n\t\t//if(UIState.state.curContextMenu != null) {\r\n\t\t//\tUIState.state.curContextMenu.close();\r\n\t\t//}\r\n\t\tvar screenPos = getScreenPosition(null, __lastDrawCameras[0] == null ? FlxG.camera : __lastDrawCameras[0]);\r\n\t\tcurMenu = UIState.state.openContextMenu(contextMenu, null, screenPos.x, screenPos.y + bHeight);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

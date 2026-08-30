@@ -1,0 +1,240 @@
+{
+	"kind": "class",
+	"name": "OldUISliceSpriteTri",
+	"pkg": "funkin.editors.ui.old",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bWidth",
+			"type": "Int",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bHeight",
+			"type": "Int",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "framesOffset",
+			"type": "Int",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "incorporeal",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, w:Int, h:Int, path:String) {\r\n\t\tsuper(x, y);\r\n\r\n\t\tframes = Paths.getFrames(path);\r\n\t\tresize(w, h);\r\n\r\n\t\tcalculateFrames();\r\n\t\t__genMesh();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButton",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateButton() {\r\n\t\tif (incorporeal) return;\r\n\t\t__rect.set(x, y, bWidth, bHeight);\r\n\t\tUIState.state.updateRectButtonHandler(this, __rect, onHovered);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resize",
+			"args": [
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function resize(w:Int, h:Int) {\r\n\t\tbWidth = w;\r\n\t\tbHeight = h;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topAlpha",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:deprecated"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "middleAlpha",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:deprecated"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "bottomAlpha",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:deprecated"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "drawTop",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "drawMiddle",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "drawBottom",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topHeight",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomHeight",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "leftWidth",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rightWidth",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() @:privateAccess {\r\n\t\tcheckEmptyFrame();\r\n\r\n\t\tif (alpha != 0 && _frame.type != FlxFrameType.EMPTY) {\r\n\t\t\tif (__framesDirty) calculateFrames();\r\n\t\t\tif (__meshDirty) __genMesh();\r\n\r\n\t\t\tfor (camera in cameras)\r\n\t\t\t{\r\n\t\t\t\tif (!camera.visible || !camera.exists || !isOnScreen(camera))\r\n\t\t\t\t\tcontinue;\r\n\r\n\t\t\t\tgetScreenPosition(_point, camera).subtractPoint(offset);\r\n\r\n\t\t\t\t#if !flash\r\n\t\t\t\tcamera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, false, antialiasing, colorTransform, shader);\r\n\t\t\t\t#else\r\n\t\t\t\tcamera.drawTriangles(graphic, vertices, indices, uvtData, colors, _point, blend, false, antialiasing);\r\n\t\t\t\t#end\r\n\r\n\t\t\t\t#if FLX_DEBUG\r\n\t\t\t\tFlxBasic.visibleCount++;\r\n\t\t\t\t#end\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tsuper.drawMembers();\r\n\t\t__lastDrawCameras = cameras.copy();\r\n\t}\r\n\r\n\tvar vertices:DrawData<Float> = new DrawData<Float>();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function destroy():Void\r\n\t{\r\n\t\tvertices = null;\r\n\t\tindices = null;\r\n\t\tuvtData = null;\r\n\t\tcolors = null;\r\n\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

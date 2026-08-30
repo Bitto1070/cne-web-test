@@ -1,0 +1,24 @@
+{
+	"kind": "class",
+	"name": "OverlayShader",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "')\r\n\tpublic function new()\r\n\t{\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:glFragmentSource('\r\n#pragma header\r\nuniform vec4 uBlendColor;\r\n\r\nvec3 blendLighten(base:Vec3, blend:Vec3) : Vec3 {\r\n\treturn mix(\r\n\t\t1.0 - 2.0 * (1.0 - base) * (1.0 - blend),\r\n\t\t2.0 * base * blend,\r\n\t\tstep( base, vec3(0.5) )\r\n\t);\r\n}\r\n\r\nvec4 blendLighten(vec4 base, vec4 blend, float opacity)\r\n{\r\n\treturn (blendLighten(base, blend) * opacity + base * (1.0 - opacity));\r\n}\r\n\r\nvoid main()\r\n{\r\n\tvec4 base = texture2D(bitmap, openfl_TextureCoordv);\r\n\tgl_FragColor = blendLighten(base, uBlendColor, uBlendColor.a);\r\n}')"
+			]
+		}
+	]
+}

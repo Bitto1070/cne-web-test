@@ -1,0 +1,538 @@
+{
+	"kind": "class",
+	"name": "Note",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [
+		"@:allow(funkin.game.PlayState)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "extra",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "mustPress",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "StrumLine",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteData",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canBeHit",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tooLate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "wasGoodHit",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "avoid",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever that note should be avoided by Botplay.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "prevNote",
+			"type": "Note",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The note that comes before this one (sustain and not)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "nextNote",
+			"type": "Note",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The note that comes after this one (sustain and not)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "nextSustain",
+			"type": "Note",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The next sustain after this one",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sustainParent",
+			"type": "Null<Note>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The parent of the sustain.\n\nIf this note is not sustain, this will be null.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tailCount",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Number of active sustain pieces attached to this note\n\nIncreases by 1 every time a hold piece is initialized.\n\nDecreases by 1 every time a hold piece gets destroyed.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "splash",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Name of the splash.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumID",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sustainLength",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isSustainNote",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noSustainClip",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipSustain",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteTypeID",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeed",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteAngle",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "copyStrumAngle",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "updateNotesPosX",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "updateNotesPosY",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "updateFlipY",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteType",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__strumCameras",
+			"type": "Array<FlxCamera>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "__strum",
+			"type": "Strum",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "__noteAngle",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "swagWidth",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tripTimer",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "StrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "noteData",
+					"type": "ChartNote",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sustain",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "sustainLength",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "sustainOffset",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "prev",
+					"type": "Note",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(strumLine:StrumLine, noteData:ChartNote, sustain:Bool = false, sustainLength:Float = 0, sustainOffset:Float = 0, ?prev:Note) {\r\n\t\tsuper();\r\n\r\n\t\tmoves = false;\r\n\r\n\t\tif(prev != null)\r\n\t\t\tthis.prevNote = prev;\r\n\t\telse\r\n\t\t\tthis.prevNote = strumLine.notes.members.last();\r\n\r\n\t\tif (this.prevNote != null) this.prevNote.nextNote = this;\r\n\t\tthis.noteTypeID = noteData.type.getDefault(0);\r\n\t\tthis.isSustainNote = sustain;\r\n\t\tthis.sustainLength = sustainLength;\r\n\t\tthis.strumLine = strumLine;\r\n\t\tfor(field in Reflect.fields(noteData)) if(!DEFAULT_FIELDS.contains(field))\r\n\t\t\tthis.extra.set(field, Reflect.field(noteData, field));\r\n\r\n\t\t// work around to set the `sustainParent`\r\n\t\tif (isSustainNote)\r\n\t\t\tsustainParent = prevNote.isSustainNote ? prevNote.sustainParent : prevNote;\r\n\r\n\t\tx += 50;\r\n\t\t// MAKE SURE ITS DEFINITELY OFF SCREEN?\r\n\t\ty -= 2000;\r\n\r\n\t\tthis.strumTime = noteData.time.getDefault(0) + sustainOffset;\r\n\t\tthis.noteData = noteData.id.getDefault(0);\r\n\r\n\t\tvar customType = Paths.image('game/notes/${this.noteType}');\r\n\t\tvar event = EventManager.get(NoteCreationEvent).recycle(this, strumID, this.noteType, noteTypeID, PlayState.instance.strumLines.members.indexOf(strumLine), mustPress,\r\n\t\t\t(this.noteType != null && customTypePathExists(customType)) ? 'game/notes/${this.noteType}' : 'game/notes/default', @:privateAccess strumLine.strumScale * Flags.DEFAULT_NOTE_SCALE, animSuffix);\r\n\r\n\t\tif (PlayState.instance != null)\r\n\t\t\tevent = PlayState.instance.gameAndCharsEvent(\"onNoteCreation\", event);\r\n\r\n\t\tthis.animSuffix = event.animSuffix;\r\n\t\tif (!event.cancelled) {\r\n\t\t\tswitch (event.noteType)\r\n\t\t\t{\r\n\t\t\t\t// case \"My Custom Note Type\": // hardcoding note types\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tframes = Paths.getFrames(event.noteSprite);\r\n\r\n\t\t\t\t\tswitch(event.strumID % 4) {\r\n\t\t\t\t\t\tcase 0:\r\n\t\t\t\t\t\t\tanimation.addByPrefix('scroll', 'purple0');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('hold', 'purple hold piece');\r\n\t\t\t\t\t\t\tanimation.addByPrefix(\"holdend\", \"pruple end hold\");\r\n\t\t\t\t\t\t\tif (animation.exists(\"holdend\") != true) // null or false\r\n\t\t\t\t\t\t\t\tanimation.addByPrefix('holdend', 'purple hold end');\r\n\t\t\t\t\t\tcase 1:\r\n\t\t\t\t\t\t\tanimation.addByPrefix('scroll', 'blue0');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('hold', 'blue hold piece');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('holdend', 'blue hold end');\r\n\t\t\t\t\t\tcase 2:\r\n\t\t\t\t\t\t\tanimation.addByPrefix('scroll', 'green0');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('hold', 'green hold piece');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('holdend', 'green hold end');\r\n\t\t\t\t\t\tcase 3:\r\n\t\t\t\t\t\t\tanimation.addByPrefix('scroll', 'red0');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('hold', 'red hold piece');\r\n\t\t\t\t\t\t\tanimation.addByPrefix('holdend', 'red hold end');\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tscale.set(event.noteScale, event.noteScale);\r\n\t\t\t\t\tantialiasing = true;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tupdateHitbox();\r\n\r\n\t\tif (isSustainNote && prevNote != null)\r\n\t\t{\r\n\t\t\talpha = 0.6;\r\n\t\t\tanimation.play('holdend');\r\n\r\n\t\t\tupdateHitbox();\r\n\r\n\t\t\tif (prevNote.isSustainNote)\r\n\t\t\t{\r\n\t\t\t\tprevNote.nextSustain = this;\r\n\t\t\t\tprevNote.animation.play('hold');\r\n\t\t\t}\r\n\t\t} else {\r\n\t\t\tanimation.play(\"scroll\");\r\n\t\t}\r\n\r\n\t\tif (PlayState.instance != null) {\r\n\t\t\tPlayState.instance.splashHandler.getSplashGroup(splash);\r\n\t\t\tPlayState.instance.gameAndCharsEvent(\"onPostNoteCreation\", event);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastScrollSpeed",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "gapFix",
+			"type": "SingleOrFloat",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "useAntialiasingFix",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumRelativePos",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the position of the note should be relative to the strum position or not.\nFor example, if this is true, a note at the position 0; 0 will be on the strum, instead of at the top left of the screen.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isOnScreenOriginal",
+			"args": [
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function isOnScreenOriginal(?camera:FlxCamera):Bool {\r\n    \treturn super.isOnScreen(camera);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "earlyPressWindow",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "latePressWindow",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateSustain",
+			"args": [
+				{
+					"name": "strum",
+					"type": "Strum",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateSustain(strum:Strum) {\r\n\t\tvar scrollSpeed = strum.getScrollSpeed(this);\r\n\r\n\t\tif (lastScrollSpeed != scrollSpeed) {\r\n\t\t\tlastScrollSpeed = scrollSpeed;\r\n\t\t\tif (nextSustain != null) {\r\n\t\t\t\tscale.y = (sustainLength * 0.45 * Math.abs(scrollSpeed)) / frameHeight;\r\n\t\t\t\tupdateHitbox();\r\n\t\t\t\tscale.y += gapFix / frameHeight;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tupdateSustainClip();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateSustainClip",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateSustainClip() if (wasGoodHit && !noSustainClip) {\r\n\t\tvar t = CoolUtil.bound((Conductor.songPosition - strumTime) / height * 0.45 * Math.abs(lastScrollSpeed), 0, 1);\r\n\t\t@:bypassAccessor {\r\n\t\t\tif (clipRect == null) clipRect = FlxRect.get();\r\n\t\t\tclipRect.set(0, frameHeight * t, frameWidth, frameHeight * (1 - t));\r\n\t\t}\r\n\t\t@:privateAccess {\r\n\t\t\tif (frame != null && _frame != null)\r\n\t\t\t\t_frame = frame.clipTo(clipRect, _frame);\r\n\t\t}\r\n\t}\r\n\r\n\t@:noCompletion\r\n\toverride function set_clipRect(rect:FlxRect):FlxRect {\r\n\t\t@:bypassAccessor clipRect = rect;\r\n\r\n\t\t@:privateAccess if (frame != null) {\r\n\t\t\tif (rect != null && _frame != null)\r\n\t\t\t\t_frame = frame.clipTo(rect, _frame);\r\n\t\t\telse if (_frame != null)\r\n\t\t\t\t_frame = frame.copyTo(_frame);\r\n\t\t\tdirty = true;\r\n\t\t}\r\n\r\n\t\treturn rect;\r\n\t}\r\n\r\n\tpublic override function destroy() {\r\n\t\tsuper.destroy();\r\n\r\n\t\tclipRect = FlxDestroyUtil.put(clipRect);\r\n\t}\r\n}\r\n",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\r\n\t\tclipRect = FlxDestroyUtil.put(clipRect);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:bypassAccessor",
+				"@:privateAccess"
+			]
+		}
+	]
+}

@@ -1,0 +1,165 @@
+{
+	"kind": "class",
+	"name": "Framerate",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "Framerate",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isLoaded",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textFormat",
+			"type": "TextFormat",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fpsCounter",
+			"type": "FramerateCounter",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "memoryCounter",
+			"type": "MemoryCounter",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "codenameBuildField",
+			"type": "CodenameBuildField",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fontName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "debugMode",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "0: FPS INVISIBLE\n1: FPS VISIBLE\n2: FPS & DEBUG INFO VISIBLE",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "offset",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bgSprite",
+			"type": "Bitmap",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "categories",
+			"type": "Array<FramerateCategory>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__bitmap",
+			"type": "BitmapData",
+			"access": "get, null",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:isVar"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\t\tif (instance != null) throw \"Cannot create another instance\";\r\n\t\tinstance = this;\r\n\t\ttextFormat = new TextFormat(fontName, 12, -1);\r\n\r\n\t\tisLoaded = true;\r\n\r\n\t\tx = 10;\r\n\t\ty = 2;\r\n\r\n\t\tif (__bitmap == null)\r\n\t\t\t__bitmap = new BitmapData(1, 1, 0xFF000000);\r\n\r\n\t\tbgSprite = new Bitmap(__bitmap);\r\n\t\tbgSprite.alpha = 0;\r\n\t\taddChild(bgSprite);\r\n\r\n\t\t__addToList(fpsCounter = new FramerateCounter());\r\n\t\t__addToList(memoryCounter = new MemoryCounter());\r\n\t\t#if SHOW_BUILD_ON_FPS\r\n\t\t__addToList(codenameBuildField = new CodenameBuildField());\r\n\t\t#end\r\n\t\t__addCategory(new ConductorInfo());\r\n\t\t__addCategory(new FlixelInfo());\r\n\t\t__addCategory(new SystemInfo());\r\n\t\t__addCategory(new AssetTreeInfo());\r\n\r\n\t\t#if (gl_stats && !disable_cffi && (!html5 || !canvas))\r\n\t\t__addCategory(new StatsInfo());\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reload() {\r\n\t\ttextFormat = new TextFormat(fontName, 12, -1);\r\n\t\tfor(c in categories)\r\n\t\t\tc.reload();\r\n\t\t#if SHOW_BUILD_ON_FPS\r\n\t\tcodenameBuildField.reload();\r\n\t\t#end\r\n\t\tmemoryCounter.reload();\r\n\t\tfpsCounter.reload();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\talpha = CoolUtil.fpsLerp(alpha, debugMode > 0 ? 1 : 0, 0.5);\r\n\t\tdebugAlpha = CoolUtil.fpsLerp(debugAlpha, debugMode > 1 ? 1 : 0, 0.5);\r\n\r\n\t\tif (alpha < 0.05) return;\r\n\t\tsuper.__enterFrame(t);\r\n\t\tbgSprite.alpha = debugAlpha * 0.5;\r\n\r\n\t\tx = 10 + offset.x;\r\n\t\ty = 2 + offset.y;\r\n\r\n\t\tvar width = MathUtil.maxSmart(fpsCounter.width, memoryCounter.width #if SHOW_BUILD_ON_FPS , codenameBuildField.width #end) + (x*2);\r\n\t\tvar height = #if SHOW_BUILD_ON_FPS codenameBuildField.y + codenameBuildField.height #else memoryCounter.y + memoryCounter.height #end;\r\n\t\tbgSprite.x = -x;\r\n\t\tbgSprite.y = offset.x;\r\n\t\tbgSprite.scaleX = width;\r\n\t\tbgSprite.scaleY = height;\r\n\r\n\t\tvar selectable = debugMode == 2;\r\n\t\t{  // idk i tried to make it more readable:sob:  - Nex\r\n\t\t\tmemoryCounter.memoryText.selectable = memoryCounter.memoryPeakText.selectable =\r\n\t\t\tfpsCounter.fpsNum.selectable = fpsCounter.fpsLabel.selectable =\r\n\t\t\t#if SHOW_BUILD_ON_FPS codenameBuildField.selectable = #end selectable;\r\n\t\t}\r\n\r\n\t\tvar y:Float = height + 4;\r\n\t\tfor(c in categories) {\r\n\t\t\tc.title.selectable = c.text.selectable = selectable;\r\n\t\t\tc.alpha = debugAlpha;\r\n\t\t\tc.x = FlxMath.lerp(-c.width - offset.x, 0, debugAlpha);\r\n\t\t\tc.y = y;\r\n\t\t\ty = c.y + c.height + 4;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

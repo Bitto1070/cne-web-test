@@ -1,0 +1,87 @@
+{
+	"kind": "class",
+	"name": "ModSubState",
+	"pkg": "funkin.backend.scripting",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "lastName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Name of HScript file in assets/data/states.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastData",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Last Optional extra data.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Optional extra data.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "_stateName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "_data",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(_stateName:String, ?_data:Dynamic) {\r\n\t\tif(_stateName != null && _stateName != lastName) {\r\n\t\t\tlastName = _stateName;\r\n\t\t\tlastData = null;\r\n\t\t}\r\n\r\n\t\tif(_data != null)\r\n\t\t\tlastData = _data;\r\n\r\n\t\tdata = lastData;\r\n\t\tsuper(true, lastName);\r\n\t}",
+			"doc": {
+				"text": "ModSubState Constructor.\nInherits from MusicBeatSubstate and allows the execution of an HScript from assets/data/states passed via parameters.",
+				"params": {
+					"_stateName": "Name or path to a HScript file from assets/data/states.",
+					"_data": "Optional extra Dynamic data passed from a previous state (JSON suggested)."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

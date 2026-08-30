@@ -1,0 +1,35 @@
+{
+	"kind": "final class",
+	"name": "EngineUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "startMultithreadedScript",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function startMultithreadedScript(path:String) {\r\n\t\treturn new MultiThreadedScript(path, Script.curScript);\r\n\t}",
+			"doc": {
+				"text": "Starts a new multithreaded script.\nThis script will share all the variables with the current one, which means already existing callbacks will be replaced by new ones on conflict.",
+				"params": {
+					"path": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

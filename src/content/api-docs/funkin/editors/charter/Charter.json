@@ -1,0 +1,1648 @@
+{
+	"kind": "class",
+	"name": "Charter",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "__song",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "instance",
+			"type": "Charter",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterBG",
+			"type": "FunkinSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterBookmarksGroup",
+			"type": "FlxTypedGroup<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiGroup",
+			"type": "FlxTypedGroup<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenu",
+			"type": "Array<UIContextMenuOption>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollBar",
+			"type": "UIScrollBar",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songPosInfo",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "shouldScroll",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "quantButtons",
+			"type": "Array<CharterQuantButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playBackSlider",
+			"type": "UISlider",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topMenuSpr",
+			"type": "UITopMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gridBackdrops",
+			"type": "CharterBackdropGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "leftEventsBackdrop",
+			"type": "EventBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "localAddEventSpr",
+			"type": "CharterEventAdd",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rightEventsBackdrop",
+			"type": "EventBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "globalAddEventSpr",
+			"type": "CharterEventAdd",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gridBackdropDummy",
+			"type": "CameraHoverDummy",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteHoverer",
+			"type": "CharterNoteHoverer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteDeleteAnims",
+			"type": "CharterDeleteAnim",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumlineInfoBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumlineAddButton",
+			"type": "CharterStrumlineButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumlineLockButton",
+			"type": "CharterStrumlineButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hitsound",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hitsoundGlobalVolume",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "metronome",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vocals",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "quant",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "quants",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteType",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteTypes",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteTypeText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLines",
+			"type": "CharterStrumLineGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "notesGroup",
+			"type": "CharterNoteGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "leftEventRowText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rightEventRowText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "leftEventsGroup",
+			"type": "CharterEventGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rightEventsGroup",
+			"type": "CharterEventGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraMovementChanges",
+			"type": "Array<CameraChange>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charterCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiCamera",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectionBox",
+			"type": "UISliceSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "autoSaveNotif",
+			"type": "CharterAutoSaveUI",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "autoSaveTimer",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selection",
+			"type": "Selection",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "playtestInfo",
+			"type": "PlaytestInfo",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "undos",
+			"type": "UndoList<CharterChange>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "clipboard",
+			"type": "Array<CharterCopyboardObject>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveformHandler",
+			"type": "CharterWaveformHandler",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "song",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "diff",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "variant",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "reload",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(song:String, diff:String, variant:String, reload:Bool = true) {\r\n\t\tsuper();\r\n\t\tif (song != null) {\r\n\t\t\t__song = song;\r\n\t\t\t__diff = diff;\r\n\t\t\t__variant = variant;\r\n\t\t\t__reload = reload;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tWindowUtils.suffix = \" (\" + TU.translate(\"editor.chart.name\") + \")\";\r\n\t\tSaveWarning.selectionClass = CharterSelection;\r\n\t\tSaveWarning.saveFunc = () -> saveEverything();\r\n\r\n\t\ttopMenu = [\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.file\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t/*{\r\n\t\t\t\t\t\tlabel: translate(\"file.new\")\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,*/\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.save\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, S],\r\n\t\t\t\t\t\tonSelect: _file_save_all,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveAs\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, S],\r\n\t\t\t\t\t\tonSelect: _file_saveas,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveGlobalEvents\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, B, S],\r\n\t\t\t\t\t\tonSelect: _file_events_save,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveGlobalEventsAs\"),\r\n\t\t\t\t\t\tonSelect: _file_events_saveas,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveNoLocalEvents\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, ALT, S],\r\n\t\t\t\t\t\tonSelect: _file_save_no_events,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveNoLocalEventsAs\"),\r\n\t\t\t\t\t\tonSelect: _file_saveas_no_events,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveMeta\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, M, S],\r\n\t\t\t\t\t\tonSelect: _file_meta_save,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.saveMetaAs\"),\r\n\t\t\t\t\t\tonSelect: _file_meta_saveas,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.exportFnfLegacy\"),\r\n\t\t\t\t\t\tonSelect: _file_saveas_fnflegacy,\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.exportPsych\"),\r\n\t\t\t\t\t\tonSelect: _file_saveas_psych,\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"file.exit\"),\r\n\t\t\t\t\t\tonSelect: _file_exit\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.edit\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.undo\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, Z],\r\n\t\t\t\t\t\tonSelect: _edit_undo\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.redo\"),\r\n\t\t\t\t\t\tkeybinds: [[CONTROL, Y], [CONTROL, SHIFT, Z]],\r\n\t\t\t\t\t\tonSelect: _edit_redo\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.copy\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, C],\r\n\t\t\t\t\t\tonSelect: cast _edit_copy\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.paste\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, V],\r\n\t\t\t\t\t\tonSelect: _edit_paste\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.cut\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, X],\r\n\t\t\t\t\t\tonSelect: _edit_cut\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.delete\"),\r\n\t\t\t\t\t\tkeybind: [DELETE],\r\n\t\t\t\t\t\tonSelect: _edit_delete\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"edit.deletestacked\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT,DELETE],\r\n\t\t\t\t\t\tonSelect: _edit_deletestacked\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.chart\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.playtest\"),\r\n\t\t\t\t\t\tkeybind: [ENTER],\r\n\t\t\t\t\t\tonSelect: _chart_playtest\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.playtestHere\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, ENTER],\r\n\t\t\t\t\t\tonSelect: _chart_playtest_here\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.playtestOpponent\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, ENTER],\r\n\t\t\t\t\t\tonSelect: _chart_playtest_opponent\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.playtestOpponentHere\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, SHIFT, ENTER],\r\n\t\t\t\t\t\tonSelect: _chart_playtest_opponent_here\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.enableScripts\"),\r\n\t\t\t\t\t\tonSelect: _chart_enablescripts,\r\n\t\t\t\t\t\ticon: Options.charterEnablePlaytestScripts ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.editChartData\"),\r\n\t\t\t\t\t\tcolor: 0xFF959829, icon: 4,\r\n\t\t\t\t\t\tonCreate: function (button:UIContextMenuOptionSpr) {button.label.offset.x = button.icon.offset.x = -2;},\r\n\t\t\t\t\t\tonSelect: chart_edit_data\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"chart.editMetadata\"),\r\n\t\t\t\t\t\tcolor: 0xFF959829, icon: 4,\r\n\t\t\t\t\t\tonCreate: function (button:UIContextMenuOptionSpr) {button.label.offset.x = button.icon.offset.x = -2;},\r\n\t\t\t\t\t\tonSelect: chart_edit_metadata\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.view\"),\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomIn\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADPLUS],\r\n\t\t\t\t\t\tonSelect: _view_zoomin\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.zoomOut\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADMINUS],\r\n\t\t\t\t\t\tonSelect: _view_zoomout\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.resetZoom\"),\r\n\t\t\t\t\t\tkeybind: [CONTROL, NUMPADZERO],\r\n\t\t\t\t\t\tonSelect: _view_zoomreset\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.showSectionsSeparator\"),\r\n\t\t\t\t\t\tonSelect: _view_showeventSecSeparator,\r\n\t\t\t\t\t\ticon: Options.charterShowSections ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.showBeatsSeparator\"),\r\n\t\t\t\t\t\tonSelect: _view_showeventBeatSeparator,\r\n\t\t\t\t\t\ticon: Options.charterShowBeats ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.showCameraHighlights\"),\r\n\t\t\t\t\t\tonSelect: _view_showeventCameraHighlights,\r\n\t\t\t\t\t\ticon: Options.charterShowCameraHighlights ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.rainbowWaveforms\"),\r\n\t\t\t\t\t\tonSelect: _view_switchWaveformRainbow,\r\n\t\t\t\t\t\ticon: Options.charterRainbowWaveforms ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.lowDetailWaveforms\"),\r\n\t\t\t\t\t\tonSelect: _view_switchWaveformDetail,\r\n\t\t\t\t\t\ticon: Options.charterLowDetailWaveforms ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.scrollLeft\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, LEFT],\r\n\t\t\t\t\t\tonSelect: _view_scrollleft\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.scrollRight\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, RIGHT],\r\n\t\t\t\t\t\tonSelect: _view_scrollright\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"view.scrollReset\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, DOWN],\r\n\t\t\t\t\t\tonSelect: _view_scrollreset\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.song\"),\r\n\t\t\t\tchilds: buildSongUI()\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.note\") + \" >\",\r\n\t\t\t\tchilds: buildNoteTypesUI()\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.snap\") + \" >\",\r\n\t\t\t\tchilds: buildSnapsUI()\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: translate(\"topBar.playback\") + \" >\",\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.play\"),\r\n\t\t\t\t\t\tkeybind: [SPACE],\r\n\t\t\t\t\t\tonSelect: _playback_play\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.speedRaise\", [\"25\"]),\r\n\t\t\t\t\t\tkeybind: [PERIOD],\r\n\t\t\t\t\t\tonSelect: _playback_speed_raise\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.speedReset\"),\r\n\t\t\t\t\t\tonSelect: _playback_speed_reset\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.speedLower\", [\"25\"]),\r\n\t\t\t\t\t\tkeybind: [COMMA],\r\n\t\t\t\t\t\tonSelect: _playback_speed_lower\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.sectionBack\"),\r\n\t\t\t\t\t\tkeybind: [A],\r\n\t\t\t\t\t\tonSelect: _playback_back\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.sectionForward\"),\r\n\t\t\t\t\t\tkeybind: [D],\r\n\t\t\t\t\t\tonSelect: _playback_forward\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.sectionStart\"),\r\n\t\t\t\t\t\tkeybind: [SHIFT, S],\r\n\t\t\t\t\t\tonSelect: _playback_section_start\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.backStep\"),\r\n\t\t\t\t\t\tkeybind: [W],\r\n\t\t\t\t\t\tonSelect: _playback_back_step\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.forwardStep\"),\r\n\t\t\t\t\t\tkeybind: [S],\r\n\t\t\t\t\t\tonSelect: _playback_forward_step\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: translate(\"playback.metronome\"),\r\n\t\t\t\t\t\tonSelect: _playback_metronome,\r\n\t\t\t\t\t\ticon: Options.charterMetronomeEnabled ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t/*{\r\n\t\t\t\t\t\tlabel: translate(\"playback.visualMetronome\")\r\n\t\t\t\t\t},*/\r\n\t\t\t\t]\r\n\t\t\t}\r\n\t\t];\r\n\r\n\t\thitsound = FlxG.sound.load(Paths.sound(Flags.DEFAULT_CHARTER_HITSOUND_SOUND));\r\n\t\tmetronome = FlxG.sound.load(Paths.sound(Flags.DEFAULT_CHARTER_METRONOME_SOUND));\r\n\r\n\t\tcharterCamera = FlxG.camera;\r\n\t\tuiCamera = new FlxCamera();\r\n\t\tuiCamera.bgColor = 0;\r\n\t\tFlxG.cameras.add(uiCamera);\r\n\r\n\t\tfor (camera in FlxG.cameras.list) camera.antialiasing = false;\r\n\r\n\t\tcharterBG = new FunkinSprite(0, 0, Paths.image('menus/menuDesat'));\r\n\t\tcharterBG.color = 0xFF181818;\r\n\t\tcharterBG.cameras = [charterCamera];\r\n\t\tcharterBG.screenCenter();\r\n\t\tcharterBG.scrollFactor.set();\r\n\t\tadd(charterBG);\r\n\r\n\t\tgridBackdrops = new CharterBackdropGroup(strumLines);\r\n\t\tgridBackdrops.notesGroup = this.notesGroup;\r\n\r\n\t\tleftEventRowText = new UIText(0, -40, 0, translate(\"info.\" + (Options.charterSwapEventSides ? \"globalEvents\" : \"localEvents\")), 12);\r\n\t\tleftEventRowText.alignment = \"center\"; leftEventRowText.alpha = 0.75;\r\n\r\n\t\tleftEventsBackdrop = new EventBackdrop(false);\r\n\t\tleftEventsBackdrop.x = -leftEventsBackdrop.width;\r\n\r\n\t\tleftEventRowText.cameras = leftEventsBackdrop.cameras = leftEventsGroup.cameras = [charterCamera];\r\n\r\n\t\trightEventRowText = new UIText(0, -40, 0, translate(\"info.\" + (Options.charterSwapEventSides ? \"localEvents\" : \"globalEvents\")), 12);\r\n\t\trightEventRowText.alignment = \"center\"; rightEventRowText.alpha = 0.75;\r\n\r\n\t\trightEventsBackdrop = new EventBackdrop(true);\r\n\t\trightEventsBackdrop.x = 0;\r\n\r\n\t\trightEventRowText.cameras = rightEventsBackdrop.cameras = rightEventsGroup.cameras = [charterCamera];\r\n\r\n\t\tleftEventsGroup.eventsBackdrop = Options.charterSwapEventSides ? rightEventsBackdrop : leftEventsBackdrop;\r\n\t\tleftEventsGroup.eventsRowText = Options.charterSwapEventSides ? rightEventRowText : leftEventRowText;\r\n\t\trightEventsGroup.eventsBackdrop = Options.charterSwapEventSides ? leftEventsBackdrop : rightEventsBackdrop;\r\n\t\trightEventsGroup.eventsRowText = Options.charterSwapEventSides ? leftEventRowText : rightEventRowText;\r\n\r\n\t\t// thank you neo for pointing out im stupid -lunar\r\n\t\t// this is future lunar i completely forgot what neo pointed out but hes awesome go follow him on twitter\r\n\r\n\t\tadd(gridBackdropDummy = new CameraHoverDummy(gridBackdrops, FlxPoint.weak(1, 0)));\r\n\t\tselectionBox = new UISliceSprite(0, 0, 2, 2, 'editors/ui/selection');\r\n\t\tselectionBox.visible = false;\r\n\t\tselectionBox.scrollFactor.set(1, 1);\r\n\t\tselectionBox.incorporeal = true;\r\n\r\n\t\tnoteHoverer = new CharterNoteHoverer();\r\n\t\tnoteDeleteAnims = new CharterDeleteAnim();\r\n\r\n\t\tcharterBookmarksGroup.cameras = selectionBox.cameras = notesGroup.cameras = gridBackdrops.cameras =\r\n\t\tnoteHoverer.cameras = noteDeleteAnims.cameras = [charterCamera];\r\n\r\n\t\ttopMenuSpr = new UITopMenu(topMenu);\r\n\t\ttopMenuSpr.cameras = uiGroup.cameras = [uiCamera];\r\n\r\n\t\tnoteTypeText = new UIText(0, 0, 0, \"(0) \" + translate(\"noteTypes.default\"));\r\n\t\tnoteTypeText.cameras = [uiCamera];\r\n\r\n\t\tscrollBar = new UIScrollBar(FlxG.width - 20, topMenuSpr.bHeight, 1000, 0, 100);\r\n\t\tscrollBar.cameras = [uiCamera];\r\n\t\tscrollBar.onChange = function(v) {\r\n\t\t\tif (!FlxG.sound.music.playing)\r\n\t\t\t\tConductor.songPosition = Conductor.getTimeForStep(v) + Conductor.songOffset;\r\n\t\t};\r\n\t\tuiGroup.add(scrollBar);\r\n\r\n\t\tsongPosInfo = new UIText(FlxG.width - 30 - 400, scrollBar.y + 10, 400, \"00:00 / 00:00\\nBeat: 0\\nStep: 0\\nMeasure: 0\\nBPM: 0\\nTime Signature: 4/4\");\r\n\t\tsongPosInfo.alignment = RIGHT;\r\n\t\tuiGroup.add(songPosInfo);\r\n\r\n\t\tplayBackSlider = new UISlider(FlxG.width - 160 - 26 - 20, (23/2) - (12/2), 160, 1, [{start: 0.25, end: 1, size: 0.5}, {start: 1, end: 2, size: 0.5}], true);\r\n\t\tplayBackSlider.onChange = function (v) {\r\n\t\t\tFlxG.sound.music.pitch = vocals.pitch = v;\r\n\t\t\tfor (strumLine in strumLines.members) strumLine.vocals.pitch = v;\r\n\t\t};\r\n\t\tuiGroup.add(playBackSlider);\r\n\r\n\t\tquants.reverse();\r\n\t\tfor (quant in quants) {\r\n\t\t\tvar button:CharterQuantButton = new CharterQuantButton(0, 0, quant);\r\n\t\t\tbutton.onClick = () -> {setquant(button.quant);};\r\n\t\t\tquantButtons.push(cast uiGroup.add(button));\r\n\t\t}\r\n\t\tquants.reverse();\r\n\r\n\t\tstrumlineInfoBG = new UISprite();\r\n\t\tstrumlineInfoBG.loadGraphic(Paths.image('editors/charter/strumline-info-bg'));\r\n\t\tstrumlineInfoBG.y = 23;\r\n\t\tstrumlineInfoBG.scrollFactor.set();\r\n\r\n\t\tautoSaveNotif = new CharterAutoSaveUI(20, strumlineInfoBG.y + strumlineInfoBG.height + 20);\r\n\t\tuiGroup.add(autoSaveNotif);\r\n\r\n\t\tstrumlineAddButton = new CharterStrumlineButton(\"editors/new\", translate(\"createNew\"));\r\n\t\tstrumlineAddButton.onClick = createStrumWithUI;\r\n\t\tstrumlineAddButton.animationOnClick = false;\r\n\t\tstrumlineAddButton.textColorLerp = 0.5;\r\n\r\n\t\tstrumlineLockButton = new CharterStrumlineButton(\"editors/charter/lock-strumline\", translate(\"lock-unlock\"));\r\n\t\tstrumlineLockButton.onClick = function () {\r\n\t\t\tUIState.playEditorSound(!strumLines.draggable ? Flags.DEFAULT_CHARTER_STRUMUNLOCK_SOUND : Flags.DEFAULT_CHARTER_STRUMLOCK_SOUND);\r\n\t\t\tif (strumLines != null) {\r\n\t\t\t\tstrumLines.draggable = !strumLines.draggable;\r\n\t\t\t\tstrumlineLockButton.textTweenColor.color = strumLines.draggable ? 0xFF5C95CA : 0xFFE16565;\r\n\t\t\t}\r\n\t\t};\r\n\r\n\t\tstrumlineAddButton.cameras = strumlineLockButton.cameras = [charterCamera];\r\n\t\tstrumlineInfoBG.cameras = [charterCamera];\r\n\t\tstrumLines.cameras = [charterCamera];\r\n\r\n\t\tlocalAddEventSpr = new CharterEventAdd(Options.charterSwapEventSides);\r\n\t\tlocalAddEventSpr.x -= localAddEventSpr.bWidth;\r\n\t\tlocalAddEventSpr.cameras = [charterCamera];\r\n\t\tlocalAddEventSpr.alpha = 0;\r\n\r\n\t\tglobalAddEventSpr = new CharterEventAdd(!Options.charterSwapEventSides);\r\n\t\tglobalAddEventSpr.x = 0;\r\n\t\tglobalAddEventSpr.cameras = [charterCamera];\r\n\t\tglobalAddEventSpr.alpha = 0;\r\n\r\n\t\t// adds grid and notes so that they're ALWAYS behind the UI\r\n\t\tadd(gridBackdrops);\r\n\t\tadd(leftEventsBackdrop);\r\n\t\tadd(rightEventsBackdrop);\r\n\t\tadd(localAddEventSpr);\r\n\t\tadd(globalAddEventSpr);\r\n\t\tadd(leftEventsGroup);\r\n\t\tadd(rightEventsGroup);\r\n\t\tadd(leftEventRowText);\r\n\t\tadd(localAddEventSpr.sideText);\r\n\t\tadd(rightEventRowText);\r\n\t\tadd(globalAddEventSpr.sideText);\r\n\r\n\t\tadd(noteHoverer);\r\n\t\tadd(noteDeleteAnims);\r\n\t\tadd(notesGroup);\r\n\t\tadd(selectionBox);\r\n\t\tadd(charterBookmarksGroup);\r\n\t\tadd(strumlineInfoBG);\r\n\t\tadd(strumlineLockButton);\r\n\t\tadd(strumlineAddButton);\r\n\t\tadd(strumLines);\r\n\t\t// add the top menu last OUT of the ui group so that it stays on top\r\n\t\tadd(topMenuSpr);\r\n\t\tadd(noteTypeText);\r\n\t\t// add the ui group\r\n\t\tadd(uiGroup);\r\n\r\n\t\tloadSong();\r\n\r\n\t\tif (Framerate.isLoaded) {\r\n\t\t\tFramerate.fpsCounter.alpha = 0.4;\r\n\t\t\tFramerate.memoryCounter.alpha = 0.4;\r\n\t\t\tFramerate.codenameBuildField.alpha = 0.4;\r\n\t\t}\r\n\r\n\t\tif (Options.editorsResizable)\r\n\t\t\tUIState.setResolutionAware();\r\n\r\n\t\tupdateBookmarks(); //recalling it to fix resolutions\r\n\r\n\t\t// ! IF YOU EVER WANNA VIEW IN THE FUTURE, JUST USE A FLXSPRITE :D -lunar\r\n\t\t/*var dataDisplay:FlxSprite = new FlxSprite().loadGraphic(waveformHandler.waveDatas.get(\"Voices.ogg\"));\r\n\t\tdataDisplay.scrollFactor.set(1, 0);\r\n\t\tdataDisplay.scale.set(2, 2);\r\n\t\tdataDisplay.updateHitbox();\r\n\t\tdataDisplay.screenCenter(Y);\r\n\t\tdataDisplay.cameras = [charterCamera]; dataDisplay.x = -dataDisplay.width; add(dataDisplay);*/\r\n\r\n\t\tDiscordUtil.call(\"onEditorLoaded\", [\"Chart Editor\", __song + \" (\" + __diff + \")\" + (__variant != null && __variant != \"\" ? \" (\" + __variant + \")\" : \"\")]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadSong",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadSong() {\r\n\t\tif (__reload) {\r\n\t\t\tEventsData.reloadEvents();\r\n\t\t\tPlayState.loadSong(__song, __diff, __variant, false, false);\r\n\t\t\t__resetStatics();\r\n\t\t}\r\n\r\n\t\tConductor.setupSong(PlayState.SONG);\r\n\t\tnoteTypes = PlayState.SONG.noteTypes;\r\n\r\n\t\tFlxG.sound.setMusic(FlxG.sound.load(Paths.inst(__song, __diff, PlayState.SONG.meta.instSuffix)));\r\n\t\tif (Assets.exists(Paths.voices(__song, __diff, PlayState.SONG.meta.vocalsSuffix)))\r\n\t\t\tvocals = FlxG.sound.load(Paths.voices(__song, __diff, PlayState.SONG.meta.vocalsSuffix));\r\n\t\telse\r\n\t\t\tvocals = new FlxSound();\r\n\r\n\t\tvocals.muted = !PlayState.SONG.meta.needsVoices;\r\n\t\tvocals.group = FlxG.sound.defaultMusicGroup;\r\n\r\n\t\tgridBackdrops.createGrids(PlayState.SONG.strumLines.length);\r\n\r\n\t\tvar noteCount:Int = 0;\r\n\t\tfor (strL in PlayState.SONG.strumLines) {\r\n\t\t\tcreateStrumline(strumLines.members.length, strL, false, false);\r\n\t\t\tnoteCount += strL.notes.length;\r\n\t\t}\r\n\r\n\t\t// create notes\r\n\t\tnotesGroup.autoSort = false;\r\n\t\tnotesGroup.preallocate(noteCount);\r\n\r\n\t\tvar notesCreated:Int = 0;\r\n\t\tfor (i => strL in PlayState.SONG.strumLines)\r\n\t\t\tfor (note in strL.notes) {\r\n\t\t\t\tvar n = new CharterNote();\r\n\t\t\t\tvar t = Conductor.getStepForTime(note.time);\r\n\t\t\t\tn.updatePos(t, note.id, Conductor.getStepForTime(note.time + note.sLen) - t, note.type, strumLines.members[i]);\r\n\t\t\t\tnotesGroup.members[notesCreated++] = n;\r\n\t\t\t}\r\n\t\tnotesGroup.sortNotes();\r\n\t\tnotesGroup.autoSort = true;\r\n\r\n\t\t// create events\r\n\t\trightEventsGroup.autoSort = leftEventsGroup.autoSort = false;\r\n\t\tvar lastLeftEvents:CharterEvent = null, lastRightEvents:CharterEvent = null;\r\n\t\tvar lastLeftTime = Math.NaN, lastRightTime = Math.NaN;\r\n\t\tfor (e in PlayState.SONG.events) if (e != null) {\r\n\t\t\tif (e.global) {\r\n\t\t\t\tif (lastRightEvents != null && lastRightTime == e.time) lastRightEvents.events.push(e);\r\n\t\t\t\telse rightEventsGroup.add(lastRightEvents = new CharterEvent(Conductor.getStepForTime(lastRightTime = e.time), [e], e.global));\r\n\t\t\t}\r\n\t\t\telse {\r\n\t\t\t\tif (lastLeftEvents != null && lastLeftTime == e.time) lastLeftEvents.events.push(e);\r\n\t\t\t\telse leftEventsGroup.add(lastLeftEvents = new CharterEvent(Conductor.getStepForTime(lastLeftTime = e.time), [e], e.global));\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfor (grp in [leftEventsGroup, rightEventsGroup]) {\r\n\t\t\tgrp.sortEvents();\r\n\t\t\tgrp.autoSort = true;\r\n\t\t\tfor (e in grp.members) e.refreshEventIcons();\r\n\t\t}\r\n\r\n\t\tbuildNoteTypesUI();\r\n\t\tupdateBookmarks();\r\n\t\trefreshBPMSensitive();\r\n\r\n\t\t// Just for now until i add event stacking -lunar\r\n\t\ttry {__relinkUndos();}\r\n\t\tcatch (e) {Logs.trace('Failed to relink undos: ${Std.string(e)}', ERROR);}\r\n\r\n\t\t__applyPlaytestInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__endStep",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshBPMSensitive",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function refreshBPMSensitive() {\r\n\t\t// refreshes everything dependant on BPM, and BPM changes\r\n\t\tvar length = FlxG.sound.music.getDefault(vocals).length;\r\n\t\tscrollBar.length = __endStep = Conductor.getStepForTime(length);\r\n\r\n\t\tgridBackdrops.bottomLimitY = __endStep * 40;\r\n\t\tleftEventsBackdrop.bottomSeparator.y = rightEventsBackdrop.bottomSeparator.y = gridBackdrops.bottomLimitY-2;\r\n\r\n\t\tCharterGridSeperatorBase.lastConductorSprY = Math.NEGATIVE_INFINITY;\r\n\r\n\t\tupdateWaveforms();\r\n\t\tupdateCameraChanges();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getWavesToGenerate",
+			"args": [],
+			"ret": "Array<{name:String, sound:FlxSound}>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getWavesToGenerate():Array<{name:String, sound:FlxSound}> {\r\n\t\tvar wavesToGenerate:Array<{name:String, sound:FlxSound}> = [];\r\n\r\n\t\tif (FlxG.sound.music.loaded)\r\n\t\t\twavesToGenerate.push({name: 'Inst${PlayState.SONG.meta.instSuffix}.ogg', sound: FlxG.sound.music});\r\n\r\n\t\tif (vocals.loaded)\r\n\t\t\twavesToGenerate.push({name: 'Voices${PlayState.SONG.meta.vocalsSuffix}.ogg', sound: vocals});\r\n\r\n\t\tfor (strumLine in strumLines)\r\n\t\t\tif (strumLine.vocals != null && strumLine.strumLine.vocalsSuffix != null && strumLine.strumLine.vocalsSuffix != \"\" && strumLine.vocals.loaded)\r\n\t\t\t\twavesToGenerate.push({\r\n\t\t\t\t\tname: 'Voices${strumLine.strumLine.vocalsSuffix}.ogg',\r\n\t\t\t\t\tsound: strumLine.vocals\r\n\t\t\t\t});\r\n\r\n\t\treturn wavesToGenerate;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateWaveforms",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateWaveforms() {\r\n\t\tvar wavesToGenerate:Array<{name:String, sound:FlxSound}> = getWavesToGenerate();\r\n\r\n\t\tvar oldWaveformList:Array<String> = waveformHandler.waveformList;\r\n\t\tvar newWaveformList:Array<String> = [for (data in wavesToGenerate) data.name];\r\n\r\n\t\tif (waveformHandler == null ? true : waveformHandler.ampsNeeded != __endStep*40) {\r\n\t\t\twaveformHandler.clearWaveforms();\r\n\t\t\twaveformHandler.ampsNeeded = __endStep * 40;\r\n\r\n\t\t\tfor (data in wavesToGenerate) {\r\n\t\t\t\twaveformHandler.generateShader(data.name, data.sound);\r\n\t\t\t\twaveformHandler.waveformList.push(data.name);\r\n\t\t\t}\r\n\t\t} else if (waveformHandler != null && waveformHandler.waveformList.length != newWaveformList.length) {\r\n\t\t\tfor (name in oldWaveformList)\r\n\t\t\t\tif (!newWaveformList.contains(name))\r\n\t\t\t\t\twaveformHandler.clearWaveform(name);\r\n\r\n\t\t\tfor (data in wavesToGenerate)\r\n\t\t\t\tif (!oldWaveformList.contains(data.name))\r\n\t\t\t\t\twaveformHandler.generateShader(data.name, data.sound);\r\n\r\n\t\t\twaveformHandler.waveformList = newWaveformList;\r\n\t\t}\r\n\r\n\t\tfor (strumLine in strumLines) {\r\n\t\t\tif (strumLine.selectedWaveform == -1) continue;\r\n\r\n\t\t\tvar oldName:String = oldWaveformList[strumLine.selectedWaveform];\r\n\t\t\tstrumLine.selectedWaveform = waveformHandler.waveformList.indexOf(oldName);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateCameraChanges",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateCameraChanges() {\r\n\t\tif (!Options.charterShowCameraHighlights) return;\r\n\r\n\t\tcameraMovementChanges = [];\r\n\t\tfor (grp in [leftEventsGroup, rightEventsGroup]) {\r\n\t\t\tgrp.filterEvents();\r\n\t\t\tgrp.sortEvents();\r\n\t\t\tfor(e in grp.members) {\r\n\t\t\t\tfor(event in e.events) {\r\n\t\t\t\t\tif (event.name == \"Camera Movement\") {\r\n\t\t\t\t\t\tcameraMovementChanges.push({\r\n\t\t\t\t\t\t\tstrumLineID: event.params[0],\r\n\t\t\t\t\t\t\tstep: e.step,\r\n\t\t\t\t\t\t\tendStep: __endStep\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t//need to sort again for both local and global events to be used\r\n\t\tcameraMovementChanges.sort(function(e1, e2) {\r\n\t\t\treturn FlxSort.byValues(FlxSort.ASCENDING, e1.step, e2.step);\r\n\t\t});\r\n\t\t//update previous change\r\n\t\tif (cameraMovementChanges.length > 0) {\r\n\t\t\tfor (i in 1...cameraMovementChanges.length) {\r\n\t\t\t\tcameraMovementChanges[i-1].endStep = cameraMovementChanges[i].step;\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function beatHit(curBeat:Int) {\r\n\t\tsuper.beatHit(curBeat);\r\n\t\tif (FlxG.sound.music.playing) {\r\n\t\t\tif (Options.charterMetronomeEnabled)\r\n\t\t\t\tmetronome.replay();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gridActionType",
+			"type": "CharterGridActionType",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "NOTE AND CHARTER GRID LOGIC HERE",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dragStartPos",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "mousePos",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectionDragging",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isSelecting",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isAltCopyDrag",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateSelectionLogic",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateSelectionLogic() {\r\n\t\tfunction select(s:ICharterSelectable) {\r\n\t\t\tif (FlxG.keys.pressed.CONTROL) selection.push(s);\r\n\t\t\telse if (FlxG.keys.pressed.SHIFT) selection.remove(s);\r\n\t\t\telse selection = [s];\r\n\t\t}\r\n\r\n\t\tfor (group in [notesGroup, leftEventsGroup, rightEventsGroup]) {\r\n\t\t\tvar group:FlxTypedGroup<Dynamic> = cast group;\r\n\t\t\tgroup.forEach(function(s) {\r\n\t\t\t\ts.selected = false;\r\n\t\t\t\tif (gridActionType == NONE) {\r\n\t\t\t\t\tif (s is CharterNote) {\r\n\t\t\t\t\t\tvar n:CharterNote = cast s;\r\n\t\t\t\t\t\tif ((n.hovered || n.sustainDraggable) && FlxG.mouse.justReleased) select(cast s);\r\n\t\t\t\t\t} else if (FlxG.mouse.justReleased && s.hovered) select(cast s);\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}\r\n\t\tselection = __fixSelection(selection);\r\n\t\tfor(s in selection) s.selected = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateAutoSaving",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateAutoSaving(elapsed:Float) {\r\n\t\tif (!Options.charterAutoSaves) return;\r\n\t\tautoSaveTimer -= elapsed;\r\n\r\n\t\tif (autoSaveTimer < Options.charterAutoSaveWarningTime && !autoSaveNotif.cancelled && !autoSaveNotif.showedAnimation) {\r\n\t\t\tif (Options.charterAutoSavesSeparateFolder)\r\n\t\t\t\t__autoSaveLocation = __diff.toLowerCase() + DateTools.format(Date.now(), \"%m-%d_%H-%M\");\r\n\t\t\tvar filename = !Options.charterAutoSavesSeparateFolder ? '${__diff.toLowerCase()}.json' : '${__autoSaveLocation}.json';\r\n\t\t\tautoSaveNotif.startAutoSave(autoSaveTimer, translate(\"popup.savedChartAt\", [filename]));\r\n\t\t}\r\n\t\tif (autoSaveTimer <= 0) {\r\n\t\t\tautoSaveTimer = Options.charterAutoSaveTime;\r\n\t\t\tif (!autoSaveNotif.cancelled) {\r\n\t\t\t\tbuildChart();\r\n\r\n\t\t\t\tif (Options.charterAutoSavesSeparateFolder)\r\n\t\t\t\t\tChart.save(PlayState.SONG, __diff.toLowerCase(), __autoSaveLocation, {saveMetaInChart: true, saveLocalEvents: true, seperateGlobalEvents: true, folder: 'autosaves', prettyPrint: Options.editorCharterPrettyPrint});\r\n\t\t\t\telse\r\n\t\t\t\t\tChart.save(PlayState.SONG, __diff.toLowerCase(), __variant, {saveMetaInChart: true, saveLocalEvents: true, seperateGlobalEvents: true, prettyPrint: Options.editorCharterPrettyPrint});\r\n\r\n\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_SAVE_SOUND);\r\n\t\t\t\tundos.save();\r\n\t\t\t}\r\n\t\t\tautoSaveNotif.cancelled = false;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateNoteLogic",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateNoteLogic(elapsed:Float) {\r\n\t\tupdateSelectionLogic();\r\n\r\n\t\t/**\r\n\t\t * NOTE DRAG HANDLING\r\n\t\t */\r\n\t\tFlxG.mouse.getWorldPosition(charterCamera, mousePos);\r\n\t\tif (!gridBackdropDummy.hoveredByChild && !FlxG.mouse.pressed)\r\n\t\t\tgridActionType = NONE;\r\n\t\tselectionBox.visible = false;\r\n\t\tswitch(gridActionType) {\r\n\t\t\tcase BOX_SELECTION:\r\n\t\t\t\tif (gridBackdropDummy.hoveredByChild) {\r\n\t\t\t\t\tselectionBox.visible = true;\r\n\t\t\t\t\tif (isSelecting) {\r\n\t\t\t\t\t\tselectionBox.x = Math.min(mousePos.x, dragStartPos.x);\r\n\t\t\t\t\t\tselectionBox.y = Math.min(mousePos.y, dragStartPos.y);\r\n\t\t\t\t\t\tselectionBox.bWidth = Std.int(Math.abs(mousePos.x - dragStartPos.x));\r\n\t\t\t\t\t\tselectionBox.bHeight = Std.int(Math.abs(mousePos.y - dragStartPos.y));\r\n\t\t\t\t\t\tif (FlxG.mouse.justReleased) isSelecting = false;\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tif (FlxG.keys.pressed.SHIFT) {\r\n\t\t\t\t\t\t\tfor (group in [notesGroup, leftEventsGroup, rightEventsGroup]) {\r\n\t\t\t\t\t\t\t\tvar group:FlxTypedGroup<Dynamic> = cast group;\r\n\t\t\t\t\t\t\t\tfor(n in group)\r\n\t\t\t\t\t\t\t\t\tif (n.handleSelection(selectionBox) && selection.contains(n))\r\n\t\t\t\t\t\t\t\t\t\tselection.remove(n);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else if (FlxG.keys.pressed.CONTROL) {\r\n\t\t\t\t\t\t\tfor (group in [notesGroup, leftEventsGroup, rightEventsGroup]) {\r\n\t\t\t\t\t\t\t\tvar group:FlxTypedGroup<Dynamic> = cast group;\r\n\t\t\t\t\t\t\t\tfor(n in group)\r\n\t\t\t\t\t\t\t\t\tif (n.handleSelection(selectionBox) && !selection.contains(n))\r\n\t\t\t\t\t\t\t\t\t\tselection.push(n);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tselection = [];\r\n\t\t\t\t\t\t\tfor (group in [notesGroup, leftEventsGroup, rightEventsGroup]) {\r\n\t\t\t\t\t\t\t\tvar group:FlxTypedGroup<Dynamic> = cast group;\r\n\t\t\t\t\t\t\t\tfor(n in group)\r\n\t\t\t\t\t\t\t\t\tif (n.handleSelection(selectionBox))\r\n\t\t\t\t\t\t\t\t\t\tselection.push(n);\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tselection = __fixSelection(selection);\r\n\t\t\t\t\t\tgridActionType = NONE;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tcase INVALID_DRAG:\r\n\t\t\t\t// do nothing, locked\r\n\t\t\t\tif (!FlxG.mouse.pressed)\r\n\t\t\t\t\tgridActionType = NONE;\r\n\t\t\tcase NOTE_DRAG:\r\n\t\t\t\tselectionDragging = FlxG.mouse.pressed;\r\n\t\t\t\tif (selectionDragging) {\r\n\t\t\t\t\tgridBackdrops.draggingObj = null;\r\n\t\t\t\t\tselection.loop(function (n:CharterNote) {\r\n\t\t\t\t\t\tn.snappedToGrid = false;\r\n\t\t\t\t\t\tn.setPosition(n.fullID * 40 + (mousePos.x - dragStartPos.x), n.step * 40 + (mousePos.y - dragStartPos.y));\r\n\t\t\t\t\t\tn.y = CoolUtil.bound(n.y, 0, (__endStep*40) - n.height);\r\n\t\t\t\t\t\tn.x = CoolUtil.bound(n.x, 0, (strumLines.totalKeyCount-1) * 40);\r\n\t\t\t\t\t\tn.cursor = HAND;\r\n\t\t\t\t\t}, function (e:CharterEvent) {\r\n\t\t\t\t\t\te.snappedToGrid = false;\r\n\t\t\t\t\t\tvar isGlobal = e.global != Options.charterSwapEventSides;\r\n\t\t\t\t\t\te.setPosition(e.eventsBackdrop.x + (isGlobal ? 0 : e.eventsBackdrop.width - e.bWidth) + (mousePos.x - dragStartPos.x), e.step * 40 + (mousePos.y - dragStartPos.y) - 17);\r\n\t\t\t\t\t\te.y = CoolUtil.bound(e.y, -17, (__endStep*40)-17);\r\n\t\t\t\t\t\te.cursor = HAND;\r\n\r\n\t\t\t\t\t\te.displayGlobal = e.x + (e.bWidth/2) > ((strumLines.totalKeyCount*40)/2) != Options.charterSwapEventSides;\r\n\t\t\t\t\t});\r\n\t\t\t\t\tcurrentCursor = HAND;\r\n\t\t\t\t} else {\r\n\t\t\t\t\tdragStartPos.set(Std.int(dragStartPos.x / 40) * 40, dragStartPos.y);\r\n\t\t\t\t\tvar verticalChange:Float = (mousePos.y - dragStartPos.y) / 40;\r\n\t\t\t\t\tvar horizontalChange:Int = CoolUtil.floorInt((mousePos.x - dragStartPos.x) / 40);\r\n\t\t\t\t\tvar undoDrags:Array<SelectionDragChange> = [];\r\n\r\n\t\t\t\t\tfor (s in selection) {\r\n\t\t\t\t\t\tif (s.draggable) {\r\n\t\t\t\t\t\t\tvar changePoint:FlxPoint = FlxPoint.get(verticalChange, horizontalChange);\r\n\t\t\t\t\t\t\tif (!FlxG.keys.pressed.SHIFT)\r\n\t\t\t\t\t\t\t\tchangePoint.x -= ((s.step + verticalChange) - quantStepRounded(s.step+verticalChange, verticalChange > 0 ? 0.35 : 0.65));\r\n\r\n\t\t\t\t\t\t\tvar boundedChange:FlxPoint = changePoint.clone();\r\n\r\n\t\t\t\t\t\t\t// Some maths, so cool bro -lunar (i don't know why i quote my self here)\r\n\t\t\t\t\t\t\tif (s.step + changePoint.x < 0) boundedChange.x += Math.abs(s.step + changePoint.x);\r\n\t\t\t\t\t\t\tif (s.step + changePoint.x > __endStep-1) boundedChange.x -= (s.step + changePoint.x) - (__endStep-1);\r\n\r\n\t\t\t\t\t\t\tif (s is CharterNote) {\r\n\t\t\t\t\t\t\t\tvar note:CharterNote = cast s;\r\n\t\t\t\t\t\t\t\tif (note.fullID + changePoint.y < 0) boundedChange.y += Math.abs(note.fullID + changePoint.y);\r\n\t\t\t\t\t\t\t\tif (note.fullID + changePoint.y > strumLines.totalKeyCount-1) boundedChange.y -= (note.fullID + changePoint.y) - (strumLines.totalKeyCount-1);\r\n\t\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\t\ts.handleDrag(boundedChange);\r\n\t\t\t\t\t\t\tundoDrags.push({selectable:s, change: boundedChange});\r\n\t\t\t\t\t\t\tchangePoint.put();\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\ts.snappedToGrid = true;\r\n\t\t\t\t\t\tif (s is UISprite) {\r\n\t\t\t\t\t\t\tvar s:UISprite = cast s;\r\n\t\t\t\t\t\t\ts.cursor = CLICK;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\tcheckSelectionForBPMUpdates();\r\n\t\t\t\t\tif (!(verticalChange == 0 && horizontalChange == 0)) {\r\n\t\t\t\t\t\tnotesGroup.sortNotes();\r\n\r\n\t\t\t\t\t\tvar changes:Array<CharterChange> = [];\r\n\t\t\t\t\t\tif (isAltCopyDrag) {\r\n\t\t\t\t\t\t\tchanges.push(CCreateSelection(selection.copy()));\r\n\t\t\t\t\t\t\tisAltCopyDrag = false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tchanges.push(CSelectionDrag(undoDrags));\r\n\t\t\t\t\t\tchanges.push(updateEventsGroups(selection));\r\n\t\t\t\t\t\tundos.addToUndo(CChangeBundle(changes));\r\n\t\t\t\t\t} else if (isAltCopyDrag) {\r\n\t\t\t\t\t\tundos.addToUndo(CCreateSelection(selection.copy()));\r\n\t\t\t\t\t\tisAltCopyDrag = false;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tgridActionType = NONE;\r\n\t\t\t\t\tcurrentCursor = ARROW;\r\n\t\t\t\t}\r\n\t\t\tcase NONE:\r\n\t\t\t\tif (FlxG.mouse.justPressed)\r\n\t\t\t\t\tFlxG.mouse.getWorldPosition(charterCamera, dragStartPos);\r\n\t\t\t\telse if (FlxG.mouse.justPressedRight) {\r\n\t\t\t\t\tcloseCurrentContextMenu();\r\n\t\t\t\t\tgridActionType = DELETE_SELECTION;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (gridBackdropDummy.hovered) {\r\n\t\t\t\t\t// AUTO DETECT\r\n\t\t\t\t\tif (FlxG.mouse.justPressed) isSelecting = true;\r\n\t\t\t\t\tif (isSelecting && (Math.abs(mousePos.x - dragStartPos.x) > 20 || Math.abs(mousePos.y - dragStartPos.y) > 20)) {\r\n\t\t\t\t\t\tgridActionType = BOX_SELECTION;\r\n\t\t\t\t\t}\r\n\r\n\t\t\t\t\tvar id = Math.floor(mousePos.x / 40);\r\n\t\t\t\t\tvar mouseOnGrid = id >= 0 && id < strumLines.totalKeyCount && mousePos.y >= 0;\r\n\r\n\t\t\t\t\tif (FlxG.mouse.justReleased) {\r\n\t\t\t\t\t\tfor (n in selection) n.selected = false;\r\n\t\t\t\t\t\tselection = [];\r\n\r\n\t\t\t\t\t\tif (mouseOnGrid && mousePos.y > 0 && mousePos.y < (__endStep)*40) {\r\n\t\t\t\t\t\t\tvar note = new CharterNote();\r\n\t\t\t\t\t\t\tvar targetStrumline = strumLines.getStrumlineFromID(id);\r\n\t\t\t\t\t\t\tnote.updatePos(\r\n\t\t\t\t\t\t\t\tCoolUtil.bound(FlxG.keys.pressed.SHIFT ? ((mousePos.y-20) / 40) : quantStep(mousePos.y/40), 0, __endStep-1),\r\n\t\t\t\t\t\t\t\t(id-targetStrumline.startingID) % targetStrumline.keyCount, 0, noteType, targetStrumline\r\n\t\t\t\t\t\t\t);\r\n\t\t\t\t\t\t\tnotesGroup.add(note);\r\n\t\t\t\t\t\t\tselection = [note];\r\n\t\t\t\t\t\t\tundos.addToUndo(CCreateSelection([note]));\r\n\t\t\t\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARTER_NOTEPLACE_SOUND);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tisSelecting = false;\r\n\t\t\t\t\t}\r\n\t\t\t\t} else if (gridBackdropDummy.hoveredByChild) {\r\n\t\t\t\t\tif (FlxG.mouse.pressed) {\r\n\t\t\t\t\t\tvar noteHovered:Bool = false;\r\n\t\t\t\t\t\tfor(n in selection) if (n.hovered) {noteHovered = true; break;}\r\n\r\n\t\t\t\t\t\tvar noteSusDrag:Bool = false;\r\n\t\t\t\t\t\tfor(s in selection) {\r\n\t\t\t\t\t\t\tif (!(s is CharterNote)) continue;\r\n\t\t\t\t\t\t\tvar n:CharterNote = cast s;\r\n\t\t\t\t\t\t\tif (n.sustainDraggable) {noteSusDrag = true; break;}\r\n\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\tif ((Math.abs(mousePos.x - dragStartPos.x) > (noteSusDrag ? 1 : 5) || Math.abs(mousePos.y - dragStartPos.y) > (noteSusDrag ? 1 : 5))) {\r\n\t\t\t\t\t\t\tif (noteHovered) {\r\n\t\t\t\t\t\t\t\tif (FlxG.keys.pressed.ALT && selection.length > 0) {\r\n\t\t\t\t\t\t\t\t\tvar newSelection:Array<ICharterSelectable> = [];\r\n\t\t\t\t\t\t\t\t\tfor (s in selection) {\r\n\t\t\t\t\t\t\t\t\t\tif (s is CharterNote) {\r\n\t\t\t\t\t\t\t\t\t\t\tvar n:CharterNote = cast s;\r\n\t\t\t\t\t\t\t\t\t\t\tvar newNote = new CharterNote();\r\n\t\t\t\t\t\t\t\t\t\t\tnewNote.updatePos(n.step, n.id, n.susLength, n.type, n.strumLine);\r\n\t\t\t\t\t\t\t\t\t\t\tnotesGroup.add(newNote);\r\n\t\t\t\t\t\t\t\t\t\t\tnewSelection.push(newNote);\r\n\t\t\t\t\t\t\t\t\t\t} else if (s is CharterEvent) {\r\n\t\t\t\t\t\t\t\t\t\t\tvar e:CharterEvent = cast s;\r\n\t\t\t\t\t\t\t\t\t\t\tvar newEvent = new CharterEvent(e.step, [for (event in e.events) Reflect.copy(event)], e.global);\r\n\t\t\t\t\t\t\t\t\t\t\tnewEvent.refreshEventIcons();\r\n\t\t\t\t\t\t\t\t\t\t\t((e.global != Options.charterSwapEventSides) ? rightEventsGroup : leftEventsGroup).add(newEvent);\r\n\t\t\t\t\t\t\t\t\t\t\tnewSelection.push(newEvent);\r\n\t\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\tfor (s in selection) s.selected = false;\r\n\t\t\t\t\t\t\t\t\tselection = newSelection;\r\n\t\t\t\t\t\t\t\t\tfor (s in selection) s.selected = true;\r\n\t\t\t\t\t\t\t\t\tisAltCopyDrag = true;\r\n\t\t\t\t\t\t\t\t\tUIState.playEditorSound(Flags.DEFAULT_EDITOR_COPY_SOUND);\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\tgridActionType = NOTE_DRAG;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\tif (noteSusDrag) gridActionType = SUSTAIN_DRAG;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\tcase SUSTAIN_DRAG:\r\n\t\t\t\tselectionDragging = FlxG.mouse.pressed;\r\n\t\t\t\tif (selectionDragging) {\r\n\t\t\t\t\tcurrentCursor = CLICK;\r\n\t\t\t\t\tselection.loop(function (n:CharterNote) {\r\n\t\t\t\t\t\tvar change:Float = Math.max((mousePos.y-(FlxG.keys.pressed.SHIFT ? dragStartPos.y : quantStep(dragStartPos.y))) / 40, -n.susLength);\r\n\t\t\t\t\t\tn.tempSusLength = change;\r\n\r\n\t\t\t\t\t\tif (!FlxG.keys.pressed.SHIFT)\r\n\t\t\t\t\t\t\tn.tempSusLength -= (n.susLength + change) - quantStepRounded(n.susLength + change, change > 0 ? 0.35 : 0.65);\r\n\t\t\t\t\t\t@:privateAccess n.__susInstaLerp = FlxG.keys.pressed.SHIFT;\r\n\t\t\t\t\t});\r\n\t\t\t\t} else {\r\n\t\t\t\t\tvar undoChanges:Array<NoteSustainChange> = [];\r\n\t\t\t\t\tselection.loop(function (n:CharterNote) {\r\n\t\t\t\t\t\tvar oldSusLen:Float = n.susLength;\r\n\r\n\t\t\t\t\t\tn.susLength += n.tempSusLength;\r\n\t\t\t\t\t\tn.tempSusLength = 0;\r\n\r\n\t\t\t\t\t\t@:privateAccess n.__susInstaLerp = false;\r\n\t\t\t\t\t\tn.updatePos(n.step, n.id, n.susLength, n.type);\r\n\t\t\t\t\t\tundoChanges.push({before: oldSusLen, after: n.susLength, note: n});\r\n\t\t\t\t\t});\r\n\t\t\t\t\tundos.addToUndo(CEditSustains(undoChanges));\r\n\r\n\t\t\t\t\tgridActionType = NONE;\r\n\t\t\t\t\tcurrentCursor = ARROW;\r\n\t\t\t\t}\r\n\t\t\tcase DELETE_SELECTION:\r\n\t\t\t\tnotesGroup.forEach(function(n) {\r\n\t\t\t\t\tif (n.hovered || n.sustainDraggable) {\r\n\t\t\t\t\t\tdeletedNotes.push(n);\r\n\t\t\t\t\t\tdeleteSingleSelection(n, false);\r\n\r\n\t\t\t\t\t\tif (selection.contains(n)) selection.remove(n);\r\n\t\t\t\t\t\tnoteDeleteAnims.deleteNotes.push({\r\n\t\t\t\t\t\t\tnote: n, time: noteDeleteAnims.deleteTime\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t}\r\n\t\t\t\t});\r\n\r\n\t\t\t\tif (FlxG.mouse.justReleasedRight) {\r\n\t\t\t\t\tif (deletedNotes.length > 0) {\r\n\t\t\t\t\t\tundos.addToUndo(CDeleteSelection(deletedNotes.copy()));\r\n\t\t\t\t\t}\r\n\t\t\t\t\telse if (noteDeleteAnims.garbageIcon.alpha <= .5) {\r\n\t\t\t\t\t\tvar mousePos = FlxG.mouse.getScreenPosition(uiCamera);\r\n\t\t\t\t\t\tcloseCurrentContextMenu();\r\n\t\t\t\t\t\topenContextMenu(topMenu[1].childs, null, mousePos.x, mousePos.y);\r\n\t\t\t\t\t}\r\n\t\t\t\t\tgridActionType = NONE; deletedNotes = [];\r\n\t\t\t\t}\r\n\t\t}\r\n\t\tlocalAddEventSpr.selectable = !selectionBox.visible;\r\n\t\tglobalAddEventSpr.selectable = !selectionBox.visible;\r\n\r\n\t\tvar inBoundsY:Bool = (mousePos.y > 0 && mousePos.y < (__endStep)*40);\r\n\r\n\t\t// Event Spr\r\n\t\tfor (addEventSpr in [localAddEventSpr, globalAddEventSpr]) {\r\n\t\t\taddEventSpr.incorporeal = true;\r\n\t\t\tvar onLeft:Bool = (!addEventSpr.global) != Options.charterSwapEventSides;\r\n\t\t\tif ((onLeft ? mousePos.x < 0 : mousePos.x > strumLines.totalKeyCount * 40) && gridActionType == NONE && inBoundsY) {\r\n\t\t\t\tvar event = getHoveredEvent(mousePos.y, !addEventSpr.global ? leftEventsGroup : rightEventsGroup);\r\n\t\t\t\tvar hoveredWidth:Float = event != null ? 27 + 40 + event.bWidth : addEventSpr.bWidth;\r\n\r\n\t\t\t\tif ((onLeft ? mousePos.x > -hoveredWidth : mousePos.x < strumLines.totalKeyCount * 40 + hoveredWidth)) {\r\n\t\t\t\t\taddEventSpr.incorporeal = false;\r\n\r\n\t\t\t\t\tif (event != null) addEventSpr.updateEdit(event);\r\n\t\t\t\t\telse addEventSpr.updatePos(FlxG.keys.pressed.SHIFT ? ((mousePos.y) / 40) : quantStepRounded(mousePos.y/40));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\taddEventSpr.sprAlpha = lerp(addEventSpr.sprAlpha, !addEventSpr.incorporeal ? 0.75 : 0, 0.25);\r\n\t\t}\r\n\t\tnoteHoverer.showHoverer = Charter.instance.gridBackdropDummy.hovered;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "quantStep",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function quantStep(step:Float):Float {\r\n\t\tvar stepMulti:Float = 1/(quant/16);\r\n\t\treturn Math.floor(step/stepMulti) * stepMulti;\r\n\t}",
+			"doc": {
+				"text": "NOTE DRAG HANDLING",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "quantStepRounded",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "roundRatio",
+					"type": "Float",
+					"optional": true,
+					"def": "0.5"
+				}
+			],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function quantStepRounded(step:Float, ?roundRatio:Float = 0.5):Float {\r\n\t\tvar stepMulti:Float = 1/(quant/16);\r\n\t\treturn ratioRound(step/stepMulti, roundRatio) * stepMulti;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "ratioRound",
+			"args": [
+				{
+					"name": "val",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function ratioRound(val:Float, ratio:Float):Int\r\n\t\treturn Math.floor(val) + ((Math.abs(val % 1) > ratio ? 1 : 0) * (val > 0 ? 1 : -1));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getHoveredEvent",
+			"args": [
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "group",
+					"type": "CharterEventGroup",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getHoveredEvent(y:Float, group:CharterEventGroup) {\r\n\t\tvar eventHovered:CharterEvent = null;\r\n\t\tgroup.forEach(function(e) {\r\n\t\t\tif (eventHovered != null)\r\n\t\t\t\treturn;\r\n\r\n\t\t\tif (e.hovered || (y >= e.y && y < (e.y + e.bHeight)))\r\n\t\t\t\teventHovered = e;\r\n\t\t});\r\n\t\treturn eventHovered;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteSingleSelection",
+			"args": [
+				{
+					"name": "selected",
+					"type": "ICharterSelectable",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Null<ICharterSelectable>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function deleteSingleSelection(selected:ICharterSelectable, addToUndo:Bool = true):Null<ICharterSelectable> {\r\n\t\tif (selected == null) return selected;\r\n\r\n\t\tif (selected is CharterNote) {\r\n\t\t\tUIState.playEditorSound(Flags.DEFAULT_CHARTER_NOTEDELETE_SOUND);\r\n\t\t\tvar note:CharterNote = cast selected;\r\n\t\t\tnote.strumLineID = strumLines.members.indexOf(note.strumLine);\r\n\t\t\tnote.strumLine = null; // For static undos :D\r\n\t\t\tnotesGroup.remove(note);\r\n\t\t\tnote.kill();\r\n\t\t} else if (selected is CharterEvent) {\r\n\t\t\tvar event:CharterEvent = cast selected;\r\n\t\t\t(event.global ? rightEventsGroup : leftEventsGroup).remove(event);\r\n\t\t\tevent.kill();\r\n\t\t}\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tundos.addToUndo(CDeleteSelection([selected]));\r\n\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createSelection",
+			"args": [
+				{
+					"name": "selection",
+					"type": "Selection",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createSelection(selection:Selection, addToUndo:Bool = true) {\r\n\t\tif (selection.length <= 0) return [];\r\n\r\n\t\tnotesGroup.autoSort = false;\r\n\t\tselection.loop(function (n:CharterNote) {\r\n\t\t\tn.strumLine = strumLines.members[n.strumLineID];\r\n\t\t\tn.revive();\r\n\t\t\tnotesGroup.add(n);\r\n\t\t}, function (e:CharterEvent) {\r\n\t\t\te.revive();\r\n\t\t\t(e.global ? rightEventsGroup : leftEventsGroup).add(e);\r\n\t\t\te.refreshEventIcons();\r\n\t\t}, false);\r\n\t\tnotesGroup.sortNotes();\r\n\t\tnotesGroup.autoSort = true;\r\n\r\n\t\tcheckSelectionForBPMUpdates();\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tundos.addToUndo(CCreateSelection(selection));\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteSelection",
+			"args": [
+				{
+					"name": "selection",
+					"type": "Selection",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function deleteSelection(selection:Selection, addToUndo:Bool = true) {\r\n\t\tif (selection.length <= 0) return [];\r\n\r\n\t\tnotesGroup.autoSort = false;\r\n\t\tfor (group in [notesGroup, leftEventsGroup, rightEventsGroup]) {\r\n\t\t\tvar group:FlxTypedGroup<Dynamic> = cast group;\r\n\t\t\tvar member:Int = 0;\r\n\t\t\twhile(member < group.members.length) {\r\n\t\t\t\tvar s = group.members[member];\r\n\t\t\t\tif (selection.contains(s))\r\n\t\t\t\t\tdeleteSingleSelection(s, false);\r\n\t\t\t\telse member++;\r\n\t\t\t}\r\n\t\t}\r\n\t\tnotesGroup.sortNotes();\r\n\t\tnotesGroup.autoSort = true;\r\n\r\n\t\tcheckSelectionForBPMUpdates();\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tundos.addToUndo(CDeleteSelection(selection));\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateEventsGroups",
+			"args": [
+				{
+					"name": "selection",
+					"type": "Selection",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "CharterChange",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateEventsGroups(selection:Selection):CharterChange {\r\n\t\tif (selection.length <= 0) return CEditEventGroups([]);\r\n\t\tvar eventsChanged:Array<CharterEvent> = [];\r\n\r\n\t\tselection.loop(function (n:CharterNote) {}, function (e:CharterEvent) {\r\n\t\t\tif (e.displayGlobal != e.global) {\r\n\t\t\t\t(e.global ? rightEventsGroup : leftEventsGroup).remove(e);\r\n\t\t\t\t(e.displayGlobal ? rightEventsGroup : leftEventsGroup).add(e);\r\n\r\n\t\t\t\te.global = e.displayGlobal;\r\n\t\t\t\teventsChanged.push(e);\r\n\t\t\t}\r\n\t\t}, true);\r\n\r\n\t\tleftEventsGroup.sortEvents(); rightEventsGroup.sortEvents();\r\n\t\tfor (e in eventsChanged) e.update(0); // remove little stutter\r\n\r\n\t\treturn CEditEventGroups(eventsChanged);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createStrumline",
+			"args": [
+				{
+					"name": "strumLineID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "strL",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "__createNotes",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// STRUMLINE DELETION/CREATION\r\n\tpublic function createStrumline(strumLineID:Int, strL:ChartStrumLine, addToUndo:Bool = true, ?__createNotes:Bool = true) {\r\n\t\tvar cStr = new CharterStrumline(strL);\r\n\t\tstrumLines.insert(strumLineID, cStr);\r\n\t\tstrumLines.refreshStrumlineIDs();\r\n\t\tstrumLines.snapStrums();\r\n\r\n\t\tif (__createNotes) {\r\n\t\t\tvar toBeCreated:Selection = [];\r\n\t\t\tfor(note in strL.notes) {\r\n\t\t\t\tvar n = new CharterNote();\r\n\t\t\t\tvar t = Conductor.getStepForTime(note.time);\r\n\t\t\t\tn.updatePos(t, note.id, Conductor.getStepForTime(note.time + note.sLen) - t, note.type, cStr);\r\n\t\t\t\tnotesGroup.add(n);\r\n\t\t\t}\r\n\t\t\tcreateSelection(toBeCreated, false);\r\n\t\t}\r\n\r\n\t\tupdateBookmarks();\r\n\r\n\t\tif (addToUndo)\r\n\t\t\tundos.addToUndo(CCreateStrumLine(strumLineID, strL));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteStrumline",
+			"args": [
+				{
+					"name": "strumLineID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "addToUndo",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function deleteStrumline(strumLineID:Int, addToUndo:Bool = true) {\r\n\t\tvar undoNotes:Array<ChartNote> = [];\r\n\t\tremoveStrumlineFromSelection(strumLineID);\r\n\r\n\t\tvar i = 0;\r\n\t\tvar toBeDeleted:Selection = [];\r\n\t\tfor (note in notesGroup.members)\r\n\t\t\tif (note.strumLineID == strumLineID) {\r\n\t\t\t\tundoNotes.push(buildNote(note));\r\n\t\t\t\ttoBeDeleted.push(note);\r\n\t\t\t}\r\n\t\tdeleteSelection(toBeDeleted, false);\r\n\r\n\t\tvar strL = strumLines.members[strumLineID].strumLine;\r\n\t\tstrumLines.members[strumLineID].destroy();\r\n\t\tstrumLines.members[strumLineID] = strumLines.members[strumLines.members.length - 1];\r\n\t\tstrumLines.members.pop();\r\n\t\t@:privateAccess strumLines.length--;\r\n\t\tstrumLines.refreshStrumlineIDs();\r\n\t\tstrumLines.snapStrums();\r\n\r\n\t\tupdateBookmarks();\r\n\r\n\t\tif (addToUndo) {\r\n\t\t\tvar newStrL = Reflect.copy(strL);\r\n\t\t\tnewStrL.notes = undoNotes;\r\n\r\n\t\t\tundos.addToUndo(CDeleteStrumLine(strumLineID, newStrL));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStrumlineID",
+			"args": [
+				{
+					"name": "strL",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getStrumlineID(strL:ChartStrumLine):Int {\r\n\t\tfor (index=>strumLine in strumLines.members) {\r\n\t\t\tif (strumLine.strumLine == strL)\r\n\t\t\t\treturn index;\r\n\t\t}\r\n\t\treturn -1;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "createStrumWithUI",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createStrumWithUI() {\r\n\t\tFlxG.state.openSubState(new CharterStrumlineScreen(strumLines.members.length, null, (_) -> {\r\n\t\t\tif (_ != null) {\r\n\t\t\t\tcreateStrumline(strumLines.members.length, _);\r\n\r\n\t\t\t\tstrumlineAddButton.textTweenColor.color = 0xFF00FF00;\r\n\t\t\t\tstrumlineAddButton.pressAnimation(true);\r\n\t\t\t}\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteStrumlineFromData",
+			"args": [
+				{
+					"name": "strL",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function deleteStrumlineFromData(strL:ChartStrumLine)\r\n\t\tdeleteStrumline(getStrumlineID(strL));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "editStrumline",
+			"args": [
+				{
+					"name": "strL",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function editStrumline(strL:ChartStrumLine) {\r\n\t\tvar strID = getStrumlineID(strL);\r\n\t\tvar oldData:ChartStrumLine = Reflect.copy(strL);\r\n\r\n\t\tFlxG.state.openSubState(new CharterStrumlineScreen(strID, strL, (_) -> {\r\n\t\t\tstrumLines.members[strID].strumLine = _;\r\n\t\t\tstrumLines.members[strID].updateInfo();\r\n\t\t\tstrumLines.refreshStrumlineIDs();\r\n\r\n\t\t\tundos.addToUndo(CEditStrumLine(strID, oldData, _));\r\n\r\n\t\t\tif (oldData.vocalsSuffix != _.vocalsSuffix) updateWaveforms();\r\n\t\t}));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeStrumlineFromSelection",
+			"args": [
+				{
+					"name": "strumLineID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function removeStrumlineFromSelection(strumLineID:Int) {\r\n\t\tvar i = 0;\r\n\t\twhile(i < selection.length) {\r\n\t\t\tif (selection[i] is CharterNote) {\r\n\t\t\t\tvar note:CharterNote = cast selection[i];\r\n\t\t\t\tif (note.strumLineID == strumLineID)\r\n\t\t\t\t\tselection.remove(note);\r\n\t\t\t\telse i++;\r\n\t\t\t} else i++;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tif (Options.charterRainbowWaveforms) {\r\n\t\t\t__timer += elapsed/8;\r\n\t\t\tfor (shader in waveformHandler.waveShaders)\r\n\t\t\t\tshader.data.time.value = [__timer];\r\n\t\t}\r\n\r\n\t\tupdateNoteLogic(elapsed);\r\n\t\tupdateAutoSaving(elapsed);\r\n\r\n\t\tfor (bs in __bookmarkObjects)\r\n\t\t{\r\n\t\t\tvar bars:Array<FlxSprite> = bs[0];\r\n\t\t\tvar text:UIText = bs[1];\r\n\t\t\tif (bars == null || bars.length == 0) continue;\r\n\t\t\tfor (i => spr in bars) {\r\n\t\t\t\tif (spr == null || strumLines.members[i] == null) continue;\r\n\t\t\t\tspr.x = strumLines.members[i].x;\r\n\t\t\t}\r\n\t\t\tif (text != null)\r\n\t\t\t\ttext.x = strumLines.members[0].x + 4;\r\n\t\t}\r\n\r\n\t\tif (FlxG.sound.music.playing || __firstFrame) {\r\n\t\t\tgridBackdrops.conductorSprY = curStepFloat * 40;\r\n\t\t} else {\r\n\t\t\tgridBackdrops.conductorSprY = lerp(gridBackdrops.conductorSprY, curStepFloat * 40, __firstFrame ? 1 : 1/3);\r\n\t\t}\r\n\t\tcharterCamera.scroll.set(\r\n\t\t\tlerp(charterCamera.scroll.x, (((40*strumLines.totalKeyCount) - FlxG.width) / 2) + sideScroll, __firstFrame ? 1 : 1/3),\r\n\t\t\tgridBackdrops.conductorSprY - (FlxG.height * 0.5)\r\n\t\t);\r\n\r\n\t\tif (topMenuSpr.members[playbackIndex] != null) {\r\n\t\t\tvar playBackButton:UITopMenuButton = cast topMenuSpr.members[playbackIndex];\r\n\t\t\tplayBackButton.x = playBackSlider.x-playBackSlider.startText.width-10-playBackSlider.valueStepper.bWidth-playBackButton.bWidth-10;\r\n\t\t\tplayBackButton.label.offset.x = -1;\r\n\r\n\t\t\tif (topMenuSpr.members[snapIndex] != null) {\r\n\t\t\t\tvar snapButton:UITopMenuButton = cast topMenuSpr.members[snapIndex];\r\n\t\t\t\tvar lastButtonX = playBackButton.x-10;\r\n\r\n\t\t\t\tfor (button in quantButtons) {\r\n\t\t\t\t\tbutton.visible = ((button.quant == quant) ||\r\n\t\t\t\t\t\t(button.quant == quants[FlxMath.wrap(quants.indexOf(quant)-1, 0, quants.length-1)]) ||\r\n\t\t\t\t\t\t(button.quant == quants[FlxMath.wrap(quants.indexOf(quant)+1, 0, quants.length-1)]));\r\n\t\t\t\t\tbutton.selectable = button.visible;\r\n\t\t\t\t\tif (!button.visible) continue;\r\n\r\n\t\t\t\t\tbutton.x = lastButtonX -= button.bWidth;\r\n\t\t\t\t\tbutton.framesOffset = button.quant == quant ? 9 : 0;\r\n\t\t\t\t\tbutton.alpha = button.quant == quant ? 1 : (button.hovered ? 0.4 : 0);\r\n\t\t\t\t}\r\n\t\t\t\tsnapButton.x = (lastButtonX -= snapButton.bWidth)-10;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (topMenuSpr.members[noteIndex] != null) {\r\n\t\t\tvar noteTopButton:UITopMenuButton = cast topMenuSpr.members[noteIndex];\r\n\t\t\tnoteTypeText.x = noteTopButton.x + noteTopButton.bWidth + 6;\r\n\t\t\tnoteTypeText.y = Std.int((noteTopButton.bHeight - noteTypeText.height) / 2);\r\n\t\t}\r\n\t\tnoteTypeText.text = '($noteType) ' + (noteTypes[noteType-1] == null ? translate(\"noteTypes.default\") : noteTypes[noteType-1]);\r\n\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tscrollBar.size = (FlxG.height / 40 / charterCamera.zoom);\r\n\t\tscrollBar.start = Conductor.curStepFloat - (scrollBar.size / 2);\r\n\r\n\t\tif (gridBackdrops.strumlinesAmount != strumLines.members.length)\r\n\t\t\tupdateDisplaySprites();\r\n\r\n\t\t// TODO: canTypeText in case an ui input element is focused\r\n\t\tif (true) {\r\n\t\t\t__crochet = ((60 / Conductor.bpm) * 1000);\r\n\r\n\t\t\tif(FlxG.keys.justPressed.ANY && !strumLines.isDragging && this.currentFocus == null && (this.subState == null || !(this.subState is CharterEventScreenNew)))\r\n\t\t\t\tUIUtil.processShortcuts(topMenu);\r\n\r\n\t\t\tif (!topMenuSpr.anyMenuOpened) {\r\n\t\t\t\tif (FlxG.mouse.wheel != 0 && shouldScroll) {\r\n\t\t\t\t\tif (FlxG.keys.pressed.CONTROL) {\r\n\t\t\t\t\t\tzoom += 0.25 * FlxG.mouse.wheel;\r\n\t\t\t\t\t\t__camZoom = Math.pow(2, zoom);\r\n\t\t\t\t\t} else if (FlxG.keys.pressed.SHIFT) {\r\n\t\t\t\t\t\tsideScroll -= 40 * FlxG.mouse.wheel;\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tif (!FlxG.sound.music.playing) {\r\n\t\t\t\t\t\t\tConductor.songPosition -= (__crochet * FlxG.mouse.wheel) - Conductor.songOffset;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar songLength = FlxG.sound.music.getDefault(vocals).length;\r\n\t\tConductor.songPosition = CoolUtil.bound(Conductor.songPosition + Conductor.songOffset, 0, songLength);\r\n\r\n\t\tif (Conductor.songPosition >= songLength - Conductor.songOffset) {\r\n\t\t\tFlxG.sound.music.pause();\r\n\t\t\tvocals.pause();\r\n\t\t\tfor (strumLine in strumLines.members) strumLine.vocals.pause();\r\n\t\t}\r\n\r\n\t\tvar curChange = Conductor.curChange;\r\n\t\tsongPosInfo.text = [\r\n\t\t\t// no need to translate the time text since it has no text only numbers\r\n\t\t\t'${CoolUtil.timeToStr(Conductor.songPosition)} / ${CoolUtil.timeToStr(songLength)}',\r\n\t\t\tSONGPOSINFO_STEP.format([curStep]),\r\n\t\t\tSONGPOSINFO_BEAT.format([curBeat]),\r\n\t\t\tSONGPOSINFO_MEASURE.format([curMeasure]),\r\n\t\t\tSONGPOSINFO_BPM.format([(curChange != null && curChange.continuous && curChange.endSongTime > songPos) ? FlxMath.roundDecimal(Conductor.bpm, 3) : Conductor.bpm]),\r\n\t\t\tSONGPOSINFO_TIMESIGNATURE.format([Conductor.beatsPerMeasure, Conductor.denominator])\r\n\t\t].join(\"\\n\");\r\n\r\n\t\tif (charterCamera.zoom != (charterCamera.zoom = lerp(charterCamera.zoom, __camZoom, __firstFrame ? 1 : 0.125)))\r\n\t\t\tupdateDisplaySprites();\r\n\r\n\t\tif (strumLines != null)\r\n\t\t\tstrumlineLockButton.button.animation.play(strumLines.draggable ? \"1\" : \"0\", true);\r\n\r\n\t\tWindowUtils.prefix = undos.unsaved ? Flags.UNDO_PREFIX : \"\";\r\n\t\tSaveWarning.showWarning = undos.unsaved;\r\n\r\n\t\t__firstFrame = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startTime",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startHere",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResize",
+			"args": [
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResize(width:Int, height:Int) {\r\n\t\tsuper.onResize(width, height);\r\n\t\tif (!UIState.resolutionAware) return;\r\n\r\n\t\tif ((width < FlxG.initialWidth || height < FlxG.initialHeight) && !Options.bypassEditorsResize) {\r\n\t\t\twidth = FlxG.initialWidth; height = FlxG.initialHeight;\r\n\t\t}\r\n\r\n\t\tscrollBar.x = width - 20;\r\n\t\tscrollBar.scale.y = Std.int(height - scrollBar.y);\r\n\t\tscrollBar.updateHitbox();\r\n\r\n\t\tsongPosInfo.x = width - 30 - 400;\r\n\t\tplayBackSlider.x = width - 160 - 26 - 20;\r\n\r\n\t\tupdateDisplaySprites();\r\n\t\tupdateBookmarks();\r\n\t\tcharterBG.screenCenter();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveEverything",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// SAVE FUNCS\r\n\t#if REGION\r\n\tpublic static function saveEverything(shouldBuild:Bool = true) {\r\n\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tsaveChart(false);\r\n\t\tsaveEvents(false);\r\n\t\tsaveMeta(false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveChart",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "withEvents",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveChart(shouldBuild:Bool = true, withEvents:Bool = true) {\r\n\t\t#if sys\r\n\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tChart.save(PlayState.SONG, __diff.toLowerCase(), __variant, {saveMetaInChart: false, saveLocalEvents: withEvents, prettyPrint: Options.editorCharterPrettyPrint});\r\n\t\tif (undos != null) undos.save();\r\n\t\t#else\r\n\t\tsaveChartAs(shouldBuild, withEvents);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveChartAs",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "withEvents",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveChartAs(shouldBuild:Bool = true, withEvents:Bool = true) {\r\n\t\tsaveAs(Chart.filterChartForSaving(PlayState.SONG, false, withEvents, false), null, Options.editorCharterPrettyPrint ? Flags.JSON_PRETTY_PRINT : null, {\r\n\t\t\tdefaultSaveFile: '${__diff.toLowerCase()}.json'\r\n\t\t}, null, shouldBuild);\r\n\t\tif (undos != null) undos.save();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveEvents",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveEvents(shouldBuild:Bool = true) {\r\n\t\t#if sys\r\n\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tChart.save(PlayState.SONG, __diff.toLowerCase(), __variant, {saveChart: false, seperateGlobalEvents: true, prettyPrint: Options.editorCharterPrettyPrint});\r\n\t\tif (undos != null) undos.save();\r\n\t\t#else\r\n\t\tsaveEventsAs(shouldBuild);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveEventsAs",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveEventsAs(shouldBuild:Bool = true) {\r\n\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tvar data = {events: Chart.filterEventsForSaving(PlayState.SONG.events, false, true)};\r\n\r\n\t\tsaveAs(data, null, Options.editorCharterPrettyPrint ? Flags.JSON_PRETTY_PRINT : null, {\r\n\t\t\tdefaultSaveFile: 'events.json'\r\n\t\t}, null, false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveMeta",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveMeta(shouldBuild:Bool = true) {\r\n\t\t#if sys\r\n\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tChart.save(PlayState.SONG, __diff.toLowerCase(), __variant, {saveChart: false, overrideExistingMeta: true, prettyPrint: true});\r\n\t\t#else\r\n\t\tsaveMetaAs(shouldBuild);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveMetaAs",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveMetaAs(shouldBuild:Bool = true) {\r\n\t\tsaveAs(PlayState.SONG.meta == null ? {} : Chart.filterChartForSaving(PlayState.SONG, true, false, false).meta, null, Flags.JSON_PRETTY_PRINT, { // always pretty print meta\r\n\t\t\tdefaultSaveFile: 'meta.json'\r\n\t\t}, null, shouldBuild);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveLegacyChartAs",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveLegacyChartAs(shouldBuild:Bool = true) {\r\n\t\tsaveAs(FNFLegacyParser.encode(PlayState.SONG), null, Options.editorCharterPrettyPrint ? Flags.JSON_PRETTY_PRINT : null, {\r\n\t\t\tdefaultSaveFile: '${__song.toLowerCase().replace(\" \", \"-\")}${__diff.toLowerCase() == Flags.DEFAULT_DIFFICULTY ? \"\" : '-${__diff.toLowerCase()}'}.json',\r\n\t\t}, null, shouldBuild);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "savePsychChartAs",
+			"args": [
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function savePsychChartAs(shouldBuild:Bool = true) {\r\n\t\tsaveAs(PsychParser.encode(PlayState.SONG), null, Options.editorCharterPrettyPrint ? Flags.JSON_PRETTY_PRINT : null, {\r\n\t\t\tdefaultSaveFile: '${__song.toLowerCase().replace(\" \", \"-\")}${__diff.toLowerCase() == Flags.DEFAULT_DIFFICULTY ? \"\" : '-${__diff.toLowerCase()}'}.json',\r\n\t\t}, null, shouldBuild);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveAs",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "replacer",
+					"type": "(key:Dynamic, value:Dynamic) -> Dynamic",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "space",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "options",
+					"type": "SaveSubstate.SaveSubstateData",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "saveOptions",
+					"type": "Map<String, Bool>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function saveAs(data:Dynamic, ?replacer:(key:Dynamic, value:Dynamic) -> Dynamic, ?space:String, ?options:SaveSubstate.SaveSubstateData, ?saveOptions:Map<String, Bool>, shouldBuild:Bool = true) {\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tvar cur = FlxG.state;\r\n\t\twhile(true) {\r\n\t\t\tif (instance != null || cur.subState == null) return cur.openSubState(new SaveSubstate(Json.stringify(data, replacer, space), options, saveOptions));\r\n\t\t\telse cur = cur.subState;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveTo",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "separateEvents",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "shouldBuild",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#if sys\r\n\tpublic static function saveTo(path:String, separateEvents:Bool = false, shouldBuild:Bool = true) {\r\n\t\tif (shouldBuild && instance != null) instance.buildChart();\r\n\t\tChart.save(PlayState.SONG, __diff.toLowerCase(), __variant, {saveMetaInChart: false, saveLocalEvents: !separateEvents, songFolder: path, prettyPrint: Options.editorCharterPrettyPrint});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "_slider_mutetoggle",
+			"args": [
+				{
+					"name": "t",
+					"type": "UIContextMenuOption",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function _slider_mutetoggle(t:UIContextMenuOption) {\r\n\t\tif (t.slider == null) return;\r\n\t\tt.button.slider.value = t.button.slider.value > 0 ? 0 : 1;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBookmarkList",
+			"args": [],
+			"ret": "Array<ChartBookmark>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getBookmarkList():Array<ChartBookmark> {\r\n\t\tvar bookmarks:Array<ChartBookmark> = [];\r\n\t\ttry {\r\n\t\t\tif (PlayState.SONG.bookmarks != null)\r\n\t\t\t\tbookmarks = PlayState.SONG.bookmarks;\r\n\t\t} catch (e) {}\r\n\r\n\t\treturn bookmarks;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__bookmarkObjects",
+			"type": "Array<Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__scrollbarBookmarks",
+			"type": "Array<Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateBookmarks",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateBookmarks()\r\n\t{\r\n\t\tfor (bs in __bookmarkObjects)\r\n\t\t{\r\n\t\t\tvar bars:Array<FlxSprite> = bs[0];\r\n\t\t\tvar text:UIText = bs[1];\r\n\r\n\t\t\tif (bars != null) {\r\n\t\t\t\tfor (spr in bars) {\r\n\t\t\t\t\tif (spr == null) continue;\r\n\t\t\t\t\tcharterBookmarksGroup.remove(spr);\r\n\t\t\t\t\tspr.kill();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tif (text != null) {\r\n\t\t\t\tcharterBookmarksGroup.remove(text);\r\n\t\t\t\ttext.kill();\r\n\t\t\t}\r\n\t\t}\r\n\t\tfor (bar in __scrollbarBookmarks) {\r\n\t\t\tif (bar == null) continue;\r\n\t\t\tuiGroup.remove(bar);\r\n\t\t\tbar.kill();\r\n\t\t}\r\n \t\t__bookmarkObjects.clear();\r\n\t\t__scrollbarBookmarks.clear();\r\n\t\tfor (b in getBookmarkList())\r\n\t\t{\r\n\t\t\tvar bookmarkcolor:FlxColor = b.color != null ? FlxColor.fromString(b.color) : 0xff9d00ff;\r\n\t\t\tvar luminance = CoolUtil.getLuminance(bookmarkcolor);\r\n\r\n\t\t\tvar sprites = [];\r\n\t\t\tfor (str in strumLines.members)\r\n\t\t\t{\r\n\t\t\t\tvar bookmarkspr = new FlxSprite(str.x, (b.time * 40)).makeSolid(str.keyCount * 40, 4, bookmarkcolor);\r\n\t\t\t\tbookmarkspr.updateHitbox();\r\n\t\t\t\tcharterBookmarksGroup.add(bookmarkspr);\r\n\t\t\t\tsprites.push(bookmarkspr);\r\n\t\t\t}\r\n\r\n\t\t\tvar bookmarkText = new UIText(strumLines.members[0].x + 4, 0, 400, b.name, 15, bookmarkcolor, true);\r\n\t\t\tbookmarkText.y = sprites[0].y - (bookmarkText.height + 2);\r\n\t\t\tcharterBookmarksGroup.add(bookmarkText);\r\n\r\n\t\t\tif (luminance < 0.5)\r\n\t\t\t\tbookmarkText.borderColor = 0x88FFFFFF;\r\n\r\n\t\t\t__bookmarkObjects.push([sprites, bookmarkText]);\r\n\r\n\t\t\tvar yPos = scrollBar.y + CoolUtil.bound(\r\n\t\t\t\tFlxMath.remapToRange(\r\n\t\t\t\t\tb.time,\r\n\t\t\t\t\t0,\r\n\t\t\t\t\tscrollBar.length + scrollBar.size,\r\n\t\t\t\t\t0,\r\n\t\t\t\t\tscrollBar.height\r\n\t\t\t\t),\r\n\t\t\t\t0,\r\n\t\t\t\tscrollBar.height\r\n\t\t\t);\r\n\r\n\t\t\tvar bookmarkspr = new FlxSprite(scrollBar.x - 10, yPos).makeSolid(40, 4, bookmarkcolor);\r\n\t\t\tuiGroup.add(bookmarkspr);\r\n\t\t\tsprites.push(bookmarkspr);\r\n\t\t\t__scrollbarBookmarks.push(bookmarkspr);\r\n\t\t}\r\n\r\n\t\tbuildSongUI();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeNoteType",
+			"args": [
+				{
+					"name": "newID",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "checkSelection",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "inline public function changeNoteType(?newID:Int, checkSelection:Bool = true) {\r\n\t\tif(newID != null) noteType = newID;\r\n\t\tnoteType = CoolUtil.boundInt(noteType, 0, noteTypes.length);\r\n\t\tbuildNoteTypesUI();\r\n\r\n\t\tvar changedNotes:{notes:Array<CharterNote>, oldTypes:Array<Int>, newTypes:Array<Int>} = {notes:[], oldTypes:[], newTypes:[]};\r\n\t\tfor(note in notesGroup) if(note.type < 0 || note.type > noteTypes.length) {\r\n\t\t\tchangedNotes.notes.push(note); changedNotes.oldTypes.push(note.type); changedNotes.newTypes.push(0);\r\n\t\t\tnote.updatePos(note.step, note.id, note.susLength, 0);\r\n\t\t}\r\n\r\n\t\tif(checkSelection) for(s in selection)\r\n\t\t\tif (s is CharterNote) {\r\n\t\t\t\tvar n:CharterNote = cast s;\r\n\t\t\t\tchangedNotes.notes.push(n); changedNotes.oldTypes.push(n.type); changedNotes.newTypes.push(newID);\r\n\t\t\t\tn.updatePos(n.step, n.id, n.susLength, newID);\r\n\t\t\t}\r\n\t\tif(changedNotes.notes.length > 0) undos.addToUndo(CEditSpecNotesType(changedNotes.notes, changedNotes.oldTypes, changedNotes.newTypes));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playtestChart",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "opponentMode",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "here",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function playtestChart(time:Float = 0, opponentMode = false, here = false) {\r\n\t\tbuildChart();\r\n\t\tstartHere = here;\r\n\t\tstartTime = Conductor.songPosition;\r\n\t\tPlayState.opponentMode = opponentMode;\r\n\t\tPlayState.chartingMode = true;\r\n\t\tFlxG.switchState(new PlayState());\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildNote",
+			"args": [
+				{
+					"name": "note",
+					"type": "CharterNote",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ChartNote",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function buildNote(note:CharterNote):ChartNote {\r\n\t\tvar time = Conductor.getTimeForStep(note.step);\r\n\t\treturn {\r\n\t\t\ttype: note.type,\r\n\t\t\ttime: time,\r\n\t\t\tsLen: Conductor.getTimeForStep(note.step + note.susLength) - time,\r\n\t\t\tid: note.id\r\n\t\t};\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildChart",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function buildChart() {\r\n\t\tPlayState.SONG.strumLines = [];\r\n\t\tPlayState.SONG.noteTypes = this.noteTypes;\r\n\t\tPlayState.SONG.chartVersion = Chart.version;\r\n\t\tfor(s in strumLines) {\r\n\t\t\ts.strumLine.notes = [];\r\n\t\t\tPlayState.SONG.strumLines.push(s.strumLine);\r\n\t\t}\r\n\t\tnotesGroup.sortNotes();\r\n\t\tfor(n in notesGroup.members) {\r\n\t\t\tif (PlayState.SONG.strumLines[n.strumLineID] != null)\r\n\t\t\t\tPlayState.SONG.strumLines[n.strumLineID].notes.push(buildNote(n));\r\n\t\t}\r\n\t\tbuildEvents();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildEvents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function buildEvents() {\r\n\t\tPlayState.SONG.events = [];\r\n\r\n\t\tfor (ce in leftEventsGroup.members) for (e in ce.events) e.global = false;\r\n\t\tfor (ce in rightEventsGroup.members) for (e in ce.events) e.global = true;\r\n\r\n\t\tvar events:Array<CharterEvent> = leftEventsGroup.members.concat(rightEventsGroup.members);\r\n\t\tevents.sort(rightEventsGroup.sortEventsFilter.bind(FlxSort.ASCENDING));\r\n\t\tfor (e in events) for (event in e.events) {\r\n\t\t\tevent.time = Conductor.getTimeForStep(e.step);\r\n\t\t\tPlayState.SONG.events.push(event);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateBPMEvents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateBPMEvents() {\r\n\t\tleftEventsGroup.sortEvents();\r\n\t\trightEventsGroup.sortEvents();\r\n\t\tConductor.mapCharterBPMChanges(PlayState.SONG);\r\n\t\tbuildEvents();\r\n\r\n\t\tfor(e in leftEventsGroup.members) {\r\n\t\t\tfor(event in e.events) {\r\n\t\t\t\tif (event.name == \"BPM Change\" || event.name == \"Time Signature Change\" || event.name == \"Continuous BPM Change\") {\r\n\t\t\t\t\te.refreshEventIcons();\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tfor(e in rightEventsGroup.members) {\r\n\t\t\tfor(event in e.events) {\r\n\t\t\t\tif (event.name == \"BPM Change\" || event.name == \"Time Signature Change\" || event.name == \"Continuous BPM Change\") {\r\n\t\t\t\t\te.refreshEventIcons();\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\trefreshBPMSensitive();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "checkSelectionForBPMUpdates",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function checkSelectionForBPMUpdates() {\r\n\t\tfor (s in selection)\r\n\t\t\tif (s is CharterEvent) {\r\n\t\t\t\tupdateBPMEvents();\r\n\t\t\t\tbreak;\r\n\t\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playHitsound",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function playHitsound(id:Int) {\r\n\t\tif (strumLines.members[id] != null && strumLines.members[id].hitsoundVolume > 0 && hitsoundGlobalVolume > 0) {\r\n\t\t\thitsound.volume = hitsoundGlobalVolume * strumLines.members[id].hitsoundVolume;\r\n\t\t\thitsound.replay();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__fixSelection",
+			"args": [
+				{
+					"name": "selection",
+					"type": "Selection",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Selection",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function __fixSelection(selection:Selection):Selection {\r\n\t\tvar newSelection:Selection = new Selection();\r\n\t\tfor (s in selection) newSelection.pushOnce(s);\r\n\t\treturn newSelection.filter((s:ICharterSelectable) -> {return s != null;});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__relinkSingleSelection",
+			"args": [
+				{
+					"name": "selectable",
+					"type": "ICharterSelectable",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ICharterSelectable",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// UH OH!!! DANGER ZONE APPROACHING !!!! LUNARS SHITTY CODE !!!! -lunar\r\n\r\n\t@:noCompletion public function __relinkSingleSelection(selectable:ICharterSelectable):ICharterSelectable {\r\n\t\tif (selectable is CharterNote)\r\n\t\t\treturn selectable.ID == -1 ? cast(selectable, CharterNote) : notesGroup.members[selectable.ID];\r\n\t\telse if (selectable is CharterEvent) {\r\n\t\t\tvar event:CharterEvent = cast(selectable, CharterEvent);\r\n\t\t\treturn selectable.ID == -1 ? event : (event.global ? rightEventsGroup : leftEventsGroup).members[selectable.ID];\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__relinkSelection",
+			"args": [
+				{
+					"name": "selection",
+					"type": "Selection",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:noCompletion public function __relinkSelection(selection:Selection) @:privateAccess {\r\n\t\tvar newSelection:Selection = new Selection();\r\n\t\tfor (i => selectable in selection)\r\n\t\t\tnewSelection[i] = __relinkSingleSelection(selectable);\r\n\t\treturn newSelection;\r\n\t}\r\n\r\n\t@:noCompletion public inline function __relinkUndos() {\r\n\t\tselection = __relinkSelection(selection);\r\n\r\n\t\tfor (list => changeList in [undos.undoList, undos.redoList]) {\r\n\t\t\tvar newChanges:Array<CharterChange> = [];\r\n\t\t\tfor (i => change in changeList) {\r\n\t\t\t\tswitch (change) {\r\n\t\t\t\t\tcase CCreateSelection(selection):\r\n\t\t\t\t\t\tnewChanges[i] = CCreateSelection(__relinkSelection(selection));\r\n\t\t\t\t\tcase CDeleteSelection(selection):\r\n\t\t\t\t\t \tnewChanges[i] = CDeleteSelection(__relinkSelection(selection));\r\n\t\t\t\t\tcase CSelectionDrag(selectionDrags):\r\n\t\t\t\t\t\tnewChanges[i] = CSelectionDrag([\r\n\t\t\t\t\t\t\tfor (selectionDrag in selectionDrags)\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\tselectable: __relinkSingleSelection(selectionDrag.selectable),\r\n\t\t\t\t\t\t\t\t\tchange: selectionDrag.change\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tcase CEditSustains(noteChanges):\r\n\t\t\t\t\t\tnewChanges[i] = CEditSustains([\r\n\t\t\t\t\t\t\tfor (noteChange in noteChanges)\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\tnote: cast(__relinkSingleSelection(noteChange.note), CharterNote),\r\n\t\t\t\t\t\t\t\t\tbefore: noteChange.before,\r\n\t\t\t\t\t\t\t\t\tafter: noteChange.after\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tcase CEditEvent(event, oldEvents, newEvents):\r\n\t\t\t\t\t\tnewChanges[i] = CEditEvent(cast(__relinkSingleSelection(event), CharterEvent), oldEvents, newEvents);\r\n\t\t\t\t\tcase CEditSpecNotesType(notesChanged, oldNoteTypes, newNoteTypes):\r\n\t\t\t\t\t\tnewChanges[i] = CEditSpecNotesType([\r\n\t\t\t\t\t\t\tfor (noteChanged in notesChanged)\r\n\t\t\t\t\t\t\t\tcast(__relinkSingleSelection(noteChanged), CharterNote)\r\n\t\t\t\t\t\t], oldNoteTypes, newNoteTypes);\r\n\t\t\t\t\tdefault: newChanges[i] = change;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (list == 0) undos.undoList = newChanges;\r\n\t\t\telse undos.redoList = newChanges;\r\n\t\t}\r\n\t}\r\n\r\n\t@:noCompletion public function __resetStatics() {\r\n\t\tselection = new Selection();\r\n\t\tundos = new UndoList<CharterChange>();\r\n\t\tclipboard = []; playtestInfo = null;\r\n\t\twaveformHandler = new CharterWaveformHandler();\r\n\t\tautoSaveTimer = Options.charterAutoSaveTime;\r\n\t}\r\n\r\n\t@:noCompletion public function __clearStatics() {\r\n\t\tselection = null; undos = null; clipboard = null; playtestInfo = null;\r\n\t\twaveformHandler.destroy(); Charter.waveformHandler = null; autoSaveTimer = 0;\r\n\t}\r\n\r\n\t@:noCompletion public function __updatePlaytestInfo() {\r\n\t\tplaytestInfo = {\r\n\t\t\tsongPosition: Conductor.songPosition,\r\n\t\t\tplaybackSpeed: playBackSlider.value,\r\n\t\t\tquantSelected: quant,\r\n\t\t\tnoteTypeSelected: noteType,\r\n\t\t\tstrumlinesDraggable: strumLines.draggable,\r\n\t\t\thitSounds: [for (strumLine in strumLines.members) strumLine.hitsoundVolume > 0],\r\n\t\t\tmutedVocals: [for (strumLine in strumLines.members) !(strumLine.vocals.volume > 0)],\r\n\t\t\twaveforms: [for (strumLine in strumLines.members) strumLine.selectedWaveform]\r\n\t\t}\r\n\t}\r\n\r\n\t@:noCompletion public function __applyPlaytestInfo() {\r\n\t\tif (playtestInfo == null) return;\r\n\r\n\t\tConductor.songPosition = playtestInfo.songPosition;\r\n\t\tplayBackSlider.value = playtestInfo.playbackSpeed;\r\n\t\tquant = playtestInfo.quantSelected;\r\n\t\tnoteType = playtestInfo.noteTypeSelected;\r\n\t\tstrumLines.draggable = playtestInfo.strumlinesDraggable;\r\n\r\n\t\tfor (i => strumLine in strumLines.members)\r\n\t\t\tstrumLine.hitsoundVolume = playtestInfo.hitSounds[i] ? 1 : 0;\r\n\t\tfor (i => strumLine in strumLines.members)\r\n\t\t\tstrumLine.vocals.volume = playtestInfo.mutedVocals[i] ? 0 : 1;\r\n\t\tfor (i => strumLine in strumLines.members)\r\n\t\t\tstrumLine.selectedWaveform = playtestInfo.waveforms[i];\r\n\t}\r\n}\r\n\r\nenum CharterChange {\r\n\tCCreateStrumLine(strumLineID:Int, strumLine:ChartStrumLine);",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__relinkUndos",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:noCompletion public inline function __relinkUndos() {\r\n\t\tselection = __relinkSelection(selection);\r\n\r\n\t\tfor (list => changeList in [undos.undoList, undos.redoList]) {\r\n\t\t\tvar newChanges:Array<CharterChange> = [];\r\n\t\t\tfor (i => change in changeList) {\r\n\t\t\t\tswitch (change) {\r\n\t\t\t\t\tcase CCreateSelection(selection):\r\n\t\t\t\t\t\tnewChanges[i] = CCreateSelection(__relinkSelection(selection));\r\n\t\t\t\t\tcase CDeleteSelection(selection):\r\n\t\t\t\t\t \tnewChanges[i] = CDeleteSelection(__relinkSelection(selection));\r\n\t\t\t\t\tcase CSelectionDrag(selectionDrags):\r\n\t\t\t\t\t\tnewChanges[i] = CSelectionDrag([\r\n\t\t\t\t\t\t\tfor (selectionDrag in selectionDrags)\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\tselectable: __relinkSingleSelection(selectionDrag.selectable),\r\n\t\t\t\t\t\t\t\t\tchange: selectionDrag.change\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tcase CEditSustains(noteChanges):\r\n\t\t\t\t\t\tnewChanges[i] = CEditSustains([\r\n\t\t\t\t\t\t\tfor (noteChange in noteChanges)\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\tnote: cast(__relinkSingleSelection(noteChange.note), CharterNote),\r\n\t\t\t\t\t\t\t\t\tbefore: noteChange.before,\r\n\t\t\t\t\t\t\t\t\tafter: noteChange.after\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tcase CEditEvent(event, oldEvents, newEvents):\r\n\t\t\t\t\t\tnewChanges[i] = CEditEvent(cast(__relinkSingleSelection(event), CharterEvent), oldEvents, newEvents);\r\n\t\t\t\t\tcase CEditSpecNotesType(notesChanged, oldNoteTypes, newNoteTypes):\r\n\t\t\t\t\t\tnewChanges[i] = CEditSpecNotesType([\r\n\t\t\t\t\t\t\tfor (noteChanged in notesChanged)\r\n\t\t\t\t\t\t\t\tcast(__relinkSingleSelection(noteChanged), CharterNote)\r\n\t\t\t\t\t\t], oldNoteTypes, newNoteTypes);\r\n\t\t\t\t\tdefault: newChanges[i] = change;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (list == 0) undos.undoList = newChanges;\r\n\t\t\telse undos.redoList = newChanges;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__resetStatics",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:noCompletion public function __resetStatics() {\r\n\t\tselection = new Selection();\r\n\t\tundos = new UndoList<CharterChange>();\r\n\t\tclipboard = []; playtestInfo = null;\r\n\t\twaveformHandler = new CharterWaveformHandler();\r\n\t\tautoSaveTimer = Options.charterAutoSaveTime;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__clearStatics",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:noCompletion public function __clearStatics() {\r\n\t\tselection = null; undos = null; clipboard = null; playtestInfo = null;\r\n\t\twaveformHandler.destroy(); Charter.waveformHandler = null; autoSaveTimer = 0;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__updatePlaytestInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:noCompletion public function __updatePlaytestInfo() {\r\n\t\tplaytestInfo = {\r\n\t\t\tsongPosition: Conductor.songPosition,\r\n\t\t\tplaybackSpeed: playBackSlider.value,\r\n\t\t\tquantSelected: quant,\r\n\t\t\tnoteTypeSelected: noteType,\r\n\t\t\tstrumlinesDraggable: strumLines.draggable,\r\n\t\t\thitSounds: [for (strumLine in strumLines.members) strumLine.hitsoundVolume > 0],\r\n\t\t\tmutedVocals: [for (strumLine in strumLines.members) !(strumLine.vocals.volume > 0)],\r\n\t\t\twaveforms: [for (strumLine in strumLines.members) strumLine.selectedWaveform]\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__applyPlaytestInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:noCompletion public function __applyPlaytestInfo() {\r\n\t\tif (playtestInfo == null) return;\r\n\r\n\t\tConductor.songPosition = playtestInfo.songPosition;\r\n\t\tplayBackSlider.value = playtestInfo.playbackSpeed;\r\n\t\tquant = playtestInfo.quantSelected;\r\n\t\tnoteType = playtestInfo.noteTypeSelected;\r\n\t\tstrumLines.draggable = playtestInfo.strumlinesDraggable;\r\n\r\n\t\tfor (i => strumLine in strumLines.members)\r\n\t\t\tstrumLine.hitsoundVolume = playtestInfo.hitSounds[i] ? 1 : 0;\r\n\t\tfor (i => strumLine in strumLines.members)\r\n\t\t\tstrumLine.vocals.volume = playtestInfo.mutedVocals[i] ? 0 : 1;\r\n\t\tfor (i => strumLine in strumLines.members)\r\n\t\t\tstrumLine.selectedWaveform = playtestInfo.waveforms[i];\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		}
+	]
+}

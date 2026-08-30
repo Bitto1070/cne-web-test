@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "DialogueCharAnimContext",
+	"pkg": "funkin.game.cutscenes.dialogue",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

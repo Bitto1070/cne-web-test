@@ -1,0 +1,81 @@
+{
+	"kind": "final class",
+	"name": "Quad",
+	"pkg": "funkin.editors.ui.old",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "tl",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "tr",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "br",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bl",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "tl",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "tr",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "br",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "bl",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(tl:Int, tr:Int, br:Int, bl:Int) {\r\n\t\tthis.tl = tl;\r\n\t\tthis.tr = tr;\r\n\t\tthis.br = br;\r\n\t\tthis.bl = bl;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

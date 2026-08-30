@@ -1,0 +1,103 @@
+{
+	"kind": "class",
+	"name": "SaveWarning",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "showWarning",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set_showWarning",
+			"args": [
+				{
+					"name": "warning",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function set_showWarning(warning:Bool):Bool\r\n\t\treturn WindowUtils.preventClosing = showWarning = warning;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectionClass",
+			"type": "Class<EditorTreeMenu>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveFunc",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tshowWarning = false;\r\n\r\n\t\tWindowUtils.onClosing = function () {\r\n\t\t\tif (SaveWarning.showWarning) triggerWarning(true);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "warningFunc",
+			"type": "Bool->Void",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "triggerWarning",
+			"args": [
+				{
+					"name": "closingWindow",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function triggerWarning(?closingWindow:Bool = false) {\r\n\t\tif (warningFunc != null) warningFunc(closingWindow);\r\n\r\n\t\tif (FlxG.state != null && FlxG.state is UIState) {\r\n\t\t\tFlxG.state.openSubState(new UIWarningSubstate(TU.translate(\"saveWarning.warningTitle\"), TU.translate(\"saveWarning.warningDesc\"),\r\n\t\t\t[\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: TU.translate(\"saveWarning.cancel\"),\r\n\t\t\t\t\tcolor: 0x969533,\r\n\t\t\t\t\tonClick: function (_) {if (closingWindow) WindowUtils.resetClosing();}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: closingWindow ? TU.translate(\"saveWarning.exitGame\") : TU.translate(\"saveWarning.exitToMenu\"),\r\n\t\t\t\t\tcolor: 0x969533,\r\n\t\t\t\t\tonClick: function(_) {\r\n\t\t\t\t\t\tif (!closingWindow) {\r\n\t\t\t\t\t\t\tif (selectionClass != null) FlxG.switchState(Type.createInstance(SaveWarning.selectionClass, []));\r\n\t\t\t\t\t\t\tif (closingWindow) WindowUtils.resetClosing();\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tWindowUtils.preventClosing = false; WindowUtils.resetClosing();\r\n\t\t\t\t\t\t\topenfl.system.System.exit(0);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: closingWindow ? TU.translate(\"saveWarning.saveAndExitGame\") : TU.translate(\"saveWarning.saveAndExitToMenu\"),\r\n\t\t\t\t\tcolor: 0x969533,\r\n\t\t\t\t\tonClick: function(_) {\r\n\t\t\t\t\t\tif (saveFunc != null) saveFunc();\r\n\t\t\t\t\t\tif (!closingWindow) {\r\n\t\t\t\t\t\t\tif (selectionClass != null) FlxG.switchState(Type.createInstance(SaveWarning.selectionClass, []));\r\n\t\t\t\t\t\t\tif (closingWindow) WindowUtils.resetClosing();\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tWindowUtils.preventClosing = false; WindowUtils.resetClosing();\r\n\t\t\t\t\t\t\topenfl.system.System.exit(0);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t], false));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function reset() {\r\n\t\tSaveWarning.showWarning = false;\r\n\t\tSaveWarning.selectionClass = null;\r\n\t\tSaveWarning.saveFunc = null;\r\n\t\tSaveWarning.warningFunc = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

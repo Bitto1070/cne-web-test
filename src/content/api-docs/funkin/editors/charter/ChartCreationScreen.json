@@ -1,0 +1,132 @@
+{
+	"kind": "class",
+	"name": "ChartCreationScreen",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "charFileList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "difficultyNameTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeedTextBox",
+			"type": "UINumericStepper",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stageTextBox",
+			"type": "UIAutoCompleteTextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLineList",
+			"type": "UIButtonList<StrumLineButton>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "onSave",
+					"type": "(String, ChartData)->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?onSave:(String, ChartData)->Void) {\r\n\t\tsuper();\r\n\t\tif (onSave != null) this.onSave = onSave;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\twinTitle = TU.translate(\"chartCreation.title\");\r\n\r\n\t\twinWidth = 652;\r\n\t\twinHeight = 600;\r\n\r\n\t\tsuper.create();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String):UIText {\r\n\t\t\tvar text:UIText = new UIText(ui.x, ui.y - 24, 0, text);\r\n\t\t\tui.members.push(text);\r\n\t\t\treturn text;\r\n\t\t}\r\n\r\n\t\tcharFileList = Character.getList(true);\r\n\t\tif (charFileList.length == 0) charFileList = Character.getList(false);\r\n\r\n\t\tvar chartTitle:UIText;\r\n\t\tadd(chartTitle = new UIText(windowSpr.x + 20, windowSpr.y + 30 + 16, 0, TU.translate(\"chartCreation.info\"), 28));\r\n\r\n\t\tdifficultyNameTextBox = new UITextBox(chartTitle.x, chartTitle.y + chartTitle.height + 36, \"difficulty\", 200);\r\n\t\tadd(difficultyNameTextBox);\r\n\t\taddLabelOn(difficultyNameTextBox, TU.translate(\"chartCreation.diffName\"));\r\n\r\n\t\tvar stageFileList = Stage.getList(true);\r\n\t\tif (stageFileList.length == 0) stageFileList = Stage.getList(false);\r\n\r\n\t\tstageTextBox = new UIAutoCompleteTextBox(difficultyNameTextBox.x + 200 + 26, difficultyNameTextBox.y, \"stage\", 180);\r\n\t\tstageTextBox.suggestItems = stageFileList;\r\n\t\tadd(stageTextBox);\r\n\t\taddLabelOn(stageTextBox, TU.translate(\"chartCreation.stage\"));\r\n\r\n\t\tscrollSpeedTextBox = new UINumericStepper(stageTextBox.x + 180 + 26, difficultyNameTextBox.y, 1.0, 0.1, 2, null, null, 90);\r\n\t\tscrollSpeedTextBox.onChange = function (text:String) {\r\n\t\t\t@:privateAccess scrollSpeedTextBox.__onChange(text);\r\n\t\t\tfor (button in strumLineList.buttons.members)\r\n\t\t\t\tif (button.usesChartScrollSpeed.checked)\r\n\t\t\t\t\tbutton.scrollSpeedStepper.value = scrollSpeedTextBox.value;\r\n\t\t}\r\n\t\tadd(scrollSpeedTextBox);\r\n\t\taddLabelOn(scrollSpeedTextBox, TU.translate(\"chartCreation.scrollSpeed\"));\r\n\r\n\t\tstrumLineList = new UIButtonList<StrumLineButton>(difficultyNameTextBox.x, difficultyNameTextBox.y+difficultyNameTextBox.bHeight+36, 620, (552-179)-16, null, FlxPoint.get(620, 246), null, 6);\r\n\t\tstrumLineList.frames = Paths.getFrames('editors/ui/inputbox');\r\n\t\tstrumLineList.cameraSpacing = 0;\r\n\r\n\t\tstrumLineList.addButton.callback = function() {\r\n\t\t\tstrumLineList.add(new StrumLineButton(strumLineList.buttons.length, {\r\n\t\t\t\tcharacters: [Flags.DEFAULT_OPPONENT],\r\n\t\t\t\ttype: 0,\r\n\t\t\t\tnotes: null,\r\n\t\t\t\tposition: \"DAD\",\r\n\t\t\t\tstrumPos: [0, 50],\r\n\t\t\t\tstrumLinePos: 0.25,\r\n\t\t\t}, strumLineList));\r\n\t\t}\r\n\r\n\t\t// DEFAULTS\r\n\t\tstrumLineList.add(new StrumLineButton(0, {\r\n\t\t\tcharacters: [Flags.DEFAULT_OPPONENT],\r\n\t\t\ttype: 0,\r\n\t\t\tnotes: null,\r\n\t\t\tposition: \"DAD\",\r\n\t\t\tstrumPos: [0, 50],\r\n\t\t\tstrumLinePos: 0.25,\r\n\t\t\tscrollSpeed: 1,\r\n\t\t}, strumLineList));\r\n\t\tstrumLineList.add(new StrumLineButton(1, {\r\n\t\t\tcharacters: [Flags.DEFAULT_CHARACTER],\r\n\t\t\ttype: 1,\r\n\t\t\tnotes: null,\r\n\t\t\tposition: \"BOYFRIEND\",\r\n\t\t\tstrumPos: [0, 50],\r\n\t\t\tstrumLinePos: 0.75,\r\n\t\t\tscrollSpeed: 1,\r\n\t\t}, strumLineList));\r\n\t\tstrumLineList.add(new StrumLineButton(2, {\r\n\t\t\tcharacters: [Flags.DEFAULT_GIRLFRIEND],\r\n\t\t\ttype: 2,\r\n\t\t\tnotes: null,\r\n\t\t\tposition: \"GIRLFRIEND\",\r\n\t\t\tstrumPos: [0, 50],\r\n\t\t\tstrumLinePos: 0.50,\r\n\t\t\tscrollSpeed: 1,\r\n\t\t\tvisible: false,\r\n\t\t}, strumLineList));\r\n\r\n\t\tadd(strumLineList);\r\n\t\taddLabelOn(strumLineList, \"\").applyMarkup(\r\n\t\t\tTU.translate(\"chartCreation.strumLineList\"),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\tvar strumlineFormat = TU.getRaw(\"chartCreation.strumLine.format\");\r\n\t\tstrumLineList.dragCallback = (object:StrumLineButton, oldIndex:Int, newIndex:Int) -> {object.idText.text = strumlineFormat.format([newIndex]);};\r\n\t\tscrollSpeedTextBox.onChange(scrollSpeedTextBox.label.text);\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tcreateChart();\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20 - saveButton.bWidth, saveButton.y, TU.translate(\"editor.close\"), function() {\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsaveButton.selectable = strumLineList.buttons.members.length != 0;\r\n\t\tsaveButton.alpha = saveButton.field.alpha = saveButton.selectable ? 1 : 0.4;\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "createChart",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createChart() {\r\n\t\tscrollSpeedTextBox.onChange(scrollSpeedTextBox.label.text);\r\n\r\n\t\tvar strumLines:Array<ChartStrumLine> = [];\r\n\t\tfor (strline in strumLineList.buttons.members) {\r\n\t\t\tUIUtil.confirmUISelections(strline);\r\n\r\n\t\t\tstrumLines.push({\r\n\t\t\t\tcharacters: [for (char in strline.charactersList.buttons.members) char.textBox.label.text],\r\n\t\t\t\ttype: strline.typeDropdown.index,\r\n\t\t\t\tnotes: [],\r\n\t\t\t\tposition: strline.stagePositionDropdown.label.text.toLowerCase(),\r\n\t\t\t\tvisible: strline.visibleCheckbox.checked,\r\n\t\t\t\tstrumPos: [0, strline.hudYStepper.value],\r\n\t\t\t\tstrumLinePos: strline.hudXStepper.value,\r\n\t\t\t\tstrumScale: strline.hudScaleStepper.value,\r\n\t\t\t\tscrollSpeed: strline.usesChartScrollSpeed.checked ? strline.scrollSpeedStepper.value : null\r\n\t\t\t});\r\n\t\t}\r\n\r\n\t\tvar chartData:ChartData = {\r\n\t\t\tcodenameChart: true,\r\n\t\t\tstrumLines: strumLines,\r\n\t\t\tstage: stageTextBox.label.text,\r\n\t\t\tscrollSpeed: scrollSpeedTextBox.value,\r\n\t\t\tevents: [],\r\n\t\t\tnoteTypes: [],\r\n\t\t\tmeta: null\r\n\t\t}\r\n\r\n\t\tif (onSave != null) onSave(difficultyNameTextBox.label.text, chartData);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

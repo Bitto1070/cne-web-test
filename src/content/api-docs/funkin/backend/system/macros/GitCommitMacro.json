@@ -1,0 +1,129 @@
+{
+	"kind": "class",
+	"name": "GitCommitMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "commitNumber",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current commit number",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "commitHash",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current commit hash",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "commitHashLong",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current commit hash in long format",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "commitMessage",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current commit message",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "commitAuthor",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current commit author",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "commitDate",
+			"type": "Date",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current commit date + time",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "currentBranch",
+			"type": "String",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns the current branch name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hasUncommittedChanges",
+			"type": "Bool",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Returns if there are uncommitted changes",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

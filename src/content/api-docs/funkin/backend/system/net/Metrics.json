@@ -1,0 +1,130 @@
+{
+	"kind": "class",
+	"name": "Metrics",
+	"pkg": "funkin.backend.system.net",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bytesSent",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bytesReceived",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "packetsSent",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "packetsReceived",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "IS_LOGGING",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onBytesSent",
+			"type": "FlxTypedSignal<Int->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onBytesReceived",
+			"type": "FlxTypedSignal<Int->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() { }",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateBytesSent",
+			"args": [
+				{
+					"name": "amount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateBytesSent(amount:Int) {\r\n\t\tif (!IS_LOGGING) return;\r\n\r\n\t\tbytesSent += amount;\r\n\t\tpacketsSent++;\r\n\r\n\t\tonBytesSent.dispatch(amount);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateBytesReceived",
+			"args": [
+				{
+					"name": "amount",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateBytesReceived(amount:Int) {\r\n\t\tif (!IS_LOGGING) return;\r\n\r\n\t\tbytesReceived += amount;\r\n\t\tpacketsReceived++;\r\n\r\n\t\tonBytesReceived.dispatch(amount);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\treturn '(Metrics) $bytesSent bytes sent | $bytesReceived bytes received | $packetsSent packets sent | $packetsReceived packets received';\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,125 @@
+{
+	"kind": "class",
+	"name": "UIIconColorPicker",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "colorWheel",
+			"type": "UIColorwheel",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconSprite",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconTextBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pickerButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pickerIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "icon",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "antialaising",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "colorWheel",
+					"type": "UIColorwheel",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, icon:String, antialaising:Bool, colorWheel:UIColorwheel) {\r\n\t\tsuper(x, y, 12+125+12, 4+125+4+32+12, 'editors/ui/inputbox');\r\n\r\n\t\tthis.colorWheel = colorWheel;\r\n\r\n\t\ticonTextBox = new UITextBox(x+12, y+4+125+4, icon, 125);\r\n\t\ticonTextBox.onChange = (newIcon:String) -> {updateIcon(newIcon);}\r\n\t\tmembers.push(iconTextBox);\r\n\r\n\t\tmembers.push(iconSprite = new FlxSprite());\r\n\t\ticonSprite.antialiasing = antialaising;\r\n\r\n\t\tpickerButton = new UIButton(x+12+125-26, y+12, null, colorPick, 26, 26);\r\n\t\tpickerButton.frames = Paths.getFrames('editors/ui/inputbox');\r\n\t\tmembers.push(pickerButton);\r\n\r\n\t\tpickerIcon = new FlxSprite(pickerButton.x+7, pickerButton.y+7).loadGraphic(Paths.image(\"editors/ui/picker\"));\r\n\t\tmembers.push(pickerIcon);\r\n\r\n\t\tupdateIcon(icon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateIcon",
+			"args": [
+				{
+					"name": "icon",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateIcon(icon:String) {\r\n\t\tif (iconSprite.animation.exists(icon)) return;\r\n\t\t@:privateAccess iconSprite.animation.clearAnimations();\r\n\r\n\t\tvar path:String = Assets.exists(Paths.image('icons/$icon/icon')) ? Paths.image('icons/$icon/icon') : Paths.image('icons/$icon');\r\n\t\tif (!Assets.exists(path)) path = Paths.image('icons/face/icon');\r\n\r\n\t\tif(Assets.exists(Paths.getPath('images/icons/$icon/icon.xml'))) {\r\n\t\t\ticonSprite.frames = FlxAtlasFrames.fromSparrow(__path = path, Paths.getPath('images/icons/$icon/icon.xml'));\r\n\t\t\ticonSprite.animation.add(\"idle\", [0], 24, true, false, false);\r\n\t\t\ticonSprite.animation.play(\"idle\");\r\n\t\t} else {\r\n\t\t\ticonSprite.loadGraphic(__path = path, true, 150, 150);\r\n\t\t}\r\n\t\t\r\n\r\n\t\ticonSprite.scale.set(125/150, 125/150);\r\n\t\ticonSprite.updateHitbox();\r\n\t\ticonSprite.setPosition(x+12, y+4);\r\n\r\n\t\t__cachedColor = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "colorPick",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function colorPick() {\r\n\t\tif (__cachedColor == null) {\r\n\t\t\tvar imageBitmap:BitmapData = Assets.getBitmapData(__path, true, false);\r\n\t\t\t__cachedColor = imageBitmap.getMostPresentColor();\r\n\t\t\timageBitmap.dispose();\r\n\t\t}\r\n\r\n\t\tif (colorWheel != null) {\r\n\t\t\tcolorWheel.hue = __cachedColor.hue; \r\n\t\t\tcolorWheel.saturation = __cachedColor.saturation; \r\n\t\t\tcolorWheel.brightness = __cachedColor.brightness;\r\n\t\t\tcolorWheel.updateWheel();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

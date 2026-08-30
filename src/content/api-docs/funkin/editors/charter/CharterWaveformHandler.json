@@ -1,0 +1,182 @@
+{
+	"kind": "class",
+	"name": "CharterWaveformHandler",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "ampsNeeded",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ampSqrt",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_ampSqrt",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get_ampSqrt():Int {\r\n\t\tvar sqrt:Float = Math.sqrt(Math.floor(ampsNeeded/3));\r\n\t\tvar ampRet:Int = Math.floor(sqrt);\r\n\t\tif (sqrt % 1 > 0) ampRet += 1;\r\n\t\treturn ampRet;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveDatas",
+			"type": "Map<String, BitmapData>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveShaders",
+			"type": "Map<String, CustomShader>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sounds",
+			"type": "Map<String, FlxSound>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "analyzers",
+			"type": "Map<String, AudioAnalyzer>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveformList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {super(); exists = false;}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generateData",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sound",
+					"type": "FlxSound",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "BitmapData",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function generateData(name:String, sound:FlxSound):BitmapData {\r\n\t\tif (!sounds.exists(name)) sounds.set(name, sound);\r\n\t\tif (!analyzers.exists(name))\r\n\t\t\tanalyzers.set(name, new AudioAnalyzer(sound));\r\n\r\n\t\tvar analyzer:AudioAnalyzer = analyzers.get(name);\r\n\r\n\t\tvar pixelsNeeded:Int = Math.floor(ampsNeeded/3);\r\n\t\tif ((ampsNeeded/3) % 1 > 0) pixelsNeeded += 1;\r\n\r\n\t\tvar waveData:BitmapData = new BitmapData(\r\n\t\t\tampSqrt, 1+Math.floor(pixelsNeeded/ampSqrt), true, 0xFF000000\r\n\t\t);\r\n\r\n\t\tfor (y in 0...waveData.height)\r\n\t\t\tfor (x in 0...waveData.width) {\r\n\t\t\t\tvar amplitudes:Array<Float> = [0., 0., 0.];\r\n\t\t\t\tfor (color in 0...3) {\r\n\t\t\t\t\tvar gridY:Float = (y * (waveData.width * 3)) + (x * 3) + color;\r\n\r\n\t\t\t\t\tvar startTime:Float = Conductor.getTimeForStep(gridY/40);\r\n\t\t\t\t\tif (startTime > sound.length) if (color == 0) break; else continue;\r\n\r\n\t\t\t\t\tvar endTime:Float = Conductor.getTimeForStep((gridY+1)/40);\r\n\t\t\t\t\tif (endTime > sound.length) if (color == 0) break; else continue;\r\n\r\n\t\t\t\t\tvar amplitude:Float = analyzer.analyze(startTime, endTime);\r\n\t\t\t\t\tamplitudes[color] = amplitude;\r\n\t\t\t\t}\r\n\t\t\t\twaveData.setPixel(x, y, FlxColor.fromRGBFloat(amplitudes[0], amplitudes[1], amplitudes[2]));\r\n\t\t\t}\r\n\r\n\t\twaveDatas.set(name, waveData);\r\n\t\treturn waveData;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generateShader",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "sound",
+					"type": "FlxSound",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "CustomShader",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function generateShader(name:String, sound:FlxSound):CustomShader {\r\n\t\tif (!waveDatas.exists(name)) generateData(name, sound);\r\n\r\n\t\tvar waveData:BitmapData = waveDatas.get(name);\r\n\r\n\t\tvar waveShader:CustomShader = new CustomShader(Options.charterRainbowWaveforms ? \"engine/editorWaveformsRainbow\" : \"engine/editorWaveforms\");\r\n\t\twaveShader.data.waveformSize.value = [waveData.width, waveData.height];\r\n\t\tvar waveformInput:ShaderInput<BitmapData> = cast waveShader.data.waveformTexture;\r\n\t\twaveformInput.input = waveData;\r\n\t\twaveformInput.filter = NEAREST; // force it to be nearest, incase someone changed it\r\n\t\twaveShader.data.textureRes.value = [0, 0];\r\n\t\twaveShader.data.pixelOffset.value = [0];\r\n\t\twaveShader.data.lowDetail.value = [Options.charterLowDetailWaveforms];\r\n\r\n\t\tif (Options.charterRainbowWaveforms)\r\n\t\t\twaveShader.data.time.value = [0];\r\n\r\n\t\twaveShaders.set(name, waveShader);\r\n\t\treturn waveShader;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clearWaveform",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function clearWaveform(name:String) {\r\n\t\twaveDatas.get(name).dispose();\r\n\t\twaveDatas.remove(name);\r\n\r\n\t\twaveShaders.set(name, null);\r\n\t\twaveShaders.remove(name);\r\n\r\n\t\tanalyzers.set(name, null);\r\n\t\tanalyzers.remove(name);\r\n\r\n\t\tsounds.remove(name);\r\n\t\twaveformList.remove(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clearWaveforms",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function clearWaveforms() {\r\n\t\tfor (data in waveDatas) data.dispose();\r\n\t\tfor (shader in waveShaders) shader = null;\r\n\t\tfor (analyzer in analyzers) analyzer = null;\r\n\r\n\t\twaveDatas.clear(); waveShaders.clear();\r\n\t\tanalyzers.clear(); sounds.clear();\r\n\r\n\t\twaveformList = [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tclearWaveforms();\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

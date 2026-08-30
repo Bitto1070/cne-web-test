@@ -1,0 +1,8 @@
+{
+	"kind": "enum abstract",
+	"name": "Corner",
+	"pkg": "funkin.editors.ui.notifications",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

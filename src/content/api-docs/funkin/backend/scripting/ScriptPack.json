@@ -1,0 +1,468 @@
+{
+	"kind": "class",
+	"name": "ScriptPack",
+	"pkg": "funkin.backend.scripting",
+	"doc": {
+		"text": "Used to group multiple scripts together, and easily be able to call them.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:access(CancellableEvent)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "scripts",
+			"type": "Array<Script>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "additionalDefaultVariables",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "publicVariables",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "load",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function load() {\r\n\t\tfor(e in scripts) {\r\n\t\t\te.load();\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Loads all scripts in the pack.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "contains",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function contains(path:String) {\r\n\t\tfor(e in scripts)\r\n\t\t\tif (e.path == path)\r\n\t\t\t\treturn true;\r\n\t\treturn false;\r\n\t}",
+			"doc": {
+				"text": "Checks if the script pack contains a script with a specific path.",
+				"params": {
+					"path": "Path to check"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String) {\r\n\t\tadditionalDefaultVariables[\"importScript\"] = importScript;\r\n\t\tsuper(name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getByPath",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getByPath(name:String) {\r\n\t\tfor(s in scripts)\r\n\t\t\tif (s.path == name)\r\n\t\t\t\treturn s;\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets a script by path.",
+				"params": {
+					"name": "Path to the script"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getByName",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getByName(name:String) {\r\n\t\tfor(s in scripts)\r\n\t\t\tif (s.fileName == name)\r\n\t\t\t\treturn s;\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets a script by name.",
+				"params": {
+					"name": "Name of the script"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "importScript",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Script",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function importScript(path:String):Script {\r\n\t\tvar script = Script.create(Paths.script(path));\r\n\t\tif (script is DummyScript) {\r\n\t\t\tthrow 'Script at ${path} does not exist.';\r\n\t\t\treturn null;\r\n\t\t}\r\n\t\tadd(script);\r\n\t\tscript.load();\r\n\t\treturn script;\r\n\t}",
+			"doc": {
+				"text": "Imports a script by path.",
+				"params": {
+					"path": "Path to the script"
+				},
+				"returns": null,
+				"throws": "Error if the script does not exist",
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "call",
+			"args": [
+				{
+					"name": "func",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parameters",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function call(func:String, ?parameters:Array<Dynamic>):Dynamic {\r\n\t\tfor(e in scripts)\r\n\t\t\tif (e.active)\r\n\t\t\t\te.call(func, parameters);\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Calls a function on every single script.\nOnly calls on scripts that are active.",
+				"params": {
+					"func": "Function to call",
+					"parameters": "Parameters to pass to the function"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "event",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function event<T:CancellableEvent>(func:String, event:T):T {\r\n\t\tfor(e in scripts) {\r\n\t\t\tif(!e.active) continue;\r\n\r\n\t\t\t__eventArgs[0] = event; // set per-script so nested event dispatch on the same pack can't clobber it\r\n\t\t\te.call(func, __eventArgs);\r\n\t\t\tif (event.cancelled && !event.__continueCalls) break;\r\n\t\t}\r\n\t\treturn event;\r\n\t}\r\n\r\n\t/**\r\n\t * Gets the first script that has a variable with a specific name.\r\n\t * @param val Name of the variable\r\n\t**/\r\n\tpublic override function get(val:String):Dynamic {\r\n\t\tfor(e in scripts) {\r\n\t\t\tvar v = e.get(val);\r\n\t\t\tif (v != null) return v;\r\n\t\t}\r\n\t\treturn null;\r\n\t}\r\n\r\n\t/**\r\n\t * Reloads all scripts in the pack.\r\n\t**/\r\n\tpublic override function reload() {\r\n\t\tfor(e in scripts) e.reload();\r\n\t}\r\n\r\n\t/**\r\n\t * Sets a variable in every script.\r\n\t**/\r\n\tpublic override function set(val:String, value:Dynamic) {\r\n\t\tfor(e in scripts) e.set(val, value);\r\n\t}\r\n\r\n\t/**\r\n\t * Sets the parent/this of every script in the pack.\r\n\t */\r\n\tpublic override function setParent(parent:Dynamic) {\r\n\t\tthis.parent = parent;\r\n\t\tfor(e in scripts) e.setParent(parent);\r\n\t}\r\n\r\n\t/**\r\n\t * Destroys all scripts in the pack.\r\n\t**/\r\n\tpublic override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tfor(e in scripts) e.destroy();\r\n\t}\r\n\r\n\t@:dox(hide) public override function onCreate(path:String) {}\r\n\r\n\t/**\r\n\t * Adds a script to the pack, and sets the parent/this of the script.\r\n\t**/\r\n\tpublic function add(script:Script) {\r\n\t\tscripts.push(script);\r\n\t\t__configureNewScript(script);\r\n\t}\r\n\r\n\t/**\r\n\t * Removes a script from the pack.\r\n\t * Does not reset the parent/this.\r\n\t**/\r\n\tpublic function remove(script:Script) {\r\n\t\tscripts.remove(script);\r\n\t}\r\n\r\n\t/**\r\n\t * Inserts a script into the pack, and sets the parent/this of the script.\r\n\t**/\r\n\tpublic function insert(pos:Int, script:Script) {\r\n\t\tscripts.insert(pos, script);\r\n\t\t__configureNewScript(script);\r\n\t}\r\n\r\n\t/**\r\n\t * Configures a new script.\r\n\t * @param script Script to configure\r\n\t**/\r\n\tprivate function __configureNewScript(script:Script) {\r\n\t\tif (parent != null) script.setParent(parent);\r\n\t\tscript.setPublicMap(publicVariables);\r\n\t\tfor(k=>e in additionalDefaultVariables) script.set(k, e);\r\n\t}\r\n\r\n\toverride public function toString():String {\r\n\t\treturn FlxStringUtil.getDebugString([\r\n\t\t\tLabelValuePair.weak(\"parent\", FlxStringUtil.getClassName(parent, true)),\r\n\t\t\tLabelValuePair.weak(\"total\", scripts.length),\r\n\t\t]);\r\n\t}\r\n}",
+			"doc": {
+				"text": "Sends an event to every single script, and returns the event.",
+				"params": {
+					"func": "Function to call",
+					"event": "Event (will be the first parameter of the function)"
+				},
+				"returns": "(modified by scripts)",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "val",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function get(val:String):Dynamic {\r\n\t\tfor(e in scripts) {\r\n\t\t\tvar v = e.get(val);\r\n\t\t\tif (v != null) return v;\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets the first script that has a variable with a specific name.",
+				"params": {
+					"val": "Name of the variable"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function reload() {\r\n\t\tfor(e in scripts) e.reload();\r\n\t}",
+			"doc": {
+				"text": "Reloads all scripts in the pack.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set",
+			"args": [
+				{
+					"name": "val",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function set(val:String, value:Dynamic) {\r\n\t\tfor(e in scripts) e.set(val, value);\r\n\t}",
+			"doc": {
+				"text": "Sets a variable in every script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setParent",
+			"args": [
+				{
+					"name": "parent",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function setParent(parent:Dynamic) {\r\n\t\tthis.parent = parent;\r\n\t\tfor(e in scripts) e.setParent(parent);\r\n\t}",
+			"doc": {
+				"text": "Sets the parent/this of every script in the pack.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tfor(e in scripts) e.destroy();\r\n\t}",
+			"doc": {
+				"text": "Destroys all scripts in the pack.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onCreate",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public override function onCreate(path:String) {}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "add",
+			"args": [
+				{
+					"name": "script",
+					"type": "Script",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function add(script:Script) {\r\n\t\tscripts.push(script);\r\n\t\t__configureNewScript(script);\r\n\t}",
+			"doc": {
+				"text": "Adds a script to the pack, and sets the parent/this of the script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "remove",
+			"args": [
+				{
+					"name": "script",
+					"type": "Script",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function remove(script:Script) {\r\n\t\tscripts.remove(script);\r\n\t}",
+			"doc": {
+				"text": "Removes a script from the pack.\nDoes not reset the parent/this.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "insert",
+			"args": [
+				{
+					"name": "pos",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "script",
+					"type": "Script",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function insert(pos:Int, script:Script) {\r\n\t\tscripts.insert(pos, script);\r\n\t\t__configureNewScript(script);\r\n\t}",
+			"doc": {
+				"text": "Inserts a script into the pack, and sets the parent/this of the script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function toString():String {\r\n\t\treturn FlxStringUtil.getDebugString([\r\n\t\t\tLabelValuePair.weak(\"parent\", FlxStringUtil.getClassName(parent, true)),\r\n\t\t\tLabelValuePair.weak(\"total\", scripts.length),\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

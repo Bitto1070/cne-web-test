@@ -1,0 +1,234 @@
+{
+	"kind": "final class",
+	"name": "GitHub",
+	"pkg": "funkin.backend.system.github",
+	"doc": {
+		"text": "Set of functions to interact with GitHub.\nRequires the `GITHUB_API` macro to be defined.\nThis has no authentication, so it's limited to unauthenticated requests, and rate limits.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getReleases",
+			"args": [
+				{
+					"name": "user",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "repository",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onError",
+					"type": "Exception->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<GitHubRelease>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getReleases(user:String, repository:String, ?onError:Exception->Void):Array<GitHubRelease> {\r\n\t\t#if GITHUB_API\r\n\t\ttry {\r\n\t\t\tvar data = Json.parse(HttpUtil.requestText('https://api.github.com/repos/${user}/${repository}/releases'));\r\n\t\t\tif (!(data is Array))\r\n\t\t\t\tthrow __parseGitHubException(data);\r\n\r\n\t\t\treturn data;\r\n\t\t} catch(e) {\r\n\t\t\tif (onError != null)\r\n\t\t\t\tonError(e);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn [];\r\n\t}",
+			"doc": {
+				"text": "Gets all the releases from a specific GitHub repository using the GitHub API.",
+				"params": {
+					"user": "The user/organization that owns the repository.",
+					"repository": "The repository name.",
+					"onError": "Error Callback."
+				},
+				"returns": "Releases in Array.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getContributors",
+			"args": [
+				{
+					"name": "user",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "repository",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onError",
+					"type": "Exception->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<GitHubContributor>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getContributors(user:String, repository:String, ?onError:Exception->Void):Array<GitHubContributor> {\r\n\t\t#if GITHUB_API\r\n\t\ttry {\r\n\t\t\tvar data = Json.parse(HttpUtil.requestText('https://api.github.com/repos/${user}/${repository}/contributors'));\r\n\t\t\tif (!(data is Array)) throw __parseGitHubException(data);\r\n\r\n\t\t\treturn data;\r\n\t\t} catch(e) {\r\n\t\t\tif (onError != null)\r\n\t\t\t\tonError(e);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn [];\r\n\t}",
+			"doc": {
+				"text": "Gets the contributors list from a specific GitHub repository using the GitHub API.",
+				"params": {
+					"user": "The user/organization that owns the repository.",
+					"repository": "The repository name.",
+					"onError": "Error Callback."
+				},
+				"returns": "Contributors List as Array.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getOrganization",
+			"args": [
+				{
+					"name": "org",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onError",
+					"type": "Exception->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "GitHubOrganization",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getOrganization(org:String, ?onError:Exception->Void):GitHubOrganization {\r\n\t\t#if GITHUB_API\r\n\t\ttry {\r\n\t\t\tvar data = Json.parse(HttpUtil.requestText('https://api.github.com/orgs/$org'));\r\n\t\t\tif (Reflect.hasField(data, \"documentation_url\")) throw __parseGitHubException(data);\r\n\r\n\t\t\treturn data;\r\n\t\t} catch(e) {\r\n\t\t\tif (onError != null)\r\n\t\t\t\tonError(e);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets a specific GitHub organization using the GitHub API.",
+				"params": {
+					"org": "The organization to get.",
+					"onError": "Error Callback."
+				},
+				"returns": "Organization.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getOrganizationMembers",
+			"args": [
+				{
+					"name": "org",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onError",
+					"type": "Exception->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<GitHubContributor>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getOrganizationMembers(org:String, ?onError:Exception->Void):Array<GitHubContributor> {\r\n\t\t#if GITHUB_API\r\n\t\ttry {\r\n\t\t\tvar data = Json.parse(HttpUtil.requestText('https://api.github.com/orgs/$org/members'));\r\n\t\t\tif (Reflect.hasField(data, \"documentation_url\")) throw __parseGitHubException(data);\r\n\r\n\t\t\treturn data;\r\n\t\t} catch(e) {\r\n\t\t\tif (onError != null)\r\n\t\t\t\tonError(e);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn [];\r\n\t}",
+			"doc": {
+				"text": "Gets the members list from a specific GitHub organization using the GitHub API.\nNOTE: Members use Contributors' structure!",
+				"params": {
+					"org": "The organization to get the members from.",
+					"onError": "Error Callback."
+				},
+				"returns": "Members List as Array",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getUser",
+			"args": [
+				{
+					"name": "user",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onError",
+					"type": "Exception->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "GitHubUser",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getUser(user:String, ?onError:Exception->Void):GitHubUser {\r\n\t\t#if GITHUB_API\r\n\t\ttry {\r\n\t\t\tvar data = Json.parse(HttpUtil.requestText('https://api.github.com/users/$user'));\r\n\t\t\tif (Reflect.hasField(data, \"documentation_url\")) throw __parseGitHubException(data);\r\n\r\n\t\t\treturn data;\r\n\t\t} catch(e) {\r\n\t\t\tif (onError != null)\r\n\t\t\t\tonError(e);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets a specific GitHub user/organization using the GitHub API.\nNOTE: If organization, it will be returned with the structure of a normal user; use `getOrganization` if you specifically want an organization!",
+				"params": {
+					"user": "The user/organization to get.",
+					"onError": "Error Callback."
+				},
+				"returns": "User/Organization.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "filterReleases",
+			"args": [
+				{
+					"name": "releases",
+					"type": "Array<GitHubRelease>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keepPrereleases",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "keepDrafts",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function filterReleases(releases:Array<GitHubRelease>, keepPrereleases:Bool = true, keepDrafts:Bool = false)\r\n\t\treturn #if GITHUB_API [for(release in releases) if (release != null && (!release.prerelease || (release.prerelease && keepPrereleases)) && (!release.draft || (release.draft && keepDrafts))) release] #else releases #end;",
+			"doc": {
+				"text": "Filters all releases gotten by `getReleases`",
+				"params": {
+					"releases": "Releases",
+					"keepPrereleases": "Whenever to keep Pre-Releases.",
+					"keepDrafts": "Whenever to keep Drafts."
+				},
+				"returns": "Filtered releases.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

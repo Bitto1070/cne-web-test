@@ -1,0 +1,104 @@
+{
+	"kind": "class",
+	"name": "SaveSubstate",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "saveOptions",
+			"type": "Map<String, Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "options",
+			"type": "SaveSubstateData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "data",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cam",
+			"type": "FlxCamera",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "data",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "options",
+					"type": "SaveSubstateData",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "saveOptions",
+					"type": "Map<String, Bool>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(data:String, ?options:SaveSubstateData, ?saveOptions:Map<String, Bool>) {\r\n\t\tsuper();\r\n\t\tthis.data = data;\r\n\r\n\t\tif (saveOptions == null)\r\n\t\t\tsaveOptions = [];\r\n\t\tthis.saveOptions = saveOptions;\r\n\r\n\t\tif (options != null)\r\n\t\t\tthis.options = options;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\t#if lime_funkin\r\n\t\tFileDialog.saveFile(FlxG.stage.window, \"Save File\", (fileName:String, activeFilter:FileDialogFilter) -> {\r\n\t\t\tCoolUtil.safeSaveFile(fileName, data);\r\n\t\t\tclose();\r\n\t\t}, [new FileDialogFilter(\"Specified File Extension\", options.saveExt.getDefault(Path.extension(options.defaultSaveFile)))],\r\n\t\t\toptions.defaultSaveFile);\r\n\t\t#else\r\n\t\tvar fileDialog = new FileDialog();\r\n\t\tfileDialog.onCancel.add(function() close());\r\n\t\tfileDialog.onSelect.add(function(str) {\r\n\t\t\tCoolUtil.safeSaveFile(str, data);\r\n\t\t\tclose();\r\n\t\t});\r\n\t\tfileDialog.browse(SAVE, options.saveExt.getDefault(Path.extension(options.defaultSaveFile)), options.defaultSaveFile);\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tparent.persistentUpdate = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

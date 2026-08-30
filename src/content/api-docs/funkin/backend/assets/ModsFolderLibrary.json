@@ -1,0 +1,305 @@
+{
+	"kind": "class",
+	"name": "ModsFolderLibrary",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "basePath",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "libName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "prefix",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "basePath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "modName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(basePath:String, libName:String, ?modName:String) {\r\n\t\tthis.basePath = basePath;\r\n\t\tthis.libName = libName;\r\n\t\tthis.prefix = 'assets/$libName/';\r\n\t\tthis.modName = modName == null ? libName : modName;\r\n\t\tsuper();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "_parsedAsset",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getEditedTime",
+			"args": [
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Null<Float>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getEditedTime(asset:String):Null<Float> {\r\n\t\treturn editedTimes[asset];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAudioBuffer",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "AudioBuffer",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getAudioBuffer(id:String):AudioBuffer {\r\n\t\tif (!exists(id, \"SOUND\"))\r\n\t\t\treturn null;\r\n\t\tvar path = getAssetPath();\r\n\t\teditedTimes[id] = FileSystem.stat(path).mtime.getTime();\r\n\t\tvar e = AudioBuffer.fromFile(path);\r\n\t\t// LimeAssets.cache.audio.set('$libName:$id', e);\r\n\t\treturn e;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBytes",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bytes",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getBytes(id:String):Bytes {\r\n\t\tif (!exists(id, \"BINARY\"))\r\n\t\t\treturn null;\r\n\t\tvar path = getAssetPath();\r\n\t\teditedTimes[id] = FileSystem.stat(path).mtime.getTime();\r\n\t\tvar e = Bytes.fromFile(path);\r\n\t\treturn e;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFont",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Font",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getFont(id:String):Font {\r\n\t\tif (!exists(id, \"FONT\"))\r\n\t\t\treturn null;\r\n\t\tvar path = getAssetPath();\r\n\t\teditedTimes[id] = FileSystem.stat(path).mtime.getTime();\r\n\t\treturn ModsFolder.registerFont(Font.fromFile(path));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getImage",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Image",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getImage(id:String):Image {\r\n\t\tif (!exists(id, \"IMAGE\"))\r\n\t\t\treturn null;\r\n\t\tvar path = getAssetPath();\r\n\t\teditedTimes[id] = FileSystem.stat(path).mtime.getTime();\r\n\r\n\t\tvar e = Image.fromFile(path);\r\n\t\treturn e;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPath",
+			"args": [
+				{
+					"name": "id",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function getPath(id:String):String {\r\n\t\tif (!__parseAsset(id)) return null;\r\n\t\treturn getAssetPath();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFolders",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getFolders(folder:String):Array<String>\r\n\t\treturn __getFiles(folder, true);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFiles",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getFiles(folder:String):Array<String>\r\n\t\treturn __getFiles(folder, false);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__getFiles",
+			"args": [
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "folders",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function __getFiles(folder:String, folders:Bool = false) {\r\n\t\tif (!folder.endsWith(\"/\")) folder += \"/\";\r\n\t\tif (!__parseAsset(folder)) return [];\r\n\t\tvar path = getAssetPath();\r\n\t\ttry {\r\n\t\t\tvar result:Array<String> = [];\r\n\t\t\tfor(e in FileSystem.readDirectory(path))\r\n\t\t\t\tif (FileSystem.isDirectory('$path$e') == folders)\r\n\t\t\t\t\tresult.push(e);\r\n\t\t\treturn result;\r\n\t\t} catch(e) {\r\n\t\t\t// woops!!\r\n\t\t}\r\n\t\treturn [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "exists",
+			"args": [
+				{
+					"name": "asset",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function exists(asset:String, type:String):Bool {\r\n\t\tif(!__parseAsset(asset)) return false;\r\n\t\treturn FileSystem.exists(getAssetPath());\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "list",
+			"args": [
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function list(type:String):Array<String> {\r\n\t\tvar result = [];\r\n\t\t__listAppend(result, '');\r\n\t\treturn result;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "folderPath",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		}
+	]
+}

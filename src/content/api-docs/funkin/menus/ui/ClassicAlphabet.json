@@ -1,0 +1,146 @@
+{
+	"kind": "class",
+	"name": "ClassicAlphabet",
+	"pkg": "funkin.menus.ui",
+	"doc": {
+		"text": "Loosely based on FlxTypeText lolol",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "delay",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "paused",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "targetY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isMenuItem",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "text",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshAlphabetXML",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// TODO: fix this shit refreshing\r\n\tpublic function refreshAlphabetXML(path:String) {\r\n\t\tAlphaCharacter.__alphaPath = Paths.getAssetsRoot() + path;\r\n\t\ttry {\r\n\t\t\tvar file = Assets.getText(path);\r\n\t\t\tif(file == null) return;\r\n\t\t\tvar xml = new Access(Xml.parse(file).firstElement());\r\n\t\t\tAlphaCharacter.boldAnims = [];\r\n\t\t\tAlphaCharacter.letterAnims = [];\r\n\t\t\tAlphaCharacter.boldAlphabetPath = AlphaCharacter.letterAlphabetPath = 'ui/alphabet';\r\n\r\n\t\t\tfor(e in xml.elements) {\r\n\t\t\t\tvar bold = e.name == \"bold\";\r\n\t\t\t\tvar list = bold ? AlphaCharacter.boldAnims : AlphaCharacter.letterAnims;\r\n\t\t\t\tif (e.has.spritesheet) {\r\n\t\t\t\t\tif (bold)\r\n\t\t\t\t\t\tAlphaCharacter.boldAlphabetPath = e.att.spritesheet;\r\n\t\t\t\t\telse\r\n\t\t\t\t\t\tAlphaCharacter.letterAlphabetPath = e.att.spritesheet;\r\n\t\t\t\t}\r\n\t\t\t\tfor(e in e.nodes.letter) {\r\n\t\t\t\t\tif (!e.has.char || !e.has.anim) continue;\r\n\t\t\t\t\tvar name = e.att.char;\r\n\t\t\t\t\tvar anim = e.att.anim;\r\n\t\t\t\t\tlist[name] = anim;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t} catch(e) {\r\n\t\t\ttrace(e.details());\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": "\"\""
+				},
+				{
+					"name": "bold",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "typed",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, text:String = \"\", ?bold:Bool = false, typed:Bool = false)\r\n\t{\r\n\t\tsuper(x, y);\r\n\r\n\t\t_finalText = this.text = text;\r\n\t\tisBold = bold;\r\n\r\n\t\tvar alphabetPath = Paths.xml(\"alphabet\");\r\n\t\tif (Paths.getAssetsRoot() + alphabetPath != AlphaCharacter.__alphaPath) {\r\n\t\t\trefreshAlphabetXML(alphabetPath);\r\n\t\t}\r\n\t\t#if MOD_SUPPORT else {\r\n\t\t\tvar libThing = new LimeLibrarySymbol(alphabetPath);\r\n\t\t\tif (libThing.library is AssetLibrary) {\r\n\t\t\t\tvar library = cast(libThing.library, AssetLibrary);\r\n\t\t\t\t@:privateAccess\r\n\t\t\t\tif (library.__proxy != null && library.__proxy is AssetLibrary) {\r\n\t\t\t\t\t@:privateAccess\r\n\t\t\t\t\tlibrary = cast(library.__proxy, AssetLibrary);\r\n\t\t\t\t}\r\n\t\t\t\tif (library is IModsAssetLibrary) {\r\n\t\t\t\t\tvar modLib = cast(library, IModsAssetLibrary);\r\n\t\t\t\t\t@:privateAccess\r\n\t\t\t\t\tif (!modLib.__isCacheValid(library.cachedBytes, libThing.symbolName)) {\r\n\t\t\t\t\t\trefreshAlphabetXML(alphabetPath);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\t#end\r\n\r\n\t\tif (text != \"\")\r\n\t\t{\r\n\t\t\tif (typed)\r\n\t\t\t{\r\n\t\t\t\tstartTypedText();\r\n\t\t\t}\r\n\t\t\telse\r\n\t\t\t{\r\n\t\t\t\taddText();\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addText",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addText()\r\n\t{\r\n\t\tdoSplitWords();\r\n\r\n\t\tvar xPos:Float = 0;\r\n\t\tvar curRow:Int = 0;\r\n\t\tfor (i=>character in splitWords)\r\n\t\t{\r\n\t\t\tif (lastSprite != null)\r\n\t\t\t\txPos = lastSprite.x + lastSprite.width - x;\r\n\r\n\t\t\tif (xPosResetted && !(xPosResetted = false)) xPos = 0;\r\n\r\n\t\t\tvar letter:AlphaCharacter = new AlphaCharacter(xPos, 0);\r\n\t\t\tletter.row = curRow;\r\n\t\t\tif (isBold)\r\n\t\t\t\tletter.createBold(character);\r\n\t\t\telse\r\n\t\t\t\tletter.createLetter(character);\r\n\r\n\t\t\t// anim not found\r\n\t\t\tif (!letter.visible)\r\n\t\t\t\txPos += 40;\r\n\r\n\t\t\tletter.setColor(color, isBold);\r\n\t\t\tadd(letter);\r\n\r\n\t\t\tlastSprite = letter;\r\n\t\t\tif (_finalText.fastCodeAt(i) == \"\\n\".code)\r\n\t\t\t{\r\n\t\t\t\txPosResetted = true;\r\n\t\t\t\tcurRow += 1;\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:privateAccess",
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "startTypedText",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function startTypedText():Void\r\n\t{\r\n\t\t_finalText = text;\r\n\t\tdoSplitWords();\r\n\r\n\t\t// trace(arrayShit);\r\n\r\n\t\tvar loopNum:Int = 0;\r\n\r\n\t\tvar xPos:Float = 0;\r\n\t\tvar curRow:Int = 0;\r\n\r\n\t\tnew FlxTimer().start(0.05, function(tmr:FlxTimer)\r\n\t\t{\r\n\t\t\t// trace(_finalText.fastCodeAt(loopNum) + \" \" + _finalText.charAt(loopNum));\r\n\t\t\tif (_finalText.fastCodeAt(loopNum) == \"\\n\".code)\r\n\t\t\t{\r\n\t\t\t\tyMulti += 1;\r\n\t\t\t\txPosResetted = true;\r\n\t\t\t\txPos = 0;\r\n\t\t\t\tcurRow += 1;\r\n\t\t\t}\r\n\t\t\tloopNum += 1;\r\n\r\n\t\t\ttmr.time = FlxG.random.float(0.04, 0.09);\r\n\t\t}, splitWords.length);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

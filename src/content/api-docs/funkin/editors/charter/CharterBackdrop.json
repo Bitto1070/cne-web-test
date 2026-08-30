@@ -1,0 +1,141 @@
+{
+	"kind": "class",
+	"name": "CharterBackdrop",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [
+		"@:privateAccess"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "gridBackDrop",
+			"type": "FlxBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topLimit",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topSeparator",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomLimit",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomSeparator",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveformSprite",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "conductorFollowerSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatSeparator",
+			"type": "CharterGridSeperator",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "notesGroup",
+			"type": "NotesDrawGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "CharterStrumline",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gridShader",
+			"type": "CustomShader",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cameraHighlight",
+			"type": "CameraHighlight",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\r\n\t\tgridBackDrop = new FlxBackdrop(null, Y, 0, 0);\r\n\t\tgridBackDrop.makeSolid(1, 1, -1);\r\n\t\tgridBackDrop.shader = gridShader;\r\n\t\tadd(gridBackDrop);\r\n\t\tgridShader.hset(\"segments\", 4);\r\n\r\n\t\tcameraHighlight = new CameraHighlight(this);\r\n\t\tcameraHighlight.makeSolid(1, 1, 0xFFFFFFFF);\r\n\t\tadd(cameraHighlight);\r\n\r\n\t\twaveformSprite = new FlxSprite().makeSolid(1, 1, 0xFF000000);\r\n\t\twaveformSprite.scale.set(160, 1);\r\n\t\twaveformSprite.updateHitbox();\r\n\t\tadd(waveformSprite);\r\n\r\n\t\tbeatSeparator = new CharterGridSeperator();\r\n\t\tbeatSeparator.makeSolid(1, 1, -1);\r\n\t\tbeatSeparator.alpha = 0.5;\r\n\t\tbeatSeparator.scrollFactor.set(1, 1);\r\n\t\tbeatSeparator.scale.set((4 * 40), 2);\r\n\t\tbeatSeparator.updateHitbox();\r\n\r\n\t\tadd(beatSeparator);\r\n\t\tadd(notesGroup);\r\n\r\n\t\tbottomSeparator = new FlxSprite(0,-2);\r\n\t\tbottomSeparator.makeSolid(1, 1, -1);\r\n\t\tbottomSeparator.alpha = 0.5;\r\n\t\tbottomSeparator.scrollFactor.set(1, 1);\r\n\t\tbottomSeparator.scale.set(4 * 40, 4);\r\n\t\tbottomSeparator.updateHitbox();\r\n\t\tadd(bottomSeparator);\r\n\r\n\t\ttopSeparator = new FlxSprite(0, -2);\r\n\t\ttopSeparator.makeSolid(1, 1, -1);\r\n\t\ttopSeparator.alpha = 0.5;\r\n\t\ttopSeparator.scrollFactor.set(1, 1);\r\n\t\ttopSeparator.scale.set(4 * 40, 4);\r\n\t\ttopSeparator.updateHitbox();\r\n\t\tadd(topSeparator);\r\n\r\n\t\t// Limits\r\n\t\ttopLimit = new FlxSprite();\r\n\t\ttopLimit.makeSolid(1, 1, -1);\r\n\t\ttopLimit.color = 0xFF888888;\r\n\t\ttopLimit.blend = MULTIPLY;\r\n\t\tadd(topLimit);\r\n\r\n\t\tbottomLimit = new FlxSprite();\r\n\t\tbottomLimit.makeSolid(1, 1, -1);\r\n\t\tbottomLimit.color = 0xFF888888;\r\n\t\tbottomLimit.blend = MULTIPLY;\r\n\t\tadd(bottomLimit);\r\n\r\n\t\t// Follower\r\n\t\tconductorFollowerSpr = new FlxSprite(0, 0).makeSolid(1, 1, -1);\r\n\t\tconductorFollowerSpr.scale.set(4 * 40, 4);\r\n\t\tconductorFollowerSpr.updateHitbox();\r\n\t\tadd(conductorFollowerSpr);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateSprites",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateSprites() {\r\n\t\tvar x:Float = 0; // fuck you\r\n\t\tvar alpha:Float = 0.9;\r\n\t\tvar keyCount:Int = 4;\r\n\r\n\t\tif (strumLine != null) {\r\n\t\t\tx = strumLine.x;\r\n\t\t\talpha = strumLine.strumLine.visible ? 0.9 : 0.4;\r\n\t\t\tkeyCount = strumLine.keyCount;\r\n\t\t\tcameraHighlight.color = strumLine.highlightColor;\r\n\t\t} else alpha = 0.9;\r\n\r\n\t\tfor (spr in [gridBackDrop, beatSeparator, topLimit, bottomLimit, \r\n\t\t\t\ttopSeparator, bottomSeparator, conductorFollowerSpr, waveformSprite, cameraHighlight]) {\r\n\t\t\tspr.x = x; if (spr != waveformSprite) spr.alpha = alpha;\r\n\t\t\tspr.cameras = this.cameras;\r\n\t\t}\r\n\r\n\t\tgridBackDrop.setGraphicSize(40*keyCount, 160);\r\n\t\tgridBackDrop.updateHitbox();\r\n\t\tif (__lastKeyCount != keyCount) gridShader.hset(\"segments\", keyCount);\r\n\t\t__lastKeyCount = keyCount;\r\n\r\n\t\ttopLimit.scale.set(keyCount * 40, Math.ceil(FlxG.height / cameras[0].zoom));\r\n\t\ttopLimit.updateHitbox();\r\n\t\ttopLimit.y = -topLimit.height;\r\n\r\n\t\tbottomLimit.scale.set(keyCount * 40, Math.ceil(FlxG.height / cameras[0].zoom));\r\n\t\tbottomLimit.updateHitbox();\r\n\r\n\t\tfor (spr in [conductorFollowerSpr, beatSeparator, topSeparator, bottomSeparator]) {\r\n\t\t\tspr.scale.x = keyCount * 40;\r\n\t\t\tspr.updateHitbox();\r\n\t\t}\r\n\r\n\t\tcameraHighlight.scale.x = (keyCount * 40)-2;\r\n\t\tcameraHighlight.x += 1;\r\n\r\n\t\twaveformSprite.visible = waveformSprite.shader != null;\r\n\t\tif (waveformSprite.shader == null) return;\r\n\r\n\t\twaveformSprite.scale.set(keyCount * 40, FlxG.height * (1/cameras[0].zoom));\r\n\t\twaveformSprite.updateHitbox();\r\n\r\n\t\twaveformSprite.y = (cameras[0].scroll.y+FlxG.height/2)-(waveformSprite.height/2);\r\n\r\n\t\tif (waveformSprite.y < 0) {waveformSprite.scale.y += waveformSprite.y; waveformSprite.y = 0;}\r\n\t\tif (waveformSprite.y + waveformSprite.height > bottomLimit.y) {\r\n\t\t\twaveformSprite.scale.y -= (waveformSprite.y + waveformSprite.height)-(bottomLimit.y);\r\n\t\t\twaveformSprite.y = (bottomLimit.y) - waveformSprite.scale.y;\r\n\t\t}\r\n\t\twaveformSprite.updateHitbox();\r\n\r\n\t\twaveformSprite.shader.data.pixelOffset.value = [Math.max(conductorFollowerSpr.y - ((FlxG.height * (1/cameras[0].zoom)) * 0.5), 0)];\r\n\t\twaveformSprite.shader.data.textureRes.value = [waveformSprite.width, waveformSprite.height];\r\n\t\twaveformSprite.shader.data.playerPosition.value = [conductorFollowerSpr.y];\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

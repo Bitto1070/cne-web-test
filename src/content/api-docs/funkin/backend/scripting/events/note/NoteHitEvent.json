@@ -1,0 +1,720 @@
+{
+	"kind": "final class",
+	"name": "NoteHitEvent",
+	"pkg": "funkin.backend.scripting.events.note",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "animCancelled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "strumGlowCancelled",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "deleteNote",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "unmuteVocals",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "enableCamZooming",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "autoHitLastSustain",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "clipSustain",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "misses",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever a miss should be added.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "countAsCombo",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether this hit increases combo.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "countScore",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether this hit increases the score",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "showRating",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever ratings (Rating sprite, Digits sprites and Combo sprite) should be shown or not.\n\nNOTE: Whether it's `true` use `displayRating` and `displayCombo` (plus `minDigitDisplay` in the PlayState class) to change what's going to pop up!",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayRating",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Rating sprites should be shown or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayCombo",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Combo sprite should be shown or not (like old Week 7 patches).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "note",
+			"type": "Note",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note that has been pressed",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": {
+				"text": "Character that pressed the note.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "characters",
+			"type": "Array<Character>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Characters that pressed the note.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "player",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Character is a player",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteType",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note Type name (null if default note)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Suffix of the animation. \"-alt\" for alt notes, \"\" for normal ones.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingPrefix",
+			"type": "Null<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Prefix of the rating sprite path. Defaults to \"game/score/\"",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingSuffix",
+			"type": "Null<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Suffix of the rating sprite path.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "direction",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Direction of the press (0 = Left, 1 = Down, 2 = Up, 3 = Right)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "score",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Score gained after note press.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "accuracy",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Accuracy gained from pressing this note. From 0 to 1. null means no accuracy is gained.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthGain",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The amount of health that'll be gained from pressing that note. If called from `onPlayerMiss`, the value will be negative.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "rating",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Rating name. Defaults to \"sick\", \"good\", \"bad\" and \"shit\". Customizable.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "showSplash",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever a splash should be shown when the note is hit.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numScale",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Scale of combo numbers.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "numAntialiasing",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever antialiasing should be enabled on combo number.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingScale",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Scale of ratings.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ratingAntialiasing",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever antialiasing should be enabled on ratings.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forceAnim",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the animation should be forced to play (if it's null it will be forced based on the sprite's data xml, if it has one).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthIcon",
+			"type": "HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The attached healthIcon used distinction for icons amongst others",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventAnim",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventAnim() {\r\n\t\tanimCancelled = true;\r\n\t}",
+			"doc": {
+				"text": "Prevents the default sing animation from being played.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelAnim",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelAnim() {preventAnim();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventDeletion",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventDeletion() {\r\n\t\tdeleteNote = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the note from being deleted.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelDeletion",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelDeletion() {preventDeletion();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "forceDeletion",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function forceDeletion() {\r\n\t\tdeleteNote = true;\r\n\t}",
+			"doc": {
+				"text": "Forces the note to be deleted.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventSustainClip",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventSustainClip() {\r\n\t\tclipSustain = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the sustain from being cut. Only works if the note is a sustain.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventVocalsUnmute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventVocalsUnmute() {\r\n\t\tunmuteVocals = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the vocals volume from being set to 1 after pressing the note.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelVocalsUnmute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelVocalsUnmute() {preventVocalsUnmute();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventVocalsMute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventVocalsMute() {\r\n\t\tunmuteVocals = true;\r\n\t}",
+			"doc": {
+				"text": "Prevents the vocals volume from being muted in case its a parameter of `onPlayerMiss`",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelVocalsMute",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelVocalsMute() {preventVocalsMute();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventCamZooming",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventCamZooming() {\r\n\t\tenableCamZooming = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the camera zoom every 4 beats from enabling.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelCamZooming",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelCamZooming() {preventCamZooming();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventLastSustainHit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventLastSustainHit() {\r\n\t\tautoHitLastSustain = false;\r\n\t}",
+			"doc": {
+				"text": "Prevents the sustain tail (the last one) from being automatically hit when the sustain before it is hit.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelLastSustainHit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelLastSustainHit() {preventLastSustainHit();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preventStrumGlow",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function preventStrumGlow() {\r\n\t\tstrumGlowCancelled = true;\r\n\t}",
+			"doc": {
+				"text": "Prevents the strum from glowing after this note has been pressed.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelStrumGlow",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide)\r\n\tpublic function cancelStrumGlow() {preventStrumGlow();}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		}
+	]
+}

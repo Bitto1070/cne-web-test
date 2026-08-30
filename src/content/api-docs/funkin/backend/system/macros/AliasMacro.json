@@ -1,0 +1,29 @@
+{
+	"kind": "class",
+	"name": "AliasMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "aliasMetadata",
+			"type": "Metadata",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "build",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function build():Array<Field> {\r\n        #if display\r\n        return Context.getBuildFields();\r\n        #end\r\n        \r\n        var fields = Context.getBuildFields();\r\n        var ogFieldCount = fields.length;\r\n\r\n        for(i in 0...ogFieldCount) {\r\n            var field = fields[i];\r\n            if (field.meta == null) continue;\r\n\r\n            var previousAliases:Array<{name:String, pos:Position}> = [];\r\n            for(meta in field.meta) {\r\n                if (meta.name == \":alias\" && meta.params != null) {\r\n                    for(p in meta.params) {\r\n                        switch(p.expr) {\r\n                            case EConst(CString(s, kind)):\r\n                                previousAliases.push({\r\n                                    name: s,\r\n                                    pos: p.pos\r\n                                });\r\n                            default:\r\n                        }\r\n                    }\r\n                }\r\n            }\r\n\r\n            if (previousAliases.length == 0) continue;\r\n\r\n            var ghostAccess = field.access.copy();\r\n            ghostAccess.remove(AOverride);\r\n            ghostAccess.remove(APublic);\r\n\r\n            for(alias in previousAliases) {\r\n                var ghostField:Field = {\r\n                    name: alias.name,\r\n                    pos: alias.pos,\r\n                    kind: null,\r\n                    access: ghostAccess,\r\n                    meta: aliasMetadata\r\n                };\r\n\r\n                switch(field.kind) {\r\n                    case FFun(f):\r\n                        var args:Array<Expr> = [for(a in f.args) {\r\n                            expr: EConst(CIdent(a.name)),\r\n                            pos: Context.currentPos()\r\n                        }];\r\n\r\n                        ghostField.kind = FFun({\r\n                            args: f.args,\r\n                            params: f.params,\r\n                            ret: f.ret,\r\n                            expr: macro return $i{field.name}($a{args})\r\n                        });\r\n\r\n                    default:\r\n                        var type = null;\r\n                        switch(field.kind) {\r\n                            case FVar(t, e):\r\n                                type = t;\r\n                            case FProp(get, set, t, e):\r\n                                type = t;\r\n                            default:\r\n                        }\r\n                        ghostField.kind = FProp(\"get\", \"set\", type, null);\r\n\r\n                        fields.push({\r\n                            name: 'get_${alias.name}',\r\n                            kind: FFun({\r\n                                args: [],\r\n                                expr: macro return $i{field.name},\r\n                                ret: type\r\n                            }),\r\n                            pos: alias.pos,\r\n                            meta: aliasMetadata\r\n                        });\r\n                        fields.push({\r\n                            name: 'set_${alias.name}',\r\n                            kind: FFun({\r\n                                args: [{\r\n                                    name: '_${field.name}',\r\n                                    type: type\r\n                                }],\r\n                                expr: macro return ($i{field.name} = $i{'_${field.name}'}),\r\n                                ret: type\r\n                            }),\r\n                            pos: alias.pos,\r\n                            meta: aliasMetadata\r\n                        });\r\n                }\r\n\r\n                fields.push(ghostField);\r\n            }\r\n\r\n            var docFooter = '_Aliases: ${[for(alias in previousAliases) '`${alias.name}`'].join(\", \")}_';\r\n            if (field.doc != null)\r\n                field.doc += '\\n\\n$docFooter'; \r\n            else\r\n                field.doc = docFooter;\r\n        }\r\n\t\ttrace(fields);\r\n\r\n        return fields;\r\n    }",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

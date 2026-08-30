@@ -1,0 +1,116 @@
+{
+	"kind": "class",
+	"name": "SplashGroup",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "valid",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the splash group has successfully loaded or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "XML data for the note splashes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animationNames",
+			"type": "Array<Array<String>>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Animation names sorted by strum IDs.\nUse `getSplashAnim` to get one.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(path:String) {\r\n\t\tsuper();\r\n\r\n\t\ttry {\r\n\t\t\txml = new Access(Xml.parse(Assets.getText(path)).firstElement());\r\n\r\n\t\t\tif (!xml.has.sprite) throw \"The <splash> element requires a sprite attribute.\";\r\n\t\t\tvar splash = createSplash(xml.att.sprite);\r\n\t\t\tsetupAnims(xml, splash);\r\n\t\t\tpregenerateSplashes(splash);\r\n\t\t\tadd(splash);\r\n\r\n\t\t\t// immediately draw once and put image in GPU to prevent freezes\r\n\t\t\t// TODO: change to graphics cache\r\n\t\t\t@:privateAccess\r\n\t\t\tsplash.drawComplex(FlxG.camera);\r\n\t\t} catch(e:Dynamic) {\r\n\t\t\tLogs.error('Couldn\\'t parse splash data for \"${path}\": ${e.toString()}');\r\n\t\t\tvalid = false;\r\n\t\t}\r\n\t\tmaxSize = Flags.MAX_SPLASHES;\r\n\t}",
+			"doc": {
+				"text": "Creates a new Splash group",
+				"params": {
+					"path": "Path to the splash data (xml)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSplashAnim",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getSplashAnim(id:Int):String {\r\n\t\tif (animationNames.length <= 0) return null;\r\n\t\tid %= animationNames.length;\r\n\t\tvar animNames = animationNames[id];\r\n\t\tif (animNames == null || animNames.length <= 0) return null;\r\n\t\treturn animNames[FlxG.random.int(0, animNames.length - 1)];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "showOnStrum",
+			"args": [
+				{
+					"name": "strum",
+					"type": "Strum",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function showOnStrum(strum:Strum) {\r\n\t\tif (!valid) return null;\r\n\t\t__splash = recycle();\r\n\r\n\t\t__splash.strum = strum;\r\n\t\t__splash.strumID = strum.ID;\r\n\r\n\t\t@:privateAccess\r\n\t\t__splash.scale.x = __splash.scale.y = _scale * strum.strumLine.strumScale;\r\n\t\t__splash.alpha = _alpha;\r\n\t\t__splash.antialiasing = _antialiasing;\r\n\r\n\t\t__splash.cameras = strum.lastDrawCameras;\r\n\t\t__splash.setPosition(strum.x + 0.5 * (strum.width - __splash.width), strum.y + 0.5 * (strum.height - __splash.height));\r\n\t\t__splash.active = __splash.visible = true;\r\n\t\t__splash.playAnim(getSplashAnim(strum.ID), true);\r\n\t\t__splash.scrollFactor.set(strum.scrollFactor.x, strum.scrollFactor.y);\r\n\r\n\t\treturn __splash;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

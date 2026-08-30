@@ -1,0 +1,20 @@
+{
+	"kind": "class",
+	"name": "FunkinGame",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "switchState",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "#end\r\n\t\r\n\tpublic override function switchState() {\r\n\t\tsuper.switchState();\r\n\t\t// draw once to put all images in gpu then put the last update time to now to prevent lag spikes or whatever\r\n\t\tdraw();\r\n\t\tticks = getTicks();\r\n\t\tskipNextTickUpdate = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

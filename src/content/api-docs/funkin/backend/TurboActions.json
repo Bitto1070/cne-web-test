@@ -1,0 +1,54 @@
+{
+	"kind": "class",
+	"name": "TurboActions",
+	"pkg": "funkin.backend",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "actions",
+			"type": "Array<FlxAction>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "actions",
+					"type": "Array<FlxAction>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "delay",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "interval",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "allPress",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(actions:Array<FlxAction>, ?delay:Float, ?interval:Float, ?allPress:Bool) {\r\n\t\tsuper(delay, interval, allPress);\r\n\t\tthis.actions = actions;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,140 @@
+{
+	"kind": "class",
+	"name": "EditorPickerOption",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "iconSpr",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "label",
+			"type": "Alphabet",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectionBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectionLerp",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconRotationCycle",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "iconID",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name:String, iconID:String, height:Float) {\r\n\t\tsuper();\r\n\r\n\t\tFlxG.mouse.visible = true;\r\n\t\ticonSpr = new FlxSprite();\r\n\t\tif(iconID != null)\r\n\t\t\ticonSpr.loadGraphic(Paths.image('editors/icons/$iconID'));\r\n\t\telse\r\n\t\t\ticonSpr.exists = false;\r\n\t\ticonSpr.antialiasing = true;\r\n\t\ticonSpr.setUnstretchedGraphicSize(110, 110, false);\r\n\t\ticonSpr.x = 25 + ((height - iconSpr.width) / 2);\r\n\t\ticonSpr.y = (height - iconSpr.height) / 2;\r\n\r\n\t\tlabel = new Alphabet(25 + iconSpr.width + 25, 0, name, \"bold\");\r\n\t\tlabel.y = (height - label.height) / 2;\r\n\r\n\t\tselectionBG = new FlxSprite().makeGraphic(1, 1, -1);\r\n\t\tselectionBG.scale.set(FlxG.width, height);\r\n\t\tselectionBG.updateHitbox();\r\n\t\tselectionBG.alpha = 0;\r\n\r\n\t\tadd(selectionBG);\r\n\t\tadd(iconSpr);\r\n\t\tadd(label);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\ticonRotationCycle += elapsed;\r\n\r\n\t\tselectionLerp = CoolUtil.fpsLerp(selectionLerp, selected ? 1 : 0, 0.25);\r\n\r\n\t\tselectionBG.alpha = (iconSpr.alpha = FlxEase.cubeOut(selectionLerp)) * 0.5;\r\n\t\tselectionBG.x = FlxMath.lerp(-FlxG.width, 0, selectionLerp);\r\n\r\n\t\tlabel.x = FlxMath.lerp(10, 25 + iconSpr.width + 25, selectionLerp);\r\n\t\ticonSpr.x = label.x - 25 - iconSpr.width;\r\n\t\ticonSpr.angle = Math.sin(iconRotationCycle * 0.5) * 5;\r\n\r\n\t\tscrollFactor.set(FlxMath.lerp(1, 0.1, selectionLerp), 0);\r\n\t\tselectionBG.scrollFactor.set(0, 0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "flicker",
+			"args": [
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function flicker(callback:Void->Void) {\r\n\t\tFlxFlicker.flicker(label, 0.5, Options.flashingMenu ? 0.06 : 0.15, false, false, function(t) {\r\n\t\t\tcallback();\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

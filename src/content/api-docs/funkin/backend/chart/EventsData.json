@@ -1,0 +1,74 @@
+{
+	"kind": "class",
+	"name": "EventsData",
+	"pkg": "funkin.backend.chart",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "defaultEventsList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "defaultEventsParams",
+			"type": "Map<String, Array<EventParamInfo>>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsList",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsParams",
+			"type": "Map<String, Array<EventParamInfo>>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getEventParams",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<EventParamInfo>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getEventParams(name:String):Array<EventParamInfo> {\r\n\t\treturn eventsParams.exists(name) ? eventsParams.get(name) : [];\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadEvents",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function reloadEvents() {\r\n\t\teventsList = defaultEventsList.copy();\r\n\t\teventsParams = defaultEventsParams.copy();\r\n\r\n\t\tvar hscriptInterp:Interp = new Interp();\r\n\t\thscriptInterp.variables.set(\"Bool\", TBool);\r\n\t\thscriptInterp.variables.set(\"Int\", function (?min:Int, ?max:Int, ?step:Float):EventParamType {return TInt(min, max, step);});\r\n\t\thscriptInterp.variables.set(\"Float\", function (?min:Float, ?max:Float, ?step:Float, ?precision:Int):EventParamType {return TFloat(min, max, step, precision);});\r\n\t\thscriptInterp.variables.set(\"String\", TString);\r\n\t\thscriptInterp.variables.set(\"StrumLine\", TStrumLine);\r\n\t\thscriptInterp.variables.set(\"ColorWheel\", TColorWheel);\r\n\t\thscriptInterp.variables.set(\"DropDown\", Reflect.makeVarArgs(function(args:Array<Dynamic>):EventParamType {\r\n\t\t\tvar flatArgs = CoolUtil.deepFlatten(args);\r\n\t\t\tif(flatArgs.length == 0) return TDropDown([\"null\"]);\r\n\t\t\treturn TDropDown([for (arg in flatArgs) Std.string(arg)]);\r\n\t\t}));\r\n\t\thscriptInterp.variables.set(\"Character\", TCharacter);\r\n\t\thscriptInterp.variables.set(\"Stage\", TStage);\r\n\r\n\t\tvar hscriptParser:Parser = new Parser();\r\n\t\thscriptParser.allowJSON = hscriptParser.allowMetadata = false;\r\n\r\n\t\tfor (file in Paths.getFolderContent('data/events/', true, BOTH)) {\r\n\t\t\tvar ext = Path.extension(file);\r\n\t\t\tif (ext != \"json\" && ext != \"pack\") continue;\r\n\t\t\tvar eventName:String = CoolUtil.getFilename(file);\r\n\t\t\tvar fileTxt:String = Assets.getText(file);\r\n\r\n\t\t\tif (ext == \"pack\") {\r\n\t\t\t\tvar arr = fileTxt.split(\"________PACKSEP________\");\r\n\t\t\t\teventName = Path.withoutExtension(arr[0]);\r\n\t\t\t\tfileTxt = arr[2];\r\n\t\t\t}\r\n\r\n\t\t\tif (fileTxt.trim() == \"\") continue;\r\n\r\n\t\t\tif (!eventsList.contains(eventName)) {\r\n\t\t\t\teventsList.push(eventName);\r\n\t\t\t\teventsParams.set(eventName, []);\r\n\t\t\t}\r\n\r\n\t\t\ttry {\r\n\t\t\t\tvar data:EventInfoFile = cast Json.parse(fileTxt);\r\n\t\t\t\tif (data == null || data.params == null) continue;\r\n\r\n\t\t\t\tvar finalParams:Array<EventParamInfo> = [];\r\n\t\t\t\tfor (paramData in data.params) {\r\n\t\t\t\t\ttry {\r\n\t\t\t\t\t\tfinalParams.push({\r\n\t\t\t\t\t\t\tname: paramData.name,\r\n\t\t\t\t\t\t\ttype: hscriptInterp.expr(hscriptParser.parseString(paramData.type)),\r\n\t\t\t\t\t\t\tdefValue: paramData.defaultValue,\r\n\t\t\t\t\t\t\tsaveIfDefault: paramData.saveIfDefault\r\n\t\t\t\t\t\t});\r\n\t\t\t\t\t} catch (e) {trace('Error parsing event param ${paramData.name} - ${eventName}: $e'); finalParams.push(null);}\r\n\t\t\t\t}\r\n\t\t\t\teventsParams.set(eventName, finalParams);\r\n\t\t\t} catch (e) {trace('Error parsing file $file: $e');}\r\n\t\t}\r\n\r\n\t\thscriptInterp = null; hscriptParser = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

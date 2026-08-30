@@ -1,0 +1,1194 @@
+{
+	"kind": "class",
+	"name": "Controls",
+	"pkg": "funkin.backend.system",
+	"doc": {
+		"text": "A list of actions that a player would invoke via some input device.\nUses FlxActions to funnel various inputs to a single action.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:noCustomClass",
+		"@:nullSafety",
+		"@:build(funkin.backend.system.macros.ControlsMacro.build())"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "UP",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_UP, LEFT_STICK_DIGITAL_UP])",
+				"@:rawGamepad([DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP])",
+				"@:pressed(\"up\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "UP_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"up\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "UP_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"up\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "LEFT",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT])",
+				"@:rawGamepad([DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT])",
+				"@:pressed(\"left\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "LEFT_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"left\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "LEFT_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"left\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "RIGHT",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT])",
+				"@:rawGamepad([DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT])",
+				"@:pressed(\"right\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "RIGHT_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"right\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "RIGHT_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"right\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DOWN",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN])",
+				"@:rawGamepad([DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN])",
+				"@:pressed(\"down\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DOWN_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"down\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DOWN_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"down\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_UP",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_UP, LEFT_STICK_DIGITAL_UP])",
+				"@:rawGamepad([DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP])",
+				"@:pressed(\"note-up\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_UP_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"note-up\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_UP_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"note-up\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_LEFT",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT])",
+				"@:rawGamepad([DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT])",
+				"@:pressed(\"note-left\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_LEFT_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"note-left\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_LEFT_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"note-left\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_RIGHT",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT])",
+				"@:rawGamepad([DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT])",
+				"@:pressed(\"note-right\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_RIGHT_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"note-right\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_RIGHT_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"note-right\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_DOWN",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:rawGamepad([DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN])",
+				"@:rawGamepad([DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN])",
+				"@:pressed(\"note-down\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_DOWN_P",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justPressed(\"note-down\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "NOTE_DOWN_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"note-down\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "ACCEPT",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([A])",
+				"@:justPressed(\"accept\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "ACCEPT_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"accept\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "ACCEPT_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"accept\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "BACK",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([B])",
+				"@:justPressed(\"back\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "BACK_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"back\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "BACK_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"back\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "PAUSE",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([START])",
+				"@:justPressed(\"pause\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "PAUSE_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"pause\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "PAUSE_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"pause\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "RESET",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([Y])",
+				"@:justPressed(\"reset\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "RESET_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"reset\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "RESET_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"reset\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "CHANGE_MODE",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([FlxGamepadInputID.BACK])",
+				"@:justPressed(\"change-mode\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "CHANGE_MODE_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"change-mode\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "CHANGE_MODE_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"change-mode\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "SWITCHMOD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([FlxGamepadInputID.BACK])",
+				"@:justPressed(\"switchmod\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "SWITCHMOD_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"switchmod\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "SWITCHMOD_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"switchmod\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "FPS_COUNTER",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:gamepad([])",
+				"@:justPressed(\"fps-counter\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "FPS_COUNTER_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"fps-counter\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "FPS_COUNTER_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"fps-counter\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_ACCESS",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:devModeOnly",
+				"@:gamepad([])",
+				"@:justPressed(\"dev-access\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_ACCESS_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"dev-access\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_ACCESS_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"dev-access\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_CONSOLE",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:devModeOnly",
+				"@:gamepad([])",
+				"@:justPressed(\"dev-console\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_CONSOLE_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"dev-console\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_CONSOLE_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"dev-console\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_RELOAD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:devModeOnly",
+				"@:gamepad([])",
+				"@:justPressed(\"dev-reload\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_RELOAD_HOLD",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:pressed(\"dev-reload\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "DEV_RELOAD_R",
+			"type": "Bool",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:justReleased(\"dev-reload\")"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "gamepadsAdded",
+			"type": "Array<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "keyboardScheme",
+			"type": "KeyboardScheme",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "name",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scheme",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "None"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(name, scheme = None)\r\n\t{\r\n\t\tsuper(name);\r\n\r\n\t\tmacro_addKeysToActions();\r\n\r\n\t\tfor (action in digitalActions)\r\n\t\t\tbyName[action.name] = action;\r\n\r\n\t\tsetKeyboardScheme(scheme, false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getActionFromControl",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FlxAction return macro_getActionFromControl(control)",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getActionFromControl(control:Control):FlxAction return macro_getActionFromControl(control);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getKeyName",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "idx",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getKeyName(control:Control, idx:Int = 0):String\r\n\t{\r\n\t\tvar action = macro_getActionFromControl(control);\r\n\t\tvar input = action.inputs[idx];\r\n\t\treturn switch input.device\r\n\t\t{\r\n\t\t\tcase KEYBOARD: return '${(input.inputID : FlxKey)}';\r\n\t\t\tcase GAMEPAD: return '${(input.inputID : FlxGamepadInputID)}';\r\n\t\t\tcase device: throw 'unhandled device: $device';\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "replaceBindingKeyboard",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "toAdd",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "toRemove",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function replaceBindingKeyboard(control:Control, ?toAdd:Int, ?toRemove:Int)\r\n\t{\r\n\t\tif (toAdd == toRemove)\r\n\t\t\treturn;\r\n\r\n\t\tif (toRemove != null)\r\n\t\t\tunbindKeys(control, [toRemove]);\r\n\t\tif (toAdd != null)\r\n\t\t\tbindKeys(control, [toAdd]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "replaceBindingGamepad",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "deviceID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "toAdd",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "toRemove",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function replaceBindingGamepad(control:Control, deviceID:Int, ?toAdd:Int, ?toRemove:Int)\r\n\t{\r\n\t\tif (toAdd == toRemove)\r\n\t\t\treturn;\r\n\r\n\t\tif (toRemove != null)\r\n\t\t\tunbindButtons(control, deviceID, [toRemove]);\r\n\t\tif (toAdd != null)\r\n\t\t\tbindButtons(control, deviceID, [toAdd]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "bindKeys",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keys",
+					"type": "Array<FlxKey>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function bindKeys(control:Control, keys:Array<FlxKey>)\r\n\t{\r\n\t\tmacro_forEachBound(control, (action, state) -> addKeys(action, keys, state));\r\n\t}",
+			"doc": {
+				"text": "Sets all actions that pertain to the binder to trigger when the supplied keys are used.\nIf binder is a literal you can inline this",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "unbindKeys",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keys",
+					"type": "Array<FlxKey>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function unbindKeys(control:Control, keys:Array<FlxKey>)\r\n\t{\r\n\t\tmacro_forEachBound(control, (action, _) -> removeKeys(action, keys));\r\n\t}",
+			"doc": {
+				"text": "Sets all actions that pertain to the binder to trigger when the supplied keys are used.\nIf binder is a literal you can inline this",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addKeys",
+			"args": [
+				{
+					"name": "action",
+					"type": "FlxActionDigital",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keys",
+					"type": "Array<FlxKey>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "state",
+					"type": "FlxInputState",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)\r\n\t{\r\n\t\tfor (key in keys)\r\n\t\t\taction.addKey(key, state);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeKeys",
+			"args": [
+				{
+					"name": "action",
+					"type": "FlxActionDigital",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "keys",
+					"type": "Array<FlxKey>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function removeKeys(action:FlxActionDigital, keys:Array<FlxKey>)\r\n\t{\r\n\t\tvar i = action.inputs.length;\r\n\t\twhile (i-- > 0)\r\n\t\t{\r\n\t\t\tvar input = action.inputs[i];\r\n\t\t\tif (input.device == KEYBOARD && keys.contains(cast input.inputID))\r\n\t\t\t\taction.remove(input);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setKeyboardScheme",
+			"args": [
+				{
+					"name": "scheme",
+					"type": "KeyboardScheme",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "reset",
+					"type": "Dynamic",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setKeyboardScheme(scheme:KeyboardScheme, reset = true)\r\n\t{\r\n\t\tif (reset)\r\n\t\t\tremoveKeyboard();\r\n\r\n\t\tkeyboardScheme = scheme;\r\n\r\n\t\tmacro_bindControls(scheme);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addGamepad",
+			"args": [
+				{
+					"name": "id",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttonMap",
+					"type": "Map<Control, Array<FlxGamepadInputID>>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addGamepad(id:Int, buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void\r\n\t{\r\n\t\tgamepadsAdded.push(id);\r\n\r\n\t\tfor (control => buttons in buttonMap)\r\n\t\t\tbindButtons(control, id, buttons);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeGamepad",
+			"args": [
+				{
+					"name": "deviceID",
+					"type": "Int",
+					"optional": false,
+					"def": "FlxInputDeviceID.ALL"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void\r\n\t{\r\n\t\tfor (action in this.digitalActions)\r\n\t\t{\r\n\t\t\tvar i = action.inputs.length;\r\n\t\t\twhile (i-- > 0)\r\n\t\t\t{\r\n\t\t\t\tvar input = action.inputs[i];\r\n\t\t\t\tif (isGamepad(input, deviceID))\r\n\t\t\t\t\taction.remove(input);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tgamepadsAdded.remove(deviceID);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "bindButtons",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "id",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttons",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function bindButtons(control:Control, id, buttons)\r\n\t{\r\n\t\tmacro_forEachBound(control, (action, state) -> addButtons(action, buttons, state, id));\r\n\t}",
+			"doc": {
+				"text": "Sets all actions that pertain to the binder to trigger when the supplied keys are used.\nIf binder is a literal you can inline this",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "unbindButtons",
+			"args": [
+				{
+					"name": "control",
+					"type": "Control",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "gamepadID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttons",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function unbindButtons(control:Control, gamepadID:Int, buttons)\r\n\t{\r\n\t\tmacro_forEachBound(control, (action, _) -> removeButtons(action, gamepadID, buttons));\r\n\t}",
+			"doc": {
+				"text": "Sets all actions that pertain to the binder to trigger when the supplied keys are used.\nIf binder is a literal you can inline this",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addButtons",
+			"args": [
+				{
+					"name": "action",
+					"type": "FlxActionDigital",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttons",
+					"type": "Array<FlxGamepadInputID>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "state",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "id",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function addButtons(action:FlxActionDigital, buttons:Array<FlxGamepadInputID>, state, id)\r\n\t{\r\n\t\tfor (button in buttons)\r\n\t\t\taction.addGamepad(button, state, id);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeButtons",
+			"args": [
+				{
+					"name": "action",
+					"type": "FlxActionDigital",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "gamepadID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttons",
+					"type": "Array<FlxGamepadInputID>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function removeButtons(action:FlxActionDigital, gamepadID:Int, buttons:Array<FlxGamepadInputID>)\r\n\t{\r\n\t\tvar i = action.inputs.length;\r\n\t\twhile (i-- > 0)\r\n\t\t{\r\n\t\t\tvar input = action.inputs[i];\r\n\t\t\tif (isGamepad(input, gamepadID) && buttons.contains(cast input.inputID))\r\n\t\t\t\taction.remove(input);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isGamepad",
+			"args": [
+				{
+					"name": "input",
+					"type": "FlxActionInput",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "deviceID",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function isGamepad(input:FlxActionInput, deviceID:Int)\r\n\t{\r\n\t\treturn input.device == GAMEPAD && (deviceID == FlxInputDeviceID.ALL || input.deviceID == deviceID);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getJustPressed",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:nullSafety(Off)\r\n\tpublic inline function getJustPressed(name:String) {\r\n\t\treturn ControlsUtil.getJustPressed(this, name);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:nullSafety(Off)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getJustReleased",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:nullSafety(Off)\r\n\tpublic inline function getJustReleased(name:String) {\r\n\t\treturn ControlsUtil.getJustReleased(this, name);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:nullSafety(Off)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getPressed",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:nullSafety(Off)\r\n\tpublic inline function getPressed(name:String) {\r\n\t\treturn ControlsUtil.getPressed(this, name);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:nullSafety(Off)"
+			]
+		}
+	]
+}

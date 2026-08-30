@@ -1,0 +1,18 @@
+{
+	"kind": "final class",
+	"name": "SoundTrayShowEvent",
+	"pkg": "funkin.backend.scripting.events.soundtray",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "up",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"kind": "enum",
+	"name": "HighscoreChange",
+	"pkg": "funkin.savedata",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

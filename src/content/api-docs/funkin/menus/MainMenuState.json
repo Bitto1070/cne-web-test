@@ -1,0 +1,36 @@
+{
+	"kind": "class",
+	"name": "MainMenuState",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "canAccessDebugMenus",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "switchTo",
+			"args": [
+				{
+					"name": "nextState",
+					"type": "FlxState",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function switchTo(nextState:FlxState):Bool {\r\n\t\ttry {\r\n\t\t\tmenuItems.forEach(function(spr:FlxSprite) {\r\n\t\t\t\tFlxTween.tween(spr, {alpha: 0}, 0.5, {ease: FlxEase.quintOut});\r\n\t\t\t});\r\n\t\t}\r\n\t\treturn super.switchTo(nextState);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

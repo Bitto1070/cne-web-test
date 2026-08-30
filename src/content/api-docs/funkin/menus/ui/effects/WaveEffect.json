@@ -1,0 +1,66 @@
+{
+	"kind": "class",
+	"name": "WaveEffect",
+	"pkg": "funkin.menus.ui.effects",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "intensityX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "intensityY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "period",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": true,
+					"def": "0"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": true,
+					"def": "5"
+				},
+				{
+					"name": "p",
+					"type": "Float",
+					"optional": true,
+					"def": "10"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?x:Float = 0, ?y:Float = 5, ?p:Float = 10) {\r\n\t\tsuper();\r\n\t\tspeed = 3;\r\n\t\tintensityX = x;\r\n\t\tintensityY = y;\r\n\t\tperiod = p;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

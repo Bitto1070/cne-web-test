@@ -1,0 +1,142 @@
+{
+	"kind": "class",
+	"name": "XMLImportedScriptInfo",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [
+		"@:privateAccess"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "path",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "shortLived",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "loadBefore",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "importStageSprites",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parentScriptPack",
+			"type": "ScriptPack",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentScriptPack",
+					"type": "ScriptPack",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(path:String, parentScriptPack:ScriptPack) {\r\n\t\tthis.parentScriptPack = parentScriptPack;\r\n\t\tthis.path = path;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getScript",
+			"args": [],
+			"ret": "Script",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getScript():Script\r\n\t\treturn parentScriptPack == null ? null : parentScriptPack.getByPath(path);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareInfos",
+			"args": [
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentScriptPack",
+					"type": "ScriptPack",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onScriptPreLoad",
+					"type": "XMLImportedScriptInfo->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "XMLImportedScriptInfo",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function prepareInfos(node:Access, parentScriptPack:ScriptPack, ?onScriptPreLoad:XMLImportedScriptInfo->Void):XMLImportedScriptInfo {\r\n\t\tif (!node.has.script || parentScriptPack == null) return null;\r\n\r\n\t\tvar folder = node.getAtt(\"folder\").getDefault(\"data/scripts/\");\r\n\t\tif (!folder.endsWith(\"/\")) folder += \"/\";\r\n\r\n\t\tvar path = Paths.script(folder + node.getAtt(\"script\"));\r\n\t\tvar daScript = Script.create(path);\r\n\t\tif (daScript is DummyScript) {\r\n\t\t\tLogs.trace('Script Extension at ${path} does not exist.', ERROR);\r\n\t\t\treturn null;\r\n\t\t}\r\n\r\n\t\tvar infos = new XMLImportedScriptInfo(daScript.path, parentScriptPack);\r\n\t\tinfos.shortLived = node.getAtt(\"isShortLived\") == \"true\" || node.getAtt(\"shortLived\") == \"true\";\r\n\t\tinfos.importStageSprites = node.getAtt(\"importStageSprites\") == \"true\";\r\n\t\t@:privateAccess infos.loadBefore = shouldLoadBefore(node);\r\n\r\n\t\tif (onScriptPreLoad != null) onScriptPreLoad(infos);\r\n\t\tparentScriptPack.add(daScript);\r\n\t\tdaScript.set(\"scriptInfo\", infos);\r\n\t\tdaScript.load();\r\n\r\n\t\treturn infos;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "shouldLoadBefore",
+			"args": [
+				{
+					"name": "node",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:dox(hide) public static inline function shouldLoadBefore(node:Access):Bool\r\n\t\treturn node.getAtt(\"loadBefore\") != \"false\";",
+			"doc": null,
+			"meta": [
+				"@:privateAccess",
+				"@:dox(hide)"
+			]
+		}
+	]
+}

@@ -1,0 +1,69 @@
+{
+	"kind": "class",
+	"name": "IniUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "parseAsset",
+			"args": [
+				{
+					"name": "assetPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function parseAsset(assetPath:String)\r\n\t\treturn parseString(Assets.getText(assetPath));",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseString",
+			"args": [
+				{
+					"name": "data",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Map<String, Map<String, String>>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseString(data:String):Map<String, Map<String, String>> {\r\n\t\tvar res:Map<String, Map<String, String>> = [];\r\n\t\tparseStringToMap(res, data);\r\n\t\treturn res;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseStringToMap",
+			"args": [
+				{
+					"name": "map",
+					"type": "Map<String, Map<String, String>>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "data",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseStringToMap(map:Map<String, Map<String, String>>, data:String) {\r\n\t\tvar section:Map<String, String> = null;\r\n\r\n\t\tvar regexSec = ~/^\\[(.+)\\]/g, regexVal = ~/^([^#;].+)=(.+)/g, quote = ~/[\\\\'\"](.+)[\\\\'\"]/g, iln = 0;\r\n\t\tdo {\r\n\t\t\tvar line = data.substring(iln, ((iln = data.indexOf('\\n', iln) + 1) == 0 ? data.length : iln - 1));\r\n\t\t\tif (regexSec.match(line)) {\r\n\t\t\t\tif ((section = map.get(regexSec.matched(1))) == null) map.set(regexSec.matched(1), section = []);\r\n\t\t\t}\r\n\t\t\telse if (regexVal.match(line)) {\r\n\t\t\t\tvar s = regexVal.matched(2).trim();\r\n\t\t\t\tif (quote.match(s)) s = quote.matched(1);\r\n\r\n\t\t\t\tif (section == null) {\r\n\t\t\t\t\tif ((section = map.get(\"Global\")) == null) map.set(\"Global\", section = []);\r\n\t\t\t\t}\r\n\t\t\t\tsection.set(regexVal.matched(1).trim(), s);\r\n\t\t\t}\r\n\t\t} while (iln != 0);\r\n\t}\r\n}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

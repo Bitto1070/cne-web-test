@@ -1,0 +1,150 @@
+{
+	"kind": "class",
+	"name": "AlphaCharacter",
+	"pkg": "funkin.menus.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "__alphaPath",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)",
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "letterAlphabetPath",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "boldAlphabetPath",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "boldAnims",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "letterAnims",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "row",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setColor",
+			"args": [
+				{
+					"name": "c",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "isBold",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setColor(c:FlxColor, isBold:Bool) {\r\n\t\tif (isBold) {\r\n\t\t\tcolorTransform.redMultiplier = c.redFloat;\r\n\t\t\tcolorTransform.greenMultiplier = c.greenFloat;\r\n\t\t\tcolorTransform.blueMultiplier = c.blueFloat;\r\n\t\t} else {\r\n\t\t\tcolorTransform.redOffset = c.red;\r\n\t\t\tcolorTransform.greenOffset = c.green;\r\n\t\t\tcolorTransform.blueOffset = c.blue;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float)\r\n\t{\r\n\t\tsuper(x, y);\r\n\r\n\t\tantialiasing = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createBold",
+			"args": [
+				{
+					"name": "letter",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createBold(letter:String)\r\n\t{\r\n\t\tif(!boldAnims.exists(letter))\r\n\t\t\tletter = letter.toUpperCase();\r\n\t\tif (!boldAnims.exists(letter)) {\r\n\t\t\tvisible = false;\r\n\t\t\tactive = false;\r\n\t\t\tscale.set();\r\n\t\t\twidth = 40;\r\n\t\t\treturn;\r\n\t\t}\r\n\t\tframes = Paths.getFrames(boldAlphabetPath);\r\n\t\tanimation.addByPrefix(letter, boldAnims[letter], 24);\r\n\t\tanimation.play(letter);\r\n\t\tupdateHitbox();\r\n\r\n\t\ty += row * height;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createLetter",
+			"args": [
+				{
+					"name": "letter",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function createLetter(letter:String):Void\r\n\t{\r\n\t\tif (!letterAnims.exists(letter)) {\r\n\t\t\tvisible = false;\r\n\t\t\tactive = false;\r\n\t\t\tscale.set();\r\n\t\t\twidth = 40;\r\n\t\t\treturn;\r\n\t\t}\r\n\t\tframes = Paths.getFrames(letterAlphabetPath);\r\n\t\tanimation.addByPrefix(letter, letterAnims[letter], 24);\r\n\t\tanimation.play(letter);\r\n\t\tupdateHitbox();\r\n\r\n\t\ty = (110 - height);\r\n\t\ty += row * 60;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

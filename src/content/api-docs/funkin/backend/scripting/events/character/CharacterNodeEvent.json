@@ -1,0 +1,54 @@
+{
+	"kind": "final class",
+	"name": "CharacterNodeEvent",
+	"pkg": "funkin.backend.scripting.events.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "character",
+			"type": "Character",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The character instance",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "node",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The node which is currently being parsed",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The name of the node, quicker access than e.node.name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

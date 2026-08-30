@@ -1,0 +1,8 @@
+{
+	"kind": "interface",
+	"name": "ITreeOption",
+	"pkg": "funkin.options",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

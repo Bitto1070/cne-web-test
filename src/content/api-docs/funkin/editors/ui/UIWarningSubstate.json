@@ -1,0 +1,89 @@
+{
+	"kind": "class",
+	"name": "UIWarningSubstate",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bHeight",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSubstateOpen",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onSubstateOpen() {\r\n\t\tsuper.onSubstateOpen();\r\n\t\tparent.persistentUpdate = false;\r\n\t\tparent.persistentDraw = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tfor(c in FlxG.cameras.list) {\r\n\t\t\t// Prevent adding a shader if it already has one\r\n\t\t\t@:privateAccess if(c._filters != null) {\r\n\t\t\t\tvar shouldSkip = false;\r\n\t\t\t\tfor(filter in c._filters) {\r\n\t\t\t\t\tif(filter is ShaderFilter) {\r\n\t\t\t\t\t\tvar filter:ShaderFilter = cast filter;\r\n\t\t\t\t\t\tif(filter.shader is CustomShader) {\r\n\t\t\t\t\t\t\tvar shader:CustomShader = cast filter.shader;\r\n\r\n\t\t\t\t\t\t\tif(shader.path == blurShader.path) {\r\n\t\t\t\t\t\t\t\tshouldSkip = true;\r\n\t\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tif(shouldSkip)\r\n\t\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tcamShaders.push(c);\r\n\t\t\tc.addShader(blurShader);\r\n\t\t}\r\n\r\n\t\tcamera = warnCam = new FlxCamera();\r\n\t\twarnCam.bgColor = 0;\r\n\t\twarnCam.alpha = 0;\r\n\t\twarnCam.zoom = 0.1;\r\n\t\tFlxG.cameras.add(warnCam, false);\r\n\r\n\r\n\t\tvar spr = new UISliceSprite(0, 0, CoolUtil.maxInt(560, 30 + (170 * buttons.length)), bHeight, 'editors/ui/${isError ? \"normal\" : \"grayscale\"}-popup');\r\n\r\n\t\tvar sprIcon:FlxSprite = new FlxSprite(spr.x + 18, spr.y + 28 + 26).loadGraphic(Paths.image('editors/warnings/${isError ? \"error\" : \"warning\"}'));\r\n\t\tsprIcon.scale.set(1.4, 1.4);\r\n\t\tsprIcon.updateHitbox();\r\n\r\n\t\tmessageSpr = new UIText(0,0, spr.bWidth - 100 - (26 * 2), message);\r\n\t\tspr.bHeight = Std.int(bHeight + Math.abs(Math.min(sprIcon.height-messageSpr.height, 0)));\r\n\r\n\t\tspr.x = (FlxG.width - spr.bWidth) / 2;\r\n\t\tspr.y = (FlxG.height - spr.bHeight) / 2;\r\n\t\tspr.color = isError ? 0xFFFF0000 : 0xFFFFFF00;\r\n\t\tadd(spr);\r\n\r\n\t\tif(title != null) {\r\n\t\t\tadd(titleSpr = new UIText(spr.x + 25, spr.y, spr.bWidth - 50, title, 15, -1));\r\n\t\t\ttitleSpr.y = spr.y + ((30 - titleSpr.height) / 2);\r\n\t\t}\r\n\r\n\t\tvar sprIcon:FlxSprite = new FlxSprite(spr.x + 18, spr.y + 28 + 26).loadGraphic(Paths.image('editors/warnings/${isError ? \"error\" : \"warning\"}'));\r\n\t\tsprIcon.scale.set(1.4, 1.4);\r\n\t\tsprIcon.updateHitbox();\r\n\t\tsprIcon.antialiasing = true;\r\n\t\tadd(sprIcon);\r\n\r\n\t\tmessageSpr.x = sprIcon.x + 70 + 16 + 20;\r\n\t\tmessageSpr.y = sprIcon.y;\r\n\t\tadd(messageSpr);\r\n\r\n\t\tvar xPos = (FlxG.width - (30 + (170 * buttons.length))) / 2;\r\n\t\tfor(k=>b in buttons) {\r\n\t\t\tvar button = new UIButton(xPos + 20 + (170 * k), spr.y + spr.bHeight - (36 + 16), b.label, function() {\r\n\t\t\t\tb.onClick(this);\r\n\t\t\t\tclose();\r\n\t\t\t}, 160, 30);\r\n\t\t\tif (b.color != null) {\r\n\t\t\t\tbutton.frames = Paths.getFrames(\"editors/ui/grayscale-button\");\r\n\t\t\t\tbutton.color = b.color;\r\n\t\t\t}\r\n\t\t\tadd(button);\r\n\t\t}\r\n\r\n\t\tFlxTween.tween(camera, {alpha: 1}, 0.25, {ease: FlxEase.cubeOut});\r\n\t\tFlxTween.tween(camera, {zoom: 1}, 0.66, {ease: FlxEase.elasticOut});\r\n\r\n\t\tCoolUtil.playMenuSFX(WARNING);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tfor(e in camShaders)\r\n\t\t\te.removeShader(blurShader);\r\n\r\n\t\tFlxTween.cancelTweensOf(warnCam);\r\n\t\tFlxG.cameras.remove(warnCam);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "message",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttons",
+					"type": "Array<WarningButton>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "isError",
+					"type": "Bool",
+					"optional": true,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(title:String, message:String, buttons:Array<WarningButton>, ?isError:Bool = true) {\r\n\t\tsuper();\r\n\t\tthis.title = title;\r\n\t\tthis.message = message;\r\n\t\tthis.buttons = buttons;\r\n\t\tthis.isError = isError;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

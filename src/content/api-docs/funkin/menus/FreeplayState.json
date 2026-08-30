@@ -1,0 +1,451 @@
+{
+	"kind": "class",
+	"name": "FreeplayState",
+	"pkg": "funkin.menus",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "songs",
+			"type": "Array<ChartMetaData>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all of the songs' metadata.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSong",
+			"type": "Null<ChartMetaData>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current song metadata",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curDifficulties",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current song difficulties",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curDiffMetaKeys",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "songs[curSelected].metas.get(curDiffMetaIndices[curDifficulty])",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curSelected",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Currently selected song",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curDifficulty",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Currently selected difficulty",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curCoopMode",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Currently selected coop/opponent mode",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scoreText",
+			"type": "FlxText",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Text containing the score info (PERSONAL BEST: 0)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "diffText",
+			"type": "FlxText",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Text containing the current difficulty (< HARD >)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "coopText",
+			"type": "FlxText",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Text containing the current coop/opponent mode ([KEYBINDS] Co-Op mode)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lerpScore",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Currently lerped score. Is updated to go towards `intendedScore`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "intendedScore",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Destination for the currently lerped score.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songList",
+			"type": "FreeplaySonglist",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Assigned FreeplaySonglist item.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scoreBG",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Black background around the score, the difficulty text and the co-op text.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bg",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Background.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canSelect",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the player can navigate and select",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "grpSongs",
+			"type": "FlxTypedGroup<Alphabet>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Group containing all of the alphabets",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curPlaying",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the currently selected song is playing.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "iconArray",
+			"type": "Array<HealthIcon>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all of the icons.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "interpColor",
+			"type": "FlxInterpolateColor",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "FlxInterpolateColor object for smooth transition between Freeplay colors.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "select",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function select() {\r\n\t\tupdateCoopModes();\r\n\r\n\t\tif (curDifficulties.length == 0) return;\r\n\r\n\t\tvar event = event(\"onSelect\", EventManager.get(FreeplaySongSelectEvent).recycle(curSong.name, curDifficulties[curDifficulty], curSong.variant, __opponentMode, __coopMode));\r\n\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tOptions.freeplayLastSong = curSong.name;\r\n\t\tOptions.freeplayLastDifficulty = curDifficulties[curDifficulty];\r\n\t\tOptions.freeplayLastVariation = curSong.variant;\r\n\r\n\t\tPlayState.loadSong(event.song, event.difficulty, event.variant, event.opponentMode, event.coopMode);\r\n\t\tFlxG.switchState(new PlayState());\r\n\t}",
+			"doc": {
+				"text": "Selects the current song.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "convertChart",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function convertChart() {\r\n\t\ttrace('Converting ${curSong.name} ${curDifficulties[curDifficulty]} ${curSong.variant} to Codename format...');\r\n\t\tvar chart = Chart.parse(curSong.name, curDifficulties[curDifficulty], curSong.variant);\r\n\t\tChart.save(chart, curDifficulties[curDifficulty], curSong.variant);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeDiff",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeDiff(change:Int = 0, force:Bool = false) {\r\n\t\tif (change == 0 && !force) return;\r\n\r\n\t\tvar validDifficulties = curDifficulties.length > 0;\r\n\t\tvar event = event(\"onChangeDiff\", EventManager.get(MenuChangeEvent).recycle(curDifficulty, validDifficulties ? FlxMath.wrap(curDifficulty + change, 0, curDifficulties.length-1) : 0, change));\r\n\r\n\t\tif (event.cancelled) {\r\n\t\t\tif (force) updateCurSong();\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tvar prevSong = curSong;\r\n\t\tcurDifficulty = event.value;\r\n\t\tupdateCurSong();\r\n\t\tupdateScore();\r\n\r\n\t\tvar text = validDifficulties ? curDifficulties[curDifficulty].toUpperCase() + (curSong != songs[curSelected] ? ' (${curSong.variant.toUpperCase()})' : '') : '-';\r\n\t\tdiffText.text = curDifficulties.length > 1 ? '< $text >' : text;\r\n\t}",
+			"doc": {
+				"text": "Changes the current difficulty",
+				"params": {
+					"change": "How much to change.",
+					"force": "Force the change if `change` is equal to 0"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "coopLabels",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Array containing all labels for Co-Op / Opponent modes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeCoopMode",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeCoopMode(change:Int = 0, force:Bool = false) {\r\n\t\tif (change == 0 && !force) return;\r\n\t\tif (!curSong.coopAllowed && !curSong.opponentModeAllowed) return;\r\n\r\n\t\tvar bothEnabled = curSong.coopAllowed && curSong.opponentModeAllowed;\r\n\t\tvar event = event(\"onChangeCoopMode\", EventManager.get(MenuChangeEvent).recycle(curCoopMode, FlxMath.wrap(curCoopMode + change, 0, bothEnabled ? 3 : 1), change));\r\n\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tcurCoopMode = event.value;\r\n\r\n\t\tupdateScore();\r\n\r\n\t\tvar coopBinds = [CoolUtil.keyToString(Options.P1_CHANGE_MODE[0]), CoolUtil.keyToString(Options.P2_CHANGE_MODE[0])].filter(x -> x != \"---\");\r\n\t\tif (coopBinds.length == 2 && coopBinds[1] == coopBinds[0]) coopBinds.pop();\r\n\t\telse if (coopBinds.length == 0) coopBinds.push(\"---\");\r\n\r\n\t\tvar key = '[${coopBinds.join(\" / \")}] ';\r\n\r\n\t\tif (bothEnabled) {\r\n\t\t\tcoopText.text = key + coopLabels[curCoopMode];\r\n\t\t} else {\r\n\t\t\tcoopText.text = key + coopLabels[curCoopMode * (curSong.coopAllowed ? 2 : 1)];\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Change the current coop mode context.",
+				"params": {
+					"change": "How much to change",
+					"force": "Force the change, even if `change` is equal to 0."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeSelection",
+			"args": [
+				{
+					"name": "change",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function changeSelection(change:Int = 0, force:Bool = false) {\r\n\t\tif (change == 0 && !force) return;\r\n\r\n\t\tvar event = event(\"onChangeSelection\", EventManager.get(MenuChangeEvent).recycle(curSelected, FlxMath.wrap(curSelected + change, 0, songs.length-1), change));\r\n\t\tif (event.cancelled) return;\r\n\r\n\t\tcurSelected = event.value;\r\n\t\tif (event.playMenuSFX) CoolUtil.playMenuSFX(SCROLL, 0.7);\r\n\r\n\t\tvar prevDiff = curDifficulties[curDifficulty], prevVariant = curDiffMetaKeys[curDifficulty];\r\n\t\tupdateCurDifficulties();\r\n\r\n\t\tfor (i => diff in curDifficulties) if (diff == prevDiff && curDiffMetaKeys[i] == prevVariant) {\r\n\t\t\tcurDifficulty = i;\r\n\t\t\tbreak;\r\n\t\t}\r\n\r\n\t\tchangeDiff(0, true);\r\n\r\n\t\tcoopText.visible = curSong.coopAllowed || curSong.opponentModeAllowed;\r\n\t}",
+			"doc": {
+				"text": "Change the current selection.",
+				"params": {
+					"change": "How much to change",
+					"force": "Force the change, even if `change` is equal to 0."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

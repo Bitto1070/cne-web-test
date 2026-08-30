@@ -1,0 +1,184 @@
+{
+	"kind": "final class",
+	"name": "DrawUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "line",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dot",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "square",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawSquare",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": true,
+					"def": "1"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function drawSquare(x:Float, y:Float, ?scale:Float = 1) {\r\n\t\tif (square == null) createDrawers();\r\n\r\n\t\tsquare.setPosition(x, y);\r\n\r\n\t\tsquare.scale.set(scale, scale);\r\n\t\tsquare.updateHitbox();\r\n\t\t\r\n\t\tsquare.x -= square.width / 2;\r\n\t\tsquare.y -= square.height / 2;\r\n\t\tsquare.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawDot",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "scale",
+					"type": "Float",
+					"optional": true,
+					"def": "1"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function drawDot(x:Float, y:Float, ?scale:Float = 1) {\r\n\t\tif (dot == null) createDrawers();\r\n\r\n\t\tdot.setPosition(x, y);\r\n\r\n\t\tdot.scale.set(scale, scale);\r\n\t\tdot.updateHitbox();\r\n\t\t\r\n\t\tdot.x -= dot.width / 2;\r\n\t\tdot.y -= dot.height / 2;\r\n\t\tdot.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawLine",
+			"args": [
+				{
+					"name": "point1",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "point2",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "thickness",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "color",
+					"type": "Null<FlxColor>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function drawLine(point1:FlxPoint, point2:FlxPoint, thickness:Float = 1, ?color:Null<FlxColor>) {\r\n\t\tif (line == null) createDrawers();\r\n\r\n\t\tvar dx:Float = point2.x - point1.x;\r\n\t\tvar dy:Float = point2.y - point1.y;\r\n\r\n\t\tvar angle:Float = Math.atan2(dy, dx);\r\n\t\tvar distance:Float = Math.sqrt(dx * dx + dy * dy);\r\n\r\n\t\t// Math.ceil to prevent flickering\r\n\t\tline.setPosition(point1.x, point1.y);\r\n\t\tline.angle = angle * FlxAngle.TO_DEG;\r\n\t\tline.origin.set(0, line.frameHeight / 2);\r\n\t\tline.scale.x = distance / line.frameWidth;\r\n\t\tline.scale.y = thickness;\r\n\t\tline.y -= line.height / 2;\r\n\t\tif (color != null) line.color = color;\r\n\t\tline.draw();\r\n\r\n\t\tline.angle = 0;\r\n\t\tline.scale.x = line.scale.y = 1;\r\n\t\tline.updateHitbox();\r\n\r\n\t\tpoint1.putWeak(); point2.putWeak();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "drawRect",
+			"args": [
+				{
+					"name": "rect",
+					"type": "FlxRect",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "thickness",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "color",
+					"type": "Null<FlxColor>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function drawRect(rect:FlxRect, thickness:Float = 1, ?color:Null<FlxColor>) {\r\n\t\tif (rect.width <= 0 || rect.height <= 0) return;\r\n\t\tDrawUtil.drawLine(FlxPoint.weak(rect.x, rect.y), FlxPoint.weak(rect.x + rect.width, rect.y), thickness, color);\r\n\t\tDrawUtil.drawLine(FlxPoint.weak(rect.x, rect.y), FlxPoint.weak(rect.x, rect.y + rect.height), thickness, color);\r\n\t\tDrawUtil.drawLine(FlxPoint.weak(rect.x + rect.width, rect.y), FlxPoint.weak(rect.x + rect.width, rect.y + rect.height), thickness, color);\r\n\t\tDrawUtil.drawLine(FlxPoint.weak(rect.x, rect.y + rect.height), FlxPoint.weak(rect.x + rect.width, rect.y + rect.height), thickness, color);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createDrawers",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function createDrawers() {\r\n\t\tdot = new FlxSprite().loadGraphic(Paths.image(\"editors/stage/selectionDot\"), true, 32, 32);\r\n\t\tdot.antialiasing = true;\r\n\t\tdot.animation.add(\"default\", [0], 0, false);\r\n\t\tdot.animation.add(\"hollow\", [1], 0, false);\r\n\t\tdot.animation.play(\"default\");\r\n\t\tdot.camera = FlxG.camera;\r\n\t\tdot.forceIsOnScreen = true;\r\n\r\n\t\tline = new FlxSprite().makeGraphic(1, 1, FlxColor.WHITE);\r\n\t\tline.camera = FlxG.camera;\r\n\t\tline.forceIsOnScreen = true;\r\n\r\n\t\tsquare = new FlxSprite().makeGraphic(32, 32, FlxColor.WHITE);\r\n\t\tsquare.camera = FlxG.camera;\r\n\t\tsquare.forceIsOnScreen = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroyDrawers",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function destroyDrawers() {\r\n\t\tif(dot != null) {\r\n\t\t\tdot.destroy();\r\n\t\t\tdot = null;\r\n\t\t}\r\n\t\tif(line != null) {\r\n\t\t\tline.destroy();\r\n\t\t\tline = null;\r\n\t\t}\r\n\t\tif(square != null) {\r\n\t\t\tsquare.destroy();\r\n\t\t\tsquare = null;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

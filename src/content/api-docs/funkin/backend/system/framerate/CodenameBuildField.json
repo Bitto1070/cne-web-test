@@ -1,0 +1,31 @@
+{
+	"kind": "class",
+	"name": "CodenameBuildField",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\t\tautoSize = LEFT;\r\n\t\tmultiline = wordWrap = false;\r\n\t\treload();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reload() {\r\n\t\tdefaultTextFormat = Framerate.textFormat;\r\n\r\n\t\t#if TEST_BUILD\r\n\t\ttext = '${Flags.VERSION_MESSAGE} (Test Build)';\r\n\t\t#elseif COMPILE_EXPERIMENTAL\r\n\t\ttext = '${Flags.VERSION_MESSAGE} (Experimental Build)';\r\n\t\t#else\r\n\t\ttext = '${Flags.VERSION_MESSAGE}';\r\n\t\t#end\r\n\r\n\t\t#if (debug || COMPILE_EXPERIMENTAL)\r\n\t\ttext += '\\n${Flags.COMMIT_MESSAGE}';\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

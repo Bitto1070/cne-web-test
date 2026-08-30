@@ -1,0 +1,570 @@
+{
+	"kind": "class",
+	"name": "MusicBeatSubstate",
+	"pkg": "funkin.backend",
+	"doc": {
+		"text": "Base class for all the sub states.\nHandles the scripts, the transitions, and the beat and step events.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "cancelConductorUpdate",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the Conductor auto update should be enabled or not.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "canOpenCustomTransition",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whether this specific substate can open custom transitions",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curStep",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current step",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curBeat",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current beat",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMeasure",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current beat",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curStepFloat",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current step, as a `Float` (ex: 4.94, instead of 4)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curBeatFloat",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current beat, as a `Float` (ex: 1.24, instead of 1)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMeasureFloat",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current beat, as a `Float` (ex: 1.24, instead of 1)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songPos",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Current song position (in milliseconds).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stateScripts",
+			"type": "ScriptPack",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Current injected script attached to the state. To add one, create a file at path \"data/states/stateName\" (ex: \"data/states/PauseMenuSubstate.hx\")",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scriptsAllowed",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scriptName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "controls",
+			"type": "Controls",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Game Controls. (All players / Solo)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "controlsP1",
+			"type": "Controls",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Game Controls (Player 1 only)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "controlsP2",
+			"type": "Controls",
+			"access": "get, never",
+			"isStatic": false,
+			"doc": {
+				"text": "Game Controls (Player 2 only)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "scriptsAllowed",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "scriptName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(scriptsAllowed:Bool = true, ?scriptName:String) {\r\n\t\tsuper();\r\n\t\tthis.scriptsAllowed = #if SOFTCODED_STATES scriptsAllowed #else false #end;\r\n\t\tthis.scriptName = scriptName;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "tryUpdate",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function tryUpdate(elapsed:Float):Void\r\n\t{\r\n\t\tif (persistentUpdate || subState == null) {\r\n\t\t\tcall(\"preUpdate\", [elapsed]);\r\n\t\t\tupdate(elapsed);\r\n\t\t\tcall(\"postUpdate\", [elapsed]);\r\n\t\t}\r\n\r\n\t\t// if (subState == null && (MusicBeatState.ALLOW_DEV_RELOAD && controls.DEV_RELOAD)) {\r\n\t\t// \tLogs.trace(\"Reloading Current SubState...\", INFO, YELLOW);\r\n\t\t// \tvar test = Type.createInstance(Type.getClass(this), [this.scriptsAllowed, this.scriptName]);\r\n\t\t// \tparent.openSubState(test);\r\n\t\t// }\r\n\r\n\t\tif (_requestSubStateReset) {\r\n\t\t\t_requestSubStateReset = false;\r\n\t\t\tresetSubState();\r\n\t\t}\r\n\r\n\t\tif (subState != null)\r\n\t\t\tsubState.tryUpdate(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createPost",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function createPost() {\r\n\t\tsuper.createPost();\r\n\t\tcall(\"postCreate\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "call",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "defaultVal",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function call(name:String, ?args:Array<Dynamic>, ?defaultVal:Dynamic):Dynamic {\r\n\t\t// calls the function on the assigned script\r\n\t\tif(stateScripts != null)\r\n\t\t\treturn stateScripts.call(name, args);\r\n\t\treturn defaultVal;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "event",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function event<T:CancellableEvent>(name:String, event:T):T {\r\n\t\tif(stateScripts != null)\r\n\t\t\tstateScripts.call(name, [event]);\r\n\t\treturn event;\r\n\t}\r\n\r\n\toverride function update(elapsed:Float)\r\n\t{\r\n\t\tcall(\"update\", [elapsed]);\r\n\t\tsuper.update(elapsed);\r\n\t}\r\n\r\n\t@:dox(hide) public function stepHit(curStep:Int):Void\r\n\t{\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver=cast e;_;}).stepHit(curStep);\r\n\t\tcall(\"stepHit\", [curStep]);\r\n\t}\r\n\r\n\t@:dox(hide) public function beatHit(curBeat:Int):Void\r\n\t{\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver=cast e;_;}).beatHit(curBeat);\r\n\t\tcall(\"beatHit\", [curBeat]);\r\n\t}\r\n\r\n\t@:dox(hide) public function measureHit(curMeasure:Int):Void\r\n\t{\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver=cast e;_;}).measureHit(curMeasure);\r\n\t\tcall(\"measureHit\", [curMeasure]);\r\n\t}\r\n\r\n\t/**\r\n\t * Shortcut to `FlxMath.lerp` or `CoolUtil.lerp`, depending on `fpsSensitive`\r\n\t * @param v1 Value 1\r\n\t * @param v2 Value 2\r\n\t * @param ratio Ratio\r\n\t * @param fpsSensitive Whenever the ratio should not be adjusted to run at the same speed independent of framerate.\r\n\t */\r\n\tpublic function lerp(v1:Float, v2:Float, ratio:Float, fpsSensitive:Bool = false) {\r\n\t\tif (fpsSensitive)\r\n\t\t\treturn FlxMath.lerp(v1, v2, ratio);\r\n\t\telse\r\n\t\t\treturn CoolUtil.fpsLerp(v1, v2, ratio);\r\n\t}\r\n\r\n\t/**\r\n\t * SCRIPTING STUFF\r\n\t */\r\n\tpublic override function openSubState(subState:FlxSubState) {\r\n\t\tvar e = event(\"onOpenSubState\", EventManager.get(StateEvent).recycle(subState));\r\n\t\tif (!e.cancelled)\r\n\t\t\tsuper.openSubState(e.substate is FlxSubState ? cast e.substate : subState);\r\n\t}\r\n\r\n\tpublic override function closeSubState() {\r\n\t\tvar e = event(\"onCloseSubState\", EventManager.get(StateEvent).recycle(subState));\r\n\t\tif (!e.cancelled)\r\n\t\t\tsuper.closeSubState();\r\n\t}\r\n\r\n\tpublic override function onResize(w:Int, h:Int) {\r\n\t\tsuper.onResize(w, h);\r\n\t\tevent(\"onResize\", EventManager.get(ResizeEvent).recycle(w, h, null, null));\r\n\t}\r\n\r\n\tpublic override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tcall(\"destroy\");\r\n\t\tstateScripts = FlxDestroyUtil.destroy(stateScripts);\r\n\t}\r\n\r\n\tpublic override function switchTo(nextState:FlxState) {\r\n\t\tvar e = event(\"onStateSwitch\", EventManager.get(StateEvent).recycle(nextState));\r\n\t\tif (e.cancelled)\r\n\t\t\treturn false;\r\n\t\treturn super.switchTo(e.substate);\r\n\t}\r\n\r\n\tpublic override function onFocus() {\r\n\t\tsuper.onFocus();\r\n\t\tcall(\"onFocus\");\r\n\t}\r\n\r\n\tpublic override function onFocusLost() {\r\n\t\tsuper.onFocusLost();\r\n\t\tcall(\"onFocusLost\");\r\n\t}\r\n\r\n\tpublic var parent:FlxState;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stepHit",
+			"args": [
+				{
+					"name": "curStep",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function stepHit(curStep:Int):Void\r\n\t{\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver=cast e;_;}).stepHit(curStep);\r\n\t\tcall(\"stepHit\", [curStep]);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "beatHit",
+			"args": [
+				{
+					"name": "curBeat",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function beatHit(curBeat:Int):Void\r\n\t{\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver=cast e;_;}).beatHit(curBeat);\r\n\t\tcall(\"beatHit\", [curBeat]);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "measureHit",
+			"args": [
+				{
+					"name": "curMeasure",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function measureHit(curMeasure:Int):Void\r\n\t{\r\n\t\tfor(e in members) if (e is IBeatReceiver) ({var _:IBeatReceiver=cast e;_;}).measureHit(curMeasure);\r\n\t\tcall(\"measureHit\", [curMeasure]);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "lerp",
+			"args": [
+				{
+					"name": "v1",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "v2",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fpsSensitive",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function lerp(v1:Float, v2:Float, ratio:Float, fpsSensitive:Bool = false) {\r\n\t\tif (fpsSensitive)\r\n\t\t\treturn FlxMath.lerp(v1, v2, ratio);\r\n\t\telse\r\n\t\t\treturn CoolUtil.fpsLerp(v1, v2, ratio);\r\n\t}",
+			"doc": {
+				"text": "Shortcut to `FlxMath.lerp` or `CoolUtil.lerp`, depending on `fpsSensitive`",
+				"params": {
+					"v1": "Value 1",
+					"v2": "Value 2",
+					"ratio": "Ratio",
+					"fpsSensitive": "Whenever the ratio should not be adjusted to run at the same speed independent of framerate."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openSubState",
+			"args": [
+				{
+					"name": "subState",
+					"type": "FlxSubState",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function openSubState(subState:FlxSubState) {\r\n\t\tvar e = event(\"onOpenSubState\", EventManager.get(StateEvent).recycle(subState));\r\n\t\tif (!e.cancelled)\r\n\t\t\tsuper.openSubState(e.substate is FlxSubState ? cast e.substate : subState);\r\n\t}",
+			"doc": {
+				"text": "SCRIPTING STUFF",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "closeSubState",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function closeSubState() {\r\n\t\tvar e = event(\"onCloseSubState\", EventManager.get(StateEvent).recycle(subState));\r\n\t\tif (!e.cancelled)\r\n\t\t\tsuper.closeSubState();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResize",
+			"args": [
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "h",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onResize(w:Int, h:Int) {\r\n\t\tsuper.onResize(w, h);\r\n\t\tevent(\"onResize\", EventManager.get(ResizeEvent).recycle(w, h, null, null));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tsuper.destroy();\r\n\t\tcall(\"destroy\");\r\n\t\tstateScripts = FlxDestroyUtil.destroy(stateScripts);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "switchTo",
+			"args": [
+				{
+					"name": "nextState",
+					"type": "FlxState",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function switchTo(nextState:FlxState) {\r\n\t\tvar e = event(\"onStateSwitch\", EventManager.get(StateEvent).recycle(nextState));\r\n\t\tif (e.cancelled)\r\n\t\t\treturn false;\r\n\t\treturn super.switchTo(e.substate);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onFocus",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onFocus() {\r\n\t\tsuper.onFocus();\r\n\t\tcall(\"onFocus\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onFocusLost",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onFocusLost() {\r\n\t\tsuper.onFocusLost();\r\n\t\tcall(\"onFocusLost\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "FlxState",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSubstateOpen",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onSubstateOpen() {}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetSubState",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function resetSubState() {\r\n\t\tsuper.resetSubState();\r\n\t\tif (subState != null && subState is MusicBeatSubstate) {\r\n\t\t\tvar subState:MusicBeatSubstate = cast subState;\r\n\t\t\tsubState.parent = this;\r\n\t\t\tsubState.onSubstateOpen();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

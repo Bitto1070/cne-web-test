@@ -1,0 +1,74 @@
+{
+	"kind": "class",
+	"name": "EventBackdrop",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "eventBeatSeparator",
+			"type": "CharterEventGridSeperator",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "topSeparator",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bottomSeparator",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "global",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "global",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(global:Bool) {\r\n\t\tsuper(Paths.image('editors/charter/events-grid'), Y, 0, 0);\r\n\t\tthis.global = flipX = flipY = global;\r\n\t\talpha = 0.9;\r\n\r\n\t\t// Separators\r\n\t\teventBeatSeparator = new CharterEventGridSeperator();\r\n\t\teventBeatSeparator.makeSolid(1, 1, -1);\r\n\t\teventBeatSeparator.alpha = 0.5;\r\n\t\teventBeatSeparator.scrollFactor.set(1, 1);\r\n\t\teventBeatSeparator.global = global;\r\n\r\n\t\tbottomSeparator = new FlxSprite(0,-2);\r\n\t\tbottomSeparator.makeSolid(1, 1, -1);\r\n\t\tbottomSeparator.alpha = 0.5;\r\n\t\tbottomSeparator.scrollFactor.set(1, 1);\r\n\t\tbottomSeparator.scale.set(20, 4);\r\n\t\tbottomSeparator.updateHitbox();\r\n\r\n\t\ttopSeparator = new FlxSprite(0, -2);\r\n\t\ttopSeparator.makeSolid(1, 1, -1);\r\n\t\ttopSeparator.alpha = 0.5;\r\n\t\ttopSeparator.scrollFactor.set(1, 1);\r\n\t\ttopSeparator.scale.set(20, 4);\r\n\t\ttopSeparator.updateHitbox();\r\n\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tsuper.draw();\r\n\r\n\t\teventBeatSeparator.cameras = cameras;\r\n\t\teventBeatSeparator.xPos = global ? x : x+width;\r\n\t\teventBeatSeparator.draw();\r\n\r\n\t\ttopSeparator.x = global ? x : (x+width) - 20;\r\n\t\ttopSeparator.cameras = this.cameras;\r\n\t\tif (!Options.charterShowSections) topSeparator.draw();\r\n\r\n\t\tbottomSeparator.x = global ? x : (x+width) - 20;\r\n\t\tbottomSeparator.cameras = this.cameras;\r\n\t\tbottomSeparator.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

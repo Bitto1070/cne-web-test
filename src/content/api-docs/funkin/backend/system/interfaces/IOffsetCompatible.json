@@ -1,0 +1,39 @@
+{
+	"kind": "interface",
+	"name": "IOffsetCompatible",
+	"pkg": "funkin.backend.system.interfaces",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "addOffset",
+			"args": [
+				{
+					"name": "anim",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function addOffset(anim:String, x:Float = 0, y:Float = 0):Void;",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,573 @@
+{
+	"kind": "class",
+	"name": "Strum",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "extra",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Extra data that can be added to the strum.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "animSuffix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Which animation suffix on characters that should be used when hitting notes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cpu",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the strum should act as a CPU strum.\nWARNING: Unused.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "lastHit",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The last time the note/confirm animation was hit.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "StrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The strum line that this strum belongs to.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scrollSpeed",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The scroll speed of the notes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "noteAngle",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The direction of the notes.\nIf you don't want angle of the strum to interfere with the direction the notes are going,\nyou can set noteAngle to = 0, and then you can use the angle of the strum without it affecting the direction of the notes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastDrawCameras",
+			"type": "Array<FlxCamera>",
+			"access": "default, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "copyStrumCamera",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "copyStrumScrollX",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "copyStrumScrollY",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "copyStrumAngle",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "updateNotesPosX",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "updateNotesPosY",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "extraCopyFields",
+			"type": "Array<String>",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "__cachedCopyFields",
+			"type": "Array<Array<OneOfTwo<String, Int>>>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "getPressed",
+			"type": "StrumLine->Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the strum is pressed.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "getJustPressed",
+			"type": "StrumLine->Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the strum was just pressed.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "getJustReleased",
+			"type": "StrumLine->Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the strum was just released.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__getPressed",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "StrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:dox(hide) public inline function __getPressed(strumLine:StrumLine):Bool {\r\n\t\treturn getPressed != null ? getPressed(strumLine) : strumLine.members.length != 4 ? ControlsUtil.getPressed(strumLine.controls, strumLine.members.length+\"k\"+ID) : switch(ID) {\r\n\t\t\tcase 0: strumLine.controls.NOTE_LEFT;\r\n\t\t\tcase 1: strumLine.controls.NOTE_DOWN;\r\n\t\t\tcase 2: strumLine.controls.NOTE_UP;\r\n\t\t\tcase 3: strumLine.controls.NOTE_RIGHT;\r\n\t\t\tdefault: false;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__getJustPressed",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "StrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:dox(hide) public inline function __getJustPressed(strumLine:StrumLine) {\r\n\t\treturn getJustPressed != null ? getJustPressed(strumLine) : strumLine.members.length != 4 ? ControlsUtil.getJustPressed(strumLine.controls, strumLine.members.length+\"k\"+ID) : switch(ID) {\r\n\t\t\tcase 0: strumLine.controls.NOTE_LEFT_P;\r\n\t\t\tcase 1: strumLine.controls.NOTE_DOWN_P;\r\n\t\t\tcase 2: strumLine.controls.NOTE_UP_P;\r\n\t\t\tcase 3: strumLine.controls.NOTE_RIGHT_P;\r\n\t\t\tdefault: false;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__getJustReleased",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "StrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "@:dox(hide) public inline function __getJustReleased(strumLine:StrumLine) {\r\n\t\treturn getJustReleased != null ? getJustReleased(strumLine) : strumLine.members.length != 4 ? ControlsUtil.getJustReleased(strumLine.controls, strumLine.members.length+\"k\"+ID) : switch(ID) {\r\n\t\t\tcase 0: strumLine.controls.NOTE_LEFT_R;\r\n\t\t\tcase 1: strumLine.controls.NOTE_DOWN_R;\r\n\t\t\tcase 2: strumLine.controls.NOTE_UP_R;\r\n\t\t\tcase 3: strumLine.controls.NOTE_RIGHT_R;\r\n\t\t\tdefault: false;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getScrollSpeed",
+			"args": [
+				{
+					"name": "note",
+					"type": "Note",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getScrollSpeed(?note:Note):Float {\r\n\t\tif (note != null && note.scrollSpeed != null) return note.scrollSpeed;\r\n\t\tif (scrollSpeed != null) return scrollSpeed;\r\n\t\tif (PlayState.instance != null) return PlayState.instance.scrollSpeed;\r\n\t\treturn 1;\r\n\t}",
+			"doc": {
+				"text": "Gets the scroll speed of the notes.",
+				"params": {
+					"note": "(Optional) The note"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getNotesAngle",
+			"args": [
+				{
+					"name": "note",
+					"type": "Note",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getNotesAngle(?note:Note):Float {\r\n\t\tif (note != null && note.noteAngle != null) return note.noteAngle;\r\n\t\tif (noteAngle != null) return noteAngle;\r\n\t\treturn angle;\r\n\t}",
+			"doc": {
+				"text": "Gets the angle of the notes.\nIf you don't want angle of the strum to interfere with the direction the notes are going,\nyou can set noteAngle to = 0, and then you can use the angle of the strum without it affecting the direction of the notes.",
+				"params": {
+					"note": "(Optional) The note"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tif (cpu) {\r\n\t\t\tif (lastHit + (Conductor.crochet * 0.5) < Conductor.songPosition && getAnim() == \"confirm\") {\r\n\t\t\t\tplayAnim(\"static\");\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function draw() {\r\n\t\tif (cameras.length == 1) {\r\n\t\t\tif (lastDrawCameras.length != 1 || lastDrawCameras[0] != cameras[0]) {\r\n\t\t\t\tlastDrawCameras = [cameras[0]];\r\n\t\t\t}\r\n\t\t} else {\r\n\t\t\tlastDrawCameras = cameras.copy();\r\n\t\t}\r\n\t\tsuper.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "PIX180",
+			"type": "Float",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "final",
+			"name": "N_WIDTHDIV2",
+			"type": "Float",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateNotePosition",
+			"args": [
+				{
+					"name": "daNote",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateNotePosition(daNote:Note) {\r\n\t\tif (!daNote.exists) return;\r\n\r\n\t\tdaNote.__strum = this;\r\n\t\tif (copyStrumCamera) daNote.__strumCameras = lastDrawCameras;\r\n\t\tif (copyStrumScrollX) daNote.scrollFactor.x = scrollFactor.x;\r\n\t\tif (copyStrumScrollY) daNote.scrollFactor.y = scrollFactor.y;\r\n\t\tif (copyStrumAngle && daNote.copyStrumAngle) {\r\n\t\t\tdaNote.__noteAngle = getNotesAngle(daNote);\r\n\t\t\tdaNote.angle = daNote.isSustainNote ? daNote.__noteAngle : angle;\r\n\t\t}\r\n\r\n\t\tupdateNotePos(daNote);\r\n\t\tif (extraCopyFields.length > 0) {\r\n\t\t\t__initCachedCopyFields();\r\n\t\t\t__applyCopyFields(daNote);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Updates the position of a note.",
+				"params": {
+					"daNote": "The note"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateSustain",
+			"args": [
+				{
+					"name": "daNote",
+					"type": "Note",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateSustain(daNote:Note) {\r\n\t\tif (!daNote.isSustainNote) return;\r\n\t\tdaNote.updateSustain(this);\r\n\t}",
+			"doc": {
+				"text": "Updates a sustain note.",
+				"params": {
+					"daNote": "The note"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updatePlayerInput",
+			"args": [
+				{
+					"name": "pressed",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "justPressed",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "justReleased",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updatePlayerInput(pressed:Bool, justPressed:Bool, justReleased:Bool) {\r\n\t\tswitch(getAnim()) {\r\n\t\t\tcase \"confirm\":\r\n\t\t\t\tif (justReleased || !pressed)\r\n\t\t\t\t\tplayAnim(\"static\");\r\n\t\t\tcase \"pressed\":\r\n\t\t\t\tif (justReleased || !pressed)\r\n\t\t\t\t\tplayAnim(\"static\");\r\n\t\t\tcase \"static\":\r\n\t\t\t\tif (justPressed || pressed)\r\n\t\t\t\t\tplayAnim(\"pressed\");\r\n\t\t\tcase null:\r\n\t\t\t\tplayAnim(\"static\");\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Updates the animation state based on the player input.",
+				"params": {
+					"pressed": "Whenever the player is pressing the button",
+					"justPressed": "Whenever the player just pressed the button",
+					"justReleased": "Whenever the player just released the button"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "press",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function press(time:Float) {\r\n\t\tlastHit = time;\r\n\t\tplayAnim(\"confirm\");\r\n\t}",
+			"doc": {
+				"text": "Plays the confirm animation.",
+				"params": {
+					"time": "The time"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playAnim",
+			"args": [
+				{
+					"name": "anim",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function playAnim(anim:String, force:Bool = true) {\r\n\t\tanimation.play(anim, force);\r\n\t\tcenterOffsets();\r\n\t\tcenterOrigin();\r\n\t}",
+			"doc": {
+				"text": "Plays an animation.",
+				"params": {
+					"anim": "The animation name",
+					"force": "Whenever the animation should be forced to play"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnim",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function getAnim() {\r\n\t\treturn animation.name;\r\n\t}",
+			"doc": {
+				"text": "Gets the current animation name.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

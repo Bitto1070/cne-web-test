@@ -1,0 +1,317 @@
+{
+	"kind": "class",
+	"name": "UIState",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "curContextMenu",
+			"type": "UIContextMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "state",
+			"type": "UIState",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fallbackState",
+			"type": "UIState",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "buttonHandler",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hoveredSprite",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "currentFocus",
+			"type": "IUIFocusable",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "currentCursor",
+			"type": "CodeCursor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiCameras",
+			"type": "Array<FlxCamera>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\t__rect = new FlxRect();\r\n\t\t__mousePos = FlxPoint.get();\r\n\t\tsuper.create();\r\n\t\tFramerate.offset.y = 30;\r\n\t\tFlxG.mouse.visible = true;\r\n\r\n\t\tFlxG.stage.window.onKeyDown.add(onKeyDown);\r\n\t\tFlxG.stage.window.onKeyUp.add(onKeyUp);\r\n\t\tFlxG.stage.window.onTextInput.add(onTextInput);\r\n\t\tFlxG.stage.window.onTextEdit.add(onTextEdit);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateButtonHandler",
+			"args": [
+				{
+					"name": "spr",
+					"type": "UISprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttonHandler",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateButtonHandler(spr:UISprite, buttonHandler:Void->Void) {\r\n\t\tspr.updateSpriteRect();\r\n\t\tupdateRectButtonHandler(spr, spr.__rect, buttonHandler);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isOverlapping",
+			"args": [
+				{
+					"name": "spr",
+					"type": "UISprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "rect",
+					"type": "FlxRect",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function isOverlapping(spr:UISprite, rect:FlxRect) {\r\n\t\tfor(camera in spr.__lastDrawCameras) {\r\n\t\t\tvar pos = FlxG.mouse.getScreenPosition(camera, __point);\r\n\t\t\t__rect.copyFrom(rect);\r\n\r\n\t\t\t__rect.x = __rect.x - camera.scroll.x * spr.scrollFactor.x;\r\n\t\t\t__rect.y = __rect.y - camera.scroll.y * spr.scrollFactor.y;\r\n\r\n\t\t\tif (((pos.x > __rect.x) && (pos.x < __rect.x + __rect.width)) && ((pos.y > __rect.y) && (pos.y < __rect.y + __rect.height))) {\r\n\t\t\t\treturn true;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateRectButtonHandler",
+			"args": [
+				{
+					"name": "spr",
+					"type": "UISprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "rect",
+					"type": "FlxRect",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "buttonHandler",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateRectButtonHandler(spr:UISprite, rect:FlxRect, buttonHandler:Void->Void) {\r\n\t\tif(isOverlapping(spr, rect)) {\r\n\t\t\tspr.hoveredByChild = true;\r\n\t\t\tthis.hoveredSprite = spr;\r\n\t\t\tthis.buttonHandler = buttonHandler;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "tryUpdate",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function tryUpdate(elapsed:Float) {\r\n\t\tFlxG.mouse.getScreenPosition(FlxG.camera, __mousePos);\r\n\r\n\t\tsuper.tryUpdate(elapsed);\r\n\r\n\t\tif (buttonHandler != null) {\r\n\t\t\tbuttonHandler();\r\n\t\t\tbuttonHandler = null;\r\n\t\t}\r\n\r\n\t\tif (FlxG.mouse.justPressed) {\r\n\t\t\tplayEditorSound(Flags.DEFAULT_EDITOR_CLICK_SOUND);\r\n\t\t}\r\n\r\n\t\tif (FlxG.mouse.justReleased)\r\n\t\t\tcurrentFocus = (hoveredSprite is IUIFocusable) ? (cast hoveredSprite) : null;\r\n\r\n\t\tFlxG.sound.keysAllowed = currentFocus != null ? !(currentFocus is UITextBox) : true;\r\n\r\n\t\tif (hoveredSprite != null && hoveredSprite.cursor != null) {\r\n\t\t\tNativeAPI.setCursorIcon(hoveredSprite.cursor);\r\n\t\t} else {\r\n\t\t\tNativeAPI.setCursorIcon(currentCursor);\r\n\t\t}\r\n\t\thoveredSprite = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tif (resolutionAware) {\r\n\t\t\tresolutionAware = false;\r\n\r\n\t\t\tfor (camera in FlxG.cameras.list) {\r\n\t\t\t\tcamera.width = FlxG.initialWidth;\r\n\t\t\t\tcamera.height = FlxG.initialHeight;\r\n\t\t\t}\r\n\t\t\tFlxG.scaleMode = Main.scaleMode;\r\n\t\t}\r\n\r\n\t\tsuper.destroy();\r\n\t\t__mousePos.put();\r\n\r\n\t\tDrawUtil.destroyDrawers();\r\n\t\tWindowUtils.resetAffixes();\r\n\t\tSaveWarning.reset();\r\n\r\n\t\tFlxG.stage.window.onKeyDown.remove(onKeyDown);\r\n\t\tFlxG.stage.window.onKeyUp.remove(onKeyUp);\r\n\t\tFlxG.stage.window.onTextInput.remove(onTextInput);\r\n\t\tFlxG.stage.window.onTextEdit.remove(onTextEdit);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "closeCurrentContextMenu",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function closeCurrentContextMenu() {\r\n\t\tplayEditorSound(Flags.DEFAULT_EDITOR_WINDOWCLOSE_SOUND);\r\n\t\tif(curContextMenu != null) {\r\n\t\t\tcurContextMenu.close();\r\n\t\t\tcurContextMenu = null;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openContextMenu",
+			"args": [
+				{
+					"name": "options",
+					"type": "Array<UIContextMenuOption>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "callback",
+					"type": "UIContextMenuCallback",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "w",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function openContextMenu(options:Array<UIContextMenuOption>, ?callback:UIContextMenuCallback, ?x:Float, ?y:Float, ?w:Int) {\r\n\t\tplayEditorSound(Flags.DEFAULT_EDITOR_WINDOWAPPEAR_SOUND);\r\n\t\tvar state = FlxG.state;\r\n\t\twhile(state.subState != null && !(state._requestSubStateReset && state._requestedSubState == null))\r\n\t\t\tstate = state.subState;\r\n\r\n\t\tstate.persistentDraw = true;\r\n\t\tstate.persistentUpdate = true;\r\n\r\n\t\tstate.openSubState(curContextMenu = new UIContextMenu(options, callback, x.getDefault(__mousePos.x), y.getDefault(__mousePos.y), w));\r\n\t\treturn curContextMenu;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "displayNotification",
+			"args": [
+				{
+					"name": "notification",
+					"type": "UIBaseNotification",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function displayNotification(notification:UIBaseNotification) {\r\n\t\tnotification.cameras = uiCameras;\r\n\t\tnotification.onRemove = (notif) -> {\r\n\t\t\tnotification.onRemove = null;\r\n\t\t\tremove(notif, true);\r\n\t\t};\r\n\t\tadd(notification);\r\n\t\tnotification.update(0);\r\n\t\tnotification.appearAnimation();\r\n\t\t// TODO: future tooltips\r\n\t\t//notification.x = __mousePos.x;\r\n\t\t//notification.y = __mousePos.y;\r\n\t\t//notification.alpha = 0;\r\n\t\t//notification.appearAnimation();\r\n\t\t//FlxTween.tween(notification, {x: __mousePos.x, y: __mousePos.y, alpha: 1}, .3, {ease: FlxEase.circInOut});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "resolutionAware",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "uiScaleMode",
+			"type": "UIScaleMode",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setResolutionAware",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setResolutionAware() {\r\n\t\tresolutionAware = true;\r\n\t\tFlxG.scaleMode = uiScaleMode;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playEditorSound",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function playEditorSound(path:String) {\r\n\t\tif (!Options.editorSFX) return;\r\n\t\tFlxG.sound.play(Paths.sound(path));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

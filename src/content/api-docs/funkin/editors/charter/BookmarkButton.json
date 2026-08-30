@@ -1,0 +1,81 @@
+{
+	"kind": "class",
+	"name": "BookmarkButton",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "textBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bookmark",
+			"type": "ChartBookmark",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "bookmark",
+					"type": "ChartBookmark",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UIButtonList<BookmarkButton>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float, bookmark:ChartBookmark, parent:UIButtonList<BookmarkButton>) {\r\n\t\tsuper(x, y, '', null, Std.int(parent.buttonSize.x), Std.int(parent.buttonSize.y));\r\n\t\tthis.bookmark = bookmark;\r\n\t\tautoAlpha = false;\r\n\r\n\t\tmembers.push(textBox = new UITextBox(10, 10, bookmark.name, 276));\r\n\t\ttextBox.antialiasing = true;\r\n\r\n\t\tdeleteButton = new UIButton(textBox.x + textBox.label.width + 10, textBox.y, null, function () {\r\n\t\t\tparent.remove(this);\r\n\t\t}, 32);\r\n\t\tdeleteButton.color = 0xFFFF0000;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + (15/2), deleteButton.y + 8).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

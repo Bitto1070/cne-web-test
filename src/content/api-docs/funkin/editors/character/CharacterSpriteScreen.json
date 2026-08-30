@@ -1,0 +1,122 @@
+{
+	"kind": "class",
+	"name": "CharacterSpriteScreen",
+	"pkg": "funkin.editors.character",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "ogImageSaveData",
+			"type": "ImageSaveData",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "imageExplorer",
+			"type": "UIImageExplorer",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "imagePath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "onSave",
+					"type": "(String, Bool)->Void",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(imagePath:String, ?onSave:(String, Bool)->Void) {\r\n\t\tsuper();\r\n\t\tthis.imagePath = imagePath;\r\n\t\tif (onSave != null) this.onSave = onSave;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\twinTitle = translate(\"win-title\");\r\n\t\twinWidth = 360; winHeight = 183;\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String):UIText {\r\n\t\t\tvar text:UIText = new UIText(ui.x, ui.y - 24, 0, text);\r\n\t\t\tui.members.push(text);\r\n\t\t\treturn text;\r\n\t\t}\r\n\r\n\t\tsuper.create();\r\n\r\n\t\timageExplorer = new UIImageExplorer(20, windowSpr.y + 30 + 16 + 20, imagePath, 320, 58, (_, _) -> {onLoadImage();}, \"images/characters\");\r\n\t\tadd(imageExplorer);\r\n\t\taddLabelOn(imageExplorer, \"\").applyMarkup(\r\n\t\t\ttranslate('charImageFile'),\r\n\t\t\t[new FlxTextFormatMarkerPair(new FlxTextFormat(0xFFAD1212), \"$\")]);\r\n\r\n\t\togImageSaveData = imageExplorer.getSaveData();\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20, windowSpr.y + windowSpr.bHeight - 20, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\taddToUndo(); // should be async?? -lunar\r\n\t\t\timageExplorer.saveFiles('${Paths.getAssetsRoot()}/images/characters', () -> {\r\n\t\t\t\tonSave('${imageExplorer.saveData.directory.length > 0 ? '${imageExplorer.saveData.directory}/' : \"\"}' + imageExplorer.imageName, imageExplorer.isAtlas);\r\n\t\t\t\tclose();\r\n\t\t\t});\r\n\t\t}, 125);\r\n\t\tsaveButton.x -= saveButton.bWidth;\r\n\t\tsaveButton.y -= saveButton.bHeight;\r\n\t\tsaveButton.selectable = false;\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20, saveButton.y, TU.translate(\"editor.cancel\"), function() {\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t\tcloseButton.x -= closeButton.bWidth;\r\n\t\t//closeButton.y -= closeButton.bHeight;\r\n\t\tadd(closeButton);\r\n\t\tadd(saveButton);\r\n\r\n\t\trefreshWindowSize();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onLoadImage",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onLoadImage() {\r\n\t\trefreshWindowSize();\r\n\r\n\t\tif (imageExplorer == null || imageExplorer.imageFiles == null) return;\r\n\t\tvar filesSame = CoolUtil.deepEqual(ogImageSaveData.imageFiles, imageExplorer.imageFiles);\r\n\t\tsaveButton.selectable = !filesSame && !CoolUtil.isMapEmpty(imageExplorer.imageFiles) && (imageExplorer.animationList.length > 0);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshWindowSize",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function refreshWindowSize() {\r\n\t\tif (imageExplorer == null) return;\r\n\t\twindowSpr.bWidth = 20 + imageExplorer.bWidth + 20;\r\n\t\twindowSpr.bHeight = 30 + 16 + 20 + imageExplorer.bHeight + 14 + saveButton.bHeight + 14;\r\n\r\n\t\tsaveButton.x = windowSpr.x + windowSpr.bWidth - 20 - saveButton.bWidth;\r\n\t\tcloseButton.x = saveButton.x - 20 - closeButton.bWidth; \r\n\t\tcloseButton.y = saveButton.y = imageExplorer.y + imageExplorer.bHeight + 14;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "idCounter",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addToUndo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function addToUndo() {\r\n\t\tidCounter = FlxMath.wrap(idCounter + FlxG.random.int(1, 57349), 0, 9999);\r\n\t\tCharacterEditor.undos.addToUndo(CCharEditSprite(idCounter));\r\n\t\r\n\t\tCoolUtil.safeSaveFile('./.temp/__undo__${Type.getClassName(Type.getClass(FlxG.state))}__${idCounter}.cneisd', UIImageExplorer.serializeSaveDataGlobal(ogImageSaveData));\r\n\t\tCoolUtil.safeSaveFile('./.temp/__redo__${Type.getClassName(Type.getClass(FlxG.state))}__${idCounter}.cneisd', UIImageExplorer.serializeSaveDataGlobal(imageExplorer.getSaveData()));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

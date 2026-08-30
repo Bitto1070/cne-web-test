@@ -1,0 +1,51 @@
+{
+	"kind": "class",
+	"name": "ShakeEffect",
+	"pkg": "funkin.menus.ui.effects",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "intensityX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "intensityY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": true,
+					"def": "2"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": true,
+					"def": "2"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?x:Float = 2, ?y:Float = 2) {\r\n\t\tsuper();\r\n\t\tintensityX = x;\r\n\t\tintensityY = y;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

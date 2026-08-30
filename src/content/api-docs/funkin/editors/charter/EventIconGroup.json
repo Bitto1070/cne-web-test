@@ -1,0 +1,78 @@
+{
+	"kind": "class",
+	"name": "EventIconGroup",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "forceWidth",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "forceHeight",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dontTransformChildren",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "copyColorTransformToChildren",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\t\tcolorTransform = new ColorTransform();\r\n\t\tscrollFactor.set(1, 1);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "transformChildren",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function transformChildren<V>(Function:FlxSprite->V->Void, Value:V):Void\r\n\t{\r\n\t\tif (dontTransformChildren)\r\n\t\t\treturn;\r\n\r\n\t\tsuper.transformChildren(Function, Value);\r\n\t}\r\n\r\n\toverride function set_x(Value:Float):Float\r\n\t{\r\n\t\tif (exists && x != Value)\r\n\t\t\ttransformChildren(xTransform, Value - x); // offset\r\n\t\treturn x = Value;\r\n\t}\r\n\r\n\toverride function set_y(Value:Float):Float\r\n\t{\r\n\t\tif (exists && y != Value)\r\n\t\t\ttransformChildren(yTransform, Value - y); // offset\r\n\t\treturn y = Value;\r\n\t}\r\n\r\n\toverride function get_width() {\r\n\t\treturn forceWidth;\r\n\t}\r\n\toverride function get_height() {\r\n\t\treturn forceHeight;\r\n\t}\r\n\r\n\toverride public function draw() {\r\n\t\t@:privateAccess\r\n\t\tif (copyColorTransformToChildren && colorTransform != null) for (child in members) child.colorTransform.__copyFrom(colorTransform);\r\n\t\tsuper.draw();\r\n\t}\r\n\r\n\toverride function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t}\r\n}\r\n\r\nclass EventNumber extends FlxSprite {\r\n\tpublic static inline final ALIGN_NORMAL:Int = 0;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "draw",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function draw() {\r\n\t\t@:privateAccess\r\n\t\tif (copyColorTransformToChildren && colorTransform != null) for (child in members) child.colorTransform.__copyFrom(colorTransform);\r\n\t\tsuper.draw();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

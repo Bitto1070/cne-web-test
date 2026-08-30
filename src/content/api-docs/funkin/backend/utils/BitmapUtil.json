@@ -1,0 +1,119 @@
+{
+	"kind": "final class",
+	"name": "BitmapUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getMostPresentColor",
+			"args": [
+				{
+					"name": "bmap",
+					"type": "BitmapData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FlxColor",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMostPresentColor(bmap:BitmapData):FlxColor {\r\n\t\t// map containing all the colors and the number of times they've been assigned.\r\n\t\tvar colorMap:Map<FlxColor, Float> = [];\r\n\t\tvar color:FlxColor = 0;\r\n\t\tvar fixedColor:FlxColor = 0;\r\n\r\n\t\tfor(y in 0...bmap.height) {\r\n\t\t\tfor(x in 0...bmap.width) {\r\n\t\t\t\tcolor = bmap.getPixel32(x, y);\r\n\t\t\t\tfixedColor = 0xFF000000 | (color & 0xFFFFFF);\r\n\t\t\t\tif (!colorMap.exists(fixedColor))\r\n\t\t\t\t\tcolorMap[fixedColor] = 0;\r\n\t\t\t\tcolorMap[fixedColor] += color.alphaFloat;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar mostPresentColor:FlxColor = 0;\r\n\t\tvar mostPresentColorCount:Float = -1;\r\n\t\tfor(c=>n in colorMap) {\r\n\t\t\tif (n > mostPresentColorCount) {\r\n\t\t\t\tmostPresentColorCount = n;\r\n\t\t\t\tmostPresentColor = c;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn mostPresentColor;\r\n\t}",
+			"doc": {
+				"text": "Returns the most present color in a Bitmap.",
+				"params": {
+					"bmap": "Bitmap"
+				},
+				"returns": "FlxColor Color that is the most present.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMostPresentSaturatedColor",
+			"args": [
+				{
+					"name": "bmap",
+					"type": "BitmapData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "FlxColor",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMostPresentSaturatedColor(bmap:BitmapData):FlxColor {\r\n\t\t// map containing all the colors and the number of times they've been assigned.\r\n\t\tvar colorMap:Map<FlxColor, Float> = [];\r\n\t\tvar color:FlxColor = 0;\r\n\t\tvar fixedColor:FlxColor = 0;\r\n\r\n\t\tfor(y in 0...bmap.height) {\r\n\t\t\tfor(x in 0...bmap.width) {\r\n\t\t\t\tcolor = bmap.getPixel32(x, y);\r\n\t\t\t\tfixedColor = 0xFF000000 | (color & 0xFFFFFF);\r\n\t\t\t\tif (!colorMap.exists(fixedColor))\r\n\t\t\t\t\tcolorMap[fixedColor] = 0;\r\n\t\t\t\tcolorMap[fixedColor] += color.alphaFloat * 0.33 + (0.67 * (color.saturation * (2 * (color.lightness > 0.5 ? 0.5 - (color.lightness) : color.lightness))));\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar mostPresentColor:FlxColor = 0;\r\n\t\tvar mostPresentColorCount:Float = -1;\r\n\t\tfor(c=>n in colorMap) {\r\n\t\t\tif (n > mostPresentColorCount) {\r\n\t\t\t\tmostPresentColorCount = n;\r\n\t\t\t\tmostPresentColor = c;\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn mostPresentColor;\r\n\t}",
+			"doc": {
+				"text": "Returns the most present saturated color in a Bitmap.",
+				"params": {
+					"bmap": "Bitmap"
+				},
+				"returns": "FlxColor Color that is the most present.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "crop",
+			"args": [
+				{
+					"name": "bitmap",
+					"type": "BitmapData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function crop(bitmap:BitmapData) {\r\n\t\tvar bitmapBounds:Rectangle = BitmapUtil.bounds(bitmap);\r\n\r\n\t\tvar croppedBitmap:BitmapData = new BitmapData(Std.int(bitmapBounds.width), Std.int(bitmapBounds.height), true, 0x00000000);\r\n\t\tcroppedBitmap.copyPixels(bitmap, bitmapBounds, new Point(0,0));\r\n\t\treturn croppedBitmap;\r\n\t}",
+			"doc": {
+				"text": "Returns a new bitmap without any empty transperent space on the edges",
+				"params": {
+					"bitmap": "The bitmap to be cropped"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "bounds",
+			"args": [
+				{
+					"name": "bitmap",
+					"type": "BitmapData",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "limit",
+					"type": "Rectangle",
+					"optional": true,
+					"def": "null"
+				}
+			],
+			"ret": "Rectangle",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function bounds(bitmap:BitmapData, ?limit:Rectangle = null):Rectangle {\r\n\t\tvar hasLimit:Bool = limit != null;\r\n\t\t// Searching bounds\r\n\t\tvar startX:Int = hasLimit ? Std.int(limit.x) : 0;\r\n\t\tvar startY:Int = hasLimit ? Std.int(limit.y) : 0;\r\n\t\tvar endX:Int = hasLimit ? Std.int(limit.width) : bitmap.width;\r\n\t\tvar endY:Int = hasLimit ? Std.int(limit.height) : bitmap.height;\r\n\r\n\t\t// Detected bounds\r\n\t\tvar minX:Int = endX;\r\n\t\tvar minY:Int = endY;\r\n\t\tvar maxX:Int = startX;\r\n\t\tvar maxY:Int = startY;\r\n\r\n\t\tfor (y in startY...endY) {\r\n\t\t\tfor (x in startX...endX) {\r\n\t\t\t\tif (bitmap.getPixel32(x, y) != 0x00000000) {\r\n\t\t\t\t\tif (x < minX) minX = x;\r\n\t\t\t\t\tif (y < minY) minY = y;\r\n\t\t\t\t\tif (x > maxX) maxX = x;\r\n\t\t\t\t\tif (y > maxY) maxY = y;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn new Rectangle(minX, minY, maxX-minX+1, maxY-minY+1);\r\n\t}",
+			"doc": {
+				"text": "Get bounds of non empty pixels in the bitmap",
+				"params": {
+					"bitmap": ""
+				},
+				"returns": "",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

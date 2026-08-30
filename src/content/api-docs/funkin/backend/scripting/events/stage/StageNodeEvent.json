@@ -1,0 +1,69 @@
+{
+	"kind": "final class",
+	"name": "StageNodeEvent",
+	"pkg": "funkin.backend.scripting.events.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "stage",
+			"type": "Stage",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The stage instance",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "node",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The node which is currently being parsed",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sprite",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The sprite which was parsed",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The name of the node, quicker access than e.node.name",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

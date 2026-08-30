@@ -1,0 +1,66 @@
+{
+	"kind": "class",
+	"name": "GithubUserIcon",
+	"pkg": "funkin.options.type",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "waitUntilLoad",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "user",
+					"type": "CreditsGitHubContributor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "size",
+					"type": "Int",
+					"optional": false,
+					"def": "96"
+				},
+				{
+					"name": "waitUntilLoad",
+					"type": "Float",
+					"optional": false,
+					"def": "0.25"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function new(user:CreditsGitHubContributor, size:Int = 96, waitUntilLoad:Float = 0.25) {\r\n\t\tthis.user = user;\r\n\t\tthis.size = size;\r\n\t\tthis.waitUntilLoad = waitUntilLoad;\r\n\t\tsuper();\r\n\t\tmakeGraphic(size, size, FlxColor.TRANSPARENT);\r\n\t\tantialiasing = true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateDaFunni",
+			"args": [
+				{
+					"name": "graphic",
+					"type": "FlxGraphic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": true,
+			"src": "public inline function updateDaFunni(graphic:FlxGraphic) {\r\n\t\tloadGraphic(graphic);\r\n\t\tthis.setUnstretchedGraphicSize(size, size, false);\r\n\t\tupdateHitbox();\r\n\t\tx += 90 - width;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

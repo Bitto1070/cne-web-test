@@ -1,0 +1,97 @@
+{
+	"kind": "class",
+	"name": "FNFLegacyParser",
+	"pkg": "funkin.backend.chart",
+	"doc": {
+		"text": "Legacy FNF chart parser.\nThis is for charts that that were made before v0.5.0.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "parse",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parse(data:Dynamic, result:ChartData) {\r\n\t\t// base fnf chart parsing\r\n\t\tvar data:SwagSong = Chart.cleanSongData(data);\r\n\r\n\t\tresult.scrollSpeed = data.speed;\r\n\t\tresult.stage = data.stage;\r\n\r\n\t\tvar p2isGF:Bool = false;\r\n\t\tresult.strumLines.push({\r\n\t\t\tcharacters: [data.player2],\r\n\t\t\ttype: 0,\r\n\t\t\tposition: (p2isGF = data.player2.startsWith(\"gf\")) ? \"girlfriend\" : \"dad\",\r\n\t\t\tnotes: []\r\n\t\t});\r\n\t\tresult.strumLines.push({\r\n\t\t\tcharacters: [data.player1],\r\n\t\t\ttype: 1,\r\n\t\t\tposition: \"boyfriend\",\r\n\t\t\tnotes: []\r\n\t\t});\r\n\t\tvar gfName = data.gf != null ? data.gf : (data.gfVersion != null ? data.gfVersion : (data.player3 != null ? data.player3 : \"gf\"));\r\n\t\tif (!p2isGF && gfName != \"none\") {\r\n\t\t\tresult.strumLines.push({\r\n\t\t\t\tcharacters: [gfName],\r\n\t\t\t\ttype: 2,\r\n\t\t\t\tposition: \"girlfriend\",\r\n\t\t\t\tnotes: [],\r\n\t\t\t\tvisible: false,\r\n\t\t\t});\r\n\t\t}\r\n\r\n\t\tresult.meta.bpm = data.bpm;\r\n\t\tresult.meta.needsVoices = data.needsVoices.getDefault(true);\r\n\r\n\t\tvar camFocusedBF:Bool = false;\r\n\t\tvar altAnims:Bool = false;\r\n\t\tvar beatsPerMeasure:Float = data.beatsPerMeasure.getDefault(Flags.DEFAULT_BEATS_PER_MEASURE);\r\n\t\tvar curBPM:Float = data.bpm;\r\n\t\tvar curTime:Float = 0;\r\n\t\tvar curCrochet:Float = ((60 / curBPM) * 1000);\r\n\r\n\t\tif (data.notes != null) for(section in data.notes) {\r\n\t\t\tif (section == null) {\r\n\t\t\t\tcurTime += curCrochet * beatsPerMeasure;\r\n\t\t\t\tcontinue; // Yoshi Engine charts crash fix\r\n\t\t\t}\r\n\r\n\t\t\tvar newBeatsPerMeasure:Float = section.sectionBeats != null ? section.sectionBeats : data.beatsPerMeasure.getDefault(4); // Default to 4 if sectionBeats is null or undefined (oops :3)\r\n\r\n\t\t\tif (newBeatsPerMeasure != beatsPerMeasure) {\r\n\t\t\t\tbeatsPerMeasure = newBeatsPerMeasure;\r\n\t\t\t\t\r\n\t\t\t\tresult.events.push({\r\n\t\t\t\t\ttime: curTime,\r\n\t\t\t\t\tname: \"Time Signature Change\",\r\n\t\t\t\t\tparams: [newBeatsPerMeasure, 4]\r\n\t\t\t\t});\t\r\n\t\t\t}\r\n\r\n\t\t\tif (camFocusedBF != (camFocusedBF = section.mustHitSection)) {\r\n\t\t\t\tresult.events.push({\r\n\t\t\t\t\ttime: curTime,\r\n\t\t\t\t\tname: \"Camera Movement\",\r\n\t\t\t\t\tparams: [camFocusedBF ? 1 : 0]\r\n\t\t\t\t});\r\n\t\t\t}\r\n\r\n\t\t\tif (section.altAnim == null) section.altAnim = false;\r\n\t\t\tif (altAnims != (altAnims = section.altAnim)) {\r\n\t\t\t\tresult.events.push({\r\n\t\t\t\t\ttime: curTime,\r\n\t\t\t\t\tname: \"Alt Animation Toggle\",\r\n\t\t\t\t\tparams: [altAnims, false, 0]\r\n\t\t\t\t});\r\n\t\t\t}\r\n\r\n\t\t\tif (section.sectionNotes != null) for(note in section.sectionNotes) {\r\n\t\t\t\tif (note[1] < 0) continue;\r\n\r\n\t\t\t\tvar daStrumTime:Float = note[0];\r\n\t\t\t\tvar daNoteData:Int = Std.int(note[1] % 8);\r\n\t\t\t\tvar daNoteType:Int = Std.int(note[1] / 8);\r\n\t\t\t\tvar gottaHitNote:Bool = daNoteData >= 4 ? !section.mustHitSection : section.mustHitSection;\r\n\r\n\t\t\t\tif (note.length > 2) {\r\n\t\t\t\t\tif (note[3] is Int && data.noteTypes != null)\r\n\t\t\t\t\t\tdaNoteType = Chart.addNoteType(result, data.noteTypes[Std.int(note[3])-1]);\r\n\t\t\t\t\telse if (note[3] is String)\r\n\t\t\t\t\t\tdaNoteType = Chart.addNoteType(result, note[3]);\r\n\t\t\t\t} else {\r\n\t\t\t\t\tif(data.noteTypes != null)\r\n\t\t\t\t\t\tdaNoteType = Chart.addNoteType(result, data.noteTypes[daNoteType-1]);\r\n\t\t\t\t}\r\n\r\n\t\t\t\tresult.strumLines[gottaHitNote ? 1 : 0].notes.push({\r\n\t\t\t\t\ttime: daStrumTime,\r\n\t\t\t\t\tid: daNoteData % 4,\r\n\t\t\t\t\ttype: daNoteType,\r\n\t\t\t\t\tsLen: note[2]\r\n\t\t\t\t});\r\n\t\t\t}\r\n\r\n\t\t\tif (section.changeBPM && section.bpm != curBPM) {\r\n\t\t\t\tcurCrochet = ((60 / (curBPM = section.bpm)) * 1000);\r\n\r\n\t\t\t\tresult.events.push({\r\n\t\t\t\t\ttime: curTime,\r\n\t\t\t\t\tname: \"BPM Change\",\r\n\t\t\t\t\tparams: [section.bpm]\r\n\t\t\t\t});\r\n\t\t\t}\r\n\r\n\t\t\tcurTime += curCrochet * beatsPerMeasure;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "encode",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// have conductor set up BEFORE you run this :D -lunar\r\n\tpublic static function encode(chart:ChartData):Dynamic {\r\n\t\tvar base:SwagSong = __convertToSwagSong(chart);\r\n\t\tbase.notes = __convertToSwagSections(chart);\r\n\r\n\t\tfor (strumLine in chart.strumLines)\r\n\t\t\tfor (note in strumLine.notes) {\r\n\t\t\t\tvar section:Int = Math.floor(Conductor.getStepForTime(note.time) / Conductor.getMeasureLength());\r\n\t\t\t\tvar swagSection:SwagSection = base.notes[section];\r\n\t\t\t\tif (section > 0 && section < base.notes.length) {\r\n\t\t\t\t\tvar sectionNote:Array<Dynamic> = [\r\n\t\t\t\t\t\tnote.time, // TIME\r\n\t\t\t\t\t\tnote.id, // DATA\r\n\t\t\t\t\t\tnote.sLen // SUSTAIN LENGTH\r\n\t\t\t\t\t];\r\n\r\n\t\t\t\t\tif ((swagSection.mustHitSection && strumLine.type == OPPONENT) ||\r\n\t\t\t\t\t\t(!swagSection.mustHitSection && strumLine.type == PLAYER))\r\n\t\t\t\t\t\tsectionNote[1] += 4;\r\n\t\t\t\t\tswagSection.sectionNotes.push(sectionNote);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\treturn {song: base};\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__convertToSwagSong",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "SwagSong",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// To make it easier to write the psych parser... -lunar\r\n\t@:noCompletion public static function __convertToSwagSong(chart:ChartData):SwagSong {\r\n\t\tvar base:SwagSong = {\r\n\t\t\tsong: chart.meta.name,\r\n\t\t\tnotes: null,\r\n\t\t\tbpm: chart.meta.bpm,\r\n\t\t\tspeed: chart.scrollSpeed,\r\n\t\t\tneedsVoices: chart.meta.needsVoices,\r\n\r\n\t\t\tplayer1: null,\r\n\t\t\tplayer2: null,\r\n\t\t\tvalidScore: true\r\n\t\t};\r\n\r\n\t\tfor (strumLine in chart.strumLines)\r\n\t\t\tswitch (strumLine.type) {\r\n\t\t\t\tcase OPPONENT:\r\n\t\t\t\t\tif (base.player2 == null) base.player2 = strumLine.characters.getDefault([Flags.DEFAULT_OPPONENT])[0];\r\n\t\t\t\tcase PLAYER:\r\n\t\t\t\t\tif (base.player1 == null) base.player1 = strumLine.characters.getDefault([Flags.DEFAULT_CHARACTER])[0];\r\n\t\t\t\tcase ADDITIONAL: // do nothing\r\n\t\t\t}\r\n\r\n\t\treturn base;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "__convertToSwagSections",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<SwagSection>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noCompletion public static function __convertToSwagSections(chart:ChartData):Array<SwagSection> {\r\n\t\tvar events:Array<ChartEvent> = [for (event in chart.events) Reflect.copy(event)];\r\n\r\n\t\tvar measures:Float = Conductor.getMeasuresLength();\r\n\t\tvar sections:Int = Math.floor(measures) + (measures % 1 > 0 ? 1 : 0);\r\n\r\n\t\tvar notes:Array<SwagSection> = cast new haxe.ds.Vector<SwagSection>(sections);\r\n\t\tfor (section in 0...sections) {\r\n\t\t\tvar baseSection:SwagSection = {\r\n\t\t\t\tsectionNotes: [],\r\n\t\t\t\tlengthInSteps: Std.int(Conductor.getMeasureLength()),\r\n\t\t\t\tmustHitSection: notes[section-1] != null ? notes[section-1].mustHitSection : false,\r\n\t\t\t\tbpm: notes[section-1] != null ? notes[section-1].bpm : chart.meta.bpm,\r\n\t\t\t\tchangeBPM: false,\r\n\t\t\t\taltAnim: notes[section-1] != null ? notes[section-1].altAnim : false,\r\n\t\t\t\tsectionBeats: notes[section-1] != null ? notes[section-1].sectionBeats : chart.meta.beatsPerMeasure.getDefault(4)\r\n\t\t\t};\r\n\r\n\t\t\tvar sectionEndTime:Float = Conductor.getTimeForStep(Conductor.getMeasureLength() * (section+1));\r\n\t\t\twhile(events.length > 0 && events[0].time < sectionEndTime) {\r\n\t\t\t\tvar event:ChartEvent = events.shift();\r\n\t\t\t\tswitch (event.name) {\r\n\t\t\t\t\tcase \"Camera Movement\":\r\n\t\t\t\t\t\tbaseSection.mustHitSection = chart.strumLines[event.params[0]].type == PLAYER;\r\n\t\t\t\t\tcase \"Alt Animation Toggle\":\r\n\t\t\t\t\t\tbaseSection.altAnim = event.params[0] || event.params[1];\r\n\t\t\t\t\tcase \"BPM Change\":\r\n\t\t\t\t\t\tbaseSection.changeBPM = true;\r\n\t\t\t\t\t\tbaseSection.bpm = event.params[0];\r\n\t\t\t\t\tcase \"Time Signature Change\":\r\n\t\t\t\t\t\tbaseSection.sectionBeats = event.params[0];\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tnotes[section] = baseSection;\r\n\t\t}\r\n\t\treturn notes;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noCompletion"
+			]
+		}
+	]
+}

@@ -1,0 +1,55 @@
+{
+	"kind": "class",
+	"name": "FunkinSaveMacro",
+	"pkg": "funkin.backend.system.macros",
+	"doc": {
+		"text": "Macro that automatically generates flush and load functions.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "build",
+			"args": [
+				{
+					"name": "saveFieldName",
+					"type": "String",
+					"optional": false,
+					"def": "\"save\""
+				},
+				{
+					"name": "saveFuncName",
+					"type": "String",
+					"optional": false,
+					"def": "\"flush\""
+				},
+				{
+					"name": "loadFuncName",
+					"type": "String",
+					"optional": false,
+					"def": "\"load\""
+				}
+			],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function build(saveFieldName:String = \"save\", saveFuncName:String = \"flush\", loadFuncName:String = \"load\"):Array<Field> {\r\n\t\tvar fields:Array<Field> = Context.getBuildFields();\r\n\r\n\t\tvar fieldNames:Array<String> = [];\r\n\t\tfor(field in fields) {\r\n\t\t\tif (!field.access.contains(AStatic)) continue;\r\n\r\n\t\t\tswitch(field.kind) {\r\n\t\t\t\tcase FVar(type, expr):\r\n\t\t\t\t\tif (field.name == saveFieldName) continue;\r\n\t\t\t\t\tvar valid:Bool = true;\r\n\t\t\t\t\tif (field.meta != null)\r\n\t\t\t\t\t\tfor(m in field.meta)\r\n\t\t\t\t\t\t\tif (m.name == \":doNotSave\") {\r\n\t\t\t\t\t\t\t\tvalid = false;\r\n\t\t\t\t\t\t\t\tbreak;\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\tif (valid)\r\n\t\t\t\t\t\tfieldNames.push(field.name);\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\t/**\r\n\t\t * SAVE FUNCTION\r\n\t\t */\r\n\t\tvar saveFuncBlocks:Array<Expr> = [for(f in fieldNames) macro $i{saveFieldName}.data.$f = $i{f}];\r\n\t\tsaveFuncBlocks.push(macro $i{saveFieldName}.flush());\r\n\r\n\t\tfields.push({\r\n\t\t\tpos: Context.currentPos(),\r\n\t\t\tname: saveFuncName,\r\n\t\t\tkind: FFun({\r\n\t\t\t\targs: [],\r\n\t\t\t\texpr: {\r\n\t\t\t\t\tpos: Context.currentPos(),\r\n\t\t\t\t\texpr: EBlock(saveFuncBlocks)\r\n\t\t\t\t}\r\n\t\t\t}),\r\n\t\t\taccess: [APublic, AStatic]\r\n\t\t});\r\n\r\n\t\tvar loadFuncBlocks:Array<Expr> = [for(f in fieldNames) macro if ($i{saveFieldName}.data.$f != null) $i{f} = $i{saveFieldName}.data.$f];\r\n\r\n\t\t/**\r\n\t\t * LOAD FUNCTION\r\n\t\t */\r\n\t\tfields.push({\r\n\t\t\tpos: Context.currentPos(),\r\n\t\t\tname: loadFuncName,\r\n\t\t\tkind: FFun({\r\n\t\t\t\targs: [],\r\n\t\t\t\texpr: {\r\n\t\t\t\t\tpos: Context.currentPos(),\r\n\t\t\t\t\texpr: EBlock(loadFuncBlocks)\r\n\t\t\t\t}\r\n\t\t\t}),\r\n\t\t\taccess: [APublic, AStatic]\r\n\t\t});\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": {
+				"text": "Generates flush and load functions.",
+				"params": {
+					"saveFieldName": "Name of the save field (`save`)",
+					"saveFuncName": "Name of the save func (`flush`)",
+					"loadFuncName": "Name of the load func (`load`)"
+				},
+				"returns": "Array<Field>",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

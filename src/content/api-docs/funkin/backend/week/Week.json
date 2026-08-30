@@ -1,0 +1,51 @@
+{
+	"kind": "class",
+	"name": "Week",
+	"pkg": "funkin.backend.week",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "loadWeek",
+			"args": [
+				{
+					"name": "weekName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "loadCharactersData",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "WeekData",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadWeek(weekName:String, loadCharactersData:Bool = true):WeekData {\r\n\t\tvar week:Access = null;\r\n\t\ttry week = new Access(Xml.parse(Assets.getText(Paths.xml('weeks/weeks/$weekName'))).firstElement())\r\n\t\tcatch(e) Logs.trace('Cannot parse week \"$weekName.xml\": ${Std.string(e)}', ERROR);\r\n\r\n\t\tif (week == null) return null;\r\n\t\tif (!week.has.name) {\r\n\t\t\tLogs.trace('Week \"${weekName}\" has no name attribute', WARNING);\r\n\t\t\treturn null;\r\n\t\t}\r\n\r\n\t\tvar weekObj:WeekData = {\r\n\t\t\txml: week,\r\n\t\t\tname: week.att.name,\r\n\t\t\tid: weekName,\r\n\t\t\tsprite: week.getAtt('sprite').getDefault(weekName),\r\n\t\t\tchars: [null, null, null],\r\n\t\t\tsongs: [],\r\n\t\t\tdifficulties: ['easy', 'normal', 'hard'],\r\n\t\t\tbgColor: week.has.bgColor ? FlxColor.fromString(week.getAtt(\"bgColor\")) : Flags.DEFAULT_WEEK_COLOR\r\n\t\t};\r\n\r\n\t\tvar weekName = weekObj.name;\r\n\t\tfor (k => song in week.nodes.song) {\r\n\t\t\tif (song == null) continue;\r\n\t\t\ttry {\r\n\t\t\t\tvar name = song.innerData.trim();\r\n\t\t\t\tif (name == \"\") {\r\n\t\t\t\t\tLogs.trace('Song at index ${k} in week $weekName has no name. Skipping...', WARNING);\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\t\t\t\tweekObj.songs.push({\r\n\t\t\t\t\tname: name,\r\n\t\t\t\t\thide: song.getAtt('hide').getDefault('false') == \"true\",\r\n\t\t\t\t\tdisplayName: song.getAtt('displayName'),\r\n                    variation: song.getAtt('variation')\r\n\t\t\t\t});\r\n\t\t\t} catch(e) {\r\n\t\t\t\tLogs.trace('Song at index ${k} in week $weekName cannot contain any other XML nodes in its name.', WARNING);\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (weekObj.songs.length <= 0) {\r\n\t\t\tLogs.trace('Week $weekName has no songs.', WARNING);\r\n\t\t\treturn null;\r\n\t\t}\r\n\r\n\t\tvar diffNodes = week.nodes.difficulty;\r\n\t\tif (diffNodes.length > 0) {\r\n\t\t\tvar diffs:Array<String> = [for (e in diffNodes) if (e.has.name) e.att.name];\r\n\t\t\tif (diffs.length > 0) weekObj.difficulties = diffs;\r\n\t\t}\r\n\r\n\t\tif (week.has.chars) for (k => e in week.att.chars.split(\",\")) {\r\n\t\t\tvar trim = e.trim();\r\n\t\t\tweekObj.chars[k] = (trim == \"\" || e == \"none\" || e == \"null\") ? null : (loadCharactersData ? loadWeekCharacter(trim) : {name: trim});\r\n\t\t}\r\n\r\n\t\treturn weekObj;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadWeekCharacter",
+			"args": [
+				{
+					"name": "charName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "WeekCharacter",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadWeekCharacter(charName:String):WeekCharacter {\r\n\t\tvar char:Access = null;\r\n\t\ttry char = new Access(Xml.parse(Assets.getText(Paths.xml('weeks/characters/$charName'))).firstElement())\r\n\t\tcatch(e) Logs.trace('Cannot parse character \"$charName.xml\": ${Std.string(e)}', ERROR);\r\n\t\tif (char == null) return null;\r\n\r\n\t\tif (!char.has.name) char.x.set(\"name\", charName);\r\n\t\tif (!char.has.sprite) char.x.set(\"sprite\", 'menus/storymenu/characters/${char.att.name}');\r\n\t\tif (!char.has.updateHitbox) char.x.set(\"updateHitbox\", \"true\");\r\n\r\n\t\treturn {\r\n\t\t\txml: char,\r\n\t\t\tname: char.att.name,\r\n\t\t\tspritePath: char.att.sprite,\r\n\t\t\tscale: Std.parseFloat(char.getAtt('scale')).getDefault(1),\r\n\t\t\toffset: FlxPoint.get(\r\n\t\t\t\tStd.parseFloat(char.getAtt('x')).getDefault(0),\r\n\t\t\t\tStd.parseFloat(char.getAtt('y')).getDefault(0)\r\n\t\t\t)\r\n\t\t};\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

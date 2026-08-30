@@ -1,0 +1,233 @@
+{
+	"kind": "class",
+	"name": "Cutscene",
+	"pkg": "funkin.game.cutscenes",
+	"doc": {
+		"text": "Substate made for cutscenes.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "paused",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pauseItems",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "pausable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "skippable",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set_skippable",
+			"args": [
+				{
+					"name": "val",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function set_skippable(val:Bool):Bool {\r\n\t\tif (!val) pauseItems.remove('Skip Cutscene');\r\n\t\telse if (!pauseItems.contains('Skip Cutscene')) pauseItems.insert(1, 'Skip Cutscene');\r\n\t\treturn skippable = val;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "callback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "allowPause",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "canSkip",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(callback:Void->Void, allowPause:Bool = true, canSkip:Bool = true) {\r\n\t\tsuper();\r\n\t\tcanOpenCustomTransition = true;\r\n\r\n\t\t__callback = callback;\r\n\r\n\t\tpauseItems = Flags.DEFAULT_CUTSCENE_PAUSE_ITEMS;\r\n\t\tpausable = allowPause;\r\n\t\tskippable = canSkip;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\t\tif (pauseCheck()) pauseCutscene();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pauseCheck",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function pauseCheck():Bool\r\n\t\treturn controls.PAUSE && pausable;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pauseCutscene",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function pauseCutscene() {\r\n\t\t_before = [game.persistentUpdate, game.persistentDraw];\r\n\t\tgame.persistentUpdate = persistentUpdate = false;\r\n\t\tgame.persistentDraw = persistentDraw = true;\r\n\t\tpaused = true;\r\n\r\n\t\topenSubState(new PauseSubState(pauseItems, selectPauseOption));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "closeSubState",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function closeSubState() {\r\n\t\tif (paused) {\r\n\t\t\tgame.persistentUpdate = _before[0];\r\n\t\t\tgame.persistentDraw = _before[1];\r\n\t\t\tpaused = false;\r\n\t\t}\r\n\r\n\t\tsuper.closeSubState();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onSkipCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onSkipCutscene(event:NameEvent) close();",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onRestartCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onRestartCutscene(event:NameEvent) event.name = \"Restart Song\";",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onResumeCutscene",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "// Making the whole PlayState restart just for precaution  - Nex\r\n\tpublic function onResumeCutscene(event:NameEvent) event.name = \"Resume\";",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "selectPauseOption",
+			"args": [
+				{
+					"name": "event",
+					"type": "NameEvent",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function selectPauseOption(event:NameEvent) {\r\n\t\tswitch(event.name) {\r\n\t\t\tcase 'Skip Cutscene': onSkipCutscene(event);\r\n\t\t\tcase 'Restart Cutscene': onRestartCutscene(event);\r\n\t\t\tcase 'Resume Cutscene': onResumeCutscene(event);\r\n\t\t}\r\n\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function close() {\r\n\t\tcanOpenCustomTransition = false;\r\n\t\t__callback();\r\n\t\tsuper.close();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

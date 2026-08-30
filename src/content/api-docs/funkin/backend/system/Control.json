@@ -1,0 +1,8 @@
+{
+	"kind": "enum",
+	"name": "Control",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": []
+}

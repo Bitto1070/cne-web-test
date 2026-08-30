@@ -1,0 +1,119 @@
+{
+	"kind": "class",
+	"name": "UIDebugState",
+	"pkg": "funkin.editors",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "topMenuSpr",
+			"type": "UITopMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "testingUIItems",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "testingUIHidden",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\r\n\t\tFlxG.mouse.useSystemCursor = FlxG.mouse.visible = true;\r\n\r\n\t\tvar bg = new FlxSprite().makeSolid(FlxG.width, FlxG.height, 0xFF444444);\r\n\t\tbg.updateHitbox();\r\n\t\tbg.scrollFactor.set();\r\n\t\tadd(bg);\r\n\r\n\t\tvar gf = new Character(0, 0, \"gf\");\r\n\t\tgf.dance();\r\n\t\tadd(gf);\r\n\r\n\t\tadd(topMenuSpr = new UITopMenu([\r\n\t\t\t{\r\n\t\t\t\tlabel: \"File\",\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"New\"\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Open\"\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Save\"\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Save As...\"\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Exit\",\r\n\t\t\t\t\t\tonSelect: (t) -> {FlxG.switchState(new funkin.menus.MainMenuState());}\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: \"Edit\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: \"View\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: \"Help\"\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\tlabel: \"9-Splice Benchmark >\",\r\n\t\t\t\tchilds: [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Hide Other UI Items\",\r\n\t\t\t\t\t\tonSelect: (t) -> {\r\n\t\t\t\t\t\t\ttestingUIHidden = !testingUIHidden;\r\n\t\t\t\t\t\t\tt.icon = testingUIHidden ? 1 : 0;\r\n\r\n\t\t\t\t\t\t\tfor (item in testingUIItems)\r\n\t\t\t\t\t\t\t\titem.visible = !testingUIHidden;\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\ticon: testingUIHidden ? 1 : 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Clear Benchmark Sprites\",\r\n\t\t\t\t\t\tonSelect: (t) -> {\r\n\t\t\t\t\t\t\tfor (splice in spliceSprites) {\r\n\t\t\t\t\t\t\t\tsplice.kill();\r\n\t\t\t\t\t\t\t\tsplice.destroy();\r\n\r\n\t\t\t\t\t\t\t\tthis.remove(splice);\r\n\t\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\t\tspliceSprites.resize(0);\r\n\t\t\t\t\t\t\tMemoryUtil.clearMajor();\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t},\r\n\t\t\t\t\tnull,\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\tlabel: \"Draw Triangles?\",\r\n\t\t\t\t\t\tonSelect: (t) -> {\r\n\t\t\t\t\t\t\tspliceUseTris = !spliceUseTris;\r\n\t\t\t\t\t\t\tt.icon = spliceUseTris ? 1 : 0;\r\n\r\n\t\t\t\t\t\t\tspliceCl = spliceUseTris ? OldUISliceSpriteTri : UISliceSprite;\r\n\t\t\t\t\t\t\ttrace(spliceCl);\r\n\t\t\t\t\t\t},\r\n\t\t\t\t\t\ticon: spliceUseTris ? 1 : 0\r\n\t\t\t\t\t}\r\n\t\t\t\t]\r\n\t\t\t}\r\n\t\t]));\r\n\r\n\t\ttestingUIItems.push(cast add(new UICheckbox(10, 40, \"Test unchecked\", false)));\r\n\t\ttestingUIItems.push(cast add(new UICheckbox(10, 70, \"Test checked\", true)));\r\n\t\ttestingUIItems.push(cast add(new UIButton(10, 100, \"Test button\", function() {\r\n\t\t\ttrace(\"Hello, World!\");\r\n\t\t}, 130, 32)));\r\n\t\ttestingUIItems.push(cast add(new UIButton(10, 140, \"Warning test\", function() {\r\n\t\t\topenSubState(new UIWarningSubstate(\"Test\", \"This is a test message\", [\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"Alt. Choice\",\r\n\t\t\t\t\tonClick: function(t) {\r\n\t\t\t\t\t\ttrace(\"Alt. Choice clicked!\");\r\n\t\t\t\t\t}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"OK\",\r\n\t\t\t\t\tonClick: function(t) {\r\n\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t]));\r\n\t\t}, 130, 32)));\r\n\t\ttestingUIItems.push(cast add(new UIButton(10, 180, \"Warning test (Overflowing)\", function() {\r\n\t\t\topenSubState(new UIWarningSubstate(\"Test\", \"This is a test message\", [\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"Alt. Choice\",\r\n\t\t\t\t\tonClick: function(t) {\r\n\t\t\t\t\t\ttrace(\"Alt. Choice clicked!\");\r\n\t\t\t\t\t}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"OK\",\r\n\t\t\t\t\tonClick: function(t) {}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"1\",\r\n\t\t\t\t\tonClick: function(t) {}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"2\",\r\n\t\t\t\t\tonClick: function(t) {}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"3\",\r\n\t\t\t\t\tonClick: function(t) {}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"4\",\r\n\t\t\t\t\tonClick: function(t) {}\r\n\t\t\t\t}\r\n\t\t\t]));\r\n\t\t}, 130, 48)));\r\n\t\ttestingUIItems.push(cast add(new UITextBox(10, 220, \"\")));\r\n\r\n\t\tspliceText = new UIText(0, 0, 0, \"(0) Sprites\");\r\n\t\tadd(spliceText);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spliceSprites",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spliceText",
+			"type": "UIText",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spliceTimer",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spliceCoolDown",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spliceUseTris",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "spliceCl",
+			"type": "Class<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (FlxG.keys.pressed.SPACE) {\r\n\t\t\tspliceTimer += elapsed;\r\n\t\t\tif (spliceTimer >= spliceCoolDown) {\r\n\t\t\t\tspliceTimer -= spliceCoolDown;\r\n\r\n\t\t\t\tfor (i in 0...3) {\r\n\t\t\t\t\tvar width:Int = FlxG.random.int(10, 200);\r\n\t\t\t\t\tvar height:Int = FlxG.random.int(10, 200);\r\n\r\n\t\t\t\t\tvar spliceSprite:FlxSprite = Type.createInstance(spliceCl,\r\n\t\t\t\t\t\t[\r\n\t\t\t\t\t\t\tFlxG.random.float(0, FlxG.width-width), \r\n\t\t\t\t\t\t\tFlxG.random.float(22, FlxG.height-height), \r\n\t\t\t\t\t\t\twidth, height, \"editors/ui/context-bg\"\r\n\t\t\t\t\t\t]\r\n\t\t\t\t\t);\r\n\t\r\n\t\t\t\t\tspliceSprites.push(cast add(spliceSprite));\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tvar spliceTopButton:UITopMenuButton = cast topMenuSpr.members[topMenuSpr.members.length-1];\r\n\r\n\t\tspliceText.x = spliceTopButton.x + spliceTopButton.bWidth - 2;\r\n\t\tspliceText.y = spliceTopButton.label.y+1;\r\n\r\n\t\tspliceText.text = '(${spliceSprites.length}) 9-Splice Sprites';\r\n\r\n\t\tif (FlxG.mouse.justReleasedRight) {\r\n\t\t\topenContextMenu([\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"Test 1\",\r\n\t\t\t\t\tonSelect: function(t) {\r\n\t\t\t\t\t\ttrace(\"Test 1 clicked\");\r\n\t\t\t\t\t}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"Test 2\",\r\n\t\t\t\t\tonSelect: function(t) {\r\n\t\t\t\t\t\ttrace(\"Test 2 clicked\");\r\n\t\t\t\t\t}\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: \"Test 3\",\r\n\t\t\t\t\tchilds: [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tlabel: \"Test 4\",\r\n\t\t\t\t\t\t\tonSelect: function(t) {\r\n\t\t\t\t\t\t\t\ttrace(\"Test 4 clicked\");\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t]\r\n\t\t\t\t}\r\n\t\t\t]);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

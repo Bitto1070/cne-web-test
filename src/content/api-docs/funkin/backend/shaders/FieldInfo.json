@@ -1,0 +1,29 @@
+{
+	"kind": "class",
+	"name": "FieldInfo",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:structInit"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "get",
+			"type": "Void->Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "set",
+			"type": "Dynamic->Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

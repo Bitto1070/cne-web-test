@@ -1,0 +1,577 @@
+{
+	"kind": "class",
+	"name": "Script",
+	"pkg": "funkin.backend.scripting",
+	"doc": {
+		"text": "Class used for scripting.\nUse `Script.create` to create a script.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:allow(funkin.backend.scripting.ScriptPack)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "staticVariables",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Use \"static var thing = true;\" in hscript to use those!!\nare reset every mod switch so once you're done with them make sure to make them null!!",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaultVariables",
+			"args": [
+				{
+					"name": "script",
+					"type": "Script",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Map<String, Dynamic>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getDefaultVariables(?script:Script):Map<String, Dynamic>\r\n\t{\r\n\t\tvar vars = _defaultVariablesTemplate != null ? _defaultVariablesTemplate : (_defaultVariablesTemplate = buildDefaultVariables());\r\n\t\tvar copy = vars.copy();\r\n\t\tcopy.set(\"state\", flixel.FlxG.state); // `state` changes on state switch, so it can't be cached\r\n\t\tcopy.set(\"window\", lime.app.Application.current.window); // same for `window`: evaluated at script creation time like before\r\n\t\treturn copy;\r\n\t}",
+			"doc": {
+				"text": "Gets the default variables for a script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaultImportRedirects",
+			"args": [],
+			"ret": "Map<String, String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getDefaultImportRedirects():Map<String, String>\r\n\t{\r\n\t\tvar redirects:Map<String, String> = [];\r\n\r\n\t\t// Events\r\n\t\tfinal events = \"funkin.backend.scripting.events.\";\r\n\t\tredirects[events + \"CharacterNodeEvent\"] = events + \"character.CharacterNodeEvent\";\r\n\t\tredirects[events + \"CharacterXMLEvent\"] = events + \"character.CharacterXMLEvent\";\r\n\t\tredirects[events + \"DanceEvent\"] = events + \"character.DanceEvent\";\r\n\t\tredirects[events + \"DirectionAnimEvent\"] = events + \"character.DirectionAnimEvent\";\r\n\t\tredirects[events + \"DiscordPresenceUpdateEvent\"] = events + \"discord.DiscordPresenceUpdateEvent\";\r\n\t\tredirects[events + \"GameOverCreationEvent\"] = events + \"gameover.GameOverCreationEvent\";\r\n\t\tredirects[events + \"CamMoveEvent\"] = events + \"gameplay.CamMoveEvent\";\r\n\t\tredirects[events + \"CountdownEvent\"] = events + \"gameplay.CountdownEvent\";\r\n\t\tredirects[events + \"EventGameEvent\"] = events + \"gameplay.EventGameEvent\";\r\n\t\tredirects[events + \"GameOverEvent\"] = events + \"gameplay.GameOverEvent\";\r\n\t\tredirects[events + \"RatingUpdateEvent\"] = events + \"gameplay.RatingUpdateEvent\";\r\n\t\tredirects[events + \"HealthIconChangeEvent\"] = events + \"healthicon.HealthIconChangeEvent\";\r\n\t\tredirects[events + \"FreeplayAlphaUpdateEvent\"] = events + \"menu.freeplay.FreeplayAlphaUpdateEvent\";\r\n\t\tredirects[events + \"FreeplaySongSelectEvent\"] = events + \"menu.freeplay.FreeplaySongSelectEvent\";\r\n\t\tredirects[events + \"MenuChangeEvent\"] = events + \"menu.MenuChangeEvent\";\r\n\t\tredirects[events + \"PauseCreationEvent\"] = events + \"menu.pause.PauseCreationEvent\";\r\n\t\tredirects[events + \"WeekSelectEvent\"] = events + \"menu.storymenu.WeekSelectEvent\";\r\n\t\tredirects[events + \"InputSystemEvent\"] = events + \"note.InputSystemEvent\";\r\n\t\tredirects[events + \"NoteCreationEvent\"] = events + \"note.NoteCreationEvent\";\r\n\t\tredirects[events + \"NoteHitEvent\"] = events + \"note.NoteHitEvent\";\r\n\t\tredirects[events + \"NoteMissEvent\"] = events + \"note.NoteMissEvent\";\r\n\t\tredirects[events + \"NoteUpdateEvent\"] = events + \"note.NoteUpdateEvent\";\r\n\t\tredirects[events + \"SimpleNoteEvent\"] = events + \"note.SimpleNoteEvent\";\r\n\t\tredirects[events + \"StrumCreationEvent\"] = events + \"note.StrumCreationEvent\";\r\n\t\tredirects[events + \"SplashShowEvent\"] = events + \"splash.SplashShowEvent\";\r\n\t\tredirects[events + \"PlayAnimContext\"] = events + \"sprite.PlayAnimContext\";\r\n\t\tredirects[events + \"PlayAnimEvent\"] = events + \"sprite.PlayAnimEvent\";\r\n\t\tredirects[events + \"StageNodeEvent\"] = events + \"stage.StageNodeEvent\";\r\n\t\tredirects[events + \"StageXMLEvent\"] = events + \"stage.StageXMLEvent\";\r\n\r\n\t\t// Old State Names\r\n\t\tredirects[\"funkin.menus.BetaWarningState\"] = \"funkin.menus.WarningState\";\r\n\r\n\t\treturn redirects;\r\n\t}",
+			"doc": {
+				"text": "Used internally to keep backwards compatibility with old scripts.\nThis gets set on `hscript.Interp.importRedirects`,\nif you wanna modify it, please edit `hscript.Interp.importRedirects` directly.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaultPreprocessors",
+			"args": [],
+			"ret": "Map<String, Dynamic>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getDefaultPreprocessors():Map<String, Dynamic>\r\n\t{\r\n\t\tvar defines = funkin.backend.system.macros.DefinesMacro.defines;\r\n\t\tdefines.set(\"CODENAME_ENGINE\", true);\r\n\t\tdefines.set(\"CODENAME_VER\", Flags.VERSION);\r\n\t\tdefines.set(\"CODENAME_BUILD\", 2675); // 2675 being the last build num before it was removed\r\n\t\tdefines.set(\"CODENAME_COMMIT\", Flags.COMMIT_NUMBER);\r\n\t\treturn defines;\r\n\t}",
+			"doc": {
+				"text": "Gets the default defines for a script.\nIncludes all of the defines that the build was compiled with.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scriptExtensions",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "All available script extensions",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curScript",
+			"type": "Script",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Currently executing script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fileName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Script name (with extension)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "extension",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Script Extension",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "path",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Path to the script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "remappedNames",
+			"type": "Map<String, String>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Remapped filenames.\nUsed for trace messages, to show what mod the script is from.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Script",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function create(path:String):Script\r\n\t{\r\n\t\tif (Assets.exists(path))\r\n\t\t{\r\n\t\t\treturn switch (Path.extension(path).toLowerCase())\r\n\t\t\t{\r\n\t\t\t\tcase \"hx\" | \"hscript\" | \"hsc\" | \"hxs\":\r\n\t\t\t\t\tnew HScript(path);\r\n\t\t\t\tcase \"pack\":\r\n\t\t\t\t\tvar arr = Assets.getText(path).split(\"________PACKSEP________\");\r\n\t\t\t\t\tfromString(arr[1], arr[0]);\r\n\t\t\t\tcase \"lua\":\r\n\t\t\t\t\tLogs.error(\"Lua is not supported in this engine. Use HScript instead.\");\r\n\t\t\t\t\tnew DummyScript(path);\r\n\t\t\t\tdefault:\r\n\t\t\t\t\tnew DummyScript(path);\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn new DummyScript(path);\r\n\t}",
+			"doc": {
+				"text": "Creates a script from the specified asset path. The language is automatically determined.",
+				"params": {
+					"path": "Path in assets"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fromString",
+			"args": [
+				{
+					"name": "code",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Script",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fromString(code:String, path:String):Script\r\n\t{\r\n\t\treturn switch (Path.extension(path).toLowerCase())\r\n\t\t{\r\n\t\t\tcase \"hx\" | \"hscript\" | \"hsc\" | \"hxs\":\r\n\t\t\t\tnew HScript(path).loadFromString(code);\r\n\t\t\tcase \"lua\":\r\n\t\t\t\tLogs.error(\"Lua is not supported in this engine. Use HScript instead.\");\r\n\t\t\t\tnew DummyScript(path).loadFromString(code);\r\n\t\t\tdefault:\r\n\t\t\t\tnew DummyScript(path).loadFromString(code);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Creates a script from the string. The language is determined based on the path.",
+				"params": {
+					"code": "code",
+					"path": "filename"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(path:String)\r\n\t{\r\n\t\tsuper();\r\n\r\n\t\trawPath = path;\r\n\t\tpath = Paths.getFilenameFromLibFile(path);\r\n\r\n\t\tfileName = Path.withoutDirectory(path);\r\n\t\textension = Path.extension(path);\r\n\t\tthis.path = path;\r\n\t\tonCreate(path);\r\n\t\tfor (k => e in getDefaultVariables(this))\r\n\t\t{\r\n\t\t\tset(k, e);\r\n\t\t}\r\n\t\tset(\"disableScript\", () ->\r\n\t\t{\r\n\t\t\tactive = false;\r\n\t\t});\r\n\t\tset(\"__script__\", this);\r\n\t}",
+			"doc": {
+				"text": "Creates a new instance of the script class.",
+				"params": {
+					"path": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "load",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function load()\r\n\t{\r\n\t\tif (didLoad)\r\n\t\t\treturn;\r\n\r\n\t\tvar oldScript = curScript;\r\n\t\tcurScript = this;\r\n\t\tonLoad();\r\n\t\tcurScript = oldScript;\r\n\r\n\t\tdidLoad = true;\r\n\t}",
+			"doc": {
+				"text": "Loads the script",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setPublicMap",
+			"args": [
+				{
+					"name": "map",
+					"type": "Map<String, Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setPublicMap(map:Map<String, Dynamic>)\r\n\t{\r\n\t}",
+			"doc": {
+				"text": "HSCRIPT ONLY FOR NOW\nSets the \"public\" variables map for ScriptPack",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reload()\r\n\t{\r\n\t}",
+			"doc": {
+				"text": "Hot-reloads the script, if possible",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "trace",
+			"args": [
+				{
+					"name": "v",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function trace(v:Dynamic)\r\n\t{\r\n\t\tvar fileName = this.fileName;\r\n\t\tif (remappedNames.exists(fileName))\r\n\t\t\tfileName = remappedNames.get(fileName);\r\n\t\tLogs.traceColored([Logs.logText(fileName + ': ', GREEN), Logs.logText(Std.string(v))], TRACE);\r\n\t}",
+			"doc": {
+				"text": "Traces something as this script.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "call",
+			"args": [
+				{
+					"name": "func",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parameters",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function call(func:String, ?parameters:Array<Dynamic>):Dynamic\r\n\t{\r\n\t\tvar oldScript = curScript;\r\n\t\tcurScript = this;\r\n\r\n\t\tvar result = onCall(func, parameters);\r\n\r\n\t\tcurScript = oldScript;\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Calls the function `func` defined in the script.",
+				"params": {
+					"func": "Name of the function",
+					"parameters": "(Optional) Parameters of the function."
+				},
+				"returns": "Result (if void, then null)",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadFromString",
+			"args": [
+				{
+					"name": "code",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadFromString(code:String)\r\n\t{\r\n\t\treturn this;\r\n\t}",
+			"doc": {
+				"text": "Loads the code from a string, doesn't really work after the script has been loaded",
+				"params": {
+					"code": "The code."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setParent",
+			"args": [
+				{
+					"name": "variable",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setParent(variable:Dynamic)\r\n\t{\r\n\t}",
+			"doc": {
+				"text": "Sets a script's parent object so that its properties can be accessed easily. Ex: Passing `PlayState.instance` will allow `boyfriend` to be typed instead of `PlayState.instance.boyfriend`.",
+				"params": {
+					"variable": "Parent variable."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get",
+			"args": [
+				{
+					"name": "variable",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get(variable:String):Dynamic\r\n\t{\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets the variable `variable` from the script's variables.",
+				"params": {
+					"variable": "Name of the variable."
+				},
+				"returns": "Variable (or null if it doesn't exists)",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set",
+			"args": [
+				{
+					"name": "variable",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "value",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function set(variable:String, value:Dynamic):Void\r\n\t{\r\n\t}",
+			"doc": {
+				"text": "Sets the variable `variable` from the script's variables.",
+				"params": {
+					"variable": "Name of the variable."
+				},
+				"returns": "Variable (or null if it doesn't exists)",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "error",
+			"args": [
+				{
+					"name": "text",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "additionalInfo",
+					"type": "Dynamic",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function error(text:String, ?additionalInfo:Dynamic):Void\r\n\t{\r\n\t\tvar fileName = this.fileName;\r\n\t\tif (remappedNames.exists(fileName))\r\n\t\t\tfileName = remappedNames.get(fileName);\r\n\t\tLogs.traceColored([Logs.logText(fileName, RED), Logs.logText(text)], ERROR);\r\n\t}",
+			"doc": {
+				"text": "Shows an error from this script.",
+				"params": {
+					"text": "Text of the error (ex: Null Object Reference).",
+					"additionalInfo": "Additional information you could provide."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function toString():String\r\n\t{\r\n\t\treturn FlxStringUtil.getDebugString(didLoad ? [LabelValuePair.weak(\"path\", path), LabelValuePair.weak(\"active\", active),] : [\r\n\t\t\tLabelValuePair.weak(\"path\", path),\r\n\t\t\tLabelValuePair.weak(\"active\", active),\r\n\t\t\tLabelValuePair.weak(\"loaded\", didLoad),\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onCreate",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onCreate(path:String)\r\n\t{\r\n\t}",
+			"doc": {
+				"text": "Called when the script is created.",
+				"params": {
+					"path": "Path to the script"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onLoad",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function onLoad()\r\n\t{\r\n\t}",
+			"doc": {
+				"text": "Called when the script is loaded.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

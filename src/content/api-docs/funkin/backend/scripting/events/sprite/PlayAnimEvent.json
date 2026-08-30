@@ -1,0 +1,84 @@
+{
+	"kind": "final class",
+	"name": "PlayAnimEvent",
+	"pkg": "funkin.backend.scripting.events.sprite",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "animName",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Name of the animation that's going to be played.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "force",
+			"type": "Null<Bool>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the animation will be forced or not (if it's null it will be forced based on the sprite's data xml, if it has one).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "reverse",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the animation will play in reverse or not",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startingFrame",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The frame at which the animation will start playing",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "context",
+			"type": "PlayAnimContext",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Context of the animation",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

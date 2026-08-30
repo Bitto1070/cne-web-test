@@ -1,0 +1,542 @@
+{
+	"kind": "class",
+	"name": "NativeAPI",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Class for functions that talk to a lower level than haxe, such as message boxes, and more.\nSome functions might not have effect on some platforms.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "registerAsDPICompatible",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:dox(hide) public static function registerAsDPICompatible() {\r\n\t\t#if windows\r\n\t\tWindows.registerAsDPICompatible();\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "allocConsole",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function allocConsole() {\r\n\t\t#if windows\r\n\t\tWindows.allocConsole();\r\n\t\tWindows.clearScreen();\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Allocates a new console. The console will automatically be opened",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFileAttributesRaw",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFileAttributesRaw(path:String, useAbsolute:Bool = true):Int {\r\n\t\t#if windows\r\n\t\tif(useAbsolute) path = sys.FileSystem.absolutePath(path);\r\n\t\treturn Windows.getFileAttributes(path);\r\n\t\t#else\r\n\t\treturn -1;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Gets the specified file's (or folder) attributes.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFileAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "FileAttributeWrapper",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFileAttributes(path:String, useAbsolute:Bool = true):FileAttributeWrapper {\r\n\t\treturn new FileAttributeWrapper(getFileAttributesRaw(path, useAbsolute));\r\n\t}",
+			"doc": {
+				"text": "Gets the specified file's (or folder) attributes and passes it to `FileAttributeWrapper`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setFileAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "OneOfThree<NativeAPI.FileAttribute, FileAttributeWrapper, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setFileAttributes(path:String, attrib:OneOfThree<NativeAPI.FileAttribute, FileAttributeWrapper, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if windows\r\n\t\tif(useAbsolute) path = sys.FileSystem.absolutePath(path);\r\n\t\treturn Windows.setFileAttributes(path, attrib is FileAttributeWrapper ? cast(attrib, FileAttributeWrapper).getValue() : cast(attrib, Int));\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Sets the specified file's (or folder) attributes. If it fails, the return value is `0`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addFileAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "OneOfTwo<NativeAPI.FileAttribute, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function addFileAttributes(path:String, attrib:OneOfTwo<NativeAPI.FileAttribute, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if windows\r\n\t\treturn setFileAttributes(path, getFileAttributesRaw(path, useAbsolute) | cast(attrib, Int), useAbsolute);\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Removes from the specified file's (or folder) one (or more) specific attribute.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeFileAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "OneOfTwo<NativeAPI.FileAttribute, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function removeFileAttributes(path:String, attrib:OneOfTwo<NativeAPI.FileAttribute, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if windows\r\n\t\treturn setFileAttributes(path, getFileAttributesRaw(path, useAbsolute) & ~cast(attrib, Int), useAbsolute);\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Removes from the specified file's (or folder) one (or more) specific attribute.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setDarkMode",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "enable",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setDarkMode(title:String, enable:Bool) {\r\n\t\t#if windows\r\n\t\tif(title == null) title = lime.app.Application.current.window.title;\r\n\t\tWindows.setDarkMode(title, enable);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Switch the window's color mode to dark or light mode.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setWindowBorderColor",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "setHeader",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "setBorder",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setWindowBorderColor(title:String, color:FlxColor, setHeader:Bool = true, setBorder:Bool = true) {\r\n\t\t#if windows\r\n\t\tif(title == null) title = lime.app.Application.current.window.title;\r\n\t\tWindows.setWindowBorderColor(title, [color.red, color.green, color.blue, color.alpha], setHeader, setBorder);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Switch the window's color to any color.\n\nWARNING: This is exclusive to windows 11 users, unfortunately.\n\nNOTE: Setting the color to 0x00000000 (FlxColor.TRANSPARENT) will set the border (must have setBorder on) invisible.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetWindowBorderColor",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "setHeader",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "setBorder",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function resetWindowBorderColor(title:String, setHeader:Bool = true, setBorder:Bool = true) {\r\n\t\t#if windows\r\n\t\tif(title == null) title = lime.app.Application.current.window.title;\r\n\t\tWindows.setWindowBorderColor(title, [-1, -1, -1, -1], setHeader, setBorder);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Resets the window's border color to the default one.\n\nWARNING: This is exclusive to windows 11 users, unfortunately.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setWindowTitleColor",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setWindowTitleColor(title:String, color:FlxColor) {\r\n\t\t#if windows\r\n\t\tif(title == null) title = lime.app.Application.current.window.title;\r\n\t\tWindows.setWindowTitleColor(title, [color.red, color.green, color.blue, color.alpha]);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Switch the window's title text to any color.\n\nWARNING: This is exclusive to windows 11 users, unfortunately.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetWindowTitleColor",
+			"args": [
+				{
+					"name": "title",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function resetWindowTitleColor(title:String) {\r\n\t\t#if windows\r\n\t\tif(title == null) title = lime.app.Application.current.window.title;\r\n\t\tWindows.setWindowTitleColor(title, [-1, -1, -1, -1]);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Resets the window's title color to the default one.\n\nWARNING: This is exclusive to windows 11 users, unfortunately.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "redrawWindowHeader",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function redrawWindowHeader() {\r\n\t\t#if windows\r\n\t\tflixel.FlxG.stage.window.borderless = true;\r\n\t\tflixel.FlxG.stage.window.borderless = false;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Forces the window header to redraw, causes a small visual jitter so use it sparingly.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasVersion",
+			"args": [
+				{
+					"name": "vers",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function hasVersion(vers:String)\r\n\t\treturn lime.system.System.platformLabel.toLowerCase().indexOf(vers.toLowerCase()) != -1;",
+			"doc": {
+				"text": "Can be used to check if your using a specific version of an OS (or if your using a certain OS).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "showMessageBox",
+			"args": [
+				{
+					"name": "caption",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "message",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "icon",
+					"type": "MessageBoxIcon",
+					"optional": false,
+					"def": "MSG_WARNING"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function showMessageBox(caption:String, message:String, icon:MessageBoxIcon = MSG_WARNING) {\r\n\t\t#if windows\r\n\t\tWindows.showMessageBox(caption, message, icon);\r\n\t\t#else\r\n\t\tlime.app.Application.current.window.alert(message, caption);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Shows a message box",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setConsoleColors",
+			"args": [
+				{
+					"name": "foregroundColor",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": "NONE"
+				},
+				{
+					"name": "backgroundColor",
+					"type": "ConsoleColor",
+					"optional": true,
+					"def": "NONE"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setConsoleColors(foregroundColor:ConsoleColor = NONE, ?backgroundColor:ConsoleColor = NONE) {\r\n\t\tif(Main.noTerminalColor) return;\r\n\r\n\t\t#if sys\r\n\t\tSys.print(\"\\x1b[0m\");\r\n\t\tif(foregroundColor != NONE)\r\n\t\t\tSys.print(\"\\x1b[\" + Std.int(consoleColorToANSI(foregroundColor)) + \"m\");\r\n\t\tif(backgroundColor != NONE)\r\n\t\t\tSys.print(\"\\x1b[\" + Std.int(consoleColorToANSI(backgroundColor) + 10) + \"m\");\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Sets the console colors",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setCursorIcon",
+			"args": [
+				{
+					"name": "icon",
+					"type": "CodeCursor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setCursorIcon(icon:CodeCursor) {\r\n\t\t#if (mac && cpp)\r\n\t\tMac.setMouseCursorIcon(cast icon);\r\n\t\t#else\r\n\t\tMouse.cursor = icon.toOpenFL();\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Set cursor icon.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "consoleColorToANSI",
+			"args": [
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function consoleColorToANSI(color:ConsoleColor) {\r\n\t\treturn switch(color) {\r\n\t\t\tcase BLACK:\t\t\t30;\r\n\t\t\tcase DARKBLUE:\t\t34;\r\n\t\t\tcase DARKGREEN:\t\t32;\r\n\t\t\tcase DARKCYAN:\t\t36;\r\n\t\t\tcase DARKRED:\t\t31;\r\n\t\t\tcase DARKMAGENTA:\t35;\r\n\t\t\tcase DARKYELLOW:\t33;\r\n\t\t\tcase LIGHTGRAY:\t\t37;\r\n\t\t\tcase GRAY:\t\t\t90;\r\n\t\t\tcase BLUE:\t\t\t94;\r\n\t\t\tcase GREEN:\t\t\t92;\r\n\t\t\tcase CYAN:\t\t\t96;\r\n\t\t\tcase RED:\t\t\t91;\r\n\t\t\tcase MAGENTA:\t\t95;\r\n\t\t\tcase YELLOW:\t\t93;\r\n\t\t\tcase WHITE | _:\t\t97;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "consoleColorToOpenFL",
+			"args": [
+				{
+					"name": "color",
+					"type": "ConsoleColor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function consoleColorToOpenFL(color:ConsoleColor) {\r\n\t\treturn switch(color) {\r\n\t\t\tcase BLACK:\t\t\t0xFF000000;\r\n\t\t\tcase DARKBLUE:\t\t0xFF000088;\r\n\t\t\tcase DARKGREEN:\t\t0xFF008800;\r\n\t\t\tcase DARKCYAN:\t\t0xFF008888;\r\n\t\t\tcase DARKRED:\t\t0xFF880000;\r\n\t\t\tcase DARKMAGENTA:\t0xFF880000;\r\n\t\t\tcase DARKYELLOW:\t0xFF888800;\r\n\t\t\tcase LIGHTGRAY:\t\t0xFFBBBBBB;\r\n\t\t\tcase GRAY:\t\t\t0xFF888888;\r\n\t\t\tcase BLUE:\t\t\t0xFF0000FF;\r\n\t\t\tcase GREEN:\t\t\t0xFF00FF00;\r\n\t\t\tcase CYAN:\t\t\t0xFF00FFFF;\r\n\t\t\tcase RED:\t\t\t0xFFFF0000;\r\n\t\t\tcase MAGENTA:\t\t0xFFFF00FF;\r\n\t\t\tcase YELLOW:\t\t0xFFFFFF00;\r\n\t\t\tcase WHITE | _:\t\t0xFFFFFFFF;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

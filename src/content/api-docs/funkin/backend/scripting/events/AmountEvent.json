@@ -1,0 +1,24 @@
+{
+	"kind": "final class",
+	"name": "AmountEvent",
+	"pkg": "funkin.backend.scripting.events",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "amount",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Amount",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

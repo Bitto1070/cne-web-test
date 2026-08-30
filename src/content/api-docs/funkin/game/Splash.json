@@ -1,0 +1,57 @@
+{
+	"kind": "class",
+	"name": "Splash",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "strum",
+			"type": "Null<Strum>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The current splash strum\nWARNING: It can be null",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strumID",
+			"type": "Null<Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Shortcut to `strum.ID`\nWARNING: It can be null",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "copyFrom",
+			"args": [
+				{
+					"name": "source",
+					"type": "Splash",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Splash",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function copyFrom(source:Splash):Splash\r\n\t{\r\n\t\tvar spr = new Splash();\r\n\t\t@:privateAccess {\r\n\t\t\tspr.setPosition(source.x, source.y);\r\n\t\t\tspr.frames = source.frames;\r\n\t\t\tspr.animation.copyFrom(source.animation);\r\n\t\t\tspr.visible = source.visible;\r\n\t\t\tspr.alpha = source.alpha;\r\n\t\t\tspr.antialiasing = source.antialiasing;\r\n\t\t\tspr.scale.set(source.scale.x, source.scale.y);\r\n\t\t\tspr.scrollFactor.set(source.scrollFactor.x, source.scrollFactor.y);\r\n\t\t\tspr.skew.set(source.skew.x, source.skew.y);\r\n\t\t\tspr.zoomFactor = source.zoomFactor;\r\n\t\t\tspr.animOffsets = source.animOffsets.copy();\r\n\t\t}\r\n\t\treturn spr;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

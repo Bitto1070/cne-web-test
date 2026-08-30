@@ -1,0 +1,92 @@
+{
+	"kind": "class",
+	"name": "FakeCallCamera",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "final",
+			"name": "instance",
+			"type": "Dynamic",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "ignoreDraws",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onDraw",
+			"args": [
+				{
+					"name": "frame",
+					"type": "FlxFrame",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "pixels",
+					"type": "BitmapData",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "matrix",
+					"type": "FlxMatrix",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "transform",
+					"type": "ColorTransform",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "blend",
+					"type": "BlendMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "smoothing",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				},
+				{
+					"name": "shader",
+					"type": "FlxShader",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "wrapMode",
+					"type": "Context3DWrapMode",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "depthCompareMode",
+					"type": "Context3DCompareMode",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public dynamic function onDraw(?frame:FlxFrame, ?pixels:BitmapData, matrix:FlxMatrix, ?transform:ColorTransform, ?blend:BlendMode, ?smoothing:Bool = false, ?shader:FlxShader, ?wrapMode:Context3DWrapMode, ?depthCompareMode:Context3DCompareMode) {\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

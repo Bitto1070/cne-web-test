@@ -1,0 +1,231 @@
+{
+	"kind": "class",
+	"name": "CharterStrumline",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "strumLine",
+			"type": "ChartStrumLine",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggingSprite",
+			"type": "UISprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "healthIcons",
+			"type": "FlxSpriteGroup",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "button",
+			"type": "CharterStrumlineOptions",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "highlightColor",
+			"type": "FlxColor",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "dragging",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMenu",
+			"type": "UIContextMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vocals",
+			"type": "FlxSound",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hasVocals",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vocalsVolume",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hitsoundVolume",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "keyCount",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startingID",
+			"type": "Int",
+			"access": "get, null",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "get_startingID",
+			"args": [],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function get_startingID():Int {\r\n\t\tif (__startingID != -1) return __startingID;\r\n\r\n\t\tvar index = Charter.instance.strumLines.members.indexOf(this);\r\n\t\tif (index < 1) return __startingID = 0; //-1 or 0\r\n\r\n\t\tvar v:Int = 0;\r\n\t\tfor (i in 0...index) v += Charter.instance.strumLines.members[i].keyCount;\r\n\t\treturn __startingID = v;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selectedWaveform",
+			"type": "Int",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "set_selectedWaveform",
+			"args": [
+				{
+					"name": "value",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function set_selectedWaveform(value:Int):Int {\r\n\t\tif (value == -1) waveformShader = null;\r\n\t\telse {\r\n\t\t\tvar shaderName:String = Charter.waveformHandler.waveformList[value];\r\n\t\t\twaveformShader = Charter.waveformHandler.waveShaders.get(shaderName);\r\n\t\t}\r\n\t\treturn selectedWaveform = value;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "waveformShader",
+			"type": "CustomShader",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "strumLine",
+					"type": "ChartStrumLine",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(strumLine:ChartStrumLine) {\r\n\t\tsuper();\r\n\t\tthis.strumLine = strumLine;\r\n\r\n\t\tscrollFactor.set(1, 0);\r\n\t\talpha = 0;\r\n\r\n\t\tif(strumLine.visible == null) strumLine.visible = true;\r\n\r\n\t\tvar icons = strumLine.characters != null ? strumLine.characters : [];\r\n\r\n\t\tkeyCount = strumLine.keyCount != null ? strumLine.keyCount : 4;\r\n\r\n\t\thealthIcons = new FlxSpriteGroup(x, y);\r\n\r\n\t\tvar maxCol = icons.length < 4 ? icons.length : 4;\r\n\t\tvar maxRow = Math.floor((icons.length-1) / 4) + 1;\r\n\t\tfor (i=>icon in icons) {\r\n\t\t\tvar healthIcon = new HealthIcon(Character.getIconFromCharName(icon));\r\n\t\t\thealthIcon.scale.x = healthIcon.scale.y = Math.max((0.6 - (icons.length / 20)), 0.35);\r\n\t\t\thealthIcon.updateHitbox();\r\n\t\t\thealthIcon.x = FlxMath.lerp(0, Math.min(icons.length * 20, 120), (maxCol-1 != 0 ? (i % 4) / (maxCol-1) : 0));\r\n\t\t\thealthIcon.y = (draggable ? 29 : 7) + FlxMath.lerp(0, Math.min(maxRow * 15, 60), (maxRow-1 != 0 ? Math.floor(i / 4) / (maxRow-1) : 0));\r\n\t\t\thealthIcon.alpha = strumLine.visible ? 1 : 0.4;\r\n\t\t\thealthIcons.add(healthIcon);\r\n\t\t}\r\n\r\n\t\tmembers.push(healthIcons);\r\n\r\n\t\tdraggingSprite = new UISprite();\r\n\t\tdraggingSprite.loadGraphic(Paths.image(\"editors/charter/strumline-drag\"));\r\n\t\tdraggingSprite.alpha = 0.4;\r\n\t\tdraggingSprite.y = 9;\r\n\t\tdraggingSprite.antialiasing = true;\r\n\t\tdraggingSprite.cursor = CLICK;\r\n\t\tmembers.push(draggingSprite);\r\n\r\n\t\tbutton = new CharterStrumlineOptions(this);\r\n\t\tmembers.push(button);\r\n\r\n\t\tupdateInfo();\r\n\r\n\t\tselectedWaveform = -1;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tif (FlxG.keys.justPressed.K) draggable = !draggable;\r\n\r\n\t\thealthIcons.follow(this, ((40 * keyCount) - healthIcons.width) / 2, 7 + (__healthYOffset = FlxMath.lerp(__healthYOffset, draggable ? 8 : 0, 1/20)));\r\n\r\n\t\tdraggingSprite.selectable = draggable;\r\n\t\tdraggingSprite.updateSpriteRect();\r\n\r\n\t\tvar dragScale:Float = FlxMath.lerp(draggingSprite.scale.x, draggable ? 1 : 0.8, 1/16);\r\n\t\tdraggingSprite.scale.set(dragScale, dragScale);\r\n\t\tdraggingSprite.updateHitbox();\r\n\r\n\t\tdraggingSprite.follow(this, ((keyCount*40)/2) - (draggingSprite.width/2), 6 + (__draggingYOffset = FlxMath.lerp(__draggingYOffset, draggable ? 3 : 0, 1/12)));\r\n\t\tvar fullAlpha:Float = UIState.state.isOverlapping(draggingSprite, @:privateAccess draggingSprite.__rect) || dragging ? 0.9 : 0.35;\r\n\t\tdraggingSprite.alpha = FlxMath.lerp(draggingSprite.alpha, draggable ? fullAlpha : 0, 1/12);\r\n\t\tbutton.follow(this, 0, 95);\r\n\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateInfo",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateInfo() {\r\n\t\tvar icons = strumLine.characters != null ? strumLine.characters : [];\r\n\r\n\t\tkeyCount = strumLine.keyCount != null ? strumLine.keyCount : 4;\r\n\r\n\t\thealthIcons.clear();\r\n\r\n\t\tvar maxCol = icons.length < 4 ? icons.length : 4;\r\n\t\tvar maxRow = Math.floor((icons.length-1) / 4) + 1;\r\n\t\tfor (i=>icon in icons) {\r\n\t\t\tvar healthIcon = new HealthIcon(Character.getIconFromCharName(icon));\r\n\t\t\thealthIcon.scale.x = healthIcon.scale.y = Math.max((0.6 - (icons.length / 20)), 0.35) * (150 / Math.max(healthIcon.frameWidth, healthIcon.frameHeight));\r\n\t\t\thealthIcon.updateHitbox();\r\n\t\t\thealthIcon.x = FlxMath.lerp(0, Math.min(icons.length * 20, 120), (maxCol-1 != 0 ? (i % 4) / (maxCol-1) : 0));\r\n\t\t\thealthIcon.y = (draggable ? 14 : 7) + FlxMath.lerp(0, Math.min(maxRow * 15, 60), (maxRow-1 != 0 ? Math.floor(i / 4) / (maxRow-1) : 0));\r\n\t\t\thealthIcon.alpha = strumLine.visible ? 1 : 0.4;\r\n\t\t\thealthIcons.add(healthIcon);\r\n\t\t}\r\n\r\n\t\tvar asset = strumLine.vocalsSuffix.length > 0 ? Assets.getSound(Paths.voices(PlayState.SONG.meta.name, PlayState.difficulty, strumLine.vocalsSuffix)) : null;\r\n\r\n\t\tif (vocals == null) FlxG.sound.list.add(vocals = new FlxSound());\r\n\t\tif (asset != null) {\r\n\t\t\tvocals.reset();\r\n\t\t\tvocals.loadEmbedded(asset);\r\n\t\t\thasVocals = true;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tvocals.destroy();\r\n\t\t\thasVocals = false;\r\n\t\t}\r\n\t\tvocals.group = FlxG.sound.defaultMusicGroup;\r\n\r\n\t\thighlightColor = 0xFFFFFFFF;\r\n\t\tif (icons[0] != null) {\r\n\t\t\tvar characterXML = Character.getXMLFromCharName(icons[0]);\r\n\t\t\tif (characterXML != null && characterXML.x.exists(\"color\")) highlightColor = FlxColor.fromString(characterXML.x.get(\"color\"));\r\n\r\n\t\t\t//make darker colors more visible for the highlight\r\n\t\t\thighlightColor.brightness = Math.max(highlightColor.brightness, 0.65);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		}
+	]
+}

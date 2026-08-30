@@ -1,0 +1,245 @@
+{
+	"kind": "class",
+	"name": "FunkinShader",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:access(openfl.display3D.Context3D)",
+		"@:access(openfl.display3D.Program3D)",
+		"@:access(openfl.display.ShaderInput)",
+		"@:access(openfl.display.ShaderParameter)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "onGLUpdate",
+			"type": "FlxTypedSignal<Void->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "fragmentSource",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "vertexSource",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "version",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(?fragmentSource:String, ?vertexSource:String, ?version:String) {\r\n\t\tsuper(fragmentSource, vertexSource, version ?? (fragmentSource != null || vertexSource != null ? Flags.DEFAULT_GLSL_VERSION : null));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fromFile",
+			"args": [
+				{
+					"name": "fragmentPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "vertexPath",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "version",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "FunkinShader",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function fromFile(fragmentPath:String, ?vertexPath:String, ?version:String):FunkinShader {\r\n\t\treturn new FunkinShader().loadShaderFile(fragmentPath, vertexPath, version);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadShaderFile",
+			"args": [
+				{
+					"name": "fragmentPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "vertexPath",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "version",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "FunkinShader",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function loadShaderFile(fragmentPath:String, ?vertexPath:String, ?version:String):FunkinShader {\r\n\t\tif (vertexPath == null) {\r\n\t\t\tfinal idx = fragmentPath.lastIndexOf(\".\");\r\n\t\t\tif (idx == -1) vertexPath = fragmentPath;\r\n\t\t\telse vertexPath = fragmentPath.substr(0, idx);\r\n\t\t}\r\n\r\n\t\tfragmentPath = FlxRuntimeShader._getPath(fragmentPath, false);\r\n\t\tvertexPath = FlxRuntimeShader._getPath(vertexPath, true);\r\n\t\t_fromFile(fragmentPath, vertexPath, version ?? (fragmentPath != null || vertexPath != null ? Flags.DEFAULT_GLSL_VERSION : null));\r\n\r\n\t\treturn this;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hget",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hget(name:String):Dynamic {\r\n\t\tif (__glSourceDirty) __init();\r\n\r\n\t\tif (__thisHasField(name) || __thisHasField('get_${name}')) return Reflect.getProperty(this, name);\r\n\t\telse if (!Reflect.hasField(__data, name)) return null;\r\n\r\n\t\tfinal field:Dynamic = Reflect.field(__data, name);\r\n\r\n\t\tvar cl:String = Type.getClassName(Type.getClass(field));\r\n\r\n\t\t// little problem we are facing boys...\r\n\r\n\t\t// cant do \"field is ShaderInput\" because ShaderInput has the @:generic metadata\r\n\t\t// aka instead of ShaderInput<Float> it gets built as ShaderInput_Float\r\n\t\t// this should be fine tho because we check the class, and the fields don't vary based on the type\r\n\r\n\t\t// thanks for looking in the code cne fans :D!! -lunar\r\n\r\n\t\tif (cl.startsWith(\"openfl.display.ShaderParameter\"))\r\n\t\t\treturn (field.__length > 1) ? field.value : field.value[0];\r\n\t\telse if (cl.startsWith(\"openfl.display.ShaderInput\"))\r\n\t\t\treturn field.input;\r\n\t\treturn field;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hset",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "val",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hset(name:String, val:Dynamic):Dynamic {\r\n\t\tif (__glSourceDirty) __init();\r\n\r\n\t\tif (__thisHasField(name) || __thisHasField('set_${name}')) {\r\n\t\t\tReflect.setProperty(this, name, val);\r\n\t\t\treturn val;\r\n\t\t}\r\n\t\telse if (!Reflect.hasField(__data, name)) {\r\n\t\t\t// ??? huh\r\n\t\t\tReflect.setField(__data, name, val);\r\n\t\t\treturn val;\r\n\t\t}\r\n\r\n\t\tvar field = Reflect.field(__data, name);\r\n\t\tvar cl = Type.getClassName(Type.getClass(field));\r\n\t\tvar isNotNull = val != null;\r\n\t\t// cant do \"field is ShaderInput\" for some reason\r\n\t\tif (cl.startsWith(\"openfl.display.ShaderParameter\")) {\r\n\t\t\tif (field.__length <= 1) {\r\n\t\t\t\t// that means we wait for a single number, instead of an array\r\n\t\t\t\tif (field.__isInt && isNotNull && !(val is Int)) {\r\n\t\t\t\t\tthrow new ShaderTypeException(name, Type.getClass(val), 'Int');\r\n\t\t\t\t\treturn null;\r\n\t\t\t\t} else\r\n\t\t\t\tif (field.__isBool && isNotNull && !(val is Bool)) {\r\n\t\t\t\t\tthrow new ShaderTypeException(name, Type.getClass(val), 'Bool');\r\n\t\t\t\t\treturn null;\r\n\t\t\t\t} else\r\n\t\t\t\tif (field.__isFloat && isNotNull && !(val is Float)) {\r\n\t\t\t\t\tthrow new ShaderTypeException(name, Type.getClass(val), 'Float');\r\n\t\t\t\t\treturn null;\r\n\t\t\t\t}\r\n\t\t\t\treturn field.value = isNotNull ? [val] : null;\r\n\t\t\t} else {\r\n\t\t\t\tif (isNotNull && !(val is Array)) {\r\n\t\t\t\t\tthrow new ShaderTypeException(name, Type.getClass(val), Array);\r\n\t\t\t\t\treturn null;\r\n\t\t\t\t}\r\n\t\t\t\treturn field.value = val;\r\n\t\t\t}\r\n\t\t} else if (cl.startsWith(\"openfl.display.ShaderInput\")) {\r\n\t\t\t// shader input!!\r\n\t\t\tvar bitmap:BitmapData;\r\n\t\t\tif (!isNotNull) bitmap = null;\r\n\t\t\telse if (val is BitmapData) bitmap = val;\r\n\t\t\telse if (val is FlxGraphic) bitmap = val.bitmap;\r\n\t\t\telse {\r\n\t\t\t\tthrow new ShaderTypeException(name, Type.getClass(val), BitmapData);\r\n\t\t\t\treturn null;\r\n\t\t\t}\r\n\t\t\tfield.input = bitmap;\r\n\t\t}\r\n\r\n\t\treturn val;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "shaderPrefix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fragmentPrefix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vertexPrefix",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fileName",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "fragFileName",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vertFileName",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "glslVer",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "glRawFragmentSource",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "glRawVertexSource",
+			"type": "String",
+			"access": "get, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onProcessGLData",
+			"type": "FlxTypedSignal<(String, String)->Void>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

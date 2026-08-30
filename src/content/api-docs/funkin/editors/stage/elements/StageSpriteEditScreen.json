@@ -1,0 +1,93 @@
+{
+	"kind": "class",
+	"name": "StageSpriteEditScreen",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "newSprite",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "button",
+			"type": "StageSpriteButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "sprite",
+			"type": "FunkinSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "button",
+					"type": "StageSpriteButton",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "windowPath",
+					"type": "String",
+					"optional": true,
+					"def": "\"layouts/stage/spriteEditScreen\""
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(button:StageSpriteButton, ?windowPath:String = \"layouts/stage/spriteEditScreen\") {\r\n\t\tthis.button = button;\r\n\t\tthis.sprite = button.getSprite();\r\n\t\tsuper(windowPath, [\r\n\t\t\t\"stage\" => StageEditor.instance.stage,\r\n\t\t\t\"sprite\" => sprite,\r\n\t\t\t\"button\" => button,\r\n\t\t\t\"xml\" => button.xml,\r\n\t\t\t\"exID\" => StageEditor.exID,\r\n\t\t\t\"getEx\" => function(name:String):Dynamic {\r\n\t\t\t\treturn sprite.extra.get(StageEditor.exID(name));\r\n\t\t\t},\r\n\t\t\t\"setEx\" => function(name:String, value:Dynamic) {\r\n\t\t\t\tsprite.extra.set(StageEditor.exID(name), value);\r\n\t\t\t},\r\n\t\t\t\"translate\" => translate,\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tsuper.create();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "saveData",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function saveData() {\r\n\t\tisSaving = true;\r\n\t\tsuper.saveData();\r\n\t\tbutton.updateInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "close",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function close() {\r\n\t\tif (!isSaving && newSprite) {\r\n\t\t\tbutton.onDelete();\r\n\t\t\ttrace(\"deleting sprite\");\r\n\t\t}\r\n\t\tsuper.close();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,85 @@
+{
+	"kind": "class",
+	"name": "MemoryCounter",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "memoryText",
+			"type": "TextField",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "memoryPeakText",
+			"type": "TextField",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "memory",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "memoryPeak",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\r\n\t\tmemoryText = new TextField();\r\n\t\tmemoryPeakText = new TextField();\r\n\r\n\t\tfor(label in [memoryText, memoryPeakText]) {\r\n\t\t\tlabel.autoSize = LEFT;\r\n\t\t\tlabel.x = 0;\r\n\t\t\tlabel.y = 0;\r\n\t\t\tlabel.text = \"MEM\";\r\n\t\t\tlabel.multiline = label.wordWrap = false;\r\n\t\t\tlabel.defaultTextFormat = Framerate.textFormat;\r\n\t\t\tlabel.selectable = false;\r\n\t\t\taddChild(label);\r\n\t\t}\r\n\t\tmemoryPeakText.alpha = 0.5;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reload",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function reload() {\r\n\t\tfor(label in [memoryText, memoryPeakText]) label.defaultTextFormat = Framerate.textFormat;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\t\tsuper.__enterFrame(t);\r\n\r\n\t\tfinal mem = MemoryUtil.currentMemUsage();\r\n\r\n\t\tif (mem == memory) {\r\n\t\t\tupdateLabelPosition();\r\n\t\t\treturn;\r\n\t\t}\r\n\r\n\t\tmemory = mem;\r\n\t\tif (memoryPeak < memory) memoryPeak = memory;\r\n\t\tmemoryText.text = CoolUtil.getSizeString(memory);\r\n\t\tmemoryPeakText.text = ' / ${CoolUtil.getSizeString(memoryPeak)}';\r\n\r\n\t\tupdateLabelPosition();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

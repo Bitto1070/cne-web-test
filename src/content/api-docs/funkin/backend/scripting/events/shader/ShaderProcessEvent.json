@@ -1,0 +1,27 @@
+{
+	"kind": "final class",
+	"name": "ShaderProcessEvent",
+	"pkg": "funkin.backend.scripting.events.shader",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "source",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "storageType",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,149 @@
+{
+	"kind": "class",
+	"name": "UIColorwheel",
+	"pkg": "funkin.editors.ui",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "curColor",
+			"type": "Null<FlxColor>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curColorString",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "saturation",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "brightness",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "hue",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color",
+					"type": "Int",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new (x:Float, y:Float, ?color:Int) {\r\n\t\tsuper(x, y, 299, 125, 'editors/ui/inputbox');\r\n\r\n\t\tcurColor = cast color;\r\n\t\thue = curColor.hue; saturation = curColor.saturation; brightness = curColor.brightness;\r\n\r\n\t\tcolorPickerShader = new CustomShader(\"engine/colorPicker\");\r\n\r\n\t\tcolorPicker = new FlxSprite(x + 12.5, (y + 125/2) - (100/2)).makeGraphic(100, 100, FlxColor.TRANSPARENT);\r\n\t\tcolorPicker.drawRoundRect(0, 0, 100, 100, 10, 10, FlxColor.WHITE);\r\n\t\tcolorPicker.shader = colorPickerShader;\r\n\r\n\t\tcolorPickerSelector = new UIColorWheelSelector(colorPicker.x + 100 - 16, colorPicker.y);\r\n\r\n\t\tcolorSlider = new FlxSprite(colorPicker.x + 100 + 12.5, colorPicker.y).makeGraphic(16, 100, FlxColor.TRANSPARENT);\r\n\t\tcolorSlider.drawRoundRect(0, 0, 16, 100, 10, 10, FlxColor.WHITE);\r\n\r\n\t\t// Im too lazy to use a shader for this if its not even gonna change\r\n\t\tcolorSlider.pixels.lock();\r\n\t\tfor (pixelY in 0...Std.int(colorSlider.height)) {\r\n\t\t\tvar color:Int = FlxColor.fromHSB(pixelY / (colorSlider.height-1) * 360, 1, 1);\r\n\t\t\tfor (pixelX in 0...Std.int(colorSlider.width))\r\n\t\t\t\tif (colorSlider.pixels.getPixel32(pixelX, pixelY) != FlxColor.TRANSPARENT) colorSlider.pixels.setPixel32(pixelX, pixelY, color);\r\n\t\t}\r\n\t\tcolorSlider.pixels.unlock();\r\n\r\n\t\tcolorSliderSelector = new UIColorWheelSelector(colorSlider.x, colorSlider.y);\r\n\r\n\t\tcolorHexTextBox = new UITextBox(colorSlider.x + 16 + 12.5, colorSlider.y + 16, \"\", 100, 28);\r\n\t\tcolorHexTextBox.onChange = (colorString:String) -> {\r\n\t\t\tcurColor = FlxColor.fromString(colorString);\r\n\t\t\tif (curColor == null) curColor = FlxColor.WHITE;\r\n\r\n\t\t\thue = curColor.hue; saturation = curColor.saturation; brightness = curColor.brightness;\r\n\t\t\tupdateWheel();\r\n\t\t}\r\n\r\n\t\tvar hexLabel:UIText = new UIText(colorHexTextBox.x - 2, colorHexTextBox.y - 18, 0, \"Hex (#FFFFFF)\", 13);\r\n\r\n\t\tfor (i in 0...3) {\r\n\t\t\tvar numStepper:UINumericStepper = new UINumericStepper(colorSlider.x + 18 + 12.5 + (i * 44), colorHexTextBox.y + 28 + 6 + 13 + 6 + .5, 0, 1, 0, 0, 255, 40 + 28, 28);\r\n\t\t\tnumStepper.antialiasing = true; numStepper.ID = i;\r\n\t\t\tnumStepper.onChange = (text:String) -> {\r\n\t\t\t\t@:privateAccess numStepper.__onChange(text);\r\n\t\t\t\tvar val = Std.int(numStepper.value);\r\n\t\t\t\tswitch (numStepper.ID) {\r\n\t\t\t\t\tdefault: curColor.red = val;\r\n\t\t\t\t\tcase 1: curColor.green = val;\r\n\t\t\t\t\tcase 2: curColor.blue = val;\r\n\t\t\t\t}\r\n\t\t\t\thue = curColor.hue; saturation = curColor.saturation; brightness = curColor.brightness;\r\n\t\t\t\tupdateWheel();\r\n\t\t\t};\r\n\t\t\tmembers.push(numStepper); rgbNumSteppers.push(numStepper);\r\n\t\t}\r\n\r\n\t\tvar rgbLabel:UIText = new UIText(rgbNumSteppers[0].x - 2, rgbNumSteppers[0].y - 18, 0, \"RGB (255,255,255)\", 13);\r\n\r\n\t\tcolorPicker.antialiasing = colorSlider.antialiasing = colorHexTextBox.antialiasing = true;\r\n\r\n\t\tfor (item in [colorPicker, colorPickerSelector, colorSlider, colorSliderSelector, colorHexTextBox, hexLabel, rgbLabel])\r\n\t\t\tmembers.push(item);\r\n\r\n\t\tupdateWheel(false);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setColor",
+			"args": [
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function setColor(color:FlxColor) {\r\n\t\thue = curColor.hue; saturation = curColor.saturation; brightness = curColor.brightness;\r\n\t\tupdateWheel(false);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "updateWheel",
+			"args": [
+				{
+					"name": "checkChanged",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateWheel(checkChanged:Bool = true) {\r\n\t\tif(checkChanged) colorChanged = true;\r\n\t\tcolorPickerShader.hset(\"hue\", hue / 360);\r\n\t\tcolorPickerSelector.curColor = color = curColor = FlxColor.fromHSB(hue, saturation, brightness); colorSliderSelector.curColor = FlxColor.fromHSB(hue, 1, 1);\r\n\r\n\t\tupdateColorPickerSelector(); updateColorSliderPickerSelector();\r\n\t\tcolorHexTextBox.label.text = curColorString = curColor.toWebString();\r\n\t\tfor (numStepper in rgbNumSteppers) {\r\n\t\t\tnumStepper.label.text = Std.string(switch (numStepper.ID) {\r\n\t\t\t\tdefault: curColor.red;\r\n\t\t\t\tcase 1: curColor.green;\r\n\t\t\t\tcase 2: curColor.blue;\r\n\t\t\t});\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorChanged",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tvar mousePos = FlxG.mouse.getScreenPosition(__lastDrawCameras[0], FlxPoint.get());\r\n\t\tif (hovered && FlxG.mouse.justPressed) {\r\n\t\t\tfor (sprite in [colorPicker, colorSlider]) {\r\n\t\t\t\tvar spritePos:FlxPoint = sprite.getScreenPosition(FlxPoint.get(), __lastDrawCameras[0]);\r\n\t\t\t\tif (FlxMath.inBounds(mousePos.x, spritePos.x - (hitBoxExtension/2), spritePos.x - (hitBoxExtension/2) + (sprite.width + hitBoxExtension)) && FlxMath.inBounds(mousePos.y, spritePos.y - (hitBoxExtension/2), spritePos.y - (hitBoxExtension/2) + (sprite.height + hitBoxExtension))) {\r\n\t\t\t\t\tselectedSprite = sprite;\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif (selectedSprite != null) {\r\n\t\t\tvar spritePos:FlxPoint = selectedSprite.getScreenPosition(FlxPoint.get(), __lastDrawCameras[0]);\r\n\t\t\tmousePos -= FlxPoint.weak(spritePos.x, spritePos.y);\r\n\t\t\tmousePos.set(CoolUtil.bound(mousePos.x, 0, selectedSprite.width), CoolUtil.bound(mousePos.y, 0, selectedSprite.height));\r\n\r\n\t\t\tif (selectedSprite == colorSlider) updateColorSliderMouse(mousePos);\r\n\t\t\tif (selectedSprite == colorPicker) updateColorPickerMouse(mousePos);\r\n\t\t\tupdateWheel();\r\n\t\t\tspritePos.put();\r\n\r\n\t\t\tif (FlxG.mouse.justReleased) selectedSprite = null;\r\n\t\t}\r\n\t\tmousePos.put();\r\n\t\tsuper.update(elapsed);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

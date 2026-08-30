@@ -1,0 +1,285 @@
+{
+	"kind": "final class",
+	"name": "ZipUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "bannedNames",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "uncompressZip",
+			"args": [
+				{
+					"name": "zip",
+					"type": "Reader",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "destFolder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "prog",
+					"type": "ZipProgress",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ZipProgress",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function uncompressZip(zip:Reader, destFolder:String, ?prefix:String, ?prog:ZipProgress):ZipProgress {\r\n\t\t// we never know\r\n\t\tFileSystem.createDirectory(destFolder);\r\n\r\n\t\tvar fields = zip.read();\r\n\r\n\t\ttry {\r\n\t\t\tif (prefix != null) {\r\n\t\t\t\tvar f = fields;\r\n\t\t\t\tfields = new List<Entry>();\r\n\t\t\t\tfor(field in f) {\r\n\t\t\t\t\tif (field.fileName.startsWith(prefix)) {\r\n\t\t\t\t\t\tfields.push(field);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (prog == null)\r\n\t\t\t\tprog = new ZipProgress();\r\n\t\t\tprog.fileCount = fields.length;\r\n\t\t\tfor(k=>field in fields) {\r\n\t\t\t\tprog.curFile = k;\r\n\t\t\t\tvar isFolder = field.fileName.endsWith(\"/\") && field.fileSize == 0;\r\n\t\t\t\tif (isFolder) {\r\n\t\t\t\t\tFileSystem.createDirectory('${destFolder}/${field.fileName}');\r\n\t\t\t\t} else {\r\n\t\t\t\t\tvar split = [for(e in field.fileName.split(\"/\")) e.trim()];\r\n\t\t\t\t\tsplit.pop();\r\n\t\t\t\t\tFileSystem.createDirectory('${destFolder}/${split.join(\"/\")}');\r\n\r\n\t\t\t\t\tvar data = unzip(field);\r\n\t\t\t\t\tFile.saveBytes('${destFolder}/${field.fileName}', data);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tprog.curFile = fields.length;\r\n\t\t\tprog.done = true;\r\n\t\t} catch(e) {\r\n\t\t\tprog.done = true;\r\n\t\t\tprog.error = e;\r\n\t\t}\r\n\t\treturn prog;\r\n\t}",
+			"doc": {
+				"text": "[Description] Decompresses a `zip` into the `destFolder` folder",
+				"params": {
+					"zip": "",
+					"destFolder": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "uncompressZipAsync",
+			"args": [
+				{
+					"name": "zip",
+					"type": "Reader",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "destFolder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prog",
+					"type": "ZipProgress",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ZipProgress",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#if (!macro && sys)\r\n\tpublic static function uncompressZipAsync(zip:Reader, destFolder:String, ?prog:ZipProgress, ?prefix:String):ZipProgress {\r\n\t\tif (prog == null)\r\n\t\t\tprog = new ZipProgress();\r\n\t\tThread.create(function() {\r\n\t\t\tuncompressZip(zip, destFolder, prefix, prog);\r\n\t\t});\r\n\t\treturn prog;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openZip",
+			"args": [
+				{
+					"name": "zipPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Reader",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function openZip(zipPath:String):Reader {\r\n\t\treturn new ZipReader(File.read(zipPath));\r\n\t}",
+			"doc": {
+				"text": "[Description] Returns a `zip.Reader` instance from path.",
+				"params": {
+					"zipPath": ""
+				},
+				"returns": "Reader",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "unzip",
+			"args": [
+				{
+					"name": "f",
+					"type": "Entry",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function unzip(f:Entry) {\r\n\t\tif (!f.compressed)\r\n\t\t\treturn f.data;\r\n\t\tvar c = new haxe.zip.Uncompress(-15);\r\n\t\tvar s = haxe.io.Bytes.alloc(f.fileSize);\r\n\t\tvar r = c.execute(f.data, 0, s, 0);\r\n\t\tc.close();\r\n\t\tif (!r.done || r.read != f.data.length || r.write != f.fileSize)\r\n\t\t\tthrow \"Invalid compressed data for \" + f.fileName;\r\n\t\tf.compressed = false;\r\n\t\tf.dataSize = f.fileSize;\r\n\t\tf.data = s;\r\n\t\treturn f.data;\r\n\t}",
+			"doc": {
+				"text": "[Description] Copy of haxe's Zip unzip function cause lime replaced it.",
+				"params": {
+					"f": "Zip entry"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "createZipFile",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "ZipWriter",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function createZipFile(path:String):ZipWriter {\r\n\t\tvar output = File.write(path);\r\n\t\treturn new ZipWriter(output);\r\n\t}",
+			"doc": {
+				"text": "[Description] Creates a ZIP file at the specified location and returns the Writer.",
+				"params": {
+					"path": ""
+				},
+				"returns": "Writer",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "writeFolderToZip",
+			"args": [
+				{
+					"name": "zip",
+					"type": "ZipWriter",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "prog",
+					"type": "ZipProgress",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "whitelist",
+					"type": "Array<String>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ZipProgress",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function writeFolderToZip(zip:ZipWriter, path:String, ?prefix:String, ?prog:ZipProgress, ?whitelist:Array<String>):ZipProgress {\r\n\t\tif (prefix == null) prefix = \"\";\r\n\t\tif (whitelist == null) whitelist = [];\r\n\t\tif (prog == null) prog = new ZipProgress();\r\n\r\n\t\ttry {\r\n\t\t\tvar curPath:Array<String> = [path];\r\n\t\t\tvar destPath:Array<String> = [];\r\n\t\t\tif (prefix != \"\") {\r\n\t\t\t\tprefix = prefix.replace(\"\\\\\", \"/\");\r\n\t\t\t\twhile(prefix.charCodeAt(0) == \"/\".code) prefix = prefix.substr(1);\r\n\t\t\t\twhile(prefix.charCodeAt(prefix.length-1) == \"/\".code) prefix = prefix.substr(0, prefix.length-1);\r\n\t\t\t\tdestPath.push(prefix);\r\n\t\t\t}\r\n\r\n\t\t\tvar files:Array<StrNameLabel> = [];\r\n\r\n\t\t\tvar doFolder:Void->Void = null;\r\n\t\t\t(doFolder = function() {\r\n\t\t\t\tvar path = curPath.join(\"/\");\r\n\t\t\t\tvar zipPath = destPath.join(\"/\");\r\n\t\t\t\tfor(e in FileSystem.readDirectory(path)) {\r\n\t\t\t\t\tif (bannedNames.contains(e.toLowerCase()) && !whitelist.contains(e.toLowerCase())) continue;\r\n\t\t\t\t\tif (FileSystem.isDirectory('$path/$e')) {\r\n\t\t\t\t\t\t// is directory, so loop into that function again\r\n\t\t\t\t\t\tfor(p in [curPath, destPath]) p.push(e);\r\n\t\t\t\t\t\tdoFolder();\r\n\t\t\t\t\t\tfor(p in [curPath, destPath]) p.pop();\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\t// is file, put it in the list\r\n\t\t\t\t\t\tvar zipPath = '$zipPath/$e';\r\n\t\t\t\t\t\twhile(zipPath.charCodeAt(0) == \"/\".code) zipPath = zipPath.substr(1);\r\n\t\t\t\t\t\tfiles.push(new StrNameLabel('$path/$e', zipPath));\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t})();\r\n\r\n\t\t\tprog.fileCount = files.length;\r\n\t\t\tfor(k=>file in files) {\r\n\t\t\t\tprog.curFile = k;\r\n\r\n\t\t\t\tvar fileContent = File.getBytes(file.name);\r\n\t\t\t\tvar fileInfo = FileSystem.stat(file.name);\r\n\t\t\t\tvar entry:Entry = {\r\n\t\t\t\t\tfileName: file.label,\r\n\t\t\t\t\tfileSize: fileInfo.size,\r\n\t\t\t\t\tfileTime: Date.now(),\r\n\t\t\t\t\tdataSize: 0,\r\n\t\t\t\t\tdata: fileContent,\r\n\t\t\t\t\tcrc32: Crc32.make(fileContent),\r\n\t\t\t\t\tcompressed: false\r\n\t\t\t\t};\r\n\t\t\t\tTools.compress(entry, 1);\r\n\t\t\t\tzip.writeFile(entry);\r\n\t\t\t}\r\n\t\t\tzip.writeCDR();\r\n\t\t} catch(e) {\r\n\t\t\tprog.error = e;\r\n\t\t}\r\n\t\tprog.done = true;\r\n\t\treturn prog;\r\n\t}",
+			"doc": {
+				"text": "[Description] Writes the entirety of a folder to a zip file.",
+				"params": {
+					"zip": "ZIP file to write to",
+					"path": "Folder path",
+					"prefix": "(Additional) allows you to set a prefix in the zip itself."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "writeFolderToZipAsync",
+			"args": [
+				{
+					"name": "zip",
+					"type": "ZipWriter",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "prefix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "ZipProgress",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function writeFolderToZipAsync(zip:ZipWriter, path:String, ?prefix:String):ZipProgress {\r\n\t\tvar zipProg = new ZipProgress();\r\n\t\tThread.create(function() {\r\n\t\t\twriteFolderToZip(zip, path, prefix, zipProg);\r\n\t\t});\r\n\t\treturn zipProg;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "arrayToList",
+			"args": [
+				{
+					"name": "array",
+					"type": "Array<Entry>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "List<Entry>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function arrayToList(array:Array<Entry>):List<Entry> {\r\n\t\tvar list = new List<Entry>();\r\n\t\tfor(e in array) list.push(e);\r\n\t\treturn list;\r\n\t}",
+			"doc": {
+				"text": "[Description] Converts an `Array<Entry>` to a `List<Entry>`.",
+				"params": {
+					"array": ""
+				},
+				"returns": "List<Entry>",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

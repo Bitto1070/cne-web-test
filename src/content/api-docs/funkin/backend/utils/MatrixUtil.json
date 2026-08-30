@@ -1,0 +1,116 @@
+{
+	"kind": "final class",
+	"name": "MatrixUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [
+		"@:access(flixel.FlxCamera)",
+		"@:access(flixel.FlxSprite)",
+		"@:access(flixel.math.FlxMatrix)",
+		"@:access(openfl.geom.Matrix)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getMatrixPosition",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "points",
+					"type": "OneOfTwo<FlxPoint, Array<FlxPoint>>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "_width",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "_height",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				}
+			],
+			"ret": "Array<FlxPoint>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMatrixPosition(sprite:FlxSprite, points:OneOfTwo<FlxPoint, Array<FlxPoint>>, ?camera:FlxCamera, _width:Float = 1, _height:Float = 1):Array<FlxPoint>\r\n\t{\r\n\t\t//if(_width == -1) _width = sprite.width;\r\n\t\t//if(_height == -1) _height = sprite.height;\r\n\t\tif(camera == null) camera = sprite.camera;\r\n\t\tif(points is FlxBasePoint) points = [points];\r\n\r\n\t\tvar nc:FakeCamera = FakeCamera.instance;\r\n\t\tnc.zoom = camera.zoom;\r\n\t\tnc.scroll.set(camera.scroll.x, camera.scroll.y);\r\n\t\tnc.pixelPerfectRender = camera.pixelPerfectRender;\r\n\r\n\t\tvar points:Array<FlxPoint> = cast points;\r\n\r\n\t\tif(sprite is IPrePostDraw) {\r\n\t\t\tvar postDraw = cast(sprite, IPrePostDraw);\r\n\t\t\tpostDraw.preDraw();\r\n\t\t\tsprite.drawComplex(nc);\r\n\t\t\tpostDraw.postDraw();\r\n\t\t} else {\r\n\t\t\tsprite.drawComplex(nc);\r\n\t\t}\r\n\t\ttransformPoints(sprite, points, sprite._matrix, camera, _width, _height);\r\n\r\n\t\treturn points;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "transformPoints",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "points",
+					"type": "Array<FlxPoint>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "matrix",
+					"type": "FlxMatrix",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "_width",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "_height",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "doCameraTransform",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Array<FlxPoint>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function transformPoints(sprite:FlxSprite, points:Array<FlxPoint>, matrix:FlxMatrix, ?camera:FlxCamera, _width:Float = 1, _height:Float = 1, doCameraTransform:Bool = true):Array<FlxPoint> {\r\n\t\tvar isFunkinSprite = sprite is FunkinSprite;\r\n\t\tvar funkinSprite:FunkinSprite = null;\r\n\t\tif(isFunkinSprite) funkinSprite = cast sprite;\r\n\r\n\t\tfor(point in points) {\r\n\t\t\tvar x = matrix.__transformX(point.x * _width, point.y * _height);\r\n\t\t\tvar y = matrix.__transformY(point.x * _width, point.y * _height);\r\n\r\n\t\t\tif(doCameraTransform) {\r\n\t\t\t\t// reset to ingame coords\r\n\t\t\t\tx += camera.scroll.x;\r\n\t\t\t\ty += camera.scroll.y;\r\n\r\n\t\t\t\tif(isFunkinSprite) {\r\n\t\t\t\t\tvar ratio = 1 - FlxMath.lerp(1 / camera.zoom, 1, funkinSprite.zoomFactor);\r\n\t\t\t\t\tx += camera.width / 2 * ratio;\r\n\t\t\t\t\ty += camera.height / 2 * ratio;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tpoint.set(x, y);\r\n\t\t}\r\n\t\treturn points;\r\n\t}",
+			"doc": {
+				"text": "Warning: modifies the points in the array",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

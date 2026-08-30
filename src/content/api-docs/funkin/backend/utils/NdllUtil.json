@@ -1,0 +1,135 @@
+{
+	"kind": "final class",
+	"name": "NdllUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Small util that allows you to load any function from ndlls via `getFunction`.\n\nNDLLs must be in your mod's \"ndlls\" folder, and must follow this name scheme:\n- `name-windows.ndll` for Windows targeted ndlls\n- `name-linux.ndll` for Linux targeted ndlls\n- `name-mac.ndll` for Mac targeted ndlls\n\nIf:\n- The platform does not support NDLLs\n- The NDLL is not found\n- The Function cannot be found in the NDLL\nthen an empty function will be returned instead, and a message will be shown in logs.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "final",
+			"name": "os",
+			"type": "String",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "os",
+			"type": "String",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "os",
+			"type": "String",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "os",
+			"type": "String",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "final",
+			"name": "os",
+			"type": "String",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFunction",
+			"args": [
+				{
+					"name": "ndll",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFunction(ndll:String, name:String, args:Int):Dynamic {\r\n\t\t#if NDLLS_SUPPORTED\r\n\t\tvar func:Dynamic = getFunctionFromPath(Paths.ndll('$ndll-$os'), name, args);\r\n\r\n\t\treturn Reflect.makeVarArgs(function(a:Array<Dynamic>) {\r\n\t\t\t// This generates horrific code\r\n\t\t\treturn funkin.backend.system.macros.Utils.generateReflectionLike(25, \"func\", \"a\");\r\n\t\t\t//return Reflect.callMethod(null, func, a); // wouldn't work for some reason, maybe cause like c++ functions doesn't have reflection enabled\r\n\t\t});\r\n\t\t#else\r\n\t\tLogs.warn('NDLLs are not supported on this platform.');\r\n\t\treturn noop;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Returns an function from a Haxe NDLL.\nLimited to 25 argument due to a limitation",
+				"params": {
+					"ndll": "Name of the NDLL.",
+					"name": "Name of the function.",
+					"args": "Number of arguments of that function."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getFunctionFromPath",
+			"args": [
+				{
+					"name": "ndll",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getFunctionFromPath(ndll:String, name:String, args:Int):Dynamic {\r\n\t\t#if NDLLS_SUPPORTED\r\n\t\tif (!Assets.exists(ndll)) {\r\n\t\t\tLogs.warn('Couldn\\'t find ndll at ${ndll}.');\r\n\t\t\treturn noop;\r\n\t\t}\r\n\t\tvar func = lime.system.CFFI.load(Assets.getPath(ndll), name, args);\r\n\r\n\t\tif (func == null) {\r\n\t\t\tLogs.error('Method ${name} in ndll ${ndll} with ${args} args was not found.');\r\n\t\t\treturn noop;\r\n\t\t}\r\n\t\treturn func;\r\n\t\t#else\r\n\t\tLogs.warn('NDLLs are not supported on this platform.');\r\n\t\treturn noop;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Returns an function from a Haxe NDLL at specified path.",
+				"params": {
+					"ndll": "Asset path to the NDLL.",
+					"name": "Name of the function.",
+					"args": "Number of arguments of that function."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

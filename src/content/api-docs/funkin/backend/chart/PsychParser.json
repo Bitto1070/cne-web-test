@@ -1,0 +1,96 @@
+{
+	"kind": "class",
+	"name": "PsychParser",
+	"pkg": "funkin.backend.chart",
+	"doc": {
+		"text": "Parser for Psych Charts.\nBoth for pre-v1.0.0 and v1.0.0 charts.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "ignoreEvents",
+			"type": "Array<String>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "standardize",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function standardize(data:Dynamic, result:ChartData) {\r\n\t\tvar sectionsData:Array<Dynamic> = Chart.cleanSongData(data).notes;\r\n\t\tif (sectionsData == null) return;\r\n\r\n\t\tfor (section in sectionsData) for (note in cast(section.sectionNotes, Array<Dynamic>)) {\r\n\t\t\tvar gottaHitNote:Bool = section.mustHitSection == (note[1] >= 4);\r\n\t\t\tnote[1] = (note[1] % 4) + (gottaHitNote ? 4 : 0);\r\n\r\n\t\t\tif (note[3] != null && Std.isOfType(note[3], String))\r\n\t\t\t\tnote[3] = Chart.addNoteType(result, note[3]);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Converts 1.0 Psych charts to older ones",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parse",
+			"args": [
+				{
+					"name": "data",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parse(data:Dynamic, result:ChartData) {\r\n\t\tif (Chart.detectChartFormat(data) == PSYCH_NEW) standardize(data, result);\r\n\t\tFNFLegacyParser.parse(data, result);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "encode",
+			"args": [
+				{
+					"name": "chart",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function encode(chart:ChartData):Dynamic {\r\n\t\tvar base:SwagSong = FNFLegacyParser.__convertToSwagSong(chart);\r\n\t\tbase.notes = FNFLegacyParser.__convertToSwagSections(chart);\r\n\t\tbase.stage = chart.stage;\r\n\r\n\t\tfor (section in base.notes)\r\n\t\t\tsection.sectionBeats = Conductor.beatsPerMeasure;\r\n\r\n\t\tfor (strumLine in chart.strumLines)\r\n\t\t\tif (strumLine.type == ADDITIONAL && base.gfVersion == null)\r\n\t\t\t\tbase.gfVersion = strumLine.characters.getDefault([\"gf\"])[0];\r\n\r\n\t\tfor (strumLine in chart.strumLines)\r\n\t\t\tfor (note in strumLine.notes) {\r\n\t\t\t\tvar section:Int = Math.floor(Conductor.getStepForTime(note.time) / Conductor.getMeasureLength());\r\n\t\t\t\tvar swagSection:SwagSection = base.notes[section];\r\n\r\n\t\t\t\tif (section >= 0 && section < base.notes.length) {\r\n\t\t\t\t\tvar sectionNote:Array<Dynamic> = [\r\n\t\t\t\t\t\tnote.time, // TIME\r\n\t\t\t\t\t\tnote.id, // DATA\r\n\t\t\t\t\t\tnote.sLen, // SUSTAIN LENGTH\r\n\t\t\t\t\t\tchart.noteTypes.getDefault([\"\"])[note.type - 1] // NOTE TYPE\r\n\t\t\t\t\t];\r\n\r\n\t\t\t\t\tif ((swagSection.mustHitSection && strumLine.type == OPPONENT) ||\r\n\t\t\t\t\t\t (!swagSection.mustHitSection && strumLine.type == PLAYER))\r\n\t\t\t\t\t\tsectionNote[1] += 4;\r\n\t\t\t\t\tswagSection.sectionNotes.push(sectionNote);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\tvar groupedEvents:Array<Array<ChartEvent>> = [];\r\n\t\tvar __last:Array<ChartEvent> = null;\r\n\t\tvar __lastTime:Float = Math.NaN;\r\n\t\tfor (e in [for (event in chart.events) Reflect.copy(event)]) {\r\n\t\t\tif (e == null || ignoreEvents.contains(e.name)) continue;\r\n\r\n\t\t\tif (__last != null && __lastTime == e.time)\r\n\t\t\t\t__last.push(e);\r\n\t\t\telse {\r\n\t\t\t\t__last = [e];\r\n\t\t\t\t__lastTime = e.time;\r\n\t\t\t\tgroupedEvents.push(__last);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tbase.events = [];\r\n\t\tfor (events in groupedEvents) {\r\n\t\t\tvar psychEvents:Array<Dynamic> = [];\r\n\t\t\tfor (event in events)\r\n\t\t\t\tswitch (event.name) {\r\n\t\t\t\t\tcase \"Add Camera Zoom\":\r\n\t\t\t\t\t\tpsychEvents.push([\r\n\t\t\t\t\t\t\tevent.name,\r\n\t\t\t\t\t\t\tevent.params[1] == \"camGame\" ? event.params[0] : 0, // CAMERA ZOOM\r\n\t\t\t\t\t\t\tevent.params[1] == \"camHUD\" ? event.params[0] : 0, // UI ZOOM\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tcase \"Play Animation\":\r\n\t\t\t\t\t\tpsychEvents.push([\r\n\t\t\t\t\t\t\tevent.name,\r\n\t\t\t\t\t\t\tevent.params[1], // ANIMATION TO PLAY\r\n\t\t\t\t\t\t\tswitch (chart.strumLines[event.params[0]].type) { // CHARACTER\r\n\t\t\t\t\t\t\t\tcase PLAYER: \"bf\";\r\n\t\t\t\t\t\t\t\tcase OPPONENT: \"dad\";\r\n\t\t\t\t\t\t\t\tcase ADDITIONAL: \"gf\";\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tcase \"Scroll Speed Change\":\r\n\t\t\t\t\t\tvar eventStep:Float = Conductor.getStepForTime(event.time);\r\n\t\t\t\t\t\tpsychEvents.push([\r\n\t\t\t\t\t\t\t\"Change Scroll Speed\",\r\n\t\t\t\t\t\t\tFlxMath.roundDecimal(event.params[1]/chart.scrollSpeed, 2), // SCROLL SPEED MULTIPLIER\r\n\t\t\t\t\t\t\tFlxMath.roundDecimal( // TIME\r\n\t\t\t\t\t\t\t\tevent.params[0] ? // IS TWEENED?\r\n\t\t\t\t\t\t\t\t(Conductor.getTimeForStep(eventStep+event.params[2]) - Conductor.getTimeForStep(eventStep))/1000\r\n\t\t\t\t\t\t\t\t: 0, 2)\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t\t\t// TODO: allow custom formats in event.json\r\n\t\t\t\t\t\tvar split:Float = event.params.length / 2;\r\n\r\n\t\t\t\t\t\tvar val1:String = [for (arg in 0...Math.ceil(split)) event.params[arg]].join(\",\");\r\n\t\t\t\t\t\tvar val2:String = [for (arg in Math.ceil(split)...event.params.length) event.params[arg]].join(\",\");\r\n\r\n\t\t\t\t\t\tpsychEvents.push([event.name, val1, val2]);\r\n\t\t\t\t}\r\n\r\n\t\t\tfor (psychEvent in psychEvents)\r\n\t\t\t\tfor (i in 1...3) // Turn both vals into strings\r\n\t\t\t\t\tif (!(psychEvent[i] is String))\r\n\t\t\t\t\t\tpsychEvent[i] = Std.string(psychEvent[i]);\r\n\r\n\t\t\tbase.events.push([events[0].time, psychEvents]);\r\n\t\t}\r\n\t\treturn {song: base};\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

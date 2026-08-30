@@ -1,0 +1,975 @@
+{
+	"kind": "final class",
+	"name": "Conductor",
+	"pkg": "funkin.backend.system",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getBeats",
+			"args": [
+				{
+					"name": "every",
+					"type": "BeatType",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "interval",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "offset",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getBeats(?every:BeatType, interval:Float, offset:Float = 0):Float {\r\n\t\tfinal beat = switch(every) {\r\n\t\t\tcase MEASURE: curMeasureFloat;\r\n\t\t\tcase STEP: curStepFloat;\r\n\t\t\tdefault: curBeatFloat;\r\n\t\t}\r\n\t\tif (interval <= 0) return beat - offset;\r\n\t\telse return Math.floor((beat - offset) / interval) * interval;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onMeasureHit",
+			"type": "FlxTypedSignal<Int->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "FlxSignals",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onBeatHit",
+			"type": "FlxTypedSignal<Int->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onStepHit",
+			"type": "FlxTypedSignal<Int->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onBPMChange",
+			"type": "FlxTypedSignal<(Float,Float)->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "onTimeSignatureChange",
+			"type": "FlxTypedSignal<(Float,Float)->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songPosition",
+			"type": "Float",
+			"access": "get, default",
+			"isStatic": true,
+			"doc": {
+				"text": "Current position of the song, in milliseconds.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "songOffset",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Offset of the song",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curChangeIndex",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current bpmChangeMap index",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curChange",
+			"type": "BPMChangeEvent",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Current bpmChangeMap",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "bpm",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Current BPM",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "startingBPM",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Starting BPM",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "crochet",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Current Crochet (time per beat), in milliseconds.\nIt should be crotchet but ehhh, now it's there for backward compatibility.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stepCrochet",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Current StepCrochet (time per step), in milliseconds.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "beatsPerMeasure",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Number of beats per mesure (top number in time signature). Defaults to 4.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "stepsPerBeat",
+			"type": "Int",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Number of steps per beat. Defaults to 4.\nNot a divisor number for time signature, it does the complete opposite.\nIt's because CNE Conductor is based in sixteenth note instead of beat.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "denominator",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "How much value notes to divide for beat (bottom or divisor number in time signature).\nOnly for a convinient way to access divisor instead of multiply by steps per beat.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastStepChange",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Last step from BPM Change",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastBeatChange",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Last beat from BPM Change",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastMeasureChange",
+			"type": "Float",
+			"access": "get, never",
+			"isStatic": true,
+			"doc": {
+				"text": "Last measure from BPM Change",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curStep",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current step",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curBeat",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current beat",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMeasure",
+			"type": "Int",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current measure",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curStepFloat",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current step, as a `Float` (ex: 4.94, instead of 4)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curBeatFloat",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current beat, as a `Float` (ex: 1.24, instead of 1)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "curMeasureFloat",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current measure, as a `Float` (ex: 1.24, instead of 1)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "lastSongPos",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "offset",
+			"type": "Float",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "bpmChangeMap",
+			"type": "Array<BPMChangeEvent>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Array of all BPM changes that have been mapped.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "invalidEvents",
+			"type": "Array<ChartEvent>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Array of all events that have been rejected by the Conductor.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function new() {}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "reset",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function reset() {\r\n\t\tsongPosition = lastSongPos = curBeatFloat = curStepFloat = curBeat = curStep = 0;\r\n\t\tcurChangeIndex = 0;\r\n\t\tchangeBPM();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "changeBPM",
+			"args": [
+				{
+					"name": "bpm",
+					"type": "Float",
+					"optional": false,
+					"def": "100"
+				},
+				{
+					"name": "beatsPerMeasure",
+					"type": "Float",
+					"optional": false,
+					"def": "4"
+				},
+				{
+					"name": "stepsPerBeat",
+					"type": "Int",
+					"optional": false,
+					"def": "4"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function changeBPM(bpm:Float = 100, beatsPerMeasure:Float = 4, stepsPerBeat:Int = 4)\r\n\t\tbpmChangeMap = [{bpm: bpm, beatsPerMeasure: beatsPerMeasure, stepsPerBeat: stepsPerBeat, songTime: 0, stepTime: 0, beatTime: 0, measureTime: 0}];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setupSong",
+			"args": [
+				{
+					"name": "SONG",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setupSong(SONG:ChartData) {\r\n\t\treset();\r\n\t\tmapBPMChanges(SONG);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "mapBPMChanges",
+			"args": [
+				{
+					"name": "song",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function mapBPMChanges(song:ChartData) {\r\n\t\tvar curChange:BPMChangeEvent = {\r\n\t\t\tsongTime: 0,\r\n\t\t\tstepTime: 0,\r\n\t\t\tbeatTime: 0,\r\n\t\t\tmeasureTime: 0,\r\n\t\t\tbpm: song.meta.bpm,\r\n\t\t\tbeatsPerMeasure: song.meta.beatsPerMeasure.getDefault(4),\r\n\t\t\tstepsPerBeat: CoolUtil.floorInt(song.meta.stepsPerBeat.getDefault(4))\r\n\t\t};\r\n\t\tcurChangeIndex = 0;\r\n\t\tbpmChangeMap = [curChange];\r\n\t\tinvalidEvents = [];\r\n\t\tif (song.events == null) return;\r\n\r\n\t\t// fix the sort first...\r\n\t\tvar events:Array<ChartEvent> = [for (e in song.events) if (e.params != null && validEventNames.contains(e.name)) e];\r\n\t\tevents.sort((a, b) -> MathUtil.equal(a.time, b.time) ? (a.name == \"Time Signature Change\" ? -1 : 1) : Std.int(a.time - b.time));\r\n\r\n\t\tfor (e in events) curChange = mapEvent(e, curChange);\r\n\t}",
+			"doc": {
+				"text": "Maps BPM changes from a song.",
+				"params": {
+					"song": "Song to map BPM changes from."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "mapCharterBPMChanges",
+			"args": [
+				{
+					"name": "song",
+					"type": "ChartData",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function mapCharterBPMChanges(song:ChartData) {\r\n\t\tvar curChange:BPMChangeEvent = {\r\n\t\t\tsongTime: 0,\r\n\t\t\tstepTime: 0,\r\n\t\t\tbeatTime: 0,\r\n\t\t\tmeasureTime: 0,\r\n\t\t\tbpm: song.meta.bpm,\r\n\t\t\tbeatsPerMeasure: song.meta.beatsPerMeasure.getDefault(4),\r\n\t\t\tstepsPerBeat: CoolUtil.floorInt(song.meta.stepsPerBeat.getDefault(4))\r\n\t\t};\r\n\t\tbpmChangeMap = [curChange];\r\n\t\tinvalidEvents = [];\r\n\r\n\t\tvar grpEvents = Charter.instance.leftEventsGroup.members.concat(Charter.instance.rightEventsGroup.members);\r\n\t\tvar n = grpEvents.length;\r\n\r\n\t\tif (n != 0) {\r\n\t\t\tgrpEvents.sort((a, b) -> a.step < b.step ? -1 : 1);\r\n\t\t\tcurChangeIndex = 0;\r\n\r\n\t\t\tvar i = 0, i2 = 0, j = 0, x = 0, events = [], ce, e;\r\n\t\t\twhile (i < n) {\r\n\t\t\t\tx += (ce = grpEvents[i]).events.length;\r\n\t\t\t\tif (++i < n && grpEvents[i].step == ce.step) continue;\r\n\r\n\t\t\t\tvar eventTime = Conductor.getStepsInTime(ce.step, curChangeIndex);\r\n\t\t\t\tif (Math.isNaN(eventTime)) eventTime = 0;\r\n\r\n\t\t\t\tevents.resize(x);\r\n\t\t\t\twhile (i2 < i) {\r\n\t\t\t\t\tx = 0;\r\n\t\t\t\t\tce = grpEvents[i2++];\r\n\t\t\t\t\twhile (x < ce.events.length) if (validEventNames.contains((e = ce.events[x++]).name)) {\r\n\t\t\t\t\t\tevents[j++] = e;\r\n\t\t\t\t\t\tif (eventTime != 0) e.time = eventTime;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tevents.resize(x = j);\r\n\t\t\t\tevents.sort((a, b) -> MathUtil.equal(a.time, b.time) ? (a.name == \"Time Signature Change\" ? -1 : 1) : 0);\r\n\r\n\t\t\t\tj = 0;\r\n\t\t\t\twhile (j < x) curChange = mapEvent(events[j++], curChange);\r\n\t\t\t\tcurChangeIndex = bpmChangeMap.length - 1;\r\n\r\n\t\t\t\tx = j = 0;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tcurChangeIndex = 0;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tFlxG.signals.preUpdate.add(update);\r\n\t\tFlxG.signals.preStateCreate.add(onStateSwitch);\r\n\t\treset();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeInChangeIndex",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTimeInChangeIndex(time:Float, index:Int = 0):Int {\r\n\t\tif (bpmChangeMap.length < 2) return bpmChangeMap.length - 1;\r\n\t\telse if (bpmChangeMap[index = CoolUtil.boundInt(index, 0, bpmChangeMap.length - 1)].songTime > time) {\r\n\t\t\twhile (--index > 0) if (time > bpmChangeMap[index].songTime) return index;\r\n\t\t\treturn 0;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tfor (i in index...bpmChangeMap.length) if (bpmChangeMap[i].songTime > time) return i - 1;\r\n\t\t\treturn bpmChangeMap.length - 1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStepsInChangeIndex",
+			"args": [
+				{
+					"name": "stepTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getStepsInChangeIndex(stepTime:Float, index:Int = 0):Int {\r\n\t\tif (bpmChangeMap.length < 2) return bpmChangeMap.length - 1;\r\n\t\telse if (bpmChangeMap[index = CoolUtil.boundInt(index, 0, bpmChangeMap.length - 1)].stepTime > stepTime) {\r\n\t\t\twhile (--index > 0) if (stepTime > bpmChangeMap[index].stepTime) return index;\r\n\t\t\treturn 0;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tfor (i in index...bpmChangeMap.length) if (bpmChangeMap[i].stepTime > stepTime) return i - 1;\r\n\t\t\treturn bpmChangeMap.length - 1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBeatsInChangeIndex",
+			"args": [
+				{
+					"name": "beatTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getBeatsInChangeIndex(beatTime:Float, index:Int = 0):Int {\r\n\t\tif (bpmChangeMap.length < 2) return bpmChangeMap.length - 1;\r\n\t\telse if (bpmChangeMap[index = CoolUtil.boundInt(index, 0, bpmChangeMap.length - 1)].beatTime > beatTime) {\r\n\t\t\twhile (--index > 0) if (beatTime > bpmChangeMap[index].beatTime) return index;\r\n\t\t\treturn 0;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tfor (i in index...bpmChangeMap.length) if (bpmChangeMap[i].beatTime > beatTime) return i - 1;\r\n\t\t\treturn bpmChangeMap.length - 1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMeasuresInChangeIndex",
+			"args": [
+				{
+					"name": "measureTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMeasuresInChangeIndex(measureTime:Float, index:Int = 0):Int {\r\n\t\tif (bpmChangeMap.length < 2) return bpmChangeMap.length - 1;\r\n\t\telse if (bpmChangeMap[index = CoolUtil.boundInt(index, 0, bpmChangeMap.length - 1)].measureTime > measureTime) {\r\n\t\t\twhile (--index > 0) if (measureTime > bpmChangeMap[index].measureTime) return index;\r\n\t\t\treturn 0;\r\n\t\t}\r\n\t\telse {\r\n\t\t\tfor (i in index...bpmChangeMap.length) if (bpmChangeMap[i].measureTime > measureTime) return i - 1;\r\n\t\t\treturn bpmChangeMap.length - 1;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeWithIndexInBPM",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTimeWithIndexInBPM(time:Float, index:Int):Float {\r\n\t\tvar bpmChange = bpmChangeMap[index];\r\n\t\tif (bpmChange.continuous && time < bpmChange.endSongTime && index > 0) {\r\n\t\t\tvar prevBPM = bpmChangeMap[index - 1].bpm;\r\n\t\t\tif (time <= bpmChange.songTime) return prevBPM;\r\n\r\n\t\t\tvar ratio = (time - bpmChange.songTime) / (bpmChange.endSongTime - bpmChange.songTime);\r\n\t\t\treturn Math.pow(prevBPM, 1 - ratio) * Math.pow(bpmChange.bpm, ratio);\r\n\t\t}\r\n\t\treturn bpmChange.bpm;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStepsWithIndexInBPM",
+			"args": [
+				{
+					"name": "stepTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getStepsWithIndexInBPM(stepTime:Float, index:Int):Float {\r\n\t\tvar bpmChange = bpmChangeMap[index];\r\n\t\tif (bpmChange.continuous && index > 0) {\r\n\t\t\tvar prevBPM = bpmChangeMap[index - 1].bpm;\r\n\t\t\tif (stepTime <= bpmChange.stepTime) return prevBPM;\r\n\r\n\t\t\tvar endStepTime = bpmChange.stepTime + (bpmChange.endSongTime - bpmChange.songTime) * (bpmChange.bpm - prevBPM) / Math.log(bpmChange.bpm / prevBPM) / 15000;\r\n\t\t\tif (stepTime < endStepTime) return FlxMath.remapToRange(stepTime, bpmChange.stepTime, endStepTime, prevBPM, bpmChange.bpm);\r\n\t\t}\r\n\t\treturn bpmChange.bpm;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeInBPM",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTimeInBPM(time:Float):Float {\r\n\t\tif (bpmChangeMap.length == 0) return dummyChange.bpm;\r\n\t\treturn getTimeWithIndexInBPM(time, getTimeInChangeIndex(time));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeWithBPMInSteps",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "bpm",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTimeWithBPMInSteps(time:Float, index:Int, bpm:Float):Float {\r\n\t\tvar bpmChange = bpmChangeMap[index];\r\n\t\tif (bpmChange.continuous && time > bpmChange.songTime && index > 0) {\r\n\t\t\tvar prevBPM = bpmChangeMap[index - 1].bpm;\r\n\t\t\tif (time > bpmChange.endSongTime)\r\n\t\t\t\treturn bpmChange.stepTime + (((bpmChange.endSongTime - bpmChange.songTime) * (bpmChange.bpm - prevBPM))\r\n\t\t\t\t\t/ Math.log(bpmChange.bpm / prevBPM) + (time - bpmChange.endSongTime) * bpm) / 15000;\r\n\t\t\telse\r\n\t\t\t\treturn bpmChange.stepTime + (time - bpmChange.songTime) * (bpm - prevBPM) / Math.log(bpm / prevBPM) / 15000;\r\n\t\t}\r\n\t\telse {\r\n\t\t\treturn bpmChange.stepTime + (time - bpmChange.songTime) / (15000 / bpm);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeInBeats",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "from",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTimeInBeats(time:Float, from:Int = 0):Float {\r\n\t\tvar index = getTimeInChangeIndex(time, from);\r\n\t\tif (index == -1) return time / (60000 / dummyChange.bpm);\r\n\t\telse if (index == 0) return time / (15000 / bpmChangeMap[index].bpm) / bpmChangeMap[index].stepsPerBeat;\r\n\t\telse {\r\n\t\t\tvar change = bpmChangeMap[index];\r\n\t\t\treturn change.beatTime + (getTimeWithBPMInSteps(time, index, getTimeWithIndexInBPM(time, index)) - change.stepTime) / change.stepsPerBeat;\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeInSteps",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "from",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getTimeInSteps(time:Float, from:Int = 0):Float {\r\n\t\tvar index = getTimeInChangeIndex(time, from);\r\n\t\treturn index < 1 ? time / (15000 / getTimeInBPM(time)) : getTimeWithBPMInSteps(time, index, getTimeWithIndexInBPM(time, index));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStepForTime",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float return getTimeInSteps(time)",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noCompletion\r\n\t@:haxe.warning(\"-WDeprecated\")\r\n\tpublic static inline function getStepForTime(time:Float):Float return getTimeInSteps(time);",
+			"doc": null,
+			"meta": [
+				"@:noCompletion",
+				"@:haxe"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getStepsWithBPMInTime",
+			"args": [
+				{
+					"name": "stepTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "index",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "bpm",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getStepsWithBPMInTime(stepTime:Float, index:Int, bpm:Float):Float {\r\n\t\tvar bpmChange = bpmChangeMap[index];\r\n\t\tif (bpmChange.continuous && stepTime > bpmChange.stepTime && index > 0) {\r\n\t\t\tvar prevBPM = bpmChangeMap[index - 1].bpm;\r\n\t\t\tvar time = bpmChange.songTime + (stepTime - bpmChange.stepTime) / (bpm - prevBPM) * Math.log(bpm / prevBPM) * 15000;\r\n\t\t\tif (time > bpmChange.endSongTime)\r\n\t\t\t\treturn (15000 * (stepTime - bpmChange.stepTime) - ((bpmChange.endSongTime - bpmChange.songTime) * (bpm - prevBPM))\r\n\t\t\t\t\t/ Math.log(bpm / prevBPM)) / bpm + bpmChange.endSongTime;\r\n\t\t\telse\r\n\t\t\t\treturn time;\r\n\t\t}\r\n\t\telse {\r\n\t\t\treturn bpmChange.songTime + (stepTime - bpmChange.stepTime) * (15000 / bpm);\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMeasuresInTime",
+			"args": [
+				{
+					"name": "measureTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "from",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getMeasuresInTime(measureTime:Float, from:Int = 0):Float {\r\n\t\tvar index = getMeasuresInChangeIndex(measureTime, from);\r\n\t\tif (index == -1) return measureTime * (15000 / dummyChange.bpm);\r\n\t\telse if (index == 0) return measureTime * (15000 / bpmChangeMap[index].bpm) * bpmChangeMap[index].stepsPerBeat * bpmChangeMap[index].beatsPerMeasure;\r\n\t\telse {\r\n\t\t\tvar change = bpmChangeMap[index];\r\n\t\t\tvar stepTime = change.stepTime + (measureTime - change.measureTime) * change.stepsPerBeat * change.beatsPerMeasure;\r\n\t\t\treturn getStepsWithBPMInTime(stepTime, index, getStepsWithIndexInBPM(stepTime, index));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getBeatsInTime",
+			"args": [
+				{
+					"name": "beatTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "from",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getBeatsInTime(beatTime:Float, from:Int = 0):Float {\r\n\t\tvar index = getBeatsInChangeIndex(beatTime, from);\r\n\t\tif (index == -1) return beatTime * (15000 / dummyChange.bpm);\r\n\t\telse if (index == 0) return beatTime * (15000 / bpmChangeMap[index].bpm) * bpmChangeMap[index].stepsPerBeat;\r\n\t\telse {\r\n\t\t\tvar change = bpmChangeMap[index];\r\n\t\t\tvar stepTime = change.stepTime + (beatTime - change.beatTime) * change.stepsPerBeat;\r\n\t\t\treturn getStepsWithBPMInTime(stepTime, index, getStepsWithIndexInBPM(stepTime, index));\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getStepsInTime",
+			"args": [
+				{
+					"name": "stepTime",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "from",
+					"type": "Int",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getStepsInTime(stepTime:Float, from:Int = 0):Float {\r\n\t\tvar index = getStepsInChangeIndex(stepTime, from);\r\n\t\treturn index < 1 ? stepTime * (15000 / bpmChangeMap[index].bpm) : getStepsWithBPMInTime(stepTime, index, getStepsWithIndexInBPM(stepTime, index));\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getTimeForStep",
+			"args": [
+				{
+					"name": "steps",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float return getStepsInTime(steps)",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noCompletion\r\n\t@:haxe.warning(\"-WDeprecated\")\r\n\tpublic static inline function getTimeForStep(steps:Float):Float return getStepsInTime(steps);",
+			"doc": null,
+			"meta": [
+				"@:noCompletion",
+				"@:haxe"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getMeasureLength",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getMeasureLength()\r\n\t\treturn stepsPerBeat * beatsPerMeasure;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMeasuresLength",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getMeasuresLength() {\r\n\t\tif (FlxG.sound.music == null) return 0.0;\r\n\t\tvar length = FlxG.sound.music.length;\r\n\t\tvar index = getTimeInChangeIndex(length, bpmChangeMap.length - 1);\r\n\t\tvar change = bpmChangeMap[index];\r\n\t\treturn change.measureTime + (getTimeInBeats(length, index) - change.beatTime) / change.beatsPerMeasure;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

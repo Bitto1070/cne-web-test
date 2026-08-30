@@ -1,0 +1,117 @@
+{
+	"kind": "final class",
+	"name": "WindowFunctions",
+	"pkg": "funkin.backend.utils",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "triangular",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function triangular(x:Float):Float\r\n\t\treturn 1.0 - Math.abs(x - 0.5) * 2.0;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hann",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function hann(x:Float):Float\r\n\t\treturn 0.5 - 0.5 * FlxMath.fastCos(TWO_PI * x);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hamming",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function hamming(x:Float):Float\r\n\t\treturn 0.53836 - 0.46164 * FlxMath.fastCos(TWO_PI * x);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "blackmanNuttall",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function blackmanNuttall(x:Float):Float\r\n\t\treturn 0.3635819 - 0.4891775 * FlxMath.fastCos(TWO_PI * x) + 0.1365995 * FlxMath.fastCos(FOUR_PI * x)\r\n\t\t\t- 0.0106411 * FlxMath.fastCos(SIX_PI * x);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "blackmanHarris",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function blackmanHarris(x:Float):Float\r\n\t\treturn 0.4243801 - 0.4973406 * FlxMath.fastCos(TWO_PI * x) + 0.0782793 * FlxMath.fastCos(FOUR_PI * x);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "flatTop",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function flatTop(x:Float):Float\r\n\t\treturn 0.21557895 - 0.41663158 * FlxMath.fastCos(TWO_PI * x) + 0.277263158 * FlxMath.fastCos(FOUR_PI * x)\r\n\t\t\t+ 0.083578947 * FlxMath.fastCos(SIX_PI * x) + 0.006947368 * FlxMath.fastCos(EIGHT_PI * x);",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

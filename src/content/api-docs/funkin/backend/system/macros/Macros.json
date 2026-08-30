@@ -1,0 +1,81 @@
+{
+	"kind": "class",
+	"name": "Macros",
+	"pkg": "funkin.backend.system.macros",
+	"doc": {
+		"text": "Macros containing additional help functions to expand HScript capabilities.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "addAdditionalClasses",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function addAdditionalClasses() {\r\n\t\tfor(inc in [\r\n\t\t\t// FLIXEL\r\n\t\t\t\"flixel.util\", \"flixel.ui\", \"flixel.tweens\", \"flixel.tile\", \"flixel.text\",\r\n\t\t\t\"flixel.system\", \"flixel.sound\", \"flixel.path\", \"flixel.math\", \"flixel.input\",\r\n\t\t\t\"flixel.group\", \"flixel.graphics\", \"flixel.effects\", \"flixel.animation\",\r\n\t\t\t// FLIXEL ADDONS\r\n\t\t\t\"flixel.addons.api\", \"flixel.addons.display\", \"flixel.addons.effects\", \"flixel.addons.ui\",\r\n\t\t\t\"flixel.addons.plugin\", \"flixel.addons.text\", \"flixel.addons.tile\", \"flixel.addons.transition\",\r\n\t\t\t\"flixel.addons.util\",\r\n\t\t\t// OTHER LIBRARIES & STUFF\r\n\t\t\t#if THREE_D_SUPPORT\r\n\t\t\t\"away3d\", \"flx3d\", // deprecated\r\n\t\t\t#if foxlite\r\n\t\t\t\"foxlite\",\r\n\t\t\t\"foxlite.animation\", \"foxlite.color\", \"foxlite.culling\",\r\n\t\t\t\"foxlite.extra\", \"foxlite.flixel\", \"foxlite.funkin\",\r\n\t\t\t\"foxlite.groups\", \"foxlite.instancing\", \"foxlite.lights\",\r\n\t\t\t\"foxlite.loaders\", \"foxlite.materials\", \"foxlite.math\",\r\n\t\t\t\"foxlite.mesh\", \"foxlite.polyfill\", \"foxlite.post\",\r\n\t\t\t\"foxlite.renderer\", \"foxlite.skin\", \"foxlite.sky\",\r\n\t\t\t\"foxlite.stencil\", \"foxlite.system\", \"foxlite.texture\",\r\n\t\t\t#end\r\n\t\t\t#end\r\n\t\t\t#if VIDEO_CUTSCENES \"hxvlc.flixel\", \"hxvlc.openfl\", #end\r\n\t\t\t#if NAPE_ENABLED \"nape\", \"flixel.addons.nape\", #end\r\n\t\t\t// BASE HAXE\r\n\t\t\t\"DateTools\", \"EReg\", \"Lambda\", \"StringBuf\", \"haxe.crypto\", \"haxe.display\", \"haxe.exceptions\", \"haxe.extern\", \"scripting\", \"animate\"\r\n\t\t])\r\n\t\t\tCompiler.include(inc);\r\n\r\n\t\tvar isHl = Context.defined(\"hl\");\r\n\r\n\t\tvar compathx4 = [\r\n\t\t\t\"sys.db.Sqlite\",\r\n\t\t\t\"sys.db.Mysql\",\r\n\t\t\t\"sys.db.Connection\",\r\n\t\t\t\"sys.db.ResultSet\",\r\n\t\t\t\"haxe.remoting.Proxy\",\r\n\t\t];\r\n\r\n\t\tif(Context.defined(\"sys\")) {\r\n\t\t\tfor(inc in [\"sys\", \"openfl.net\", \"funkin.backend.system.net\"]) {\r\n\t\t\t\tif(!isHl) Compiler.include(inc, compathx4);\r\n\t\t\t\telse {\r\n\r\n\t\t\t\t\t// TODO: Hashlink\r\n\t\t\t\t\t//Compiler.include(inc, compathx4.concat([\"sys.net.UdpSocket\", \"openfl.net.DatagramSocket\"]); // fixes FATAL ERROR : Failed to load function std@socket_set_broadcast\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tCompiler.include(\"funkin\", [#if !UPDATE_CHECKING 'funkin.backend.system.updating' #end]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "initMacros",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function initMacros() {\r\n\t\tif (Context.defined(\"hl\")) {\r\n\t\t\tfor (c in [\"lime\", \"std\", \"Math\", \"\"]) Compiler.addGlobalMetadata(c, \"@:build(funkin.backend.system.macros.HashLinkFixer.build())\");\r\n\t\t}\r\n\r\n\t\tfinal macroPath = 'funkin.backend.system.macros.Macros';\r\n\t\tCompiler.addMetadata('@:build($macroPath.buildLimeAssetLibrary())', 'lime.utils.AssetLibrary');\r\n\t\tCompiler.addMetadata('@:build($macroPath.buildLimeApplication())', 'lime.app.Application');\r\n\t\tCompiler.addMetadata('@:build($macroPath.buildLimeWindow())', 'lime.ui.Window');\r\n\t\tCompiler.addMetadata('@:build($macroPath.buildOpenflAssets())', 'openfl.utils.Assets');\r\n\r\n\t\t//Adds Compat for #if hscript blocks when you have hscript improved\r\n\t\tif (Context.defined(\"hscript_improved\") && !Context.defined(\"hscript\")) {\r\n\t\t\tCompiler.define('hscript');\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildLimeAssetLibrary",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function buildLimeAssetLibrary():Array<Field> {\r\n\t\tfinal fields:Array<Field> = Context.getBuildFields(), pos:Position = Context.currentPos();\r\n\r\n\t\tfields.push({name: 'tag', access: [APublic], pos: pos, kind: FVar(macro :funkin.backend.assets.AssetSource)});\r\n\t\tfields.push({name: 'isCompressed', access: [APublic], pos: pos, kind: FVar(macro :Bool, macro false)});\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildLimeApplication",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function buildLimeApplication():Array<Field> {\r\n\t\tfinal fields:Array<Field> = Context.getBuildFields(), pos:Position = Context.currentPos();\r\n\t\tfor (f in fields) switch (f.kind) {\r\n\t\t\tcase FFun(func): switch (f.name) {\r\n\t\t\t\tcase \"exec\": switch (func.expr.expr) {\r\n\t\t\t\t\tcase EBlock(exprs): exprs.insert(1, macro funkin.backend.system.Main.preInit());\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tdefault:\r\n\t\t}\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildLimeWindow",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function buildLimeWindow():Array<Field> {\r\n\t\tfinal fields:Array<Field> = Context.getBuildFields(), pos:Position = Context.currentPos();\r\n\t\tif (!Context.defined(\"DARK_MODE_WINDOW\")) return fields;\r\n\r\n\t\tfor (f in fields) switch (f.kind) {\r\n\t\t\tcase FFun(func): switch (f.name) {\r\n\t\t\t\tcase \"new\": switch (func.expr.expr) {\r\n\t\t\t\t\tcase EBlock(exprs): exprs.push(macro funkin.backend.utils.NativeAPI.setDarkMode(title, true));\r\n\t\t\t\t\tdefault:\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tdefault:\r\n\t\t}\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "buildOpenflAssets",
+			"args": [],
+			"ret": "Array<Field>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function buildOpenflAssets():Array<Field> {\r\n\t\tfinal fields:Array<Field> = Context.getBuildFields(), pos:Position = Context.currentPos();\r\n\t\tfor (f in fields) switch (f.name) {\r\n\t\t\tcase \"allowHardwareTextures\": fields.remove(f);\r\n\t\t\tdefault:\r\n\t\t}\r\n\r\n\t\tfields.push({name: 'allowHardwareTextures', access: [APublic, AStatic], pos: pos, kind: FProp(\"get\", \"set\", macro :Bool)});\r\n\t\tfields.push({name: '__allowHardwareTextures', access: [APrivate, AStatic], pos: pos, kind: FVar(macro :Null<Bool>)});\r\n\r\n\t\tfields.push({name: \"get_allowHardwareTextures\", access: [APublic, AStatic, AInline], pos: pos, kind: FFun({ret: macro :Bool, args: [], expr: macro {\r\n\t\t\treturn __allowHardwareTextures != null ? __allowHardwareTextures : !funkin.backend.system.Main.forceGPUOnlyBitmapsOff && funkin.options.Options.gpuOnlyBitmaps;\r\n\t\t}})});\r\n\t\tfields.push({name: \"set_allowHardwareTextures\", access: [APublic, AStatic, AInline], pos: pos, kind: FFun({ret: macro :Bool, args: [{name: \"value\", type: macro :Bool}], expr: macro {\r\n\t\t\t__allowHardwareTextures = value;\r\n\t\t\treturn get_allowHardwareTextures();\r\n\t\t}})});\r\n\r\n\t\treturn fields;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

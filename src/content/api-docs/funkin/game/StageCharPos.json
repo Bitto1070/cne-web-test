@@ -1,0 +1,199 @@
+{
+	"kind": "class",
+	"name": "StageCharPos",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "extra",
+			"type": "Map<String, Dynamic>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "name",
+			"type": "String",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charSpacingX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "charSpacingY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camxoffset",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "camyoffset",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "skewX",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "skewY",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "alpha",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "flipX",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "scale",
+			"type": "FlxPoint",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "zoomFactor",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper();\r\n\t\tactive = false;\r\n\t\tvisible = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function destroy() {\r\n\t\tscale.put();\r\n\t\tsuper.destroy();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareCharacter",
+			"args": [
+				{
+					"name": "char",
+					"type": "Character",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "id",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function prepareCharacter(char:Character, id:Float = 0) {\r\n\t\t_id = id;\r\n\t\toldInfo = getOldInfo(char);\r\n\t\tchar.setPosition(x + (id * charSpacingX), y + (id * charSpacingY));\r\n\t\tchar.scrollFactor.set(scrollFactor.x, scrollFactor.y);\r\n\t\tif (!Std.isOfType(FlxG.state, CharacterEditor)) {\r\n\t\t\tchar.scale.x *= scale.x; char.scale.y *= scale.y;\r\n\t\t}\r\n\t\tchar.cameraOffset += FlxPoint.weak(camxoffset, camyoffset);\r\n\t\tchar.skew.x += skewX; char.skew.y += skewY;\r\n\t\tchar.alpha *= alpha;\r\n\t\tchar.angle += angle;\r\n\t\tchar.zoomFactor *= zoomFactor;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getOldInfo",
+			"args": [
+				{
+					"name": "char",
+					"type": "Character",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function getOldInfo(char:Character) {\r\n\t\treturn {\r\n\t\t\tx: char.x, y: char.y,\r\n\t\t\tscrollX: char.scrollFactor.x, scrollY: char.scrollFactor.y,\r\n\t\t\tscaleX: char.scale.x, scaleY: char.scale.y,\r\n\t\t\tcamxoffset: char.cameraOffset.x, camyoffset: char.cameraOffset.y,\r\n\t\t\tskewX: char.skew.x, skewY: char.skew.y,\r\n\t\t\talpha: char.alpha, zoomFactor: char.zoomFactor,\r\n\t\t\tangle: char.angle\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "revertCharacter",
+			"args": [
+				{
+					"name": "char",
+					"type": "Character",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function revertCharacter(char:Character) {\r\n\t\tif(oldInfo == null) return;\r\n\t\tfor(field in Reflect.fields(oldInfo)) {\r\n\t\t\tswitch(field) {\r\n\t\t\t\tcase \"scrollX\": char.scrollFactor.x = oldInfo.scrollX;\r\n\t\t\t\tcase \"scrollY\": char.scrollFactor.y = oldInfo.scrollY;\r\n\t\t\t\tcase \"scaleX\": char.scale.x = oldInfo.scaleX;\r\n\t\t\t\tcase \"scaleY\": char.scale.y = oldInfo.scaleY;\r\n\t\t\t\tcase \"camxoffset\": char.cameraOffset.x = oldInfo.camxoffset;\r\n\t\t\t\tcase \"camyoffset\": char.cameraOffset.y = oldInfo.camyoffset;\r\n\t\t\t\tcase \"skewX\": char.skew.x = oldInfo.skewX;\r\n\t\t\t\tcase \"skewY\": char.skew.y = oldInfo.skewY;\r\n\t\t\t\tdefault: Reflect.setProperty(char, field, Reflect.field(oldInfo, field));\r\n\t\t\t}\r\n\t\t}\r\n\t\toldInfo = null;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,38 @@
+{
+	"kind": "class",
+	"name": "FlixelInfo",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper(\"Flixel Info\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\r\n\t\t@:privateAccess {\r\n\t\t\tvar c:Int = Lambda.count(FlxG.bitmap._cache);\r\n\t\t\tvar buf = new StringBuf();\r\n\r\n\t\t\tif((FlxG.state is ModState)) {\r\n\t\t\t\tvar state:ModState = cast FlxG.state;\r\n\t\t\t\tStringMacro.addLine(buf, 'Mod State: ${state.scriptName}');\r\n\t\t\t} else {\r\n\t\t\t\tStringMacro.addLine(buf, 'State: ${Type.getClassName(Type.getClass(FlxG.state))}');\r\n\t\t\t}\r\n\t\t\tStringMacro.addLine(buf, '\\nObject Count: ${FlxG.state.members.length}');\r\n\t\t\tStringMacro.addLine(buf, '\\nCamera Count: ${FlxG.cameras.list.length}');\r\n\t\t\tStringMacro.addLine(buf, '\\nBitmaps Count: ${c}');\r\n\t\t\tStringMacro.addLine(buf, '\\nSounds Count: ${FlxG.sound.list.length}');\r\n\t\t\tStringMacro.addLine(buf, '\\nFlxG.game Childs Count: ${FlxG.game.numChildren}');\r\n\t\t\tif(FlxG.renderBlit) {\r\n\t\t\t\tStringMacro.addLine(buf, '\\nBlitting Render: true');\r\n\t\t\t}\r\n\t\t\t#if FLX_POINT_POOL\r\n\t\t\t//var points = flixel.math.FlxPoint.FlxBasePoint.pool;\r\n\t\t\t//StringMacro.addLine(buf, '\\nPoint Count: ', points._count, ' | +', points.made, ' | -', points.gotten, ' | ', points.balance, ' | >', points.putted);\r\n\t\t\t//StringMacro.addLine(buf, '\\nPoint Count: ', points._count);\r\n\t\t\t#end\r\n\t\t\t_text = buf.toString();\r\n\t\t}\r\n\r\n\t\tthis.text.text = _text;\r\n\t\tsuper.__enterFrame(t);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

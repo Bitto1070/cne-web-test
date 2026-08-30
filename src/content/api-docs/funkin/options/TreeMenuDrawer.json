@@ -1,0 +1,36 @@
+{
+	"kind": "final class",
+	"name": "TreeMenuDrawer",
+	"pkg": "funkin.options",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "parent",
+			"type": "TreeMenu",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "parent",
+					"type": "TreeMenu",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(parent:TreeMenu) {\r\n\t\tsuper();\r\n\t\tthis.parent = parent;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

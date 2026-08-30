@@ -1,0 +1,66 @@
+{
+	"kind": "class",
+	"name": "SpriteAnimEditScreen",
+	"pkg": "funkin.editors.stage.elements",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "saveCallback",
+			"type": "Void->Void",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "parentButton",
+			"type": "StageSpriteAnimButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "xml",
+			"type": "Access",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentButton",
+					"type": "StageSpriteAnimButton",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "saveCallback",
+					"type": "Void->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(xml:Access, parentButton:StageSpriteAnimButton, saveCallback:Void->Void) {\r\n\t\tthis.saveCallback = saveCallback;\r\n\t\tthis.parentButton = parentButton;\r\n\t\tthis.xml = xml;\r\n\t\tsuper(\"layouts/stage/animEditScreen\", [\r\n\t\t\t\"stage\" => StageEditor.instance.stage,\r\n\t\t\t\"xml\" => xml,\r\n\t\t\t\"exID\" => StageEditor.exID,\r\n\t\t\t\"translate\" => translate,\r\n\t\t\t\"button\" => parentButton\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

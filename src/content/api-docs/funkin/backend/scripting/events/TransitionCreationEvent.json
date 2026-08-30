@@ -1,0 +1,45 @@
+{
+	"kind": "final class",
+	"name": "TransitionCreationEvent",
+	"pkg": "funkin.backend.scripting.events",
+	"doc": {
+		"text": "CANCEL this event to prevent default behaviour!",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "transOut",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "If the transition is going out into another state",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "newState",
+			"type": "FlxState",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "The state that is about to be loaded (only on trans out)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

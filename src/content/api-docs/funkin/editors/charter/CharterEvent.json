@@ -1,0 +1,354 @@
+{
+	"kind": "class",
+	"name": "CharterEvent",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "events",
+			"type": "Array<ChartEvent>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "step",
+			"type": "Float",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "icons",
+			"type": "Array<FlxSprite>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "selected",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "draggable",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "eventsBackdrop",
+			"type": "EventBackdrop",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "snappedToGrid",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "displayGlobal",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "global",
+			"type": "Bool",
+			"access": "default, set",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "events",
+					"type": "Array<ChartEvent>",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "global",
+					"type": "Bool",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(step:Float, ?events:Array<ChartEvent>, ?global:Bool) {\r\n\t\tsuper(-100, (step * 40) - 17, 100, 34, 'editors/charter/event-spr');\r\n\t\tthis.step = step;\r\n\t\tthis.events = events.getDefault([]);\r\n\r\n\t\tthis.global = displayGlobal = (global == null ? events[0] != null && events[0].global == true : global);\r\n\t\tthis.color = displayGlobal ? 0xffc8bd23 : 0xFFFFFFFF;\r\n\r\n\t\tcursor = CLICK;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "update",
+			"args": [
+				{
+					"name": "elapsed",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function update(elapsed:Float) {\r\n\t\tsuper.update(elapsed);\r\n\r\n\t\tif (snappedToGrid && eventsBackdrop != null) {\r\n\t\t\tbWidth = 37 + (icons.length * 22);\r\n\t\t\tx = eventsBackdrop.x + ((global != Options.charterSwapEventSides) ? 0 : eventsBackdrop.width - bWidth);\r\n\t\t}\r\n\r\n\t\tfor(k=>i in icons) {\r\n\t\t\ti.follow(this, (k * 22) + 30 - (i.width / 2), (bHeight - i.height) / 2);\r\n\t\t}\r\n\r\n\t\t@:bypassAccessor color = CoolUtil.lerpColor(this.color, displayGlobal ? 0xffc8bd23 : 0xFFFFFFFF, 1/3);\r\n\t\tcolorTransform.setMultipliers(color.redFloat, color.greenFloat, color.blueFloat, alpha);\r\n\t\tcolorTransform.setOffsets(0, 0, 0, 0);\r\n\t\tselectedColorTransform(colorTransform);\r\n\t\tuseColorTransform = true;\r\n\r\n\t\tfor (sprite in icons) @:privateAccess {\r\n\t\t\tsprite.colorTransform.__identity();\r\n\t\t\tselectedColorTransform(sprite.colorTransform);\r\n\t\t}\r\n\r\n\t\tflipX = (displayGlobal != Options.charterSwapEventSides);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getPackData",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:dox(hide) public static function getPackData(name:String):Array<String> {\r\n\t\tvar packFile = Paths.pack('events/${name}');\r\n\t\tif (Assets.exists(packFile)) {\r\n\t\t\treturn Assets.getText(packFile).split('________PACKSEP________');\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Pack data is a list of 5 strings separated by `________PACKSEP________`\n[0] Event Name\n[1] Event Script\n[2] Event JSON Info\n[3] Event Icon\n[4] Event UI Script / Icon Script",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getUIScript",
+			"args": [
+				{
+					"name": "event",
+					"type": "ChartEvent",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "caller",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Script",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:dox(hide) public static function getUIScript(event:ChartEvent, caller:String):Script {\r\n\t\tvar uiScript = Paths.script('data/events/${event.name}.ui');\r\n\t\tvar script:Script = null;\r\n\t\tif(Assets.exists(uiScript)) {\r\n\t\t\tscript = Script.create(uiScript);\r\n\t\t} else {\r\n\t\t\tvar packData = getPackData(event.name);\r\n\t\t\tif(packData != null) {\r\n\t\t\t\tvar scriptFile = packData[4];\r\n\t\t\t\tif (scriptFile != null)\r\n\t\t\t\t\tscript = Script.fromString(scriptFile, uiScript+'.hx');\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tif(script != null && !(script is DummyScript)) {\r\n\t\t\t// classes and functions\r\n\t\t\tscript.set(\"EventIconGroup\", EventIconGroup); // automatically imported\r\n\t\t\tscript.set(\"EventNumber\", EventNumber); // automatically imported\r\n\t\t\tscript.set(\"getIconFromStrumline\", getIconFromStrumline);\r\n\t\t\tscript.set(\"getIconFromCharName\", getIconFromCharName);\r\n\t\t\tscript.set(\"generateDefaultIcon\", generateDefaultIcon);\r\n\t\t\tscript.set(\"generateEventIconDurationArrow\", generateEventIconDurationArrow);\r\n\t\t\tscript.set(\"generateEventIconNumbers\", generateEventIconNumbers);\r\n\t\t\tscript.set(\"generateEventIconWarning\", generateEventIconWarning);\r\n\t\t\tscript.set(\"getPackData\", getPackData);\r\n\t\t\tscript.set(\"getEventComponent\", getEventComponent);\r\n\t\t\t// data\r\n\t\t\tscript.set(\"event\", event);\r\n\t\t\tscript.set(\"caller\", caller);\r\n\r\n\t\t\tscript.load();\r\n\t\t}\r\n\r\n\t\treturn script;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getEventComponent",
+			"args": [
+				{
+					"name": "type",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0"
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": "0.0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getEventComponent(type:String, x:Float = 0.0, y:Float = 0.0) {\r\n\t\tvar componentPath = Paths.image(\"editors/charter/event-icons/components/\" + type);\r\n\t\tif (Assets.exists(componentPath)) return new FlxSprite(x, y, componentPath);\r\n\r\n\t\tLogs.trace('Could not find component $type', WARNING);\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Gets a component sprite from the editors/charter/event-icons/components folder\nIf you wanna use a number, please use the EventNumber class instead",
+				"params": {
+					"type": "The type of component to get",
+					"x": "The x position of the sprite (optional)",
+					"y": "The y position of the sprite (optional)"
+				},
+				"returns": "The component sprite",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getIconFromStrumline",
+			"args": [
+				{
+					"name": "index",
+					"type": "Null<Int>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getIconFromStrumline(index:Null<Int>) {\r\n\t\tvar state = cast(FlxG.state, Charter);\r\n\t\tif (index != null && index >= 0 && index < state.strumLines.length) {\r\n\t\t\treturn getIconFromCharName(state.strumLines.members[index].strumLine.characters[0]);\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Expected to be called from inside of a ui script,\ncalling this elsewhere might cause unexpected results or crashes",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getIconFromCharName",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getIconFromCharName(name:String) {\r\n\t\tvar icon = Character.getIconFromCharName(name);\r\n\t\tvar healthIcon = new HealthIcon(icon);\r\n\t\tCoolUtil.setUnstretchedGraphicSize(healthIcon, 32, 32, false);\r\n\t\thealthIcon.scrollFactor.set(1, 1);\r\n\t\thealthIcon.active = false;\r\n\t\treturn healthIcon;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "generateEventIcon",
+			"args": [
+				{
+					"name": "event",
+					"type": "ChartEvent",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "inMenu",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "FlxSprite",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function generateEventIcon(event:ChartEvent, inMenu:Bool = true):FlxSprite {\r\n\t\tvar script = getUIScript(event, \"event-icon\");\r\n\t\tif(script != null && !(script is DummyScript)) {\r\n\t\t\tscript.set(\"inMenu\", inMenu);\r\n\t\t\tif(script.get(\"generateIcon\") != null) {\r\n\t\t\t\tvar res:FlxSprite = script.call(\"generateIcon\");\r\n\t\t\t\tif(res != null)\r\n\t\t\t\t\treturn res;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tswitch(event.name) {\r\n\t\t\tcase \"Time Signature Change\":\r\n\t\t\t\tif(event.params != null && (event.params[0] >= 0 || event.params[1] >= 0)) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(generateDefaultIcon(event.name));\r\n\t\t\t\t\tgroup.add({ // top\r\n\t\t\t\t\t\tvar num = new EventNumber(9, -1, event.params[0], EventNumber.ALIGN_CENTER);\r\n\t\t\t\t\t\tnum.active = false;\r\n\t\t\t\t\t\tnum;\r\n\t\t\t\t\t});\r\n\t\t\t\t\tgroup.add({ // bottom\r\n\t\t\t\t\t\tvar num = new EventNumber(9, 10, event.params[1], EventNumber.ALIGN_CENTER);\r\n\t\t\t\t\t\tnum.active = false;\r\n\t\t\t\t\t\tnum;\r\n\t\t\t\t\t});\r\n\t\t\t\t\tif (Conductor.invalidEvents.contains(event)) generateEventIconWarning(group);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t}\r\n\t\t\tcase \"Continuous BPM Change\":\r\n\t\t\t\tif(event.params != null && event.params[1] != null) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(generateDefaultIcon(\"BPM Change Start\"));\r\n\t\t\t\t\tif (!inMenu) {\r\n\t\t\t\t\t\tgenerateEventIconDurationArrow(group, event.params[1]);\r\n\t\t\t\t\t\tgroup.members[0].y -= 2;\r\n\t\t\t\t\t\tgenerateEventIconNumbers(group, event.params[0], 3);\r\n\t\t\t\t\t}\r\n\t\t\t\t\tif (Conductor.invalidEvents.contains(event)) generateEventIconWarning(group);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t} else {\r\n\t\t\t\t\treturn generateDefaultIcon(\"BPM Change Start\");\r\n\t\t\t\t}\r\n\t\t\tcase \"BPM Change\":\r\n\t\t\t\tif(event.params != null && event.params[0] != null) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(generateDefaultIcon(event.name));\r\n\t\t\t\t\tif (!inMenu) {\r\n\t\t\t\t\t\tgroup.members[0].y -= 2;\r\n\t\t\t\t\t\tgenerateEventIconNumbers(group, event.params[0], 3);\r\n\t\t\t\t\t}\r\n\t\t\t\t\tif (Conductor.invalidEvents.contains(event)) generateEventIconWarning(group);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t}\r\n\r\n\t\t\tcase \"Scroll Speed Change\":\r\n\t\t\t\tif(event.params != null && !inMenu) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(generateDefaultIcon(event.name));\r\n\t\t\t\t\tif (event.params[0]) generateEventIconDurationArrow(group, event.params[2]);\r\n\t\t\t\t\tgroup.members[0].y -= 2;\r\n\t\t\t\t\tgenerateEventIconNumbers(group, event.params[1]);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t}\r\n\r\n\t\t\tcase \"Camera Movement\":\r\n\t\t\t\tvar shouldDoArrow:Bool = false;\r\n\t\t\t\tvar icon:Null<FlxSprite> = null;\r\n\t\t\t\tif (event.params != null) {\r\n\t\t\t\t\tshouldDoArrow = event.params[1] && event.params[3] != \"CLASSIC\"; // is Tweened and isnt Lerped\r\n\t\t\t\t\ticon = getIconFromStrumline(event.params[0]); // camera movement, use health icon\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (icon == null) icon = generateDefaultIcon(event.name);\r\n\r\n\t\t\t\tif(event.params != null && shouldDoArrow && !inMenu) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(icon);\r\n\t\t\t\t\tgroup.members[0].x -= 8;\r\n\t\t\t\t\tgroup.members[0].y -= 8;\r\n\t\t\t\t\tgenerateEventIconDurationArrow(group, event.params[2]);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t} else\r\n\t\t\t\t\treturn icon;\r\n\r\n\t\t\tcase \"Camera Position\":\r\n\t\t\t\tvar shouldDoArrow:Bool = false;\r\n\t\t\t\tif (event.params != null)\r\n\t\t\t\t\tshouldDoArrow = event.params[2] && event.params[4] != \"CLASSIC\"; // is Tweened and isnt Lerped\r\n\r\n\t\t\t\tif(event.params != null && shouldDoArrow && !inMenu) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(generateDefaultIcon(event.name));\r\n\t\t\t\t\tgenerateEventIconDurationArrow(group, event.params[3]);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t}\r\n\r\n\t\t\tcase \"Camera Zoom\":\r\n\t\t\t\tvar shouldDoArrow:Bool = false;\r\n\t\t\t\tif (event.params != null)\r\n\t\t\t\t\tshouldDoArrow = event.params[0] && event.params[4] != \"CLASSIC\";\r\n\r\n\t\t\t\tif(event.params != null && shouldDoArrow && !inMenu) {\r\n\t\t\t\t\tvar group = new EventIconGroup();\r\n\t\t\t\t\tgroup.add(generateDefaultIcon(event.name));\r\n\t\t\t\t\tgenerateEventIconDurationArrow(group, event.params[3]);\r\n\t\t\t\t\treturn group;\r\n\t\t\t\t}\r\n\t\t}\r\n\t\treturn generateDefaultIcon(event.name);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "onHovered",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function onHovered() {\r\n\t\tsuper.onHovered();\r\n\t\t/*\r\n\t\tif (FlxG.mouse.justReleased)\r\n\t\t\tFlxG.state.openSubState(new CharterEventScreen(this));\r\n\t\t*/\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "handleSelection",
+			"args": [
+				{
+					"name": "selectionBox",
+					"type": "UISliceSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function handleSelection(selectionBox:UISliceSprite):Bool {\r\n\t\treturn (selectionBox.x + selectionBox.bWidth > x) && (selectionBox.x < x + bWidth) && (selectionBox.y + selectionBox.bHeight > y) && (selectionBox.y < y + bHeight);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "handleDrag",
+			"args": [
+				{
+					"name": "change",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function handleDrag(change:FlxPoint) {\r\n\t\tvar newStep:Float = step = CoolUtil.bound(step + change.x, 0, Charter.instance.__endStep-1);\r\n\t\ty = ((newStep) * 40) - 17;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "refreshEventIcons",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function refreshEventIcons() {\r\n\t\twhile(icons.length > 0) {\r\n\t\t\tvar i = icons.shift();\r\n\t\t\tmembers.remove(i);\r\n\t\t\ti.destroy();\r\n\t\t}\r\n\r\n\t\tfor(event in events) {\r\n\t\t\tvar spr = generateEventIcon(event, false);\r\n\t\t\ticons.push(spr);\r\n\t\t\tmembers.push(spr);\r\n\t\t}\r\n\r\n\t\tdraggable = true;\r\n\r\n\t\tbWidth = 37 + (icons.length * 22);\r\n\t\tx = (snappedToGrid && eventsBackdrop != null && (global != Options.charterSwapEventSides) ? eventsBackdrop.x - bWidth : ((global != Options.charterSwapEventSides) ? 0 : -bWidth));\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

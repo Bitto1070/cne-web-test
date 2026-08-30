@@ -1,0 +1,64 @@
+{
+	"kind": "class",
+	"name": "IconAnimData",
+	"pkg": "funkin.game",
+	"doc": null,
+	"meta": [
+		"@:dox(hide)"
+	],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "animState",
+			"type": "OneOfTwo<String, Int>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "isValid",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "animState",
+					"type": "OneOfTwo<String, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "isValid",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(animState:OneOfTwo<String, Int>, isValid:Bool) {\r\n\t\tthis.animState = animState;\r\n\t\tthis.isValid = isValid;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "toString",
+			"args": [],
+			"ret": "String",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function toString():String {\r\n\t\treturn '$animState (Valid: $isValid)';\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

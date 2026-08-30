@@ -1,0 +1,410 @@
+{
+	"kind": "class",
+	"name": "ModsFolder",
+	"pkg": "funkin.backend.assets",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "onModSwitch",
+			"type": "FlxTypedSignal<String->Void>",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "INTERNAL - Only use when editing source mods!!",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "currentModFolder",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Current mod folder. Will affect `Paths`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modsPath",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Path to the `mods` folder.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "addonsPath",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "Path to the `addons` folder.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "useLibFile",
+			"type": "Bool",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "If accessing a file as assets/data/global/LIB_mymod.hx should redirect to mymod:assets/data/global.hx",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "modsListSortCache",
+			"type": "StringMap<Array<String>>",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\tif(!getModsList().contains(Options.lastLoadedMod)) {\r\n\t\t\tif(Options.lastLoadedMod != null)\r\n\t\t\t\tLogs.warn(\"Mod \\\"\" + Options.lastLoadedMod + \"\\\" not found in mods list, switching to base game!\");\r\n\t\t\tOptions.lastLoadedMod = null;\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Initializes `mods` folder.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "switchMod",
+			"args": [
+				{
+					"name": "mod",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function switchMod(mod:String) {\r\n\t\tOptions.lastLoadedMod = currentModFolder = mod;\r\n\t\treloadMods();\r\n\t\tif(mod == null) {\r\n\t\t\tmod = \"(default)\";\r\n\t\t}\r\n\t\tLogs.traceColored([\r\n\t\t\tLogs.logText('Switched to mod: '),\r\n\t\t\tLogs.logText(mod, GREEN)\r\n\t\t], VERBOSE);\r\n\t}",
+			"doc": {
+				"text": "Switches mod - unloads all the other mods, then load this one.",
+				"params": {
+					"libName": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "reloadMods",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function reloadMods() {\r\n\t\tif (!__firstTime)\r\n\t\t\tFlxG.switchState(new MainState());\r\n\t\t__firstTime = false;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadModLib",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "modName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadModLib(path:String, force:Bool = false, ?modName:String) {\r\n\t\t#if MOD_SUPPORT\r\n\t\tfor (ext in Flags.ALLOWED_ZIP_EXTENSIONS) {\r\n\t\t\tif (!FileSystem.exists('$path.$ext')) continue;\r\n\t\t\treturn loadLibraryFromZip('$path'.toLowerCase(), '$path.$ext', force, modName);\r\n\t\t}\r\n\t\treturn loadLibraryFromFolder('$path'.toLowerCase(), '$path', force, modName);\r\n\r\n\t\t#else\r\n\t\treturn null;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Loads a mod library from the specified path. Supports folders and zips.",
+				"params": {
+					"modName": "Name of the mod",
+					"force": "Whenever the mod should be reloaded if it has already been loaded"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getModsList",
+			"args": [
+				{
+					"name": "sortingOptions",
+					"type": "ModSortingOptions",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getModsList(?sortingOptions:ModSortingOptions):Array<String> {\r\n\t\tvar mods:Array<String> = [];\r\n\t\t#if MOD_SUPPORT\r\n\t\t// Mods directory does not exist yet, create it\r\n\t\tif (!FileSystem.exists(modsPath)) FileSystem.createDirectory(modsPath);\r\n\t\t\r\n\t\tfinal modsList:Array<String> = FileSystem.readDirectory(modsPath);\r\n\r\n\t\tif (modsList == null || modsList.length <= 0) return mods;\r\n\r\n\t\tfor (modFolder in modsList) {\r\n\t\t\tif (FileSystem.isDirectory(modsPath + modFolder)) mods.push(modFolder);\r\n\t\t\telse if (Flags.ALLOWED_ZIP_EXTENSIONS.contains(Path.extension(modFolder))) mods.push(Path.withoutExtension(modFolder));\r\n\t\t}\r\n\t\t\r\n\t\tif (sortingOptions != null) {\r\n\t\t    var sortForge:StringBuf = new StringBuf();\r\n\t\t\tfor (i in mods) {\r\n\t\t\t    sortForge.add(i);\r\n\t\t\t\tsortForge.add(\"::\");\r\n\t\t\t}\r\n\r\n\t\t\tsortForge.add(Std.string(sortingOptions.descending ? 1 : 0));\r\n\r\n\t\t\tsortForge.add(sortingOptions.mode);\r\n\t\t\t\r\n\t\t\tfinal sortForgePure:String = sortForge.toString();\r\n\r\n\t\t\tif (modsListSortCache.exists(sortForgePure))\r\n\t\t\t    mods = modsListSortCache.get(sortForgePure);\r\n\t\t\t\tif (mods.length > 0 && mods[mods.length - 1] == null) mods.pop();\r\n\t\t\telse {\r\n\t\t\t    ModSortingController.sort(sortingOptions, mods);\r\n\t\t\t\tmodsListSortCache.set(sortForgePure, mods);\r\n\t\t\t}\r\n\t\t}\r\n\t\t#end\r\n\t\treturn mods;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLoadedModsLibs",
+			"args": [
+				{
+					"name": "skipTranslated",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Array<IModsAssetLibrary>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getLoadedModsLibs(skipTranslated:Bool = false):Array<IModsAssetLibrary> {\r\n\t\tvar libs = [];\r\n\t\tfor (i in Paths.assetsTree.libraries) {\r\n\t\t\tvar l = AssetsLibraryList.getCleanLibrary(i);\r\n\t\t\t#if TRANSLATIONS_SUPPORT\r\n\t\t\tif(skipTranslated && (l is TranslatedAssetLibrary)) continue;\r\n\t\t\t#end\r\n\t\t\t// No need to check for it being a `ScriptedAssetLibrary`, if `ScriptedAssetLibrary` extends ModsFolderLibrary, which implements `IModsAssetLibrary`\r\n\t\t\t// If you have to revert this change then uhhhhh wasn't me, trust 🙏\r\n\t\t\tif (/*l is ScriptedAssetLibrary ||*/ l is IModsAssetLibrary) libs.push(cast(l, IModsAssetLibrary));\r\n\t\t}\r\n\t\treturn libs;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLoadedMods",
+			"args": [
+				{
+					"name": "skipTranslated",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getLoadedMods(skipTranslated:Bool = false):Array<String>\r\n\t\treturn [for (modLib in getLoadedModsLibs(skipTranslated)) modLib.modName];",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareLibrary",
+			"args": [
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function prepareLibrary(libName:String, force:Bool = false) {\r\n\t\tvar assets:AssetManifest = new AssetManifest();\r\n\t\tassets.name = libName;\r\n\t\tassets.version = 2;\r\n\t\tassets.libraryArgs = [];\r\n\t\tassets.assets = [];\r\n\r\n\t\treturn AssetLibrary.fromManifest(assets);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "registerFont",
+			"args": [
+				{
+					"name": "font",
+					"type": "Font",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function registerFont(font:Font) {\r\n\t\tvar openflFont = new OpenFLFont();\r\n\t\t@:privateAccess\r\n\t\topenflFont.__fromLimeFont(font);\r\n\t\tOpenFLFont.registerFont(openflFont);\r\n\t\treturn font;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "prepareModLibrary",
+			"args": [
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "lib",
+					"type": "IModsAssetLibrary",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "tag",
+					"type": "AssetSource",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function prepareModLibrary(libName:String, lib:IModsAssetLibrary, force:Bool = false, ?tag:AssetSource) {\r\n\t\tvar openLib = prepareLibrary(libName, force);\r\n\t\tlib.prefix = 'assets/';\r\n\t\t@:privateAccess\r\n\t\topenLib.__proxy = cast(lib, lime.utils.AssetLibrary);\r\n\t\tif (tag != null) {\r\n\t\t\topenLib.tag = tag;\r\n\t\t\tcast(lib, lime.utils.AssetLibrary).tag = tag;\r\n\t\t}\r\n\t\treturn openLib;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "loadLibraryFromFolder",
+			"args": [
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "folder",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "modName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "tag",
+					"type": "AssetSource",
+					"optional": true,
+					"def": "MODS"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "#if MOD_SUPPORT\r\n\tpublic static function loadLibraryFromFolder(libName:String, folder:String, force:Bool = false, ?modName:String, ?tag:AssetSource = MODS) {\r\n\t\treturn prepareModLibrary(libName, new ModsFolderLibrary(folder, libName, modName), force, tag);\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "loadLibraryFromZip",
+			"args": [
+				{
+					"name": "libName",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "zipPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "force",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "modName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "tag",
+					"type": "AssetSource",
+					"optional": true,
+					"def": "MODS"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadLibraryFromZip(libName:String, zipPath:String, force:Bool = false, ?modName:String, ?tag:AssetSource = MODS) {\r\n\t\treturn prepareModLibrary(libName, new ZipFolderLibrary(zipPath, libName, modName), force, tag);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,2638 @@
+{
+	"kind": "final class",
+	"name": "CoolUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Various utilities, that have no specific Util class.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [
+		"@:allow(funkin.game.PlayState)"
+	],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "getLastExceptionStack",
+			"args": [],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getLastExceptionStack():String {\r\n\t\treturn CallStack.toString(CallStack.exceptionStack());\r\n\t}",
+			"doc": {
+				"text": "Gets the last exception stack. Useful for debugging.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isNotNull",
+			"args": [
+				{
+					"name": "v",
+					"type": "Null<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isNotNull(v:Null<Dynamic>):Bool {\r\n\t\treturn v != null && !isNaN(v);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefault",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getDefault<T>(v:Null<T>, defaultValue:T):T {\r\n\t\treturn (v == null || isNaN(v)) ? defaultValue : v;\r\n\t}\r\n\r\n\t/**\r\n\t * For use when using Std.parseFloat, if not using that then use `getDefault`.\r\n\t * @param v The value\r\n\t * @param defaultValue The default value\r\n\t * @return The return value\r\n\t */\r\n\tpublic static inline function getDefaultFloat(v:Float, defaultValue:Float):Float {\r\n\t\treturn (Math.isNaN(v)) ? defaultValue : v;\r\n\t}\r\n\r\n\t/**\r\n\t * Applies the % operator, but without any negatives.\r\n\t *\r\n\t * @param dividend The intial value. The left side of the equation.\r\n\t * @param divisor What to modulo by. The right side of the equation.\r\n\t * @return A positive reminder of `dividend / divisor`.\r\n\t */\r\n\tpublic static inline function positiveModulo(dividend:Float, divisor:Float) {\r\n\t\treturn ((dividend % divisor) + divisor) % divisor;\r\n\t}\r\n\r\n\t/**\r\n\t * Applies the % operator, but without any negatives. But it's an int.\r\n\t *\r\n\t * @param dividend The intial value. The left side of the equation.\r\n\t * @param divisor What to modulo by. The right side of the equation.\r\n\t * @return A positive reminder of `dividend / divisor`.\r\n\t */\r\n\tpublic static inline function positiveModuloInt(dividend:Int, divisor:Int) {\r\n\t\treturn ((dividend % divisor) + divisor) % divisor;\r\n\t}\r\n\r\n\t/**\r\n\t * Shortcut to parse JSON from an Asset path\r\n\t * @param assetPath Path to the JSON asset.\r\n\t */\r\n\tpublic static function parseJson(assetPath:String) {\r\n\t\treturn Json.parse(Assets.getText(assetPath));\r\n\t}\r\n\r\n\t/**\r\n\t * Deletes a folder recursively\r\n\t * @param delete Path to the folder.\r\n\t */\r\n\t@:noUsing public static function deleteFolder(delete:String) {\r\n\t\t#if sys\r\n\t\tif (!FileSystem.exists(delete)) return;\r\n\t\tvar files:Array<String> = FileSystem.readDirectory(delete);\r\n\t\tfor(file in files) {\r\n\t\t\tif (FileSystem.isDirectory(delete + \"/\" + file)) {\r\n\t\t\t\tdeleteFolder(delete + \"/\" + file);\r\n\t\t\t\tFileSystem.deleteDirectory(delete + \"/\" + file);\r\n\t\t\t} else {\r\n\t\t\t\ttry FileSystem.deleteFile(delete + \"/\" + file)\r\n\t\t\t\tcatch(e) Logs.warn(\"Could not delete \" + delete + \"/\" + file);\r\n\t\t\t}\r\n\t\t}\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Safe saves a file (even adding eventual missing folders) and shows a warning box instead of making the program crash\r\n\t * @param path Path to save the file at.\r\n\t * @param content Content of the file to save (as String or Bytes).\r\n\t */\r\n\t@:noUsing public static function safeSaveFile(path:String, content:OneOfTwo<String, Bytes>, showErrorBox:Bool = true) {\r\n\t\t#if sys\r\n\t\ttry {\r\n\t\t\taddMissingFolders(Path.directory(path));\r\n\t\t\tif(content is Bytes) sys.io.File.saveBytes(path, content);\r\n\t\t\telse sys.io.File.saveContent(path, content);\r\n\t\t} catch(e) {\r\n\t\t\tvar errMsg:String = 'Error while trying to save the file: ${Std.string(e).replace('\\n', ' ')}';\r\n\t\t\tLogs.error(errMsg);\r\n\t\t\tif(showErrorBox) funkin.backend.utils.NativeAPI.showMessageBox(\"Codename Engine Warning\", errMsg, MSG_WARNING);\r\n\t\t}\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Gets file attributes from a file or a folder adding eventual missing folders in the path\r\n\t * (WARNING: Only works on `windows` for now. On other platforms the attributes' value it's always going to be `0` -thanks to the wrapper you can also use `isNothing` for checking- but still creates eventual missing folders if the platforms allows it to).\r\n\t * @param path Path to the file or folder\r\n\t * @param useAbsolute If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)\r\n\t * @return The attributes through the `FileAttributeWrapper`\r\n\t */\r\n\t@:noUsing public static inline function safeGetAttributes(path:String, useAbsolute:Bool = true):FileAttributeWrapper {\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.getFileAttributes(path, useAbsolute);\r\n\t\tif(result.isNothing) Logs.trace('The file where it has been tried to get the attributes from, might be corrupted or inexistent (code: ${result.getValue()})', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn new FileAttributeWrapper(0);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Sets file attributes to a file or a folder adding eventual missing folders in the path\r\n\t * (WARNING: Only works on `windows` for now. On other platforms the return code it's always going to be `0` but still creates eventual missing folders if the platforms allows it to).\r\n\t * @param path Path to the file or folder\r\n\t * @param attrib The attribute(s) to set (WARNING: There are some non settable attributes, such as the `COMPRESSED` one)\r\n\t * @param useAbsolute If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)\r\n\t * @return The result code: `0` means that it failed setting\r\n\t */\r\n\t@:noUsing public static inline function safeSetAttributes(path:String, attrib:OneOfThree<NativeAPI.FileAttribute, FileAttributeWrapper, Int>, useAbsolute:Bool = true):Int {\r\n\t\t// yes, i'm aware that FileAttribute is also an Int so need to include it too, but at least like this we don't have to make cast sometimes while passing the arguments  - Nex\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.setFileAttributes(path, attrib, useAbsolute);\r\n\t\tif(result == 0) Logs.trace('Failed to set attributes to $path with a code of: $result', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Adds one (or more) file attributes to a file or a folder adding eventual missing folders in the path\r\n\t * (WARNING: Only works on `windows` for now. On other platforms the return code it's always going to be `0` but still creates eventual missing folders if the platforms allows it to).\r\n\t * @param path Path to the file or folder\r\n\t * @param attrib The attribute(s) to add (WARNING: There are some non settable attributes, such as the `COMPRESSED` one)\r\n\t * @param useAbsolute If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)\r\n\t * @return The result code: `0` means that it failed setting\r\n\t */\r\n\t@:noUsing public static inline function safeAddAttributes(path:String, attrib:OneOfTwo<NativeAPI.FileAttribute, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.addFileAttributes(path, attrib, useAbsolute);\r\n\t\tif (result == 0) Logs.trace('Failed to add attributes to $path with a code of: $result', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Removes one (or more) file attributes to a file or a folder adding eventual missing folders in the path\r\n\t * (WARNING: Only works on `windows` for now. On other platforms the return code it's always going to be `0` but still creates eventual missing folders if the platforms allows it to).\r\n\t * @param path Path to the file or folder\r\n\t * @param attrib The attribute(s) to remove (WARNING: There are some non settable attributes, such as the `COMPRESSED` one)\r\n\t * @param useAbsolute If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)\r\n\t * @return The result code: `0` means that it failed setting\r\n\t */\r\n\t@:noUsing public static inline function safeRemoveAttributes(path:String, attrib:OneOfTwo<NativeAPI.FileAttribute, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.removeFileAttributes(path, attrib, useAbsolute);\r\n\t\tif(result == 0) Logs.trace('Failed to remove attributes to $path with a code of: $result', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Creates eventual missing folders to the specified `path`\r\n\t *\r\n\t * WARNING: eventual files in `path` will be considered as folders! Just to make possible folders be named as `songs.json` for example\r\n\t *\r\n\t * @param path Path to check.\r\n\t * @return The initial Path.\r\n\t */\r\n\t@:noUsing public static function addMissingFolders(path:String):String {\r\n\t\t#if sys\r\n\t\tvar folders:Array<String> = path.split(\"/\");\r\n\t\tvar currentPath:String = \"\";\r\n\r\n\t\tfor (folder in folders) {\r\n\t\t\tcurrentPath += folder + \"/\";\r\n\t\t\tif (!FileSystem.exists(currentPath))\r\n\t\t\t\tFileSystem.createDirectory(currentPath);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn path;\r\n\t}\r\n\r\n\t/**\r\n\t * Shortcut to parse a JSON string\r\n\t * @param str Path to the JSON string\r\n\t * @return Parsed JSON\r\n\t */\r\n\tpublic inline static function parseJsonString(str:String)\r\n\t\treturn Json.parse(str);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getDefaultFloat",
+			"args": [
+				{
+					"name": "v",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "defaultValue",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getDefaultFloat(v:Float, defaultValue:Float):Float {\r\n\t\treturn (Math.isNaN(v)) ? defaultValue : v;\r\n\t}",
+			"doc": {
+				"text": "For use when using Std.parseFloat, if not using that then use `getDefault`.",
+				"params": {
+					"v": "The value",
+					"defaultValue": "The default value"
+				},
+				"returns": "The return value",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "positiveModulo",
+			"args": [
+				{
+					"name": "dividend",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "divisor",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function positiveModulo(dividend:Float, divisor:Float) {\r\n\t\treturn ((dividend % divisor) + divisor) % divisor;\r\n\t}",
+			"doc": {
+				"text": "Applies the % operator, but without any negatives.",
+				"params": {
+					"dividend": "The intial value. The left side of the equation.",
+					"divisor": "What to modulo by. The right side of the equation."
+				},
+				"returns": "A positive reminder of `dividend / divisor`.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "positiveModuloInt",
+			"args": [
+				{
+					"name": "dividend",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "divisor",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function positiveModuloInt(dividend:Int, divisor:Int) {\r\n\t\treturn ((dividend % divisor) + divisor) % divisor;\r\n\t}",
+			"doc": {
+				"text": "Applies the % operator, but without any negatives. But it's an int.",
+				"params": {
+					"dividend": "The intial value. The left side of the equation.",
+					"divisor": "What to modulo by. The right side of the equation."
+				},
+				"returns": "A positive reminder of `dividend / divisor`.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseJson",
+			"args": [
+				{
+					"name": "assetPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseJson(assetPath:String) {\r\n\t\treturn Json.parse(Assets.getText(assetPath));\r\n\t}",
+			"doc": {
+				"text": "Shortcut to parse JSON from an Asset path",
+				"params": {
+					"assetPath": "Path to the JSON asset."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deleteFolder",
+			"args": [
+				{
+					"name": "delete",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function deleteFolder(delete:String) {\r\n\t\t#if sys\r\n\t\tif (!FileSystem.exists(delete)) return;\r\n\t\tvar files:Array<String> = FileSystem.readDirectory(delete);\r\n\t\tfor(file in files) {\r\n\t\t\tif (FileSystem.isDirectory(delete + \"/\" + file)) {\r\n\t\t\t\tdeleteFolder(delete + \"/\" + file);\r\n\t\t\t\tFileSystem.deleteDirectory(delete + \"/\" + file);\r\n\t\t\t} else {\r\n\t\t\t\ttry FileSystem.deleteFile(delete + \"/\" + file)\r\n\t\t\t\tcatch(e) Logs.warn(\"Could not delete \" + delete + \"/\" + file);\r\n\t\t\t}\r\n\t\t}\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Deletes a folder recursively",
+				"params": {
+					"delete": "Path to the folder."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "safeSaveFile",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "content",
+					"type": "OneOfTwo<String, Bytes>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "showErrorBox",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function safeSaveFile(path:String, content:OneOfTwo<String, Bytes>, showErrorBox:Bool = true) {\r\n\t\t#if sys\r\n\t\ttry {\r\n\t\t\taddMissingFolders(Path.directory(path));\r\n\t\t\tif(content is Bytes) sys.io.File.saveBytes(path, content);\r\n\t\t\telse sys.io.File.saveContent(path, content);\r\n\t\t} catch(e) {\r\n\t\t\tvar errMsg:String = 'Error while trying to save the file: ${Std.string(e).replace('\\n', ' ')}';\r\n\t\t\tLogs.error(errMsg);\r\n\t\t\tif(showErrorBox) funkin.backend.utils.NativeAPI.showMessageBox(\"Codename Engine Warning\", errMsg, MSG_WARNING);\r\n\t\t}\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Safe saves a file (even adding eventual missing folders) and shows a warning box instead of making the program crash",
+				"params": {
+					"path": "Path to save the file at.",
+					"content": "Content of the file to save (as String or Bytes)."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "safeGetAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "FileAttributeWrapper",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function safeGetAttributes(path:String, useAbsolute:Bool = true):FileAttributeWrapper {\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.getFileAttributes(path, useAbsolute);\r\n\t\tif(result.isNothing) Logs.trace('The file where it has been tried to get the attributes from, might be corrupted or inexistent (code: ${result.getValue()})', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn new FileAttributeWrapper(0);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Gets file attributes from a file or a folder adding eventual missing folders in the path\n(WARNING: Only works on `windows` for now. On other platforms the attributes' value it's always going to be `0` -thanks to the wrapper you can also use `isNothing` for checking- but still creates eventual missing folders if the platforms allows it to).",
+				"params": {
+					"path": "Path to the file or folder",
+					"useAbsolute": "If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)"
+				},
+				"returns": "The attributes through the `FileAttributeWrapper`",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "safeSetAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "OneOfThree<NativeAPI.FileAttribute, FileAttributeWrapper, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function safeSetAttributes(path:String, attrib:OneOfThree<NativeAPI.FileAttribute, FileAttributeWrapper, Int>, useAbsolute:Bool = true):Int {\r\n\t\t// yes, i'm aware that FileAttribute is also an Int so need to include it too, but at least like this we don't have to make cast sometimes while passing the arguments  - Nex\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.setFileAttributes(path, attrib, useAbsolute);\r\n\t\tif(result == 0) Logs.trace('Failed to set attributes to $path with a code of: $result', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Sets file attributes to a file or a folder adding eventual missing folders in the path\n(WARNING: Only works on `windows` for now. On other platforms the return code it's always going to be `0` but still creates eventual missing folders if the platforms allows it to).",
+				"params": {
+					"path": "Path to the file or folder",
+					"attrib": "The attribute(s) to set (WARNING: There are some non settable attributes, such as the `COMPRESSED` one)",
+					"useAbsolute": "If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)"
+				},
+				"returns": "The result code: `0` means that it failed setting",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "safeAddAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "OneOfTwo<NativeAPI.FileAttribute, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function safeAddAttributes(path:String, attrib:OneOfTwo<NativeAPI.FileAttribute, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.addFileAttributes(path, attrib, useAbsolute);\r\n\t\tif (result == 0) Logs.trace('Failed to add attributes to $path with a code of: $result', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Adds one (or more) file attributes to a file or a folder adding eventual missing folders in the path\n(WARNING: Only works on `windows` for now. On other platforms the return code it's always going to be `0` but still creates eventual missing folders if the platforms allows it to).",
+				"params": {
+					"path": "Path to the file or folder",
+					"attrib": "The attribute(s) to add (WARNING: There are some non settable attributes, such as the `COMPRESSED` one)",
+					"useAbsolute": "If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)"
+				},
+				"returns": "The result code: `0` means that it failed setting",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "safeRemoveAttributes",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "attrib",
+					"type": "OneOfTwo<NativeAPI.FileAttribute, Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "useAbsolute",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function safeRemoveAttributes(path:String, attrib:OneOfTwo<NativeAPI.FileAttribute, Int>, useAbsolute:Bool = true):Int {\r\n\t\t#if sys\r\n\t\taddMissingFolders(Path.directory(path));\r\n\r\n\t\tvar result = NativeAPI.removeFileAttributes(path, attrib, useAbsolute);\r\n\t\tif(result == 0) Logs.trace('Failed to remove attributes to $path with a code of: $result', WARNING);\r\n\t\treturn result;\r\n\t\t#else\r\n\t\treturn 0;\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Removes one (or more) file attributes to a file or a folder adding eventual missing folders in the path\n(WARNING: Only works on `windows` for now. On other platforms the return code it's always going to be `0` but still creates eventual missing folders if the platforms allows it to).",
+				"params": {
+					"path": "Path to the file or folder",
+					"attrib": "The attribute(s) to remove (WARNING: There are some non settable attributes, such as the `COMPRESSED` one)",
+					"useAbsolute": "If it should use the absolute path (By default it's `true` but if it's `false` you can use files outside from this program's directory for example)"
+				},
+				"returns": "The result code: `0` means that it failed setting",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "addMissingFolders",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function addMissingFolders(path:String):String {\r\n\t\t#if sys\r\n\t\tvar folders:Array<String> = path.split(\"/\");\r\n\t\tvar currentPath:String = \"\";\r\n\r\n\t\tfor (folder in folders) {\r\n\t\t\tcurrentPath += folder + \"/\";\r\n\t\t\tif (!FileSystem.exists(currentPath))\r\n\t\t\t\tFileSystem.createDirectory(currentPath);\r\n\t\t}\r\n\t\t#end\r\n\t\treturn path;\r\n\t}",
+			"doc": {
+				"text": "Creates eventual missing folders to the specified `path`\n\nWARNING: eventual files in `path` will be considered as folders! Just to make possible folders be named as `songs.json` for example",
+				"params": {
+					"path": "Path to check."
+				},
+				"returns": "The initial Path.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "parseJsonString",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function parseJsonString(str:String)\r\n\t\treturn Json.parse(str);",
+			"doc": {
+				"text": "Shortcut to parse a JSON string",
+				"params": {
+					"str": "Path to the JSON string"
+				},
+				"returns": "Parsed JSON",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isNaN",
+			"args": [
+				{
+					"name": "v",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isNaN(v:Dynamic):Bool {\r\n\t\treturn (v is Float) ? Math.isNaN(cast(v, Float)) : false;\r\n\t}",
+			"doc": {
+				"text": "Whenever a value is NaN or not.",
+				"params": {
+					"v": "Value"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "first",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function first<T>(array:Array<T>):T {\r\n\t\treturn array[0];\r\n\t}\r\n\r\n\t/**\r\n\t * Returns the last element of an Array\r\n\t * @param array Array\r\n\t * @return T Last element\r\n\t */\r\n\tpublic static inline function last<T>(array:Array<T>):T {\r\n\t\treturn array[array.length - 1];\r\n\t}\r\n\r\n\t/**\r\n\t * Sets a field's default value, and returns it. In case it already exists, returns the existing one.\r\n\t * @param v Dynamic to set the default value to\r\n\t * @param name Name of the value\r\n\t * @param defaultValue Default value\r\n\t * @return T New/old value.\r\n\t */\r\n\tpublic static function setFieldDefault<T>(v:Dynamic, name:String, defaultValue:T):T {\r\n\t\tif (Reflect.hasField(v, name)) {\r\n\t\t\tvar f:Null<Dynamic> = Reflect.field(v, name);\r\n\t\t\tif (f != null)\r\n\t\t\t\treturn cast f;\r\n\t\t}\r\n\t\tReflect.setField(v, name, defaultValue);\r\n\t\treturn defaultValue;\r\n\t}\r\n\r\n\t/**\r\n\t * Add several zeros at the beginning of a string, so that `2` becomes `02`.\r\n\t * @param str String to add zeros\r\n\t * @param num The length required\r\n\t */\r\n\tpublic static inline function addZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '0${str}';\r\n\t\treturn str;\r\n\t}\r\n\r\n\t/**\r\n\t * Add several zeros at the end of a string, so that `2` becomes `20`, useful for ms.\r\n\t * @param str String to add zeros\r\n\t * @param num The length required\r\n\t */\r\n\tpublic static inline function addEndZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '${str}0';\r\n\t\treturn str;\r\n\t}\r\n\r\n\tprivate static var sizeLabels:Array<String> = [\"B\", \"KB\", \"MB\", \"GB\", \"TB\"];",
+			"doc": {
+				"text": "Returns the first element of an Array",
+				"params": {
+					"array": "Array"
+				},
+				"returns": "T Last element",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "last",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function last<T>(array:Array<T>):T {\r\n\t\treturn array[array.length - 1];\r\n\t}\r\n\r\n\t/**\r\n\t * Sets a field's default value, and returns it. In case it already exists, returns the existing one.\r\n\t * @param v Dynamic to set the default value to\r\n\t * @param name Name of the value\r\n\t * @param defaultValue Default value\r\n\t * @return T New/old value.\r\n\t */\r\n\tpublic static function setFieldDefault<T>(v:Dynamic, name:String, defaultValue:T):T {\r\n\t\tif (Reflect.hasField(v, name)) {\r\n\t\t\tvar f:Null<Dynamic> = Reflect.field(v, name);\r\n\t\t\tif (f != null)\r\n\t\t\t\treturn cast f;\r\n\t\t}\r\n\t\tReflect.setField(v, name, defaultValue);\r\n\t\treturn defaultValue;\r\n\t}\r\n\r\n\t/**\r\n\t * Add several zeros at the beginning of a string, so that `2` becomes `02`.\r\n\t * @param str String to add zeros\r\n\t * @param num The length required\r\n\t */\r\n\tpublic static inline function addZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '0${str}';\r\n\t\treturn str;\r\n\t}\r\n\r\n\t/**\r\n\t * Add several zeros at the end of a string, so that `2` becomes `20`, useful for ms.\r\n\t * @param str String to add zeros\r\n\t * @param num The length required\r\n\t */\r\n\tpublic static inline function addEndZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '${str}0';\r\n\t\treturn str;\r\n\t}\r\n\r\n\tprivate static var sizeLabels:Array<String> = [\"B\", \"KB\", \"MB\", \"GB\", \"TB\"];",
+			"doc": {
+				"text": "Returns the last element of an Array",
+				"params": {
+					"array": "Array"
+				},
+				"returns": "T Last element",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setFieldDefault",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setFieldDefault<T>(v:Dynamic, name:String, defaultValue:T):T {\r\n\t\tif (Reflect.hasField(v, name)) {\r\n\t\t\tvar f:Null<Dynamic> = Reflect.field(v, name);\r\n\t\t\tif (f != null)\r\n\t\t\t\treturn cast f;\r\n\t\t}\r\n\t\tReflect.setField(v, name, defaultValue);\r\n\t\treturn defaultValue;\r\n\t}\r\n\r\n\t/**\r\n\t * Add several zeros at the beginning of a string, so that `2` becomes `02`.\r\n\t * @param str String to add zeros\r\n\t * @param num The length required\r\n\t */\r\n\tpublic static inline function addZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '0${str}';\r\n\t\treturn str;\r\n\t}\r\n\r\n\t/**\r\n\t * Add several zeros at the end of a string, so that `2` becomes `20`, useful for ms.\r\n\t * @param str String to add zeros\r\n\t * @param num The length required\r\n\t */\r\n\tpublic static inline function addEndZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '${str}0';\r\n\t\treturn str;\r\n\t}\r\n\r\n\tprivate static var sizeLabels:Array<String> = [\"B\", \"KB\", \"MB\", \"GB\", \"TB\"];",
+			"doc": {
+				"text": "Sets a field's default value, and returns it. In case it already exists, returns the existing one.",
+				"params": {
+					"v": "Dynamic to set the default value to",
+					"name": "Name of the value",
+					"defaultValue": "Default value"
+				},
+				"returns": "T New/old value.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addZeros",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "num",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function addZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '0${str}';\r\n\t\treturn str;\r\n\t}",
+			"doc": {
+				"text": "Add several zeros at the beginning of a string, so that `2` becomes `02`.",
+				"params": {
+					"str": "String to add zeros",
+					"num": "The length required"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "addEndZeros",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "num",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function addEndZeros(str:String, num:Int) {\r\n\t\twhile(str.length < num) str = '${str}0';\r\n\t\treturn str;\r\n\t}",
+			"doc": {
+				"text": "Add several zeros at the end of a string, so that `2` becomes `20`, useful for ms.",
+				"params": {
+					"str": "String to add zeros",
+					"num": "The length required"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSizeString",
+			"args": [
+				{
+					"name": "size",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getSizeString(size:Float):String {\r\n\t\tvar rSize:Float = size;\r\n\t\tvar label:Int = 0;\r\n\t\tvar len = sizeLabels.length;\r\n\t\twhile(rSize >= 1024 && label < len-1) {\r\n\t\t\tlabel++;\r\n\t\t\trSize /= 1024;\r\n\t\t}\r\n\t\treturn Std.int(rSize) + ((label <= 1) ? \"\" : \".\" + addZeros(Std.string(Std.int((rSize % 1) * 100)), 2)) + sizeLabels[label];\r\n\t}",
+			"doc": {
+				"text": "Returns a string representation of a size, following this format: `1.02 GB`, `134.00 MB`",
+				"params": {
+					"size": "Size to convert to string"
+				},
+				"returns": "String Result string representation",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getSizeString64",
+			"args": [
+				{
+					"name": "size",
+					"type": "#if cpp Float64 #else Float #end",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getSizeString64(size: #if cpp Float64 #else Float #end):String {\r\n\t\tvar rSize: #if cpp Float64 #else Float #end = size;\r\n\t\tvar label:Int = 0;\r\n\t\tvar len = sizeLabels.length;\r\n\t\twhile(rSize >= 1024 && label < len-1) {\r\n\t\t\tlabel++;\r\n\t\t\trSize /= 1024;\r\n\t\t}\r\n\t\treturn Std.int(rSize) + ((label <= 1) ? \"\" : \".\" + addZeros(Std.string(Std.int((rSize % 1) * 100)), 2)) + sizeLabels[label];\r\n\t}",
+			"doc": {
+				"text": "Returns a string representation of a size, following this format: `1.02 GB`, `134.00 MB`, using Float64 on cpp targets",
+				"params": {
+					"size": "Size to convert to string"
+				},
+				"returns": "String Result string representation",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeIP",
+			"args": [
+				{
+					"name": "msg",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function removeIP(msg:String):String {\r\n\t\treturn ~/\\d+.\\d+.\\d+.\\d+/.replace(msg, \"[Your IP]\"); // For now its just IPs but who knows in the future..  - Nex\r\n\t}",
+			"doc": {
+				"text": "Replaces in a string any kind of IP with `[Your IP]` making the string safer to trace.",
+				"params": {
+					"msg": "String to check and edit"
+				},
+				"returns": "String Result without any kind of IP",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "fpsLerp",
+			"args": [
+				{
+					"name": "v1",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "v2",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function fpsLerp(v1:Float, v2:Float, ratio:Float):Float {\r\n\t\treturn FlxMath.lerp(v1, v2, getFPSRatio(ratio));\r\n\t}",
+			"doc": {
+				"text": "Alternative linear interpolation function for each frame use, without worrying about framerate changes.",
+				"params": {
+					"v1": "Begin value",
+					"v2": "End value",
+					"ratio": "Ratio"
+				},
+				"returns": "Float Final value",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "lerpColor",
+			"args": [
+				{
+					"name": "color1",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color2",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fpsSensitive",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function lerpColor(color1:FlxColor, color2:FlxColor, ratio:Float, fpsSensitive:Bool = false) {\r\n\t\tif (!fpsSensitive)\r\n\t\t\tratio = getFPSRatio(ratio);\r\n\t\treturn FlxColor.interpolate(color1, color2, ratio);\r\n\t}",
+			"doc": {
+				"text": "Lerps from color1 into color2 (Shortcut to `FlxColor.interpolate`)",
+				"params": {
+					"color1": "Color 1",
+					"color2": "Color 2",
+					"ratio": "Ratio",
+					"fpsSensitive": "Whenever the ratio should be fps sensitive (adapted when game is running at 120 instead of 60)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getFPSRatio",
+			"args": [
+				{
+					"name": "ratio",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "delta",
+					"type": "Float",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function getFPSRatio(ratio:Float, ?delta:Float):Float\r\n\t\treturn 1.0 - Math.pow(1.0 - ratio, (delta == null ? FlxG.elapsed : delta) * 60);",
+			"doc": {
+				"text": "Modifies a lerp ratio based on current FPS to keep a stable speed on higher framerate.",
+				"params": {
+					"ratio": "Ratio",
+					"delta": "Delta/Elapsed for the fps-modified ratio (Optional)"
+				},
+				"returns": "FPS-Modified Ratio",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getColorFromDynamic",
+			"args": [
+				{
+					"name": "c",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Null<FlxColor>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getColorFromDynamic(c:Dynamic):Null<FlxColor> {\r\n\t\t// -1\r\n\t\tif (c is Int) return c;\r\n\r\n\t\t// -1.0\r\n\t\tif (c is Float) return Std.int(c);\r\n\r\n\t\t// \"#FFFFFF\"\r\n\t\tif (c is String) return FlxColor.fromString(c);\r\n\r\n\t\t// [255, 255, 255]\r\n\t\tif (c is Array) {\r\n\t\t\tvar r:Int = 0;\r\n\t\t\tvar g:Int = 0;\r\n\t\t\tvar b:Int = 0;\r\n\t\t\tvar a:Int = 255;\r\n\t\t\tvar array:Array<Dynamic> = cast c;\r\n\t\t\tfor(k=>e in array) {\r\n\t\t\t\tif (e is Int || e is Float) {\r\n\t\t\t\t\tswitch(k) {\r\n\t\t\t\t\t\tcase 0:\tr = Std.int(e);\r\n\t\t\t\t\t\tcase 1:\tg = Std.int(e);\r\n\t\t\t\t\t\tcase 2:\tb = Std.int(e);\r\n\t\t\t\t\t\tcase 3:\ta = Std.int(e);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\treturn FlxColor.fromRGB(r, g, b, a);\r\n\t\t}\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "Tries to get a color from a `Dynamic` variable.",
+				"params": {
+					"c": "`Dynamic` color."
+				},
+				"returns": "The result color, or `null` if invalid.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "playMenuSong",
+			"args": [
+				{
+					"name": "fadeIn",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function playMenuSong(fadeIn:Bool = false) {\r\n\t\tif (FlxG.sound.music == null || !FlxG.sound.music.playing) {\r\n\t\t\tplayMusic(Paths.music(Flags.DEFAULT_MENU_MUSIC), true, fadeIn ? 0 : 1, true, 102);\r\n\t\t\tif (fadeIn) FlxG.sound.music.fadeIn(4, 0, 1);\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Plays the main menu theme.",
+				"params": {
+					"fadeIn": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "preloadCharacter",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "spriteName",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function preloadCharacter(name:String, ?spriteName:String) {\r\n\t\tif (name == null) return;\r\n\t\tif (spriteName == null)\r\n\t\t\tspriteName = name;\r\n\t\tAssets.getText(Paths.xml('characters/$name'));\r\n\t\tPaths.getFrames('characters/$spriteName');\r\n\t}",
+			"doc": {
+				"text": "Preloads a character.",
+				"params": {
+					"name": "Character name",
+					"spriteName": "(Optional) sprite name."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "playMusic",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Persist",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				},
+				{
+					"name": "Volume",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				},
+				{
+					"name": "Looped",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "DefaultBPM",
+					"type": "Float",
+					"optional": false,
+					"def": "102"
+				},
+				{
+					"name": "Group",
+					"type": "FlxSoundGroup",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function playMusic(path:String, Persist:Bool = false, Volume:Float = 1, Looped:Bool = true, DefaultBPM:Float = 102, ?Group:FlxSoundGroup) {\r\n\t\tConductor.reset();\r\n\t\tif (FlxG.sound.music == null || !FlxG.sound.music.exists) FlxG.sound.music = new FlxSound();\r\n\t\telse if (FlxG.sound.music.active) FlxG.sound.music.stop();\r\n\t\tFlxG.sound.music.loadEmbedded(path, Looped);\r\n\t\tFlxG.sound.music.volume = Volume;\r\n\t\tFlxG.sound.music.persist = Persist;\r\n\t\tFlxG.sound.defaultMusicGroup.add(FlxG.sound.music);\r\n\r\n\t\tvar iniPath = '${Path.withoutExtension(path)}.ini';\r\n\t\tvar musicData = Assets.exists(iniPath) ? IniUtil.parseAsset(iniPath)[\"Global\"] : null;\r\n\t\tif (musicData != null) {\r\n\t\t\tif (musicData[\"LoopTime\"] != null) FlxG.sound.music.loopTime = Std.parseFloat(musicData[\"LoopTime\"]) * 1000;\r\n\t\t\tif (musicData[\"EndTime\"] != null) FlxG.sound.music.endTime = Std.parseFloat(musicData[\"EndTime\"]) * 1000;\r\n\t\t\tif (musicData[\"Offset\"] != null) FlxG.sound.music.offset = Std.parseFloat(musicData[\"Offset\"]) * 1000;\r\n\r\n\t\t\tvar timeSignParsed:Array<Null<Float>> = musicData[\"TimeSignature\"] == null ? [] : [for(s in musicData[\"TimeSignature\"].split(\"/\")) Std.parseFloat(s)];\r\n\t\t\tvar beatsPerMeasure:Float = Flags.DEFAULT_BEATS_PER_MEASURE, stepsPerBeat:Float = Flags.DEFAULT_STEPS_PER_BEAT;\r\n\t\t\tif (timeSignParsed.length == 2) {\r\n\t\t\t\tbeatsPerMeasure = Math.isNaN(timeSignParsed[0]) ? Flags.DEFAULT_BEATS_PER_MEASURE : timeSignParsed[0];\r\n\t\t\t\tstepsPerBeat = Math.isNaN(timeSignParsed[1]) ? Flags.DEFAULT_STEPS_PER_BEAT : (16 / timeSignParsed[1]); // from denominator\r\n\t\t\t}\r\n\r\n\t\t\tvar bpm:Float = Std.parseFloat(musicData[\"BPM\"]).getDefault(DefaultBPM);\r\n\t\t\tConductor.changeBPM(bpm, beatsPerMeasure, Math.floor(stepsPerBeat));\r\n\t\t}\r\n\t\telse\r\n\t\t\tConductor.changeBPM(DefaultBPM);\r\n\r\n\t\tFlxG.sound.music.play();\r\n\t}",
+			"doc": {
+				"text": "Plays music, while resetting the Conductor, and taking info from INI in count.",
+				"params": {
+					"path": "Path to the music",
+					"Persist": "Whenever the music should persist while switching states",
+					"DefaultBPM": "Default BPM of the music (102)",
+					"Volume": "Volume of the music (1)",
+					"Looped": "Whenever the music loops (true)",
+					"Group": "A group that this music belongs to (default)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "playMenuSFX",
+			"args": [
+				{
+					"name": "menuSFX",
+					"type": "CoolSfx",
+					"optional": false,
+					"def": "SCROLL"
+				},
+				{
+					"name": "volume",
+					"type": "Float",
+					"optional": false,
+					"def": "1"
+				}
+			],
+			"ret": "FlxSound",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function playMenuSFX(menuSFX:CoolSfx = SCROLL, volume:Float = 1):FlxSound {\r\n\t\treturn FlxG.sound.play(Paths.sound(switch(menuSFX) {\r\n\t\t\tcase CONFIRM:\tFlags.DEFAULT_MENU_CONFIRM_SOUND;\r\n\t\t\tcase CANCEL:\tFlags.DEFAULT_MENU_CANCEL_SOUND;\r\n\t\t\tcase SCROLL:\tFlags.DEFAULT_MENU_SCROLL_SOUND;\r\n\t\t\tcase CHECKED:\tFlags.DEFAULT_EDITOR_CHECKBOXCHECKED_SOUND;\r\n\t\t\tcase UNCHECKED:\tFlags.DEFAULT_EDITOR_CHECKBOXUNCHECKED_SOUND;\r\n\t\t\tcase WARNING:\tFlags.DEFAULT_EDITOR_WARNING_SOUND;\r\n\t\t\tdefault: \t\tFlags.DEFAULT_MENU_SCROLL_SOUND;\r\n\t\t}), volume * Options.volumeSFX);\r\n\t}",
+			"doc": {
+				"text": "Plays a specified Menu SFX.",
+				"params": {
+					"menuSFX": "Menu SFX to play",
+					"volume": "At which volume it should play"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "coolTextFile",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function coolTextFile(path:String):Array<String>\r\n\t{\r\n\t\tvar trim:String;\r\n\t\treturn [for(line in Assets.getText(path).split(\"\\n\")) if ((trim = line.trim()) != \"\" && !trim.startsWith(\"#\")) trim];\r\n\t}",
+			"doc": {
+				"text": "Allows you to split a text file from a path, into a \"cool text file\", AKA a list. Allows for comments. For example,\n`# comment`\n`test1`\n` `\n`test2`\nwill return `[\"test1\", \"test2\"]`",
+				"params": {
+					"path": ""
+				},
+				"returns": "Array<String>",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "numberArray",
+			"args": [
+				{
+					"name": "max",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "min",
+					"type": "Int",
+					"optional": true,
+					"def": "0"
+				}
+			],
+			"ret": "Array<Int>",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function numberArray(max:Int, ?min:Int = 0):Array<Int>\r\n\t{\r\n\t\t/*return [for (i in min...max) i];*/\r\n\t\t// Reason for change:\r\n\t\t// Old one uses push instead of creating an array with the wanted size.\r\n\t\tvar len:Int = CoolUtil.maxInt(max - min, 0);\r\n\t\t#if cpp\r\n\t\tvar arr:Array<Int> = untyped __cpp__(\"::Array_obj< int >::__new({0})\", len);\r\n\t\t#else\r\n\t\tvar arr:Array<Int> = [];\r\n\t\tarr.resize(len);\r\n\t\t#end\r\n\t\tfor(i in 0...len)\r\n\t\t\tarr[i] = i + min;\r\n\t\treturn arr;\r\n\t}",
+			"doc": {
+				"text": "Returns an array of number from min to max. Equivalent of `[for (i in min...max) i]`.",
+				"params": {
+					"max": "Max value",
+					"min": "Minimal value (0)"
+				},
+				"returns": "Array<Int> Final array",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "numberArrayOld",
+			"args": [
+				{
+					"name": "max",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "min",
+					"type": "Int",
+					"optional": true,
+					"def": "0"
+				}
+			],
+			"ret": "Array<Int>",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function numberArrayOld(max:Int, ?min:Int = 0):Array<Int>\r\n\t{\r\n\t\treturn [for (i in min...max) i];\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "switchAnimFrames",
+			"args": [
+				{
+					"name": "anim1",
+					"type": "FlxAnimation",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "anim2",
+					"type": "FlxAnimation",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function switchAnimFrames(anim1:FlxAnimation, anim2:FlxAnimation) {\r\n\t\tif (anim1 == null || anim2 == null) return;\r\n\t\tvar old = anim1.frames;\r\n\t\tanim1.frames = anim2.frames;\r\n\t\tanim2.frames = old;\r\n\t}",
+			"doc": {
+				"text": "Switches frames from 2 FlxAnimations.",
+				"params": {
+					"anim1": "First animation",
+					"anim2": "Second animation"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "swapAnims",
+			"args": [
+				{
+					"name": "animation",
+					"type": "FlxAnimationController",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "anim1",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "anim2",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function swapAnims(animation:FlxAnimationController, anim1:String, anim2:String) @:privateAccess {\r\n\t\tvar flxAnim1 = animation.getByName(anim1);\r\n\t\tanimation._animations.remove(anim1);\r\n\r\n\t\tvar flxAnim2 = animation.getByName(anim2);\r\n\t\tanimation._animations.remove(anim2);\r\n\r\n\t\tif (flxAnim1 != null) {\r\n\t\t\tflxAnim1.name = anim2;\r\n\t\t\tanimation._animations.set(anim2, flxAnim1);\r\n\t\t}\r\n\t\tif (flxAnim2 != null) {\r\n\t\t\tflxAnim2.name = anim1;\r\n\t\t\tanimation._animations.set(anim1, flxAnim2);\r\n\t\t}\r\n\t}\r\n\r\n\t/**\r\n\t * Allows you to set a graphic size (ex: 150x150), with proper hitbox without a stretched sprite.\r\n\t * @param sprite Sprite to apply the new graphic size to\r\n\t * @param width Width\r\n\t * @param height Height\r\n\t * @param fill Whenever the sprite should fill instead of shrinking (true)\r\n\t * @param maxScale Maximum scale (0 / none)\r\n\t */\r\n\tpublic static inline function setUnstretchedGraphicSize(sprite:FlxSprite, width:Int, height:Int, fill:Bool = true, maxScale:Float = 0) {\r\n\t\tsprite.setGraphicSize(width, height);\r\n\t\tsprite.updateHitbox();\r\n\t\tvar nScale = (fill ? Math.max : Math.min)(sprite.scale.x, sprite.scale.y);\r\n\t\tif (maxScale > 0 && nScale > maxScale) nScale = maxScale;\r\n\t\tsprite.scale.set(nScale, nScale);\r\n\t}\r\n\r\n\tpublic static function setGraphicSizeFloat(sprite:FlxSprite, Width:Float = 0, Height:Float = 0):Void\r\n\t{\r\n\t\tif (Width <= 0 && Height <= 0)\r\n\t\t\treturn;\r\n\r\n\t\tvar newScaleX:Float = Width / sprite.frameWidth;\r\n\t\tvar newScaleY:Float = Height / sprite.frameHeight;\r\n\t\tsprite.scale.set(newScaleX, newScaleY);\r\n\r\n\t\tif (Width <= 0)\r\n\t\t\tsprite.scale.x = newScaleY;\r\n\t\telse if (Height <= 0)\r\n\t\t\tsprite.scale.y = newScaleX;\r\n\t}\r\n\r\n\t/**\r\n\t * Returns a simple string representation of a FlxKey. Used in Controls options.\r\n\t * @param key Key\r\n\t * @return Simple representation\r\n\t */\r\n\tpublic static inline function keyToString(key:Null<FlxKey>):String {\r\n\t\treturn switch(key) {\r\n\t\t\tcase null | 0 | NONE:\t\"---\";\r\n\t\t\tcase LEFT: \t\t\t\t\"←\";\r\n\t\t\tcase DOWN: \t\t\t\t\"↓\";\r\n\t\t\tcase UP: \t\t\t\t\"↑\";\r\n\t\t\tcase RIGHT:\t\t\t\t\"→\";\r\n\t\t\tcase ESCAPE:\t\t\t\"ESC\";\r\n\t\t\tcase BACKSPACE:\t\t\t\"[←]\";\r\n\t\t\tcase NUMPADZERO:\t\t\"#0\";\r\n\t\t\tcase NUMPADONE:\t\t\t\"#1\";\r\n\t\t\tcase NUMPADTWO:\t\t\t\"#2\";\r\n\t\t\tcase NUMPADTHREE:\t\t\"#3\";\r\n\t\t\tcase NUMPADFOUR:\t\t\"#4\";\r\n\t\t\tcase NUMPADFIVE:\t\t\"#5\";\r\n\t\t\tcase NUMPADSIX:\t\t\t\"#6\";\r\n\t\t\tcase NUMPADSEVEN:\t\t\"#7\";\r\n\t\t\tcase NUMPADEIGHT:\t\t\"#8\";\r\n\t\t\tcase NUMPADNINE:\t\t\"#9\";\r\n\t\t\tcase NUMPADPLUS:\t\t\"#+\";\r\n\t\t\tcase NUMPADMINUS:\t\t\"#-\";\r\n\t\t\tcase NUMPADPERIOD:\t\t\"#.\";\r\n\t\t\tcase ZERO:\t\t\t\t\"0\";\r\n\t\t\tcase ONE:\t\t\t\t\"1\";\r\n\t\t\tcase TWO:\t\t\t\t\"2\";\r\n\t\t\tcase THREE:\t\t\t\t\"3\";\r\n\t\t\tcase FOUR:\t\t\t\t\"4\";\r\n\t\t\tcase FIVE:\t\t\t\t\"5\";\r\n\t\t\tcase SIX:\t\t\t\t\"6\";\r\n\t\t\tcase SEVEN:\t\t\t\t\"7\";\r\n\t\t\tcase EIGHT:\t\t\t\t\"8\";\r\n\t\t\tcase NINE:\t\t\t\t\"9\";\r\n\t\t\tcase PERIOD:\t\t\t\".\";\r\n\t\t\tdefault:\t\t\t\tkey.toString();\r\n\t\t}\r\n\t}\r\n\r\n\t/**\r\n\t * Centers an object in a camera's field, basically `screenCenter()` but `camera.width` and `camera.height` are used instead of `FlxG.width` and `FlxG.height`.\r\n\t * @param obj Sprite to center\r\n\t * @param cam Camera\r\n\t * @param axes Axes (XY)\r\n\t */\r\n\tpublic static inline function cameraCenter(obj:FlxObject, cam:FlxCamera, axes:FlxAxes = XY) {\r\n\t\tswitch(axes) {\r\n\t\t\tcase XY:\r\n\t\t\t\tobj.setPosition((cam.width - obj.width) / 2, (cam.height - obj.height) / 2);\r\n\t\t\tcase X:\r\n\t\t\t\tobj.x = (cam.width - obj.width) / 2;\r\n\t\t\tcase Y:\r\n\t\t\t\tobj.y = (cam.height - obj.height) / 2;\r\n\t\t\tcase NONE:\r\n\t\t}\r\n\t}\r\n\r\n\t/**\r\n\t * Equivalent of `setGraphicSize`, except that it can accept floats and automatically updates the hitbox.\r\n\t * @param sprite Sprite to set the size of\r\n\t * @param width Width\r\n\t * @param height Height\r\n\t */\r\n\tpublic static inline function setSpriteSize(sprite:FlxSprite, width:Float, height:Float) {\r\n\t\tsprite.scale.set(width / sprite.frameWidth, height / sprite.frameHeight);\r\n\t\tsprite.updateHitbox();\r\n\t}\r\n\r\n\t/**\r\n\t * Gets an XML attribute from an `Access` abstract, without throwing an exception if invalid.\r\n\t * Example: `xml.getAtt(\"test\").getDefault(\"Hello, World!\");`\r\n\t * @param xml XML to get the attribute from\r\n\t * @param name Name of the attribute\r\n\t */\r\n\tpublic static inline function getAtt(xml:Access, name:String) {\r\n\t\t/*if (!xml.has.resolve(name)) return null;\r\n\t\treturn xml.att.resolve(name);*/\r\n\t\t// Reason for change:\r\n\t\t// Old one has error checking 4 times, this one has it once.\r\n\t\tvar xml:Xml = xml.x;\r\n\t\tif (xml.nodeType != Element) {\r\n\t\t\tthrow 'Bad node type, expected Element but found ${xml.nodeType}';\r\n\t\t}\r\n\t\t@:privateAccess\r\n\t\treturn xml.attributeMap.exists(name) ? xml.attributeMap.get(name) : null;\r\n\t}\r\n\r\n\t/**\r\n\t * Sets automatically all the compatible formats to a text.\r\n\t *\r\n\t * WARNING: These are dependant from the font, so if the font doesn't support for example the `bold` format it won't work!\r\n\t * @param text Text to set the format for\r\n\t * @param formats Array of the formats (to get the formats from a node, you can use `XMLUtil.getTextFormats(node)`)\r\n\t */\r\n\tpublic static function autoSetFormat(text:FlxText, formats:Array<TextFormat>) {\r\n\t\tvar i = 0;\r\n\t\t@:privateAccess\r\n\t\tfor(format in formats) {\r\n\t\t\tvar fmtt = format.format;\r\n\t\t\tvar start = i;\r\n\t\t\tvar end = i + format.text.length;\r\n\t\t\ti = end;\r\n\t\t\tif(Reflect.fields(fmtt).length == 0) continue;\r\n\t\t\tvar fmt = new FlxTextFormat();\r\n\r\n\t\t\tfmt.format.color = Reflect.hasField(fmtt, \"color\") ? FlxColor.fromString(fmtt.color) : text.color;\r\n\t\t\tfmt.format.font = Reflect.hasField(fmtt, \"font\") ? Paths.getFontName(Paths.font(fmtt.font)) : text.font;\r\n\t\t\tfmt.format.size = Reflect.hasField(fmtt, \"size\") ? Std.parseInt(fmtt.size) : text.size;\r\n\t\t\tfmt.format.italic = Reflect.hasField(fmtt, \"italic\") ? fmtt.italic == \"true\" : text.italic;\r\n\t\t\tfmt.format.bold = Reflect.hasField(fmtt, \"bold\") ? fmtt.bold == \"true\" : text.bold;\r\n\t\t\tfmt.borderColor = Reflect.hasField(fmtt, \"borderColor\") ? FlxColor.fromString(fmtt.borderColor) : text.borderColor;\r\n\t\t\tfmt.format.align = Reflect.hasField(fmtt, \"align\") ? TextFormatAlign.fromString(fmtt.align) : FlxTextAlign.toOpenFL(text.alignment);\r\n\r\n\t\t\tif(Reflect.hasField(fmtt, \"leading\")) fmt.format.leading = Std.parseInt(fmtt.leading);\r\n\t\t\tif(Reflect.hasField(fmtt, \"kerning\")) fmt.format.kerning = fmtt.kerning == \"true\";\r\n\t\t\tif(Reflect.hasField(fmtt, \"blockIndent\")) fmt.format.blockIndent = Std.parseInt(fmtt.blockIndent);\r\n\t\t\tif(Reflect.hasField(fmtt, \"bullet\")) fmt.format.bullet = fmtt.bullet == \"true\";\r\n\t\t\tif(Reflect.hasField(fmtt, \"indent\")) fmt.format.indent = Std.parseInt(fmtt.indent);\r\n\t\t\tif(Reflect.hasField(fmtt, \"leftMargin\")) fmt.format.leftMargin = Std.parseInt(fmtt.leftMargin);\r\n\t\t\tif(Reflect.hasField(fmtt, \"letterSpacing\")) fmt.format.letterSpacing = Std.parseFloat(fmtt.letterSpacing);\r\n\t\t\tif(Reflect.hasField(fmtt, \"rightMargin\")) fmt.format.rightMargin = Std.parseInt(fmtt.rightMargin);\r\n\t\t\tif(Reflect.hasField(fmtt, \"tabStops\")) fmt.format.tabStops = [for(x in cast(fmtt.tabStops, String).split(\",\")) Std.parseInt(x)];\r\n\t\t\tif(Reflect.hasField(fmtt, \"underline\")) fmt.format.underline = fmtt.underline == \"true\";\r\n\t\t\ttext.addFormat(fmt, start, end);\r\n\t\t}\r\n\t\treturn text;\r\n\t}\r\n\r\n\t/**\r\n\t * Loads an animated graphic, and automatically animates it.\r\n\t * @param spr Sprite to load the graphic for\r\n\t * @param path Path to the graphic\r\n\t */\r\n\tpublic static function loadAnimatedGraphic(spr:FlxSprite, path:String, fps:Float = 24.0) {\r\n\t\tspr.frames = Paths.getFrames(path, true);\r\n\r\n\t\tif (spr.frames != null && spr.frames.frames != null) {\r\n\t\t\tspr.animation.add(\"idle\", [for(i in 0...spr.frames.frames.length) i], fps, true);\r\n\t\t\tspr.animation.play(\"idle\");\r\n\t\t}\r\n\r\n\t\treturn spr;\r\n\t}\r\n\r\n\t/**\r\n\t * Copies a color transform from color1 to color2\r\n\t * @param color1 Color transform to copy to\r\n\t * @param color2 Color transform to copy from\r\n\t */\r\n\tpublic static inline function copyColorTransform(color1:ColorTransform, color2:ColorTransform) {\r\n\t\tcolor1.alphaMultiplier \t= color2.alphaMultiplier;\r\n\t\tcolor1.alphaOffset \t\t= color2.alphaOffset;\r\n\t\tcolor1.blueMultiplier \t= color2.blueMultiplier;\r\n\t\tcolor1.blueOffset \t\t= color2.blueOffset;\r\n\t\tcolor1.greenMultiplier \t= color2.greenMultiplier;\r\n\t\tcolor1.greenOffset \t\t= color2.greenOffset;\r\n\t\tcolor1.redMultiplier \t= color2.redMultiplier;\r\n\t\tcolor1.redOffset \t\t= color2.redOffset;\r\n\t}\r\n\r\n\t/**\r\n\t * Resets an FlxSprite\r\n\t * @param spr Sprite to reset\r\n\t * @param x New X position\r\n\t * @param y New Y position\r\n\t */\r\n\tpublic static function resetSprite(spr:FlxSprite, x:Float, y:Float) {\r\n\t\tspr.reset(x, y);\r\n\t\tspr.alpha = 1;\r\n\t\tspr.visible = true;\r\n\t\tspr.active = true;\r\n\t\tspr.acceleration.set();\r\n\t\tspr.velocity.set();\r\n\t\tspr.drag.set();\r\n\t\tspr.antialiasing = FlxSprite.defaultAntialiasing;\r\n\t\tspr.frameOffset.set();\r\n\t\tFlxTween.cancelTweensOf(spr);\r\n\t}\r\n\r\n\t/**\r\n\t * Gets the macro class created by hscript-improved for an abstract / enum\r\n\t */\r\n\t@:noUsing public static inline function getMacroAbstractClass(className:String) {\r\n\t\treturn Type.resolveClass(className + '_HSC');\r\n\t}\r\n\r\n\t/**\r\n\t * Basically indexOf, but starts from the end.\r\n\t * @param array Array to scan\r\n\t * @param element Element\r\n\t * @return Index, or -1 if unsuccessful.\r\n\t */\r\n\tpublic static inline function indexOfFromLast<T>(array:Array<T>, element:T):Int {\r\n\t\t/*var i = array.length - 1;\r\n\t\twhile(i >= 0) {\r\n\t\t\tif (array[i] == element)\r\n\t\t\t\tbreak;\r\n\t\t\ti--;\r\n\t\t}\r\n\t\treturn i;*/\r\n\t\t// Reason for change:\r\n\t\t// Old one was made because at the time we didnt know the lastIndexOf function.\r\n\t\treturn array.lastIndexOf(element);\r\n\t}\r\n\r\n\t/**\r\n\t * Clears the content of an array\r\n\t */\r\n\tpublic static inline function clear<T>(array:Array<T>):Array<T> {\r\n\t\t// while(array.length > 0)\r\n\t\t// \tarray.shift();\r\n\t\tarray.resize(0);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Push an entire group into an array.\r\n\t * @param array Array to push the group into\r\n\t * @param ...args Group entries\r\n\t * @return Array<T>\r\n\t */\r\n\tpublic static inline function pushGroup<T>(array:Array<T>, ...args:T):Array<T> {\r\n\t\tfor(a in args)\r\n\t\t\tarray.push(a);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Opens an URL in the browser.\r\n\t * @param url\r\n\t */\r\n\t@:noUsing public static inline function openURL(url:String) {\r\n\t\t#if linux\r\n\t\t// generally `xdg-open` should work in every distro\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [url]);\r\n\t\t// run old command JUST IN CASE it fails, which it shouldn't\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [url]);\r\n\t\t#else\r\n\t\tFlxG.openURL(url);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Browse a path in the operating system's explorer\r\n\t * @param path\r\n\t */\r\n\tpublic static inline function browsePath(path:String) {\r\n\t\tvar formattedPath:String = Path.normalize(path);\r\n\r\n\t\t#if windows\r\n\t\tformattedPath = formattedPath.replace(\"/\", \"\\\\\");\r\n\t\tSys.command(\"explorer\", [formattedPath]);\r\n\t\t#elseif mac\r\n\t\tSys.command(\"open\", [formattedPath]);\r\n\t\t#elseif linux\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [formattedPath]);\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [formattedPath]);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Converts a timestamp to a readable format such as `01:22` (`mm:ss`)\r\n\t */\r\n\tpublic static inline function timeToStr(time:Float)\r\n\t\treturn '${Std.string(Std.int(time / 60000)).addZeros(2)}:${Std.string(Std.int(time / 1000) % 60).addZeros(2)}.${Std.string(Std.int(time % 1000)).addZeros(3)}';",
+			"doc": {
+				"text": "Swaps two animations on an animation controller.",
+				"params": {
+					"animation": "Animation controller",
+					"anim1": "First animation",
+					"anim2": "Second animation"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setUnstretchedGraphicSize",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "width",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fill",
+					"type": "Bool",
+					"optional": false,
+					"def": "true"
+				},
+				{
+					"name": "maxScale",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function setUnstretchedGraphicSize(sprite:FlxSprite, width:Int, height:Int, fill:Bool = true, maxScale:Float = 0) {\r\n\t\tsprite.setGraphicSize(width, height);\r\n\t\tsprite.updateHitbox();\r\n\t\tvar nScale = (fill ? Math.max : Math.min)(sprite.scale.x, sprite.scale.y);\r\n\t\tif (maxScale > 0 && nScale > maxScale) nScale = maxScale;\r\n\t\tsprite.scale.set(nScale, nScale);\r\n\t}",
+			"doc": {
+				"text": "Allows you to set a graphic size (ex: 150x150), with proper hitbox without a stretched sprite.",
+				"params": {
+					"sprite": "Sprite to apply the new graphic size to",
+					"width": "Width",
+					"height": "Height",
+					"fill": "Whenever the sprite should fill instead of shrinking (true)",
+					"maxScale": "Maximum scale (0 / none)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setGraphicSizeFloat",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Width",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				},
+				{
+					"name": "Height",
+					"type": "Float",
+					"optional": false,
+					"def": "0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function setGraphicSizeFloat(sprite:FlxSprite, Width:Float = 0, Height:Float = 0):Void\r\n\t{\r\n\t\tif (Width <= 0 && Height <= 0)\r\n\t\t\treturn;\r\n\r\n\t\tvar newScaleX:Float = Width / sprite.frameWidth;\r\n\t\tvar newScaleY:Float = Height / sprite.frameHeight;\r\n\t\tsprite.scale.set(newScaleX, newScaleY);\r\n\r\n\t\tif (Width <= 0)\r\n\t\t\tsprite.scale.x = newScaleY;\r\n\t\telse if (Height <= 0)\r\n\t\t\tsprite.scale.y = newScaleX;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "keyToString",
+			"args": [
+				{
+					"name": "key",
+					"type": "Null<FlxKey>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function keyToString(key:Null<FlxKey>):String {\r\n\t\treturn switch(key) {\r\n\t\t\tcase null | 0 | NONE:\t\"---\";\r\n\t\t\tcase LEFT: \t\t\t\t\"←\";\r\n\t\t\tcase DOWN: \t\t\t\t\"↓\";\r\n\t\t\tcase UP: \t\t\t\t\"↑\";\r\n\t\t\tcase RIGHT:\t\t\t\t\"→\";\r\n\t\t\tcase ESCAPE:\t\t\t\"ESC\";\r\n\t\t\tcase BACKSPACE:\t\t\t\"[←]\";\r\n\t\t\tcase NUMPADZERO:\t\t\"#0\";\r\n\t\t\tcase NUMPADONE:\t\t\t\"#1\";\r\n\t\t\tcase NUMPADTWO:\t\t\t\"#2\";\r\n\t\t\tcase NUMPADTHREE:\t\t\"#3\";\r\n\t\t\tcase NUMPADFOUR:\t\t\"#4\";\r\n\t\t\tcase NUMPADFIVE:\t\t\"#5\";\r\n\t\t\tcase NUMPADSIX:\t\t\t\"#6\";\r\n\t\t\tcase NUMPADSEVEN:\t\t\"#7\";\r\n\t\t\tcase NUMPADEIGHT:\t\t\"#8\";\r\n\t\t\tcase NUMPADNINE:\t\t\"#9\";\r\n\t\t\tcase NUMPADPLUS:\t\t\"#+\";\r\n\t\t\tcase NUMPADMINUS:\t\t\"#-\";\r\n\t\t\tcase NUMPADPERIOD:\t\t\"#.\";\r\n\t\t\tcase ZERO:\t\t\t\t\"0\";\r\n\t\t\tcase ONE:\t\t\t\t\"1\";\r\n\t\t\tcase TWO:\t\t\t\t\"2\";\r\n\t\t\tcase THREE:\t\t\t\t\"3\";\r\n\t\t\tcase FOUR:\t\t\t\t\"4\";\r\n\t\t\tcase FIVE:\t\t\t\t\"5\";\r\n\t\t\tcase SIX:\t\t\t\t\"6\";\r\n\t\t\tcase SEVEN:\t\t\t\t\"7\";\r\n\t\t\tcase EIGHT:\t\t\t\t\"8\";\r\n\t\t\tcase NINE:\t\t\t\t\"9\";\r\n\t\t\tcase PERIOD:\t\t\t\".\";\r\n\t\t\tdefault:\t\t\t\tkey.toString();\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Returns a simple string representation of a FlxKey. Used in Controls options.",
+				"params": {
+					"key": "Key"
+				},
+				"returns": "Simple representation",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cameraCenter",
+			"args": [
+				{
+					"name": "obj",
+					"type": "FlxObject",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "cam",
+					"type": "FlxCamera",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "axes",
+					"type": "FlxAxes",
+					"optional": false,
+					"def": "XY"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function cameraCenter(obj:FlxObject, cam:FlxCamera, axes:FlxAxes = XY) {\r\n\t\tswitch(axes) {\r\n\t\t\tcase XY:\r\n\t\t\t\tobj.setPosition((cam.width - obj.width) / 2, (cam.height - obj.height) / 2);\r\n\t\t\tcase X:\r\n\t\t\t\tobj.x = (cam.width - obj.width) / 2;\r\n\t\t\tcase Y:\r\n\t\t\t\tobj.y = (cam.height - obj.height) / 2;\r\n\t\t\tcase NONE:\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Centers an object in a camera's field, basically `screenCenter()` but `camera.width` and `camera.height` are used instead of `FlxG.width` and `FlxG.height`.",
+				"params": {
+					"obj": "Sprite to center",
+					"cam": "Camera",
+					"axes": "Axes (XY)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "setSpriteSize",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "width",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "height",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function setSpriteSize(sprite:FlxSprite, width:Float, height:Float) {\r\n\t\tsprite.scale.set(width / sprite.frameWidth, height / sprite.frameHeight);\r\n\t\tsprite.updateHitbox();\r\n\t}",
+			"doc": {
+				"text": "Equivalent of `setGraphicSize`, except that it can accept floats and automatically updates the hitbox.",
+				"params": {
+					"sprite": "Sprite to set the size of",
+					"width": "Width",
+					"height": "Height"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAtt",
+			"args": [
+				{
+					"name": "xml",
+					"type": "Access",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function getAtt(xml:Access, name:String) {\r\n\t\t/*if (!xml.has.resolve(name)) return null;\r\n\t\treturn xml.att.resolve(name);*/\r\n\t\t// Reason for change:\r\n\t\t// Old one has error checking 4 times, this one has it once.\r\n\t\tvar xml:Xml = xml.x;\r\n\t\tif (xml.nodeType != Element) {\r\n\t\t\tthrow 'Bad node type, expected Element but found ${xml.nodeType}';\r\n\t\t}\r\n\t\t@:privateAccess\r\n\t\treturn xml.attributeMap.exists(name) ? xml.attributeMap.get(name) : null;\r\n\t}",
+			"doc": {
+				"text": "Gets an XML attribute from an `Access` abstract, without throwing an exception if invalid.\nExample: `xml.getAtt(\"test\").getDefault(\"Hello, World!\");`",
+				"params": {
+					"xml": "XML to get the attribute from",
+					"name": "Name of the attribute"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "autoSetFormat",
+			"args": [
+				{
+					"name": "text",
+					"type": "FlxText",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "formats",
+					"type": "Array<TextFormat>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function autoSetFormat(text:FlxText, formats:Array<TextFormat>) {\r\n\t\tvar i = 0;\r\n\t\t@:privateAccess\r\n\t\tfor(format in formats) {\r\n\t\t\tvar fmtt = format.format;\r\n\t\t\tvar start = i;\r\n\t\t\tvar end = i + format.text.length;\r\n\t\t\ti = end;\r\n\t\t\tif(Reflect.fields(fmtt).length == 0) continue;\r\n\t\t\tvar fmt = new FlxTextFormat();\r\n\r\n\t\t\tfmt.format.color = Reflect.hasField(fmtt, \"color\") ? FlxColor.fromString(fmtt.color) : text.color;\r\n\t\t\tfmt.format.font = Reflect.hasField(fmtt, \"font\") ? Paths.getFontName(Paths.font(fmtt.font)) : text.font;\r\n\t\t\tfmt.format.size = Reflect.hasField(fmtt, \"size\") ? Std.parseInt(fmtt.size) : text.size;\r\n\t\t\tfmt.format.italic = Reflect.hasField(fmtt, \"italic\") ? fmtt.italic == \"true\" : text.italic;\r\n\t\t\tfmt.format.bold = Reflect.hasField(fmtt, \"bold\") ? fmtt.bold == \"true\" : text.bold;\r\n\t\t\tfmt.borderColor = Reflect.hasField(fmtt, \"borderColor\") ? FlxColor.fromString(fmtt.borderColor) : text.borderColor;\r\n\t\t\tfmt.format.align = Reflect.hasField(fmtt, \"align\") ? TextFormatAlign.fromString(fmtt.align) : FlxTextAlign.toOpenFL(text.alignment);\r\n\r\n\t\t\tif(Reflect.hasField(fmtt, \"leading\")) fmt.format.leading = Std.parseInt(fmtt.leading);\r\n\t\t\tif(Reflect.hasField(fmtt, \"kerning\")) fmt.format.kerning = fmtt.kerning == \"true\";\r\n\t\t\tif(Reflect.hasField(fmtt, \"blockIndent\")) fmt.format.blockIndent = Std.parseInt(fmtt.blockIndent);\r\n\t\t\tif(Reflect.hasField(fmtt, \"bullet\")) fmt.format.bullet = fmtt.bullet == \"true\";\r\n\t\t\tif(Reflect.hasField(fmtt, \"indent\")) fmt.format.indent = Std.parseInt(fmtt.indent);\r\n\t\t\tif(Reflect.hasField(fmtt, \"leftMargin\")) fmt.format.leftMargin = Std.parseInt(fmtt.leftMargin);\r\n\t\t\tif(Reflect.hasField(fmtt, \"letterSpacing\")) fmt.format.letterSpacing = Std.parseFloat(fmtt.letterSpacing);\r\n\t\t\tif(Reflect.hasField(fmtt, \"rightMargin\")) fmt.format.rightMargin = Std.parseInt(fmtt.rightMargin);\r\n\t\t\tif(Reflect.hasField(fmtt, \"tabStops\")) fmt.format.tabStops = [for(x in cast(fmtt.tabStops, String).split(\",\")) Std.parseInt(x)];\r\n\t\t\tif(Reflect.hasField(fmtt, \"underline\")) fmt.format.underline = fmtt.underline == \"true\";\r\n\t\t\ttext.addFormat(fmt, start, end);\r\n\t\t}\r\n\t\treturn text;\r\n\t}",
+			"doc": {
+				"text": "Sets automatically all the compatible formats to a text.\n\nWARNING: These are dependant from the font, so if the font doesn't support for example the `bold` format it won't work!",
+				"params": {
+					"text": "Text to set the format for",
+					"formats": "Array of the formats (to get the formats from a node, you can use `XMLUtil.getTextFormats(node)`)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "loadAnimatedGraphic",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fps",
+					"type": "Float",
+					"optional": false,
+					"def": "24.0"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function loadAnimatedGraphic(spr:FlxSprite, path:String, fps:Float = 24.0) {\r\n\t\tspr.frames = Paths.getFrames(path, true);\r\n\r\n\t\tif (spr.frames != null && spr.frames.frames != null) {\r\n\t\t\tspr.animation.add(\"idle\", [for(i in 0...spr.frames.frames.length) i], fps, true);\r\n\t\t\tspr.animation.play(\"idle\");\r\n\t\t}\r\n\r\n\t\treturn spr;\r\n\t}",
+			"doc": {
+				"text": "Loads an animated graphic, and automatically animates it.",
+				"params": {
+					"spr": "Sprite to load the graphic for",
+					"path": "Path to the graphic"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "copyColorTransform",
+			"args": [
+				{
+					"name": "color1",
+					"type": "ColorTransform",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "color2",
+					"type": "ColorTransform",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function copyColorTransform(color1:ColorTransform, color2:ColorTransform) {\r\n\t\tcolor1.alphaMultiplier \t= color2.alphaMultiplier;\r\n\t\tcolor1.alphaOffset \t\t= color2.alphaOffset;\r\n\t\tcolor1.blueMultiplier \t= color2.blueMultiplier;\r\n\t\tcolor1.blueOffset \t\t= color2.blueOffset;\r\n\t\tcolor1.greenMultiplier \t= color2.greenMultiplier;\r\n\t\tcolor1.greenOffset \t\t= color2.greenOffset;\r\n\t\tcolor1.redMultiplier \t= color2.redMultiplier;\r\n\t\tcolor1.redOffset \t\t= color2.redOffset;\r\n\t}",
+			"doc": {
+				"text": "Copies a color transform from color1 to color2",
+				"params": {
+					"color1": "Color transform to copy to",
+					"color2": "Color transform to copy from"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "resetSprite",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FlxSprite",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function resetSprite(spr:FlxSprite, x:Float, y:Float) {\r\n\t\tspr.reset(x, y);\r\n\t\tspr.alpha = 1;\r\n\t\tspr.visible = true;\r\n\t\tspr.active = true;\r\n\t\tspr.acceleration.set();\r\n\t\tspr.velocity.set();\r\n\t\tspr.drag.set();\r\n\t\tspr.antialiasing = FlxSprite.defaultAntialiasing;\r\n\t\tspr.frameOffset.set();\r\n\t\tFlxTween.cancelTweensOf(spr);\r\n\t}",
+			"doc": {
+				"text": "Resets an FlxSprite",
+				"params": {
+					"spr": "Sprite to reset",
+					"x": "New X position",
+					"y": "New Y position"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getMacroAbstractClass",
+			"args": [
+				{
+					"name": "className",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function getMacroAbstractClass(className:String) {\r\n\t\treturn Type.resolveClass(className + '_HSC');\r\n\t}",
+			"doc": {
+				"text": "Gets the macro class created by hscript-improved for an abstract / enum",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "indexOfFromLast",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function indexOfFromLast<T>(array:Array<T>, element:T):Int {\r\n\t\t/*var i = array.length - 1;\r\n\t\twhile(i >= 0) {\r\n\t\t\tif (array[i] == element)\r\n\t\t\t\tbreak;\r\n\t\t\ti--;\r\n\t\t}\r\n\t\treturn i;*/\r\n\t\t// Reason for change:\r\n\t\t// Old one was made because at the time we didnt know the lastIndexOf function.\r\n\t\treturn array.lastIndexOf(element);\r\n\t}\r\n\r\n\t/**\r\n\t * Clears the content of an array\r\n\t */\r\n\tpublic static inline function clear<T>(array:Array<T>):Array<T> {\r\n\t\t// while(array.length > 0)\r\n\t\t// \tarray.shift();\r\n\t\tarray.resize(0);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Push an entire group into an array.\r\n\t * @param array Array to push the group into\r\n\t * @param ...args Group entries\r\n\t * @return Array<T>\r\n\t */\r\n\tpublic static inline function pushGroup<T>(array:Array<T>, ...args:T):Array<T> {\r\n\t\tfor(a in args)\r\n\t\t\tarray.push(a);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Opens an URL in the browser.\r\n\t * @param url\r\n\t */\r\n\t@:noUsing public static inline function openURL(url:String) {\r\n\t\t#if linux\r\n\t\t// generally `xdg-open` should work in every distro\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [url]);\r\n\t\t// run old command JUST IN CASE it fails, which it shouldn't\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [url]);\r\n\t\t#else\r\n\t\tFlxG.openURL(url);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Browse a path in the operating system's explorer\r\n\t * @param path\r\n\t */\r\n\tpublic static inline function browsePath(path:String) {\r\n\t\tvar formattedPath:String = Path.normalize(path);\r\n\r\n\t\t#if windows\r\n\t\tformattedPath = formattedPath.replace(\"/\", \"\\\\\");\r\n\t\tSys.command(\"explorer\", [formattedPath]);\r\n\t\t#elseif mac\r\n\t\tSys.command(\"open\", [formattedPath]);\r\n\t\t#elseif linux\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [formattedPath]);\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [formattedPath]);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Converts a timestamp to a readable format such as `01:22` (`mm:ss`)\r\n\t */\r\n\tpublic static inline function timeToStr(time:Float)\r\n\t\treturn '${Std.string(Std.int(time / 60000)).addZeros(2)}:${Std.string(Std.int(time / 1000) % 60).addZeros(2)}.${Std.string(Std.int(time % 1000)).addZeros(3)}';",
+			"doc": {
+				"text": "Basically indexOf, but starts from the end.",
+				"params": {
+					"array": "Array to scan",
+					"element": "Element"
+				},
+				"returns": "Index, or -1 if unsuccessful.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "clear",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function clear<T>(array:Array<T>):Array<T> {\r\n\t\t// while(array.length > 0)\r\n\t\t// \tarray.shift();\r\n\t\tarray.resize(0);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Push an entire group into an array.\r\n\t * @param array Array to push the group into\r\n\t * @param ...args Group entries\r\n\t * @return Array<T>\r\n\t */\r\n\tpublic static inline function pushGroup<T>(array:Array<T>, ...args:T):Array<T> {\r\n\t\tfor(a in args)\r\n\t\t\tarray.push(a);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Opens an URL in the browser.\r\n\t * @param url\r\n\t */\r\n\t@:noUsing public static inline function openURL(url:String) {\r\n\t\t#if linux\r\n\t\t// generally `xdg-open` should work in every distro\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [url]);\r\n\t\t// run old command JUST IN CASE it fails, which it shouldn't\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [url]);\r\n\t\t#else\r\n\t\tFlxG.openURL(url);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Browse a path in the operating system's explorer\r\n\t * @param path\r\n\t */\r\n\tpublic static inline function browsePath(path:String) {\r\n\t\tvar formattedPath:String = Path.normalize(path);\r\n\r\n\t\t#if windows\r\n\t\tformattedPath = formattedPath.replace(\"/\", \"\\\\\");\r\n\t\tSys.command(\"explorer\", [formattedPath]);\r\n\t\t#elseif mac\r\n\t\tSys.command(\"open\", [formattedPath]);\r\n\t\t#elseif linux\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [formattedPath]);\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [formattedPath]);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Converts a timestamp to a readable format such as `01:22` (`mm:ss`)\r\n\t */\r\n\tpublic static inline function timeToStr(time:Float)\r\n\t\treturn '${Std.string(Std.int(time / 60000)).addZeros(2)}:${Std.string(Std.int(time / 1000) % 60).addZeros(2)}.${Std.string(Std.int(time % 1000)).addZeros(3)}';",
+			"doc": {
+				"text": "Clears the content of an array",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pushGroup",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function pushGroup<T>(array:Array<T>, ...args:T):Array<T> {\r\n\t\tfor(a in args)\r\n\t\t\tarray.push(a);\r\n\t\treturn array;\r\n\t}\r\n\r\n\t/**\r\n\t * Opens an URL in the browser.\r\n\t * @param url\r\n\t */\r\n\t@:noUsing public static inline function openURL(url:String) {\r\n\t\t#if linux\r\n\t\t// generally `xdg-open` should work in every distro\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [url]);\r\n\t\t// run old command JUST IN CASE it fails, which it shouldn't\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [url]);\r\n\t\t#else\r\n\t\tFlxG.openURL(url);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Browse a path in the operating system's explorer\r\n\t * @param path\r\n\t */\r\n\tpublic static inline function browsePath(path:String) {\r\n\t\tvar formattedPath:String = Path.normalize(path);\r\n\r\n\t\t#if windows\r\n\t\tformattedPath = formattedPath.replace(\"/\", \"\\\\\");\r\n\t\tSys.command(\"explorer\", [formattedPath]);\r\n\t\t#elseif mac\r\n\t\tSys.command(\"open\", [formattedPath]);\r\n\t\t#elseif linux\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [formattedPath]);\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [formattedPath]);\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Converts a timestamp to a readable format such as `01:22` (`mm:ss`)\r\n\t */\r\n\tpublic static inline function timeToStr(time:Float)\r\n\t\treturn '${Std.string(Std.int(time / 60000)).addZeros(2)}:${Std.string(Std.int(time / 1000) % 60).addZeros(2)}.${Std.string(Std.int(time % 1000)).addZeros(3)}';",
+			"doc": {
+				"text": "Push an entire group into an array.",
+				"params": {
+					"array": "Array to push the group into"
+				},
+				"returns": "Array<T>",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "openURL",
+			"args": [
+				{
+					"name": "url",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function openURL(url:String) {\r\n\t\t#if linux\r\n\t\t// generally `xdg-open` should work in every distro\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [url]);\r\n\t\t// run old command JUST IN CASE it fails, which it shouldn't\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [url]);\r\n\t\t#else\r\n\t\tFlxG.openURL(url);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Opens an URL in the browser.",
+				"params": {
+					"url": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "browsePath",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function browsePath(path:String) {\r\n\t\tvar formattedPath:String = Path.normalize(path);\r\n\r\n\t\t#if windows\r\n\t\tformattedPath = formattedPath.replace(\"/\", \"\\\\\");\r\n\t\tSys.command(\"explorer\", [formattedPath]);\r\n\t\t#elseif mac\r\n\t\tSys.command(\"open\", [formattedPath]);\r\n\t\t#elseif linux\r\n\t\tvar cmd = Sys.command(\"xdg-open\", [formattedPath]);\r\n\t\tif (cmd != 0) cmd = Sys.command(\"/usr/bin/xdg-open\", [formattedPath]);\r\n\t\t#end\r\n\t}",
+			"doc": {
+				"text": "Browse a path in the operating system's explorer",
+				"params": {
+					"path": ""
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "timeToStr",
+			"args": [
+				{
+					"name": "time",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function timeToStr(time:Float)\r\n\t\treturn '${Std.string(Std.int(time / 60000)).addZeros(2)}:${Std.string(Std.int(time / 1000) % 60).addZeros(2)}.${Std.string(Std.int(time % 1000)).addZeros(3)}';",
+			"doc": {
+				"text": "Converts a timestamp to a readable format such as `01:22` (`mm:ss`)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "replay",
+			"args": [
+				{
+					"name": "sound",
+					"type": "FlxSound",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function replay(sound:FlxSound) sound.play(true, 0);",
+			"doc": {
+				"text": "Stops a sound, set its time to 0 then play it again.",
+				"params": {
+					"sound": "Sound to replay."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "maxInt",
+			"args": [
+				{
+					"name": "p1",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "p2",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function maxInt(p1:Int, p2:Int)\r\n\t\treturn p1 < p2 ? p2 : p1;",
+			"doc": {
+				"text": "Equivalent of `Math.max`, except doesn't require a Int -> Float -> Int conversion.",
+				"params": {
+					"p1": "",
+					"p2": ""
+				},
+				"returns": "return p1 < p2 ? p2 : p1",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "minInt",
+			"args": [
+				{
+					"name": "p1",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "p2",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function minInt(p1:Int, p2:Int)\r\n\t\treturn p1 > p2 ? p2 : p1;",
+			"doc": {
+				"text": "Equivalent of `Math.min`, except doesn't require a Int -> Float -> Int conversion.",
+				"params": {
+					"p1": "",
+					"p2": ""
+				},
+				"returns": "return p1 > p2 ? p2 : p1",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "floorInt",
+			"args": [
+				{
+					"name": "e",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function floorInt(e:Float) {\r\n\t\tvar r = Std.int(e);\r\n\t\tif (e < 0 && r != e)\r\n\t\t\tr--;\r\n\t\treturn r;\r\n\t}",
+			"doc": {
+				"text": "Equivalent of `Math.floor`, except doesn't require a Int -> Float -> Int conversion.",
+				"params": {
+					"e": "Value to get the floor of."
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "quantize",
+			"args": [
+				{
+					"name": "Value",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Quant",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function quantize(Value:Float, Quant:Float) {\r\n\t\treturn Math.fround(Value * Quant) / Quant;\r\n\t}",
+			"doc": {
+				"text": "Quantizes a value to a certain amount.\nExample: `quantize(2.5543, 1)` will return `2.0`\nExample: `quantize(2.5543, 10)` will return `2.5`\nExample: `quantize(2.5543, 100)` will return `2.55`",
+				"params": {
+					"Value": "Value to quantize",
+					"Quant": "Quantization amount"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "setMusic",
+			"args": [
+				{
+					"name": "frontEnd",
+					"type": "SoundFrontEnd",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "music",
+					"type": "FlxSound",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function setMusic(frontEnd:SoundFrontEnd, music:FlxSound) {\r\n\t\tif (frontEnd.music == music) return;\r\n\r\n\t\tif (frontEnd.music != null) @:privateAccess frontEnd.destroySound(frontEnd.music);\r\n\t\tfrontEnd.list.remove(music);\r\n\t\tfrontEnd.defaultMusicGroup.add(frontEnd.music = music);\r\n\t}",
+			"doc": {
+				"text": "Sets a SoundFrontEnd's music to a FlxSound.\nExample: `FlxG.sound.setMusic(music);`",
+				"params": {
+					"frontEnd": "SoundFrontEnd to set the music of",
+					"music": "Music"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "flxeaseFromString",
+			"args": [
+				{
+					"name": "mainEase",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "suffix",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function flxeaseFromString(mainEase:String, ?suffix:String)\r\n\t\treturn Reflect.field(FlxEase, mainEase + (mainEase == \"linear\" || suffix == null ? \"\" : suffix));",
+			"doc": {
+				"text": "Gets the FlxEase from a string.",
+				"params": {
+					"mainEase": "Main ease",
+					"suffix": "Suffix (Ignored if `mainEase` is `linear`)"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": [
+				"@:privateAccess",
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getFilename",
+			"args": [
+				{
+					"name": "file",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "@:noUsing public static inline function getFilename(file:String) {\r\n\t\tvar file = new haxe.io.Path(file);\r\n\t\treturn file.file;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getClosestAngle",
+			"args": [
+				{
+					"name": "angle",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "targetAngle",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "@:noUsing public static function getClosestAngle(angle:Float, targetAngle:Float):Float {\r\n\t\tvar diff:Float = angle - targetAngle;\r\n\t\tif (diff < -180) diff += 360;\r\n\t\telse if (diff > 180) diff -= 360;\r\n\t\treturn angle - diff;\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:noUsing"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "worldToScreenPosition",
+			"args": [
+				{
+					"name": "object",
+					"type": "FlxObject",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function worldToScreenPosition(object:FlxObject, ?camera:FlxCamera, ?result:FlxPoint) {\r\n\t\tif (result == null) result = FlxPoint.get();\r\n\t\tif (camera == null) camera = object.getDefaultCamera();\r\n\r\n\t\tresult.set(object.x, object.y);\r\n\t\tresult.x = (((result.x - camera.scroll.x * object.scrollFactor.x) * camera.zoom) - ((camera.width * 0.5) * (camera.zoom - camera.initialZoom)));\r\n\t\tresult.y = (((result.y - camera.scroll.y * object.scrollFactor.y) * camera.zoom) - ((camera.height * 0.5) * (camera.zoom - camera.initialZoom)));\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Returns the screen position of an object, while taking the camera zoom into account.",
+				"params": {
+					"object": "Any `FlxObject`",
+					"camera": "The desired \"screen\" coordinate space. If `null`, a default camera is used.",
+					"result": "Optional arg for the returning point"
+				},
+				"returns": "The screen position of the object.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pointToScreenPosition",
+			"args": [
+				{
+					"name": "object",
+					"type": "FlxPoint",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "FlxPoint",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function pointToScreenPosition(object:FlxPoint, ?camera:FlxCamera, ?result:FlxPoint) {\r\n\t\tif (result == null)\r\n\t\t\tresult = FlxPoint.get();\r\n\t\tif (camera == null)\r\n\t\t\tcamera = FlxG.camera;\r\n\r\n\t\tresult.set(object.x, object.y);\r\n\t\tresult.x = (((result.x - camera.scroll.x) * camera.zoom) - ((camera.width * 0.5) * (camera.zoom - camera.initialZoom)));\r\n\t\tresult.y = (((result.y - camera.scroll.y) * camera.zoom) - ((camera.height * 0.5) * (camera.zoom - camera.initialZoom)));\r\n\r\n\t\tobject.putWeak();\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Returns the screen position of an point, while taking the camera zoom into account.",
+				"params": {
+					"object": "Any `FlxObject`",
+					"camera": "The desired \"screen\" coordinate space. If `null`, `FlxG.camera` is used.",
+					"result": "Optional arg for the returning point"
+				},
+				"returns": "The screen position of the object.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "mouseOverlaps",
+			"args": [
+				{
+					"name": "sprite",
+					"type": "FlxObject",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "camera",
+					"type": "FlxCamera",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function mouseOverlaps(sprite:FlxObject, ?camera:FlxCamera) {\r\n\t\tvar camToCheck:FlxCamera = camera ?? sprite.camera;\r\n\t\tvar posthing:FlxPoint = FlxG.mouse.getWorldPosition(camToCheck);\r\n\r\n\t\treturn posthing != null && FlxMath.inBounds(posthing.x, sprite.x, sprite.x + sprite.width) && FlxMath.inBounds(posthing.y, sprite.y, sprite.y + sprite.height);\r\n\t}",
+			"doc": {
+				"text": "Returns if the mouse is overlapping the sprite on a given camera, taking the camera's position, scroll and zoom into account.",
+				"params": {
+					"sprite": "Any `FlxObject`",
+					"camera": "The camera you want to check overlap on. Uses the sprite's camera by default."
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "sortAlphabetically",
+			"args": [
+				{
+					"name": "array",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "lowercase",
+					"type": "Bool",
+					"optional": true,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function sortAlphabetically(array:Array<String>, ?lowercase:Bool=false) {\r\n\t\tarray.sort(function(a1, a2):Int {\r\n\t\t\tif(lowercase) {\r\n\t\t\t\ta1 = a1.toLowerCase();\r\n\t\t\t\ta2 = a2.toLowerCase();\r\n\t\t\t}\r\n\t\t\tif (a1 < a2) return -1;\r\n\t\t\tif (a1 > a2) return 1;\r\n\t\t\treturn 0;\r\n\t\t});\r\n\t\treturn array;\r\n\t}",
+			"doc": {
+				"text": "Sorts an array alphabetically.",
+				"params": {
+					"array": "Array to sort",
+					"lowercase": "Whenever the array should be sorted in lowercase"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "pushOnce",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function pushOnce<T>(array:Array<T>, element:T) {\r\n\t\t#if (haxe >= \"4.0.0\")\r\n\t\tif (!array.contains(element))\r\n\t\t\tarray.push(element);\r\n\t\t#else\r\n\t\tif (array.indexOf(element) == -1)\r\n\t\t\tarray.push(element);\r\n\t\t#end\r\n\t}\r\n\r\n\t#if !(haxe >= \"4.0.0\")\r\n\t/**\r\n\t * Checks if an array contains an element.\r\n\t * @param array Array to check\r\n\t * @param element Element to check\r\n\t */\r\n\tpublic static inline function contains<T>(array:Array<T>, element:T) {\r\n\t\treturn array.indexOf(element) != -1;\r\n\t}\r\n\t#end\r\n\r\n\tpublic static inline function repeat(str:String, times:Int) {\r\n\t\tvar r = new StringBuf();\r\n\t\tfor(i in 0...times)\r\n\t\t\tr.add(str);\r\n\t\treturn r.toString();\r\n\t}\r\n\r\n\tpublic static inline function bound(Value:Float, Min:Float, Max:Float):Float {\r\n\t\t#if cpp\r\n\t\tvar _hx_tmp1:Float = Value;\r\n\t\tvar _hx_tmp2:Float = Min;\r\n\t\tvar _hx_tmp3:Float = Max;\r\n\t\treturn untyped __cpp__(\"((({0}) < ({1})) ? ({1}) : (({0}) > ({2})) ? ({2}) : ({0}))\", _hx_tmp1, _hx_tmp2, _hx_tmp3);\r\n\t\t#else\r\n\t\treturn (Value < Min) ? Min : (Value > Max) ? Max : Value;\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static inline function boundInt(Value:Int, Min:Int, Max:Int):Int {\r\n\t\t#if cpp\r\n\t\tvar _hx_tmp1:Int = Value;\r\n\t\tvar _hx_tmp2:Int = Min;\r\n\t\tvar _hx_tmp3:Int = Max;\r\n\t\treturn untyped __cpp__(\"((({0}) < ({1})) ? ({1}) : (({0}) > ({2})) ? ({2}) : ({0}))\", _hx_tmp1, _hx_tmp2, _hx_tmp3);\r\n\t\t#else\r\n\t\treturn (Value < Min) ? Min : (Value > Max) ? Max : Value;\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static inline function boolToInt(b:Bool):Int {\r\n\t\t#if cpp\r\n\t\treturn untyped __cpp__(\"(({0}) ? 1 : 0)\", b);\r\n\t\t#else\r\n\t\treturn b ? 1 : 0;\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Converts a string of \"1..3,5,7..9,8..5\" into an array of numbers like [1,2,3,5,7,8,9,8,7,6,5]\r\n\t * @param input String to parse\r\n\t * @return Array of numbers\r\n\t */\r\n\tpublic static function parseNumberRange(input:String):Array<Int> {\r\n\t\tvar result:Array<Int> = [];\r\n\t\tvar parts:Array<String> = input.split(\",\");\r\n\r\n\t\tfor (part in parts) {\r\n\t\t\tpart = part.trim();\r\n\t\t\tvar idx = part.indexOf(\"..\");\r\n\t\t\tif (idx != -1) {\r\n\t\t\t\tvar start = Std.parseInt(part.substring(0, idx).trim());\r\n\t\t\t\tvar end = Std.parseInt(part.substring(idx + 2).trim());\r\n\r\n\t\t\t\tif(start == null || end == null) {\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (start < end) {\r\n\t\t\t\t\tfor (j in start...end + 1) {\r\n\t\t\t\t\t\tresult.push(j);\r\n\t\t\t\t\t}\r\n\t\t\t\t} else {\r\n\t\t\t\t\tfor (j in end...start + 1) {\r\n\t\t\t\t\t\tresult.push(start + end - j);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t} else {\r\n\t\t\t\tvar num = Std.parseInt(part);\r\n\t\t\t\tif (num != null) {\r\n\t\t\t\t\tresult.push(num);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn result;\r\n\t}\r\n\r\n\t/**\r\n\t * Converts an array of numbers into a string of ranges.\r\n\t * Example: [1,2,3,5,7,8,9,8,7,6,5] -> \"1..3,5,7..9,8..5\"\r\n\t * @param numbers Array of numbers\r\n\t * @param separator Separator between ranges\r\n\t * @return String representing the ranges\r\n\t */\r\n\tpublic static function formatNumberRange(numbers:Array<Int>, separator:String = \",\"):String {\r\n\t\tif (numbers.length == 0) return \"\";\r\n\r\n\t\tvar result:Array<String> = [];\r\n\t\tvar i = 0;\r\n\r\n\t\twhile (i < numbers.length) {\r\n\t\t\tvar start = numbers[i];\r\n\t\t\tvar end = start;\r\n\t\t\tvar direction = 0; // 0: no sequence, 1: increasing, -1: decreasing\r\n\r\n\t\t\tif (i + 1 < numbers.length) { // detect direction of sequence\r\n\t\t\t\tif (numbers[i + 1] == end + 1) {\r\n\t\t\t\t\tdirection = 1;\r\n\t\t\t\t} else if (numbers[i + 1] == end - 1) {\r\n\t\t\t\t\tdirection = -1;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif(direction != 0) {\r\n\t\t\t\twhile (i + 1 < numbers.length && (numbers[i + 1] == end + direction)) {\r\n\t\t\t\t\tend = numbers[i + 1];\r\n\t\t\t\t\ti++;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (start == end) { // no direction\r\n\t\t\t\tresult.push('${start}');\r\n\t\t\t} else if (start + direction == end) { // 1 step increment\r\n\t\t\t\tresult.push('${start},${end}');\r\n\t\t\t} else { // store as range\r\n\t\t\t\tresult.push('${start}..${end}');\r\n\t\t\t}\r\n\r\n\t\t\ti++;\r\n\t\t}\r\n\r\n\t\treturn result.join(separator);\r\n\t}\r\n\r\n\t/**\r\n\t * Deep flattens an array.\r\n\t * Example: `deepFlatten([1, [2, 3], 4])` will return `[1, 2, 3, 4]`\r\n\t * @param arr Array to flatten\r\n\t * @param result Result array\r\n\t */\r\n\tpublic static function deepFlatten(arr:Array<Dynamic>, ?result:Array<Dynamic>):Array<Dynamic> {\r\n\t\tif(arr == null) return [];\r\n\t\tif(result == null) result = [];\r\n\t\tfor (e in arr) {\r\n\t\t\tif (Std.isOfType(e, Array)) {\r\n\t\t\t\tdeepFlatten(e, result);\r\n\t\t\t} else {\r\n\t\t\t\tresult.push(e);\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn result;\r\n\t}\r\n\r\n\t/**\r\n\t * Gets the luminance of the given color\r\n\t * @param color Color to use\r\n\t * @return Number between 0 and 1\r\n\t*/\r\n\tpublic static function getLuminance(color:FlxColor):Float {\r\n\t\treturn (0.2126*color.redFloat + 0.7152*color.greenFloat + 0.0722*color.blueFloat);\r\n\t}\r\n\r\n\t/**\r\n\t * ! REQUIRES FULL PATH!!!\r\n\t * @param path\r\n\t * @return Bool\r\n\t */\r\n\tpublic static function imageHasFrameData(path:String):String {\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"xml\"))) return \"xml\";\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"txt\"))) return \"txt\";\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"json\"))) return \"json\";\r\n\r\n\t\treturn null;\r\n\t}\r\n\r\n\t// loads frames with no image, but with data, so you can parse it\r\n\tpublic static function loadFramesFromData(data:String, ext:String = null):FlxFramesCollection {\r\n\t\tvar frames:FlxFramesCollection = null;\r\n\t\tvar tempBitmap:BitmapData = new BitmapData(1, 1, false);\r\n\r\n\t\t// Worlds hackiest work around alert???\r\n\t\tvar graphic:FlxGraphic = FlxG.bitmap.add(tempBitmap);\r\n\t\t@:privateAccess {\r\n\t\t\t// prevent errors from being shown, such as Size is too small\r\n\t\t\tgraphic.width = 9999999;\r\n\t\t\tgraphic.height = 9999999;\r\n\t\t}\r\n\r\n\t\ttry {\r\n\t\t\tswitch (ext) {\r\n\t\t\t\tcase \"xml\": frames = FlxAtlasFrames.fromSparrow(graphic, Xml.parse(data));\r\n\t\t\t\tcase \"txt\": frames = FlxAtlasFrames.fromSpriteSheetPacker(graphic, data);\r\n\t\t\t\tcase \"json\": frames = FlxAtlasFrames.fromAseprite(graphic, data);\r\n\t\t\t}\r\n\t\t} catch (e) {trace(e);}\r\n\r\n\t\treturn frames;\r\n\t}\r\n\r\n\tpublic static function removeBOM(str:String):String {\r\n\t\treturn StringTools.replace(str, String.fromCharCode(0xFEFF), \"\");\r\n\t}\r\n\r\n\tpublic static function getAnimsListFromFrames(frames:FlxFramesCollection, ext:String = null):Array<String> {\r\n\t\tif (frames == null) return [];\r\n\r\n\t\tvar animsList:Array<String> = [];\r\n\t\tfor (frame in frames.frames) {\r\n\t\t\tvar animName:String = ext == \"txt\" ? frame.name.split(\"_\")[0] : frame.name.substr(0, frame.name.length-4);\r\n\t\t\tif (!animsList.contains(animName))\r\n\t\t\t\tanimsList.push(animName);\r\n\t\t}\r\n\r\n\t\treturn animsList;\r\n\t}\r\n\r\n\tpublic static function getAnimsListFromAtlas(atlas:AnimationJson):Array<String> {\r\n\t\tif (atlas == null) return [];\r\n\r\n\t\tvar animsList:Array<String> = [];\r\n\t\tif (atlas.AN.SN != null) animsList.push(atlas.AN.SN);\r\n\t\tif (atlas.SD != null)\r\n\t\t\tfor (symbol in atlas.SD)\r\n\t\t\t\tif (symbol.SN != null) animsList.push(symbol.SN);\r\n\r\n\t\treturn animsList;\r\n\t}\r\n\r\n\tpublic static function getAnimsListFromSprite(spr:FunkinSprite):Array<String> {\r\n\t\treturn getAnimsListFromFrames(spr.frames);\r\n\t}\r\n\r\n\t// TODO: check this for bugs\r\n\t// Code from https://github.com/elnabo/equals/blob/master/src/equals/Equal.hx, (MIT License), but updated to work with haxe 4\r\n\tpublic static function deepEqual<T> (a:T, b:T) : Bool {\r\n\t\tif (a == b) { return true; } // if physical equality\r\n\t\tif (isNull(a) ||  isNull(b)) {\r\n\t\t\treturn false;\r\n\t\t}\r\n\r\n\t\tswitch (Type.typeof(a)) {\r\n\t\t\tcase TNull, TInt, TBool, TUnknown:\r\n\t\t\t\treturn a == b;\r\n\t\t\tcase TFloat:\r\n\t\t\t\treturn Math.isNaN(cast a) && Math.isNaN(cast b); // only valid true result remaining\r\n\t\t\tcase TFunction:\r\n\t\t\t\treturn Reflect.compareMethods(a, b); // only physical equality can be tested for function\r\n\t\t\tcase TEnum(_):\r\n\t\t\t\tif (EnumValueTools.getIndex(cast a) != EnumValueTools.getIndex(cast b)) {\r\n\t\t\t\t\treturn false;\r\n\t\t\t\t}\r\n\t\t\t\tvar a_args = EnumValueTools.getParameters(cast a);\r\n\t\t\t\tvar b_args = EnumValueTools.getParameters(cast b);\r\n\t\t\t\treturn deepEqual(a_args, b_args);\r\n\t\t\tcase TClass(_):\r\n\t\t\t\tif ((a is String) && (b is String)) {\r\n\t\t\t\t\treturn a == b;\r\n\t\t\t\t}\r\n\t\t\t\tif ((a is Array) && (b is Array)) {\r\n\t\t\t\t\tvar a = cast(a, Array<Dynamic>);\r\n\t\t\t\t\tvar b = cast(b, Array<Dynamic>);\r\n\t\t\t\t\tif (a.length != b.length) { return false; }\r\n\t\t\t\t\tfor (i in 0...a.length) {\r\n\t\t\t\t\t\tif (!deepEqual(a[i], b[i])) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is IMap) && (b is IMap)) {\r\n\t\t\t\t\tvar a = cast(a, IMap<Dynamic, Dynamic>);\r\n\t\t\t\t\tvar b = cast(b, IMap<Dynamic, Dynamic>);\r\n\t\t\t\t\tvar a_keys = [ for (key in a.keys()) key ];\r\n\t\t\t\t\tvar b_keys = [ for (key in b.keys()) key ];\r\n\t\t\t\t\ta_keys.sort(Reflect.compare);\r\n\t\t\t\t\tb_keys.sort(Reflect.compare);\r\n\t\t\t\t\tif (!deepEqual(a_keys, b_keys)) { return false; }\r\n\t\t\t\t\tfor (key in a_keys) {\r\n\t\t\t\t\t\tif (!deepEqual(a.get(key), b.get(key))) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is Date) && (b is Date)) {\r\n\t\t\t\t\treturn cast(a, Date).getTime() == cast(b, Date).getTime();\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is haxe.io.Bytes) && (b is haxe.io.Bytes)) {\r\n\t\t\t\t\treturn deepEqual(cast(a, haxe.io.Bytes).getData(), cast(b, haxe.io.Bytes).getData());\r\n\t\t\t\t}\r\n\r\n\t\t\tcase TObject:\r\n\t\t}\r\n\r\n\t\tfor (field in Reflect.fields(a)) {\r\n\t\t\tvar pa = Reflect.field(a, field);\r\n\t\t\tvar pb = Reflect.field(b, field);\r\n\t\t\tif (isFunction(pa)) {\r\n\t\t\t\t// ignore function as only physical equality can be tested, unless null\r\n\t\t\t\tif (isNull(pa) != isNull(pb)) {\r\n\t\t\t\t\treturn false;\r\n\t\t\t\t}\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tif (!deepEqual(pa, pb)) {\r\n\t\t\t\treturn false;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn true;\r\n\t}\r\n\r\n\tstatic inline function isNull(a:Dynamic):Bool {\r\n\t\treturn Type.enumEq(Type.typeof(a), TNull);\r\n\t}\r\n\r\n\tstatic inline function isFunction(a:Dynamic):Bool {\r\n\t\treturn Type.enumEq(Type.typeof(a), TFunction);\r\n\t}\r\n\r\n\tpublic static inline function isMapEmpty<K, V>(map: Map<K, V>): Bool {\r\n\t\treturn !map.keys().hasNext();\r\n\t}\r\n\r\n\tpublic inline static function parsePropertyString(fieldPath:String):Array<OneOfTwo<String, Int>> {\r\n\t\treturn FlxTween.parseFieldString(fieldPath);\r\n\t}\r\n\r\n\tpublic static function stringifyFieldsPath(fields:Array<OneOfTwo<String, Int>>):String {\r\n\t\tvar str = new StringBuf();\r\n\t\tvar first = true;\r\n\t\tfor (field in fields) {\r\n\t\t\tif (Type.typeof(field) == TInt) {\r\n\t\t\t\tstr.add('[${field}]');\r\n\t\t\t} else {\r\n\t\t\t\tif (!first)\r\n\t\t\t\t\tstr.add('.');\r\n\t\t\t\tstr.add(field);\r\n\t\t\t}\r\n\t\t\tfirst = false;\r\n\t\t}\r\n\t\treturn str.toString();\r\n\t}\r\n\r\n\tpublic static function parseProperty(target:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar field = CoolUtil.last(fields);\r\n\t\tfor (i in 0...fields.length - 1) {\r\n\t\t\tvar component = fields[i];\r\n\t\t\tif (Type.typeof(component) == TInt) {\r\n\t\t\t\tif ((target is Array)) {\r\n\t\t\t\t\tvar index:Int = cast component;\r\n\t\t\t\t\tvar arr:Array<Dynamic> = cast target;\r\n\t\t\t\t\ttarget = arr[index];\r\n\t\t\t\t}\r\n\t\t\t} else { // TClass(String)\r\n\t\t\t\ttarget = Reflect.getProperty(target, component);\r\n\t\t\t}\r\n\t\t\tif (!Reflect.isObject(target) && !(target is Array))\r\n\t\t\t\tthrow 'The object does not have the property \"$component\" in \"${stringifyFieldsPath(fields)}\"';\r\n\t\t}\r\n\t\treturn new PropertyInfo(target, field);\r\n\t}\r\n\r\n\tpublic static function cloneProperty(toTarget:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>, fromTarget:Dynamic):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar toProperty = CoolUtil.parseProperty(toTarget, fields);\r\n\t\tvar fromProperty = CoolUtil.parseProperty(fromTarget, fields);\r\n\r\n\t\treturn toProperty.setValue(fromProperty.getValue());\r\n\t}\r\n\r\n}\r\n\r\nclass PropertyInfo {\r\n\tpublic var object:Dynamic;",
+			"doc": {
+				"text": "Pushes an element to an array, but only if it doesn't already exist.",
+				"params": {
+					"array": "Array to push to",
+					"element": "Element to push"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "contains",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function contains<T>(array:Array<T>, element:T) {\r\n\t\treturn array.indexOf(element) != -1;\r\n\t}\r\n\t#end\r\n\r\n\tpublic static inline function repeat(str:String, times:Int) {\r\n\t\tvar r = new StringBuf();\r\n\t\tfor(i in 0...times)\r\n\t\t\tr.add(str);\r\n\t\treturn r.toString();\r\n\t}\r\n\r\n\tpublic static inline function bound(Value:Float, Min:Float, Max:Float):Float {\r\n\t\t#if cpp\r\n\t\tvar _hx_tmp1:Float = Value;\r\n\t\tvar _hx_tmp2:Float = Min;\r\n\t\tvar _hx_tmp3:Float = Max;\r\n\t\treturn untyped __cpp__(\"((({0}) < ({1})) ? ({1}) : (({0}) > ({2})) ? ({2}) : ({0}))\", _hx_tmp1, _hx_tmp2, _hx_tmp3);\r\n\t\t#else\r\n\t\treturn (Value < Min) ? Min : (Value > Max) ? Max : Value;\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static inline function boundInt(Value:Int, Min:Int, Max:Int):Int {\r\n\t\t#if cpp\r\n\t\tvar _hx_tmp1:Int = Value;\r\n\t\tvar _hx_tmp2:Int = Min;\r\n\t\tvar _hx_tmp3:Int = Max;\r\n\t\treturn untyped __cpp__(\"((({0}) < ({1})) ? ({1}) : (({0}) > ({2})) ? ({2}) : ({0}))\", _hx_tmp1, _hx_tmp2, _hx_tmp3);\r\n\t\t#else\r\n\t\treturn (Value < Min) ? Min : (Value > Max) ? Max : Value;\r\n\t\t#end\r\n\t}\r\n\r\n\tpublic static inline function boolToInt(b:Bool):Int {\r\n\t\t#if cpp\r\n\t\treturn untyped __cpp__(\"(({0}) ? 1 : 0)\", b);\r\n\t\t#else\r\n\t\treturn b ? 1 : 0;\r\n\t\t#end\r\n\t}\r\n\r\n\t/**\r\n\t * Converts a string of \"1..3,5,7..9,8..5\" into an array of numbers like [1,2,3,5,7,8,9,8,7,6,5]\r\n\t * @param input String to parse\r\n\t * @return Array of numbers\r\n\t */\r\n\tpublic static function parseNumberRange(input:String):Array<Int> {\r\n\t\tvar result:Array<Int> = [];\r\n\t\tvar parts:Array<String> = input.split(\",\");\r\n\r\n\t\tfor (part in parts) {\r\n\t\t\tpart = part.trim();\r\n\t\t\tvar idx = part.indexOf(\"..\");\r\n\t\t\tif (idx != -1) {\r\n\t\t\t\tvar start = Std.parseInt(part.substring(0, idx).trim());\r\n\t\t\t\tvar end = Std.parseInt(part.substring(idx + 2).trim());\r\n\r\n\t\t\t\tif(start == null || end == null) {\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (start < end) {\r\n\t\t\t\t\tfor (j in start...end + 1) {\r\n\t\t\t\t\t\tresult.push(j);\r\n\t\t\t\t\t}\r\n\t\t\t\t} else {\r\n\t\t\t\t\tfor (j in end...start + 1) {\r\n\t\t\t\t\t\tresult.push(start + end - j);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t} else {\r\n\t\t\t\tvar num = Std.parseInt(part);\r\n\t\t\t\tif (num != null) {\r\n\t\t\t\t\tresult.push(num);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn result;\r\n\t}\r\n\r\n\t/**\r\n\t * Converts an array of numbers into a string of ranges.\r\n\t * Example: [1,2,3,5,7,8,9,8,7,6,5] -> \"1..3,5,7..9,8..5\"\r\n\t * @param numbers Array of numbers\r\n\t * @param separator Separator between ranges\r\n\t * @return String representing the ranges\r\n\t */\r\n\tpublic static function formatNumberRange(numbers:Array<Int>, separator:String = \",\"):String {\r\n\t\tif (numbers.length == 0) return \"\";\r\n\r\n\t\tvar result:Array<String> = [];\r\n\t\tvar i = 0;\r\n\r\n\t\twhile (i < numbers.length) {\r\n\t\t\tvar start = numbers[i];\r\n\t\t\tvar end = start;\r\n\t\t\tvar direction = 0; // 0: no sequence, 1: increasing, -1: decreasing\r\n\r\n\t\t\tif (i + 1 < numbers.length) { // detect direction of sequence\r\n\t\t\t\tif (numbers[i + 1] == end + 1) {\r\n\t\t\t\t\tdirection = 1;\r\n\t\t\t\t} else if (numbers[i + 1] == end - 1) {\r\n\t\t\t\t\tdirection = -1;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif(direction != 0) {\r\n\t\t\t\twhile (i + 1 < numbers.length && (numbers[i + 1] == end + direction)) {\r\n\t\t\t\t\tend = numbers[i + 1];\r\n\t\t\t\t\ti++;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (start == end) { // no direction\r\n\t\t\t\tresult.push('${start}');\r\n\t\t\t} else if (start + direction == end) { // 1 step increment\r\n\t\t\t\tresult.push('${start},${end}');\r\n\t\t\t} else { // store as range\r\n\t\t\t\tresult.push('${start}..${end}');\r\n\t\t\t}\r\n\r\n\t\t\ti++;\r\n\t\t}\r\n\r\n\t\treturn result.join(separator);\r\n\t}\r\n\r\n\t/**\r\n\t * Deep flattens an array.\r\n\t * Example: `deepFlatten([1, [2, 3], 4])` will return `[1, 2, 3, 4]`\r\n\t * @param arr Array to flatten\r\n\t * @param result Result array\r\n\t */\r\n\tpublic static function deepFlatten(arr:Array<Dynamic>, ?result:Array<Dynamic>):Array<Dynamic> {\r\n\t\tif(arr == null) return [];\r\n\t\tif(result == null) result = [];\r\n\t\tfor (e in arr) {\r\n\t\t\tif (Std.isOfType(e, Array)) {\r\n\t\t\t\tdeepFlatten(e, result);\r\n\t\t\t} else {\r\n\t\t\t\tresult.push(e);\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn result;\r\n\t}\r\n\r\n\t/**\r\n\t * Gets the luminance of the given color\r\n\t * @param color Color to use\r\n\t * @return Number between 0 and 1\r\n\t*/\r\n\tpublic static function getLuminance(color:FlxColor):Float {\r\n\t\treturn (0.2126*color.redFloat + 0.7152*color.greenFloat + 0.0722*color.blueFloat);\r\n\t}\r\n\r\n\t/**\r\n\t * ! REQUIRES FULL PATH!!!\r\n\t * @param path\r\n\t * @return Bool\r\n\t */\r\n\tpublic static function imageHasFrameData(path:String):String {\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"xml\"))) return \"xml\";\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"txt\"))) return \"txt\";\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"json\"))) return \"json\";\r\n\r\n\t\treturn null;\r\n\t}\r\n\r\n\t// loads frames with no image, but with data, so you can parse it\r\n\tpublic static function loadFramesFromData(data:String, ext:String = null):FlxFramesCollection {\r\n\t\tvar frames:FlxFramesCollection = null;\r\n\t\tvar tempBitmap:BitmapData = new BitmapData(1, 1, false);\r\n\r\n\t\t// Worlds hackiest work around alert???\r\n\t\tvar graphic:FlxGraphic = FlxG.bitmap.add(tempBitmap);\r\n\t\t@:privateAccess {\r\n\t\t\t// prevent errors from being shown, such as Size is too small\r\n\t\t\tgraphic.width = 9999999;\r\n\t\t\tgraphic.height = 9999999;\r\n\t\t}\r\n\r\n\t\ttry {\r\n\t\t\tswitch (ext) {\r\n\t\t\t\tcase \"xml\": frames = FlxAtlasFrames.fromSparrow(graphic, Xml.parse(data));\r\n\t\t\t\tcase \"txt\": frames = FlxAtlasFrames.fromSpriteSheetPacker(graphic, data);\r\n\t\t\t\tcase \"json\": frames = FlxAtlasFrames.fromAseprite(graphic, data);\r\n\t\t\t}\r\n\t\t} catch (e) {trace(e);}\r\n\r\n\t\treturn frames;\r\n\t}\r\n\r\n\tpublic static function removeBOM(str:String):String {\r\n\t\treturn StringTools.replace(str, String.fromCharCode(0xFEFF), \"\");\r\n\t}\r\n\r\n\tpublic static function getAnimsListFromFrames(frames:FlxFramesCollection, ext:String = null):Array<String> {\r\n\t\tif (frames == null) return [];\r\n\r\n\t\tvar animsList:Array<String> = [];\r\n\t\tfor (frame in frames.frames) {\r\n\t\t\tvar animName:String = ext == \"txt\" ? frame.name.split(\"_\")[0] : frame.name.substr(0, frame.name.length-4);\r\n\t\t\tif (!animsList.contains(animName))\r\n\t\t\t\tanimsList.push(animName);\r\n\t\t}\r\n\r\n\t\treturn animsList;\r\n\t}\r\n\r\n\tpublic static function getAnimsListFromAtlas(atlas:AnimationJson):Array<String> {\r\n\t\tif (atlas == null) return [];\r\n\r\n\t\tvar animsList:Array<String> = [];\r\n\t\tif (atlas.AN.SN != null) animsList.push(atlas.AN.SN);\r\n\t\tif (atlas.SD != null)\r\n\t\t\tfor (symbol in atlas.SD)\r\n\t\t\t\tif (symbol.SN != null) animsList.push(symbol.SN);\r\n\r\n\t\treturn animsList;\r\n\t}\r\n\r\n\tpublic static function getAnimsListFromSprite(spr:FunkinSprite):Array<String> {\r\n\t\treturn getAnimsListFromFrames(spr.frames);\r\n\t}\r\n\r\n\t// TODO: check this for bugs\r\n\t// Code from https://github.com/elnabo/equals/blob/master/src/equals/Equal.hx, (MIT License), but updated to work with haxe 4\r\n\tpublic static function deepEqual<T> (a:T, b:T) : Bool {\r\n\t\tif (a == b) { return true; } // if physical equality\r\n\t\tif (isNull(a) ||  isNull(b)) {\r\n\t\t\treturn false;\r\n\t\t}\r\n\r\n\t\tswitch (Type.typeof(a)) {\r\n\t\t\tcase TNull, TInt, TBool, TUnknown:\r\n\t\t\t\treturn a == b;\r\n\t\t\tcase TFloat:\r\n\t\t\t\treturn Math.isNaN(cast a) && Math.isNaN(cast b); // only valid true result remaining\r\n\t\t\tcase TFunction:\r\n\t\t\t\treturn Reflect.compareMethods(a, b); // only physical equality can be tested for function\r\n\t\t\tcase TEnum(_):\r\n\t\t\t\tif (EnumValueTools.getIndex(cast a) != EnumValueTools.getIndex(cast b)) {\r\n\t\t\t\t\treturn false;\r\n\t\t\t\t}\r\n\t\t\t\tvar a_args = EnumValueTools.getParameters(cast a);\r\n\t\t\t\tvar b_args = EnumValueTools.getParameters(cast b);\r\n\t\t\t\treturn deepEqual(a_args, b_args);\r\n\t\t\tcase TClass(_):\r\n\t\t\t\tif ((a is String) && (b is String)) {\r\n\t\t\t\t\treturn a == b;\r\n\t\t\t\t}\r\n\t\t\t\tif ((a is Array) && (b is Array)) {\r\n\t\t\t\t\tvar a = cast(a, Array<Dynamic>);\r\n\t\t\t\t\tvar b = cast(b, Array<Dynamic>);\r\n\t\t\t\t\tif (a.length != b.length) { return false; }\r\n\t\t\t\t\tfor (i in 0...a.length) {\r\n\t\t\t\t\t\tif (!deepEqual(a[i], b[i])) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is IMap) && (b is IMap)) {\r\n\t\t\t\t\tvar a = cast(a, IMap<Dynamic, Dynamic>);\r\n\t\t\t\t\tvar b = cast(b, IMap<Dynamic, Dynamic>);\r\n\t\t\t\t\tvar a_keys = [ for (key in a.keys()) key ];\r\n\t\t\t\t\tvar b_keys = [ for (key in b.keys()) key ];\r\n\t\t\t\t\ta_keys.sort(Reflect.compare);\r\n\t\t\t\t\tb_keys.sort(Reflect.compare);\r\n\t\t\t\t\tif (!deepEqual(a_keys, b_keys)) { return false; }\r\n\t\t\t\t\tfor (key in a_keys) {\r\n\t\t\t\t\t\tif (!deepEqual(a.get(key), b.get(key))) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is Date) && (b is Date)) {\r\n\t\t\t\t\treturn cast(a, Date).getTime() == cast(b, Date).getTime();\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is haxe.io.Bytes) && (b is haxe.io.Bytes)) {\r\n\t\t\t\t\treturn deepEqual(cast(a, haxe.io.Bytes).getData(), cast(b, haxe.io.Bytes).getData());\r\n\t\t\t\t}\r\n\r\n\t\t\tcase TObject:\r\n\t\t}\r\n\r\n\t\tfor (field in Reflect.fields(a)) {\r\n\t\t\tvar pa = Reflect.field(a, field);\r\n\t\t\tvar pb = Reflect.field(b, field);\r\n\t\t\tif (isFunction(pa)) {\r\n\t\t\t\t// ignore function as only physical equality can be tested, unless null\r\n\t\t\t\tif (isNull(pa) != isNull(pb)) {\r\n\t\t\t\t\treturn false;\r\n\t\t\t\t}\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tif (!deepEqual(pa, pb)) {\r\n\t\t\t\treturn false;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn true;\r\n\t}\r\n\r\n\tstatic inline function isNull(a:Dynamic):Bool {\r\n\t\treturn Type.enumEq(Type.typeof(a), TNull);\r\n\t}\r\n\r\n\tstatic inline function isFunction(a:Dynamic):Bool {\r\n\t\treturn Type.enumEq(Type.typeof(a), TFunction);\r\n\t}\r\n\r\n\tpublic static inline function isMapEmpty<K, V>(map: Map<K, V>): Bool {\r\n\t\treturn !map.keys().hasNext();\r\n\t}\r\n\r\n\tpublic inline static function parsePropertyString(fieldPath:String):Array<OneOfTwo<String, Int>> {\r\n\t\treturn FlxTween.parseFieldString(fieldPath);\r\n\t}\r\n\r\n\tpublic static function stringifyFieldsPath(fields:Array<OneOfTwo<String, Int>>):String {\r\n\t\tvar str = new StringBuf();\r\n\t\tvar first = true;\r\n\t\tfor (field in fields) {\r\n\t\t\tif (Type.typeof(field) == TInt) {\r\n\t\t\t\tstr.add('[${field}]');\r\n\t\t\t} else {\r\n\t\t\t\tif (!first)\r\n\t\t\t\t\tstr.add('.');\r\n\t\t\t\tstr.add(field);\r\n\t\t\t}\r\n\t\t\tfirst = false;\r\n\t\t}\r\n\t\treturn str.toString();\r\n\t}\r\n\r\n\tpublic static function parseProperty(target:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar field = CoolUtil.last(fields);\r\n\t\tfor (i in 0...fields.length - 1) {\r\n\t\t\tvar component = fields[i];\r\n\t\t\tif (Type.typeof(component) == TInt) {\r\n\t\t\t\tif ((target is Array)) {\r\n\t\t\t\t\tvar index:Int = cast component;\r\n\t\t\t\t\tvar arr:Array<Dynamic> = cast target;\r\n\t\t\t\t\ttarget = arr[index];\r\n\t\t\t\t}\r\n\t\t\t} else { // TClass(String)\r\n\t\t\t\ttarget = Reflect.getProperty(target, component);\r\n\t\t\t}\r\n\t\t\tif (!Reflect.isObject(target) && !(target is Array))\r\n\t\t\t\tthrow 'The object does not have the property \"$component\" in \"${stringifyFieldsPath(fields)}\"';\r\n\t\t}\r\n\t\treturn new PropertyInfo(target, field);\r\n\t}\r\n\r\n\tpublic static function cloneProperty(toTarget:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>, fromTarget:Dynamic):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar toProperty = CoolUtil.parseProperty(toTarget, fields);\r\n\t\tvar fromProperty = CoolUtil.parseProperty(fromTarget, fields);\r\n\r\n\t\treturn toProperty.setValue(fromProperty.getValue());\r\n\t}\r\n\r\n}\r\n\r\nclass PropertyInfo {\r\n\tpublic var object:Dynamic;",
+			"doc": {
+				"text": "Checks if an array contains an element.",
+				"params": {
+					"array": "Array to check",
+					"element": "Element to check"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "repeat",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "times",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "#end\r\n\r\n\tpublic static inline function repeat(str:String, times:Int) {\r\n\t\tvar r = new StringBuf();\r\n\t\tfor(i in 0...times)\r\n\t\t\tr.add(str);\r\n\t\treturn r.toString();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "bound",
+			"args": [
+				{
+					"name": "Value",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Min",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Max",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function bound(Value:Float, Min:Float, Max:Float):Float {\r\n\t\t#if cpp\r\n\t\tvar _hx_tmp1:Float = Value;\r\n\t\tvar _hx_tmp2:Float = Min;\r\n\t\tvar _hx_tmp3:Float = Max;\r\n\t\treturn untyped __cpp__(\"((({0}) < ({1})) ? ({1}) : (({0}) > ({2})) ? ({2}) : ({0}))\", _hx_tmp1, _hx_tmp2, _hx_tmp3);\r\n\t\t#else\r\n\t\treturn (Value < Min) ? Min : (Value > Max) ? Max : Value;\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "boundInt",
+			"args": [
+				{
+					"name": "Value",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Min",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "Max",
+					"type": "Int",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function boundInt(Value:Int, Min:Int, Max:Int):Int {\r\n\t\t#if cpp\r\n\t\tvar _hx_tmp1:Int = Value;\r\n\t\tvar _hx_tmp2:Int = Min;\r\n\t\tvar _hx_tmp3:Int = Max;\r\n\t\treturn untyped __cpp__(\"((({0}) < ({1})) ? ({1}) : (({0}) > ({2})) ? ({2}) : ({0}))\", _hx_tmp1, _hx_tmp2, _hx_tmp3);\r\n\t\t#else\r\n\t\treturn (Value < Min) ? Min : (Value > Max) ? Max : Value;\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "boolToInt",
+			"args": [
+				{
+					"name": "b",
+					"type": "Bool",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Int",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function boolToInt(b:Bool):Int {\r\n\t\t#if cpp\r\n\t\treturn untyped __cpp__(\"(({0}) ? 1 : 0)\", b);\r\n\t\t#else\r\n\t\treturn b ? 1 : 0;\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseNumberRange",
+			"args": [
+				{
+					"name": "input",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<Int>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseNumberRange(input:String):Array<Int> {\r\n\t\tvar result:Array<Int> = [];\r\n\t\tvar parts:Array<String> = input.split(\",\");\r\n\r\n\t\tfor (part in parts) {\r\n\t\t\tpart = part.trim();\r\n\t\t\tvar idx = part.indexOf(\"..\");\r\n\t\t\tif (idx != -1) {\r\n\t\t\t\tvar start = Std.parseInt(part.substring(0, idx).trim());\r\n\t\t\t\tvar end = Std.parseInt(part.substring(idx + 2).trim());\r\n\r\n\t\t\t\tif(start == null || end == null) {\r\n\t\t\t\t\tcontinue;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif (start < end) {\r\n\t\t\t\t\tfor (j in start...end + 1) {\r\n\t\t\t\t\t\tresult.push(j);\r\n\t\t\t\t\t}\r\n\t\t\t\t} else {\r\n\t\t\t\t\tfor (j in end...start + 1) {\r\n\t\t\t\t\t\tresult.push(start + end - j);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t} else {\r\n\t\t\t\tvar num = Std.parseInt(part);\r\n\t\t\t\tif (num != null) {\r\n\t\t\t\t\tresult.push(num);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Converts a string of \"1..3,5,7..9,8..5\" into an array of numbers like [1,2,3,5,7,8,9,8,7,6,5]",
+				"params": {
+					"input": "String to parse"
+				},
+				"returns": "Array of numbers",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "formatNumberRange",
+			"args": [
+				{
+					"name": "numbers",
+					"type": "Array<Int>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "separator",
+					"type": "String",
+					"optional": false,
+					"def": "\""
+				},
+				{
+					"name": "\"",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function formatNumberRange(numbers:Array<Int>, separator:String = \",\"):String {\r\n\t\tif (numbers.length == 0) return \"\";\r\n\r\n\t\tvar result:Array<String> = [];\r\n\t\tvar i = 0;\r\n\r\n\t\twhile (i < numbers.length) {\r\n\t\t\tvar start = numbers[i];\r\n\t\t\tvar end = start;\r\n\t\t\tvar direction = 0; // 0: no sequence, 1: increasing, -1: decreasing\r\n\r\n\t\t\tif (i + 1 < numbers.length) { // detect direction of sequence\r\n\t\t\t\tif (numbers[i + 1] == end + 1) {\r\n\t\t\t\t\tdirection = 1;\r\n\t\t\t\t} else if (numbers[i + 1] == end - 1) {\r\n\t\t\t\t\tdirection = -1;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif(direction != 0) {\r\n\t\t\t\twhile (i + 1 < numbers.length && (numbers[i + 1] == end + direction)) {\r\n\t\t\t\t\tend = numbers[i + 1];\r\n\t\t\t\t\ti++;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\r\n\t\t\tif (start == end) { // no direction\r\n\t\t\t\tresult.push('${start}');\r\n\t\t\t} else if (start + direction == end) { // 1 step increment\r\n\t\t\t\tresult.push('${start},${end}');\r\n\t\t\t} else { // store as range\r\n\t\t\t\tresult.push('${start}..${end}');\r\n\t\t\t}\r\n\r\n\t\t\ti++;\r\n\t\t}\r\n\r\n\t\treturn result.join(separator);\r\n\t}",
+			"doc": {
+				"text": "Converts an array of numbers into a string of ranges.\nExample: [1,2,3,5,7,8,9,8,7,6,5] -> \"1..3,5,7..9,8..5\"",
+				"params": {
+					"numbers": "Array of numbers",
+					"separator": "Separator between ranges"
+				},
+				"returns": "String representing the ranges",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deepFlatten",
+			"args": [
+				{
+					"name": "arr",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "result",
+					"type": "Array<Dynamic>",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Array<Dynamic>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function deepFlatten(arr:Array<Dynamic>, ?result:Array<Dynamic>):Array<Dynamic> {\r\n\t\tif(arr == null) return [];\r\n\t\tif(result == null) result = [];\r\n\t\tfor (e in arr) {\r\n\t\t\tif (Std.isOfType(e, Array)) {\r\n\t\t\t\tdeepFlatten(e, result);\r\n\t\t\t} else {\r\n\t\t\t\tresult.push(e);\r\n\t\t\t}\r\n\t\t}\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Deep flattens an array.\nExample: `deepFlatten([1, [2, 3], 4])` will return `[1, 2, 3, 4]`",
+				"params": {
+					"arr": "Array to flatten",
+					"result": "Result array"
+				},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getLuminance",
+			"args": [
+				{
+					"name": "color",
+					"type": "FlxColor",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Float",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getLuminance(color:FlxColor):Float {\r\n\t\treturn (0.2126*color.redFloat + 0.7152*color.greenFloat + 0.0722*color.blueFloat);\r\n\t}",
+			"doc": {
+				"text": "Gets the luminance of the given color",
+				"params": {
+					"color": "Color to use"
+				},
+				"returns": "Number between 0 and 1",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "imageHasFrameData",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function imageHasFrameData(path:String):String {\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"xml\"))) return \"xml\";\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"txt\"))) return \"txt\";\r\n\t\tif (FileSystem.exists(Path.withExtension(path, \"json\"))) return \"json\";\r\n\r\n\t\treturn null;\r\n\t}",
+			"doc": {
+				"text": "! REQUIRES FULL PATH!!!",
+				"params": {
+					"path": ""
+				},
+				"returns": "Bool",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "loadFramesFromData",
+			"args": [
+				{
+					"name": "data",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": false,
+					"def": "null"
+				}
+			],
+			"ret": "FlxFramesCollection",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// loads frames with no image, but with data, so you can parse it\r\n\tpublic static function loadFramesFromData(data:String, ext:String = null):FlxFramesCollection {\r\n\t\tvar frames:FlxFramesCollection = null;\r\n\t\tvar tempBitmap:BitmapData = new BitmapData(1, 1, false);\r\n\r\n\t\t// Worlds hackiest work around alert???\r\n\t\tvar graphic:FlxGraphic = FlxG.bitmap.add(tempBitmap);\r\n\t\t@:privateAccess {\r\n\t\t\t// prevent errors from being shown, such as Size is too small\r\n\t\t\tgraphic.width = 9999999;\r\n\t\t\tgraphic.height = 9999999;\r\n\t\t}\r\n\r\n\t\ttry {\r\n\t\t\tswitch (ext) {\r\n\t\t\t\tcase \"xml\": frames = FlxAtlasFrames.fromSparrow(graphic, Xml.parse(data));\r\n\t\t\t\tcase \"txt\": frames = FlxAtlasFrames.fromSpriteSheetPacker(graphic, data);\r\n\t\t\t\tcase \"json\": frames = FlxAtlasFrames.fromAseprite(graphic, data);\r\n\t\t\t}\r\n\t\t} catch (e) {trace(e);}\r\n\r\n\t\treturn frames;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "removeBOM",
+			"args": [
+				{
+					"name": "str",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function removeBOM(str:String):String {\r\n\t\treturn StringTools.replace(str, String.fromCharCode(0xFEFF), \"\");\r\n\t}",
+			"doc": null,
+			"meta": [
+				"@:privateAccess"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "getAnimsListFromFrames",
+			"args": [
+				{
+					"name": "frames",
+					"type": "FlxFramesCollection",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "ext",
+					"type": "String",
+					"optional": false,
+					"def": "null"
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getAnimsListFromFrames(frames:FlxFramesCollection, ext:String = null):Array<String> {\r\n\t\tif (frames == null) return [];\r\n\r\n\t\tvar animsList:Array<String> = [];\r\n\t\tfor (frame in frames.frames) {\r\n\t\t\tvar animName:String = ext == \"txt\" ? frame.name.split(\"_\")[0] : frame.name.substr(0, frame.name.length-4);\r\n\t\t\tif (!animsList.contains(animName))\r\n\t\t\t\tanimsList.push(animName);\r\n\t\t}\r\n\r\n\t\treturn animsList;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnimsListFromAtlas",
+			"args": [
+				{
+					"name": "atlas",
+					"type": "AnimationJson",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getAnimsListFromAtlas(atlas:AnimationJson):Array<String> {\r\n\t\tif (atlas == null) return [];\r\n\r\n\t\tvar animsList:Array<String> = [];\r\n\t\tif (atlas.AN.SN != null) animsList.push(atlas.AN.SN);\r\n\t\tif (atlas.SD != null)\r\n\t\t\tfor (symbol in atlas.SD)\r\n\t\t\t\tif (symbol.SN != null) animsList.push(symbol.SN);\r\n\r\n\t\treturn animsList;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "getAnimsListFromSprite",
+			"args": [
+				{
+					"name": "spr",
+					"type": "FunkinSprite",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<String>",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function getAnimsListFromSprite(spr:FunkinSprite):Array<String> {\r\n\t\treturn getAnimsListFromFrames(spr.frames);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "deepEqual",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "// TODO: check this for bugs\r\n\t// Code from https://github.com/elnabo/equals/blob/master/src/equals/Equal.hx, (MIT License), but updated to work with haxe 4\r\n\tpublic static function deepEqual<T> (a:T, b:T) : Bool {\r\n\t\tif (a == b) { return true; } // if physical equality\r\n\t\tif (isNull(a) ||  isNull(b)) {\r\n\t\t\treturn false;\r\n\t\t}\r\n\r\n\t\tswitch (Type.typeof(a)) {\r\n\t\t\tcase TNull, TInt, TBool, TUnknown:\r\n\t\t\t\treturn a == b;\r\n\t\t\tcase TFloat:\r\n\t\t\t\treturn Math.isNaN(cast a) && Math.isNaN(cast b); // only valid true result remaining\r\n\t\t\tcase TFunction:\r\n\t\t\t\treturn Reflect.compareMethods(a, b); // only physical equality can be tested for function\r\n\t\t\tcase TEnum(_):\r\n\t\t\t\tif (EnumValueTools.getIndex(cast a) != EnumValueTools.getIndex(cast b)) {\r\n\t\t\t\t\treturn false;\r\n\t\t\t\t}\r\n\t\t\t\tvar a_args = EnumValueTools.getParameters(cast a);\r\n\t\t\t\tvar b_args = EnumValueTools.getParameters(cast b);\r\n\t\t\t\treturn deepEqual(a_args, b_args);\r\n\t\t\tcase TClass(_):\r\n\t\t\t\tif ((a is String) && (b is String)) {\r\n\t\t\t\t\treturn a == b;\r\n\t\t\t\t}\r\n\t\t\t\tif ((a is Array) && (b is Array)) {\r\n\t\t\t\t\tvar a = cast(a, Array<Dynamic>);\r\n\t\t\t\t\tvar b = cast(b, Array<Dynamic>);\r\n\t\t\t\t\tif (a.length != b.length) { return false; }\r\n\t\t\t\t\tfor (i in 0...a.length) {\r\n\t\t\t\t\t\tif (!deepEqual(a[i], b[i])) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is IMap) && (b is IMap)) {\r\n\t\t\t\t\tvar a = cast(a, IMap<Dynamic, Dynamic>);\r\n\t\t\t\t\tvar b = cast(b, IMap<Dynamic, Dynamic>);\r\n\t\t\t\t\tvar a_keys = [ for (key in a.keys()) key ];\r\n\t\t\t\t\tvar b_keys = [ for (key in b.keys()) key ];\r\n\t\t\t\t\ta_keys.sort(Reflect.compare);\r\n\t\t\t\t\tb_keys.sort(Reflect.compare);\r\n\t\t\t\t\tif (!deepEqual(a_keys, b_keys)) { return false; }\r\n\t\t\t\t\tfor (key in a_keys) {\r\n\t\t\t\t\t\tif (!deepEqual(a.get(key), b.get(key))) {\r\n\t\t\t\t\t\t\treturn false;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\treturn true;\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is Date) && (b is Date)) {\r\n\t\t\t\t\treturn cast(a, Date).getTime() == cast(b, Date).getTime();\r\n\t\t\t\t}\r\n\r\n\t\t\t\tif ((a is haxe.io.Bytes) && (b is haxe.io.Bytes)) {\r\n\t\t\t\t\treturn deepEqual(cast(a, haxe.io.Bytes).getData(), cast(b, haxe.io.Bytes).getData());\r\n\t\t\t\t}\r\n\r\n\t\t\tcase TObject:\r\n\t\t}\r\n\r\n\t\tfor (field in Reflect.fields(a)) {\r\n\t\t\tvar pa = Reflect.field(a, field);\r\n\t\t\tvar pb = Reflect.field(b, field);\r\n\t\t\tif (isFunction(pa)) {\r\n\t\t\t\t// ignore function as only physical equality can be tested, unless null\r\n\t\t\t\tif (isNull(pa) != isNull(pb)) {\r\n\t\t\t\t\treturn false;\r\n\t\t\t\t}\r\n\t\t\t\tcontinue;\r\n\t\t\t}\r\n\t\t\tif (!deepEqual(pa, pb)) {\r\n\t\t\t\treturn false;\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\treturn true;\r\n\t}\r\n\r\n\tstatic inline function isNull(a:Dynamic):Bool {\r\n\t\treturn Type.enumEq(Type.typeof(a), TNull);\r\n\t}\r\n\r\n\tstatic inline function isFunction(a:Dynamic):Bool {\r\n\t\treturn Type.enumEq(Type.typeof(a), TFunction);\r\n\t}\r\n\r\n\tpublic static inline function isMapEmpty<K, V>(map: Map<K, V>): Bool {\r\n\t\treturn !map.keys().hasNext();\r\n\t}\r\n\r\n\tpublic inline static function parsePropertyString(fieldPath:String):Array<OneOfTwo<String, Int>> {\r\n\t\treturn FlxTween.parseFieldString(fieldPath);\r\n\t}\r\n\r\n\tpublic static function stringifyFieldsPath(fields:Array<OneOfTwo<String, Int>>):String {\r\n\t\tvar str = new StringBuf();\r\n\t\tvar first = true;\r\n\t\tfor (field in fields) {\r\n\t\t\tif (Type.typeof(field) == TInt) {\r\n\t\t\t\tstr.add('[${field}]');\r\n\t\t\t} else {\r\n\t\t\t\tif (!first)\r\n\t\t\t\t\tstr.add('.');\r\n\t\t\t\tstr.add(field);\r\n\t\t\t}\r\n\t\t\tfirst = false;\r\n\t\t}\r\n\t\treturn str.toString();\r\n\t}\r\n\r\n\tpublic static function parseProperty(target:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar field = CoolUtil.last(fields);\r\n\t\tfor (i in 0...fields.length - 1) {\r\n\t\t\tvar component = fields[i];\r\n\t\t\tif (Type.typeof(component) == TInt) {\r\n\t\t\t\tif ((target is Array)) {\r\n\t\t\t\t\tvar index:Int = cast component;\r\n\t\t\t\t\tvar arr:Array<Dynamic> = cast target;\r\n\t\t\t\t\ttarget = arr[index];\r\n\t\t\t\t}\r\n\t\t\t} else { // TClass(String)\r\n\t\t\t\ttarget = Reflect.getProperty(target, component);\r\n\t\t\t}\r\n\t\t\tif (!Reflect.isObject(target) && !(target is Array))\r\n\t\t\t\tthrow 'The object does not have the property \"$component\" in \"${stringifyFieldsPath(fields)}\"';\r\n\t\t}\r\n\t\treturn new PropertyInfo(target, field);\r\n\t}\r\n\r\n\tpublic static function cloneProperty(toTarget:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>, fromTarget:Dynamic):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar toProperty = CoolUtil.parseProperty(toTarget, fields);\r\n\t\tvar fromProperty = CoolUtil.parseProperty(fromTarget, fields);\r\n\r\n\t\treturn toProperty.setValue(fromProperty.getValue());\r\n\t}\r\n\r\n}\r\n\r\nclass PropertyInfo {\r\n\tpublic var object:Dynamic;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "isMapEmpty",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public static inline function isMapEmpty<K, V>(map: Map<K, V>): Bool {\r\n\t\treturn !map.keys().hasNext();\r\n\t}\r\n\r\n\tpublic inline static function parsePropertyString(fieldPath:String):Array<OneOfTwo<String, Int>> {\r\n\t\treturn FlxTween.parseFieldString(fieldPath);\r\n\t}\r\n\r\n\tpublic static function stringifyFieldsPath(fields:Array<OneOfTwo<String, Int>>):String {\r\n\t\tvar str = new StringBuf();\r\n\t\tvar first = true;\r\n\t\tfor (field in fields) {\r\n\t\t\tif (Type.typeof(field) == TInt) {\r\n\t\t\t\tstr.add('[${field}]');\r\n\t\t\t} else {\r\n\t\t\t\tif (!first)\r\n\t\t\t\t\tstr.add('.');\r\n\t\t\t\tstr.add(field);\r\n\t\t\t}\r\n\t\t\tfirst = false;\r\n\t\t}\r\n\t\treturn str.toString();\r\n\t}\r\n\r\n\tpublic static function parseProperty(target:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar field = CoolUtil.last(fields);\r\n\t\tfor (i in 0...fields.length - 1) {\r\n\t\t\tvar component = fields[i];\r\n\t\t\tif (Type.typeof(component) == TInt) {\r\n\t\t\t\tif ((target is Array)) {\r\n\t\t\t\t\tvar index:Int = cast component;\r\n\t\t\t\t\tvar arr:Array<Dynamic> = cast target;\r\n\t\t\t\t\ttarget = arr[index];\r\n\t\t\t\t}\r\n\t\t\t} else { // TClass(String)\r\n\t\t\t\ttarget = Reflect.getProperty(target, component);\r\n\t\t\t}\r\n\t\t\tif (!Reflect.isObject(target) && !(target is Array))\r\n\t\t\t\tthrow 'The object does not have the property \"$component\" in \"${stringifyFieldsPath(fields)}\"';\r\n\t\t}\r\n\t\treturn new PropertyInfo(target, field);\r\n\t}\r\n\r\n\tpublic static function cloneProperty(toTarget:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>, fromTarget:Dynamic):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar toProperty = CoolUtil.parseProperty(toTarget, fields);\r\n\t\tvar fromProperty = CoolUtil.parseProperty(fromTarget, fields);\r\n\r\n\t\treturn toProperty.setValue(fromProperty.getValue());\r\n\t}\r\n\r\n}\r\n\r\nclass PropertyInfo {\r\n\tpublic var object:Dynamic;",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parsePropertyString",
+			"args": [
+				{
+					"name": "fieldPath",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Array<OneOfTwo<String, Int>>",
+			"isStatic": true,
+			"isInline": true,
+			"src": "public inline static function parsePropertyString(fieldPath:String):Array<OneOfTwo<String, Int>> {\r\n\t\treturn FlxTween.parseFieldString(fieldPath);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "stringifyFieldsPath",
+			"args": [
+				{
+					"name": "fields",
+					"type": "Array<OneOfTwo<String, Int>>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function stringifyFieldsPath(fields:Array<OneOfTwo<String, Int>>):String {\r\n\t\tvar str = new StringBuf();\r\n\t\tvar first = true;\r\n\t\tfor (field in fields) {\r\n\t\t\tif (Type.typeof(field) == TInt) {\r\n\t\t\t\tstr.add('[${field}]');\r\n\t\t\t} else {\r\n\t\t\t\tif (!first)\r\n\t\t\t\t\tstr.add('.');\r\n\t\t\t\tstr.add(field);\r\n\t\t\t}\r\n\t\t\tfirst = false;\r\n\t\t}\r\n\t\treturn str.toString();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "parseProperty",
+			"args": [
+				{
+					"name": "target",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fields",
+					"type": "OneOfTwo<String, Array<OneOfTwo<String, Int>>>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function parseProperty(target:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar field = CoolUtil.last(fields);\r\n\t\tfor (i in 0...fields.length - 1) {\r\n\t\t\tvar component = fields[i];\r\n\t\t\tif (Type.typeof(component) == TInt) {\r\n\t\t\t\tif ((target is Array)) {\r\n\t\t\t\t\tvar index:Int = cast component;\r\n\t\t\t\t\tvar arr:Array<Dynamic> = cast target;\r\n\t\t\t\t\ttarget = arr[index];\r\n\t\t\t\t}\r\n\t\t\t} else { // TClass(String)\r\n\t\t\t\ttarget = Reflect.getProperty(target, component);\r\n\t\t\t}\r\n\t\t\tif (!Reflect.isObject(target) && !(target is Array))\r\n\t\t\t\tthrow 'The object does not have the property \"$component\" in \"${stringifyFieldsPath(fields)}\"';\r\n\t\t}\r\n\t\treturn new PropertyInfo(target, field);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cloneProperty",
+			"args": [
+				{
+					"name": "toTarget",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fields",
+					"type": "OneOfTwo<String, Array<OneOfTwo<String, Int>>>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "fromTarget",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function cloneProperty(toTarget:Dynamic, fields:OneOfTwo<String, Array<OneOfTwo<String, Int>>>, fromTarget:Dynamic):Dynamic {\r\n\t\tvar fields:Array<OneOfTwo<String, Int>> = {\r\n\t\t\tif((fields is String)) CoolUtil.parsePropertyString(fields);\r\n\t\t\telse fields;\r\n\t\t}\r\n\r\n\t\tvar toProperty = CoolUtil.parseProperty(toTarget, fields);\r\n\t\tvar fromProperty = CoolUtil.parseProperty(fromTarget, fields);\r\n\r\n\t\treturn toProperty.setValue(fromProperty.getValue());\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

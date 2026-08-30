@@ -1,0 +1,112 @@
+{
+	"kind": "class",
+	"name": "SystemInfo",
+	"pkg": "funkin.backend.system.framerate",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "osInfo",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gpuName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "vRAM",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "cpuName",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "totalMem",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "memType",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "gpuMaxSize",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "init",
+			"args": [],
+			"ret": "Void",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function init() {\r\n\t\t#if linux\r\n\t\tvar process = new HiddenProcess(\"cat\", [\"/etc/os-release\"]);\r\n\t\tif (process.exitCode() != 0) Logs.error('Unable to grab OS Label');\r\n\t\telse {\r\n\t\t\tvar osName = \"\";\r\n\t\t\tvar osVersion = \"\";\r\n\t\t\tfor (line in process.stdout.readAll().toString().split(\"\\n\")) {\r\n\t\t\t\tif (line.startsWith(\"PRETTY_NAME=\")) {\r\n\t\t\t\t\tvar index = line.indexOf('\"');\r\n\t\t\t\t\tif (index != -1)\r\n\t\t\t\t\t\tosName = line.substring(index + 1, line.lastIndexOf('\"'));\r\n\t\t\t\t\telse {\r\n\t\t\t\t\t\tvar arr = line.split(\"=\");\r\n\t\t\t\t\t\tarr.shift();\r\n\t\t\t\t\t\tosName = arr.join(\"=\");\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t\tif (line.startsWith(\"VERSION=\")) {\r\n\t\t\t\t\tvar index = line.indexOf('\"');\r\n\t\t\t\t\tif (index != -1)\r\n\t\t\t\t\t\tosVersion = line.substring(index + 1, line.lastIndexOf('\"'));\r\n\t\t\t\t\telse {\r\n\t\t\t\t\t\tvar arr = line.split(\"=\");\r\n\t\t\t\t\t\tarr.shift();\r\n\t\t\t\t\t\tosVersion = arr.join(\"=\");\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tif (osName != \"\")\r\n\t\t\t\tosInfo = '${osName} ${osVersion}'.trim();\r\n\t\t}\r\n\t\t#elseif windows\r\n\t\tvar windowsCurrentVersionPath = \"SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\";\r\n\t\tvar buildNumber = Std.parseInt(RegistryUtil.get(HKEY_LOCAL_MACHINE, windowsCurrentVersionPath, \"CurrentBuildNumber\"));\r\n\t\tvar edition = RegistryUtil.get(HKEY_LOCAL_MACHINE, windowsCurrentVersionPath, \"ProductName\");\r\n\r\n\t\tvar lcuKey = \"WinREVersion\"; // Last Cumulative Update Key On Older Windows Versions\r\n\t\tif (buildNumber >= 22000) { // Windows 11 Initial Release Build Number\r\n\t\t\tedition = edition.replace(\"Windows 10\", \"Windows 11\");\r\n\t\t\tlcuKey = \"LCUVer\"; // Last Cumulative Update Key On Windows 11\r\n\t\t}\r\n\r\n\t\tvar lcuVersion = RegistryUtil.get(HKEY_LOCAL_MACHINE, windowsCurrentVersionPath, lcuKey);\r\n\r\n\t\tosInfo = edition;\r\n\r\n\t\tif (lcuVersion != null && lcuVersion != \"\")\r\n\t\t\tosInfo += ' ${lcuVersion}';\r\n\t\telse if (lime.system.System.platformVersion != null && lime.system.System.platformVersion != \"\")\r\n\t\t\tosInfo += ' ${lime.system.System.platformVersion}';\r\n\t\t#else\r\n\t\tif (lime.system.System.platformLabel != null && lime.system.System.platformLabel != \"\" && lime.system.System.platformVersion != null && lime.system.System.platformVersion != \"\")\r\n\t\t\tosInfo = '${lime.system.System.platformLabel.replace(lime.system.System.platformVersion, \"\").trim()} ${lime.system.System.platformVersion}';\r\n\t\telse\r\n\t\t\tLogs.error('Unable to grab OS Label');\r\n\t\t#end\r\n\r\n\t\ttry {\r\n\t\t\t#if windows\r\n\t\t\tcpuName = RegistryUtil.get(HKEY_LOCAL_MACHINE, \"HARDWARE\\\\DESCRIPTION\\\\System\\\\CentralProcessor\\\\0\", \"ProcessorNameString\");\r\n\t\t\t#elseif mac\r\n\t\t\tvar process = new HiddenProcess(\"sysctl -a | grep brand_string\"); // Somehow this isn't able to use the args but it still works\r\n\t\t\tif (process.exitCode() != 0) throw 'Could not fetch CPU information';\r\n\r\n\t\t\tcpuName = process.stdout.readAll().toString().trim().split(\":\")[1].trim();\r\n\t\t\t#elseif linux\r\n\t\t\tvar process = new HiddenProcess(\"cat\", [\"/proc/cpuinfo\"]);\r\n\t\t\tif (process.exitCode() != 0) throw 'Could not fetch CPU information';\r\n\r\n\t\t\tfor (line in process.stdout.readAll().toString().split(\"\\n\")) {\r\n\t\t\t\tif (line.indexOf(\"model name\") == 0) {\r\n\t\t\t\t\tcpuName = line.substring(line.indexOf(\":\") + 2);\r\n\t\t\t\t\tbreak;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\t#end\r\n\t\t} catch (e) {\r\n\t\t\tLogs.error('Unable to grab CPU Name: $e');\r\n\t\t}\r\n\r\n\t\t@:privateAccess if(FlxG.renderTile) { // Blit doesn't enable the gpu. Idk if we should fix this\r\n\t\t\tif (flixel.FlxG.stage.context3D != null && flixel.FlxG.stage.context3D.gl != null) {\r\n\t\t\t\tgpuName = Std.string(flixel.FlxG.stage.context3D.gl.getParameter(flixel.FlxG.stage.context3D.gl.RENDERER)).split(\"/\")[0].trim();\r\n\t\t\t\t#if !flash\r\n\t\t\t\tvar size = FlxG.bitmap.maxTextureSize;\r\n\t\t\t\tgpuMaxSize = size+\"x\"+size;\r\n\t\t\t\t#end\r\n\r\n\t\t\t\tif(openfl.display3D.Context3D.__glMemoryTotalAvailable != -1) {\r\n\t\t\t\t\tvar vRAMBytes:Int = cast flixel.FlxG.stage.context3D.gl.getParameter(openfl.display3D.Context3D.__glMemoryTotalAvailable);\r\n\t\t\t\t\tif (vRAMBytes == 1000 || vRAMBytes == 1 || vRAMBytes <= 0)\r\n\t\t\t\t\t\tLogs.trace('Unable to grab GPU VRAM', ERROR, RED);\r\n\t\t\t\t\telse {\r\n\t\t\t\t\t\tvRAM = getSizeString(vRAMBytes / 1024);\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t} else\r\n\t\t\t\tLogs.error('Unable to grab GPU Info');\r\n\t\t}\r\n\r\n\t\t#if cpp\r\n\t\ttotalMem = Std.string(MemoryUtil.getTotalMem() / 1024) + \" GB\";\r\n\t\t#else\r\n\t\tLogs.error('Unable to grab RAM Amount');\r\n\t\t#end\r\n\r\n\t\ttry {\r\n\t\t\tmemType = MemoryUtil.getMemType();\r\n\t\t} catch (e) {\r\n\t\t\tLogs.error('Unable to grab RAM Type: $e');\r\n\t\t}\r\n\t\tformatSysInfo();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper(\"System Info\");\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "__enterFrame",
+			"args": [
+				{
+					"name": "t",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function __enterFrame(t:Float) {\r\n\t\tif (alpha <= 0.05) return;\r\n\r\n\t\tvar buf = new StringBuf();\r\n\t\tbuf.add(__formattedSysText);\r\n\t\tif (__formattedSysText != '') buf.add('\\n');\r\n\t\tStringMacro.addLine(buf, 'Garbage Collector: ${MemoryUtil.disableCount > 0 ? \"OFF\" : \"ON\"} (${MemoryUtil.disableCount})');\r\n\t\t_text = buf.toString();\r\n\r\n\t\tthis.text.text = _text;\r\n\t\tsuper.__enterFrame(t);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

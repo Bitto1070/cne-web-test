@@ -1,0 +1,177 @@
+{
+	"kind": "final class",
+	"name": "NoteUpdateEvent",
+	"pkg": "funkin.backend.scripting.events.note",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "__updateHitWindow",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "__autoCPUHit",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "__reposNote",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "var",
+			"name": "note",
+			"type": "Note",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note that is being updated",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "elapsed",
+			"type": "Null<Float>",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Time elapsed since last frame",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "strum",
+			"type": "Strum",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Note's strum (can be changed)",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "cancelWindowUpdate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function cancelWindowUpdate() {\r\n\t\t__updateHitWindow = false;\r\n\t}",
+			"doc": {
+				"text": "Cancels the hit window update.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventWindowUpdate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function preventWindowUpdate() { cancelWindowUpdate(); }",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "cancelAutoCPUHit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function cancelAutoCPUHit() {\r\n\t\t__autoCPUHit = false;\r\n\t}",
+			"doc": {
+				"text": "Cancels the automatic CPU hit.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventAutoCPUHit",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function preventAutoCPUHit() { cancelAutoCPUHit(); }",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		},
+		{
+			"kind": "function",
+			"name": "cancelPositionUpdate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function cancelPositionUpdate() {\r\n\t\t__reposNote = false;\r\n\t}",
+			"doc": {
+				"text": "Cancels the note position update (note will freeze).",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "preventPositionUpdate",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "@:dox(hide) public function preventPositionUpdate() { cancelPositionUpdate(); }",
+			"doc": null,
+			"meta": [
+				"@:dox(hide)"
+			]
+		}
+	]
+}

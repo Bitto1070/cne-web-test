@@ -1,0 +1,80 @@
+{
+	"kind": "class",
+	"name": "CharterBookmarkCreation",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "saveButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "closeButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textBox",
+			"type": "UITextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "colorPicker",
+			"type": "UICompactColorwheel",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "step",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "close",
+					"type": "Bool->String->FlxColor->Float->Void",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "override public function new(step:Float, close:Bool->String->FlxColor->Float->Void)\r\n\t{\r\n\t\tsuper();\r\n\r\n\t\twinWidth = 320;\r\n\t\twinHeight = 250;\r\n\t\twinTitle = TU.translate(\"charter.bookmarks.createBookmarkTitle\");\r\n\r\n\t\tcallback = close;\r\n\r\n\t\tbookmarkStep = step;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "create",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function create() {\r\n\t\tFlxG.sound.music.pause();\r\n\t\tCharter.instance.vocals.pause();\r\n\r\n\t\tfunction addLabelOn(ui:UISprite, text:String):UIText {\r\n\t\t\tvar text:UIText = new UIText(ui.x, ui.y - 24, 0, text);\r\n\t\t\tui.members.push(text);\r\n\t\t\treturn text;\r\n\t\t}\r\n\r\n\t\tsuper.create();\r\n\r\n\t\ttextBox = new UITextBox(windowSpr.x + 20, windowSpr.y + 70, TU.translate(\"charter.bookmarks.newBookmarkName\"), 276);\r\n\t\ttextBox.antialiasing = true;\r\n\t\tadd(textBox);\r\n\t\taddLabelOn(textBox, TU.translate(\"charter.bookmarks.createBookmarkName\"));\r\n\t\t\r\n\t\tcolorPicker = new UICompactColorwheel(textBox.x, textBox.y + textBox.bHeight + 34, flixel.util.FlxColor.RED);\r\n\t\tadd(colorPicker);\r\n\t\taddLabelOn(colorPicker, TU.translate(\"charter.bookmarks.createBookmarkColor\"));\r\n\r\n\t\tsaveButton = new UIButton(windowSpr.x + windowSpr.bWidth - 20 - 125, windowSpr.y + windowSpr.bHeight - 16 - 32, TU.translate(\"editor.saveClose\"), function() {\r\n\t\t\tcallback(true, textBox.label.text, colorPicker.curColor, bookmarkStep);\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(saveButton);\r\n\r\n\t\tcloseButton = new UIButton(saveButton.x - 20, saveButton.y, TU.translate(\"editor.close\"), function() {\r\n\t\t\tcallback(false, \"\", FlxColor.TRANSPARENT, -1);\r\n\t\t\tclose();\r\n\t\t}, 125);\r\n\t\tadd(closeButton);\r\n\t\tcloseButton.color = 0xFFFF0000;\r\n\t\tcloseButton.x -= closeButton.bWidth;\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

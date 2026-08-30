@@ -1,0 +1,27 @@
+{
+	"kind": "final class",
+	"name": "DialogueBoxCharPopupEvent",
+	"pkg": "funkin.backend.scripting.events.dialogue",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "char",
+			"type": "DialogueCharacter",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "force",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"kind": "enum",
+	"name": "WiggleEffectType",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [
+		"@:dox(hide)"
+	],
+	"fields": []
+}

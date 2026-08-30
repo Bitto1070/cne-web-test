@@ -1,0 +1,75 @@
+{
+	"kind": "class",
+	"name": "CompactCharacterButton",
+	"pkg": "funkin.editors.charter",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "charIcon",
+			"type": "HealthIcon",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "textBox",
+			"type": "UIAutoCompleteTextBox",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteButton",
+			"type": "UIButton",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "deleteIcon",
+			"type": "FlxSprite",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "char",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "charsList",
+					"type": "Array<String>",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parent",
+					"type": "UIButtonList<CompactCharacterButton>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(char:String, charsList:Array<String>, parent:UIButtonList<CompactCharacterButton>) {\r\n\t\tsuper(0, 0, null, null, 200, 40);\r\n\t\tautoAlpha = false;\r\n\r\n\t\tcharIcon = new HealthIcon(funkin.game.Character.getIconFromCharName(char));\r\n\t\tvar size = Std.int(150 * 0.2);\r\n\t\tcharIcon.setUnstretchedGraphicSize(size, size, true);\r\n\t\tcharIcon.updateHitbox();\r\n\t\tcharIcon.setPosition(10, bHeight/2 - charIcon.height / 2);\r\n\t\tcharIcon.scrollFactor.set(1,1);\r\n\r\n\t\tmembers.push(charIcon);\r\n\r\n\t\tmembers.push(textBox = new UIAutoCompleteTextBox(charIcon.x + charIcon.width + 16, bHeight/2 - (32/2), char, 115));\r\n\t\ttextBox.suggestItems = charsList;\r\n\t\ttextBox.antialiasing = true;\r\n\t\ttextBox.onChange = function(char:String) {\r\n\t\t\tchar = funkin.game.Character.getIconFromCharName(char);\r\n\t\t\tcharIcon.setIcon(char);\r\n\t\t\tcharIcon.setUnstretchedGraphicSize(size, size, true);\r\n\t\t\tcharIcon.updateHitbox();\r\n\t\t\tcharIcon.setPosition(10, bHeight/2 - charIcon.height / 2);\r\n\t\t}\r\n\r\n\t\tdeleteButton = new UIButton(textBox.x + 115 + 16, bHeight/2 - (32/2), null, function () {\r\n\t\t\tparent.remove(this);\r\n\t\t}, 32);\r\n\t\tdeleteButton.color = 0xFFFF0000;\r\n\t\tdeleteButton.autoAlpha = false;\r\n\t\tmembers.push(deleteButton);\r\n\r\n\t\tdeleteIcon = new FlxSprite(deleteButton.x + (15/2), deleteButton.y + 8).loadGraphic(Paths.image('editors/delete-button'));\r\n\t\tdeleteIcon.antialiasing = false;\r\n\t\tmembers.push(deleteIcon);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

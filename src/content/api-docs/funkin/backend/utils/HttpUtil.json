@@ -1,0 +1,99 @@
+{
+	"kind": "final class",
+	"name": "HttpUtil",
+	"pkg": "funkin.backend.utils",
+	"doc": {
+		"text": "Utility class for making synchronous HTTP requests with automatic redirect handling.\nAll methods are blocking and throw `HttpError` on failure. Redirects (301, 302, 307, 308) are followed recursively using the `Location` response header.",
+		"params": {},
+		"returns": null,
+		"throws": null,
+		"deprecated": null
+	},
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "userAgent",
+			"type": "String",
+			"access": "",
+			"isStatic": true,
+			"doc": {
+				"text": "The User-Agent header sent with every request.\nDefaults to `Flags.USER_AGENT`.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "requestText",
+			"args": [
+				{
+					"name": "url",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "String",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function requestText(url:String):String\r\n\t{\r\n\t\tvar result:String = null;\r\n\t\tvar error:HttpError = null;\r\n\t\tvar redirected:Bool = false;\r\n\t\tvar h = new Http(url);\r\n\t\th.setHeader(\"User-Agent\", userAgent);\r\n\t\th.onStatus = function(status)\r\n\t\t{\r\n\t\t\tredirected = isRedirect(status);\r\n\t\t\tif (redirected)\r\n\t\t\t{\r\n\t\t\t\tvar loc = h.responseHeaders.get(\"Location\");\r\n\t\t\t\tif (loc != null)\r\n\t\t\t\t\tresult = requestText(loc);\r\n\t\t\t\telse\r\n\t\t\t\t\terror = new HttpError(\"Missing Location header in redirect\", url, status, true);\r\n\t\t\t}\r\n\t\t};\r\n\t\th.onData = function(data)\r\n\t\t{\r\n\t\t\tif (result == null)\r\n\t\t\t\tresult = data;\r\n\t\t};\r\n\t\th.onError = function(msg)\r\n\t\t{\r\n\t\t\terror = new HttpError(msg, url);\r\n\t\t};\r\n\t\th.request(false);\r\n\t\tif (error != null)\r\n\t\t\tthrow error;\r\n\t\tif (result == null)\r\n\t\t\tthrow new HttpError(\"Unknown error or empty response\", url);\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Makes a synchronous GET request and returns the response body as a string.\nAutomatically follows redirects.",
+				"params": {
+					"url": "The URL to request."
+				},
+				"returns": "The response body as a `String`.",
+				"throws": "HttpError If the request fails, redirects without a `Location` header, or returns an empty response.",
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "requestBytes",
+			"args": [
+				{
+					"name": "url",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "haxe.io.Bytes",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function requestBytes(url:String):haxe.io.Bytes\r\n\t{\r\n\t\tvar result:haxe.io.Bytes = null;\r\n\t\tvar error:HttpError = null;\r\n\t\tvar redirected:Bool = false;\r\n\t\tvar h = new Http(url);\r\n\t\th.setHeader(\"User-Agent\", userAgent);\r\n\t\th.onStatus = function(status)\r\n\t\t{\r\n\t\t\tredirected = isRedirect(status);\r\n\t\t\tif (redirected)\r\n\t\t\t{\r\n\t\t\t\tvar loc = h.responseHeaders.get(\"Location\");\r\n\t\t\t\tif (loc != null)\r\n\t\t\t\t\tresult = requestBytes(loc);\r\n\t\t\t\telse\r\n\t\t\t\t\terror = new HttpError(\"Missing Location header in redirect\", url, status, true);\r\n\t\t\t}\r\n\t\t};\r\n\t\th.onBytes = function(data)\r\n\t\t{\r\n\t\t\tif (result == null)\r\n\t\t\t\tresult = data;\r\n\t\t};\r\n\t\th.onError = function(msg)\r\n\t\t{\r\n\t\t\terror = new HttpError(msg, url);\r\n\t\t};\r\n\t\th.request(false);\r\n\t\tif (error != null)\r\n\t\t\tthrow error;\r\n\t\tif (result == null)\r\n\t\t\tthrow new HttpError(\"Unknown error or empty byte response\", url);\r\n\t\treturn result;\r\n\t}",
+			"doc": {
+				"text": "Makes a synchronous GET request and returns the response body as raw bytes.\nThis automatically follows redirects.",
+				"params": {
+					"url": "The URL to request."
+				},
+				"returns": "The response body as `haxe.io.Bytes`.",
+				"throws": "HttpError If the request fails, redirects without a `Location` header, or returns an empty response.",
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hasInternet",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": true,
+			"isInline": false,
+			"src": "public static function hasInternet():Bool\r\n\t{\r\n\t\ttry {\r\n\t\t\tvar r = requestText(\"https://www.google.com/\");\r\n\t\t\treturn true;\r\n\t\t} catch (e:HttpError) {\r\n\t\t\tLogs.trace('[HttpUtil.hasInternet] Failed: ${e.toString()}', WARNING);\r\n\t\t\treturn false;\r\n\t\t}\r\n\t}",
+			"doc": {
+				"text": "Checks whether an internet connection is available by pinging (or requesting) `google.com`.",
+				"params": {},
+				"returns": "`true` if the request succeeded, `false` if it threw an `HttpError`.",
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		}
+	]
+}

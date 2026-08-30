@@ -1,0 +1,27 @@
+{
+	"kind": "class",
+	"name": "FunkinShaderSourceAssembler",
+	"pkg": "funkin.backend.shaders",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "parent",
+					"type": "FunkinShader",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(parent:FunkinShader) {\r\n\t\tsuper(funkinParent = parent);\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,33 @@
+{
+	"kind": "class",
+	"name": "StageSpritesWindow",
+	"pkg": "funkin.editors.stage",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "x",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "y",
+					"type": "Float",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(x:Float, y:Float) {\r\n\t\tsuper(x, y, 400, FlxG.height-25, translate(\"win-title\"), FlxPoint.get(400, 64));\r\n\r\n\t\tcollapsable = true;\r\n\t\ttopAlpha = 0.9;\r\n\t\tmiddleAlpha = 0.5;\r\n\t\tbottomAlpha = 0.5;\r\n\t\tbuttonSpacing = 0;\r\n\t\tdragCallback = (button, oldID, newID) -> {\r\n\t\t\tvar sprite:FlxBasic = (button is StageUnknownButton) ? cast(button, StageUnknownButton).basic : button.getSprite();\r\n\t\t\tvar idx = StageEditor.instance.members.indexOf(sprite);\r\n\t\t\tStageEditor.instance.members.splice(idx, 1);\r\n\t\t\tStageEditor.instance.members.insert(newID, sprite);\r\n\t\t}\r\n\t\taddButton.callback = () -> @:privateAccess {\r\n\t\t\tvar lastDrawCam = addButton.__lastDrawCameras[0];\r\n\t\t\tvar screenPos = addButton.getScreenPosition(null, lastDrawCam == null ? FlxG.camera : lastDrawCam);\r\n\t\t\tStageEditor.instance.openContextMenu([\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: translate(\"sprite\"),\r\n\t\t\t\t\tonSelect: StageEditor.instance._sprite_new,\r\n\t\t\t\t\tcolor: 0xFF00FF00,\r\n\t\t\t\t\ticon: 2\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: translate(\"box\"),\r\n\t\t\t\t\tonSelect: StageEditor.instance._solid_new,\r\n\t\t\t\t\tcolor: 0xFF00FF00,\r\n\t\t\t\t\ticon: 2\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\tlabel: translate(\"character\"),\r\n\t\t\t\t\tonSelect: StageEditor.instance._character_new,\r\n\t\t\t\t\tcolor: 0xFF00FF00,\r\n\t\t\t\t\ticon: 2\r\n\t\t\t\t}\r\n\t\t\t], null, lastDrawCam.x + screenPos.x, lastDrawCam.y + screenPos.y + addButton.bHeight, addButton.bWidth);\r\n\t\t\tscreenPos.put();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

@@ -1,0 +1,155 @@
+{
+	"kind": "class",
+	"name": "MultiThreadedScript",
+	"pkg": "funkin.backend.scripting",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "script",
+			"type": "Script",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Script being ran.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "returnValue",
+			"type": "Dynamic",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Return value of the last call.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "callEnded",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": {
+				"text": "Whenever the current call has ended.",
+				"params": {},
+				"returns": null,
+				"throws": null,
+				"deprecated": null
+			},
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [
+				{
+					"name": "path",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "parentScript",
+					"type": "Script",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new(path:String, ?parentScript:Script) {\r\n\t\tscript = Script.create(path);\r\n\r\n\t\tif (parentScript != null) {\r\n\t\t\tif (script is HScript && parentScript is HScript) {\r\n\t\t\t\tvar hscript:HScript = cast script;\r\n\t\t\t\tvar parentHScript:HScript = cast parentScript;\r\n\r\n\t\t\t\thscript.interp.variables = parentHScript.interp.variables;\r\n\t\t\t\thscript.interp.publicVariables = parentHScript.interp.publicVariables;\r\n\t\t\t\thscript.interp.staticVariables = parentHScript.interp.staticVariables;\r\n\r\n\t\t\t\tscript.setParent(parentHScript.interp.scriptObject);\r\n\t\t\t}\r\n\t\t}\r\n\r\n\t\tscript.load();\r\n\r\n\t\t__variables = new Map();\r\n\t\tfor (f in Type.getInstanceFields(Type.getClass(this)))\r\n\t\t\t__variables.set(f, true);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hget",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hget(name:String):Dynamic\r\n\t\treturn __variables.exists(name) ? Reflect.getProperty(this, name) : script.get(name);",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "hset",
+			"args": [
+				{
+					"name": "name",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "val",
+					"type": "Dynamic",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Dynamic",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function hset(name:String, val:Dynamic):Dynamic {\r\n\t\tif (__variables.exists(name))\r\n\t\t\tReflect.setProperty(this, name, val);\r\n\t\telse\r\n\t\t\tscript.set(name, val);\r\n\t\treturn val;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "call",
+			"args": [
+				{
+					"name": "func",
+					"type": "String",
+					"optional": false,
+					"def": null
+				},
+				{
+					"name": "args",
+					"type": "Array<Dynamic>",
+					"optional": false,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function call(func:String, args:Array<Dynamic>) {\r\n\t\t#if ALLOW_MULTITHREADING\r\n\t\tfunkin.backend.utils.ThreadUtil.execAsync(() -> {\r\n\t\t\tcallEnded = false;\r\n\t\t\treturnValue = script.call(func, args);\r\n\t\t\tcallEnded = true;\r\n\t\t});\r\n\t\t#else\r\n\t\treturnValue = script.call(func, args);\r\n\t\tcallEnded = true;\r\n\t\t#end\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "destroy",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function destroy() {\r\n\t\tif (script != null) {\r\n\t\t\tscript.call(\"destroy\");\r\n\t\t\tscript.destroy();\r\n\t\t}\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}

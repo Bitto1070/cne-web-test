@@ -1,0 +1,116 @@
+{
+	"kind": "class",
+	"name": "CreditsCodename",
+	"pkg": "funkin.menus.credits",
+	"doc": null,
+	"meta": [],
+	"fields": [
+		{
+			"kind": "var",
+			"name": "error",
+			"type": "Bool",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "totalContributions",
+			"type": "Int",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "var",
+			"name": "contribFormats",
+			"type": "Array<FlxTextFormatMarkerPair>",
+			"access": "",
+			"isStatic": false,
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "new",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function new() {\r\n\t\tsuper(\"Codename Engine\", \"credits.allContributors\");\r\n\t\ttryUpdating(true);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "tryUpdating",
+			"args": [
+				{
+					"name": "forceDisplaying",
+					"type": "Bool",
+					"optional": false,
+					"def": "false"
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function tryUpdating(forceDisplaying:Bool = false) {\r\n\t\tupdateMenuDesc(TU.translate(\"credits.downloadingList\"));\r\n\t\t_canReset = false;\r\n\t\tMain.execAsync(() -> {\r\n\t\t\tif (checkUpdate() || forceDisplaying) _downloadingSteps = 2;\r\n\t\t\telse _downloadingSteps = 1;\r\n\t\t});\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateMenuDesc",
+			"args": [
+				{
+					"name": "txt",
+					"type": "String",
+					"optional": true,
+					"def": null
+				}
+			],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public override function updateMenuDesc(?txt:String) {\r\n\t\tif (!_canReset) return;\r\n\t\tsuper.updateMenuDesc(txt);\r\n\t\tupdateMarkup();\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "updateMarkup",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function updateMarkup() {\r\n\t\tif (parent == null) return;\r\n\t\tvar text:String = parent.descLabel.text;\r\n\t\tparent.descLabel.text = \"\";\r\n\t\tparent.descLabel.applyMarkup(text, contribFormats = [\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(Flags.MAIN_DEVS_COLOR), '*'),\r\n\t\t\tnew FlxTextFormatMarkerPair(new FlxTextFormat(FlxColor.interpolate(Flags.MIN_CONTRIBUTIONS_COLOR, Flags.MAIN_DEVS_COLOR, Options.contributors[curSelected].contributions / totalContributions)), '~')\r\n\t\t]);\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "checkUpdate",
+			"args": [],
+			"ret": "Bool",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function checkUpdate():Bool {\r\n\t\tvar curTime:Float = Date.now().getTime();\r\n\t\tif(Options.lastUpdated != null && curTime < Options.lastUpdated + 120000) return false;  // Fuck you Github rate limits  - Nex\r\n\t\tOptions.lastUpdated = curTime;\r\n\r\n\t\terror = false;\r\n\t\tvar idk = GitHub.getContributors(Flags.REPO_OWNER, Flags.REPO_NAME, function(e) {\r\n\t\t\terror = true;\r\n\t\t\tvar errMsg:String = 'Error while trying to download contributors list:\\n${CoolUtil.removeIP(e.message)}';\r\n\t\t\tLogs.error(errMsg.replace('\\n', ' '));\r\n\t\t\tfunkin.backend.utils.NativeAPI.showMessageBox(\"Codename Engine Warning\", errMsg, MSG_WARNING);\r\n\t\t});\r\n\t\tif(error) return false;\r\n\t\tif((idk is Array)) {\r\n\t\t\tvar contributors:Array<CreditsGitHubContributor> = [];\r\n\t\t\tfor(e in idk) contributors.push({\r\n\t\t\t\tlogin: e.login,\r\n\t\t\t\tavatar_url: e.avatar_url,\r\n\t\t\t\thtml_url: e.html_url,\r\n\t\t\t\tid: e.id,\r\n\t\t\t\tcontributions: e.contributions\r\n\t\t\t});\r\n\t\t\tOptions.contributors = contributors;\r\n\t\t}\r\n\t\tLogs.verbose('[CreditsCodename] Contributors list Updated!');\r\n\r\n\t\tvar errorOnMain:Bool = false;\r\n\t\tvar idk2 = GitHub.getOrganizationMembers(Flags.REPO_OWNER, function(e) {\r\n\t\t\terrorOnMain = true;\r\n\t\t\tvar errMsg:String = 'Error while trying to download ${Flags.REPO_OWNER} members list:\\n${CoolUtil.removeIP(e.message)}';\r\n\t\t\tLogs.error(errMsg.replace('\\n', ' '));\r\n\t\t\tfunkin.backend.utils.NativeAPI.showMessageBox(\"Codename Engine Warning\", errMsg, MSG_WARNING);\r\n\t\t});\r\n\t\tif(!errorOnMain) {\r\n\t\t\tOptions.mainDevs = [for(m in idk2) m.id];\r\n\t\t\tLogs.verbose('[CreditsCodename] Main Devs list Updated!');\r\n\t\t}\r\n\r\n\t\treturn true;\r\n\t}",
+			"doc": null,
+			"meta": []
+		},
+		{
+			"kind": "function",
+			"name": "displayList",
+			"args": [],
+			"ret": "Void",
+			"isStatic": false,
+			"isInline": false,
+			"src": "public function displayList() {\r\n\t\t//if (curSelected > Options.contributors.length - 1) changeSelection(-(curSelected - (Options.contributors.length - 1)));\r\n\t\tif (curSelected > Options.contributors.length - 1) curSelected = Options.contributors.length - 1;\r\n\t\tchangeSelection(0, true);\r\n\r\n\t\twhile (members.length > 0) {\r\n\t\t\tmembers[0].destroy();\r\n\t\t\tremove(members[0], true);\r\n\t\t}\r\n\r\n\t\ttotalContributions = 0;\r\n\t\tfor(c in Options.contributors) totalContributions += c.contributions;\r\n\t\tfor(c in Options.contributors) {\r\n\t\t\tvar text = TU.translate(\"credits.totalContributions\", [c.contributions, totalContributions, FlxMath.roundDecimal(c.contributions / totalContributions * 100, 2)]);\r\n\t\t\tvar opt:GithubIconOption = new GithubIconOption(c, text);\r\n\t\t\tif(Options.mainDevs.contains(c.id)) {\r\n\t\t\t\topt.desc += TU.translate(\"credits.mainDev\");\r\n\t\t\t\t@:privateAccess opt.__text.color = Flags.MAIN_DEVS_COLOR;\r\n\t\t\t}\r\n\t\t\tadd(opt);\r\n\t\t}\r\n\r\n\t\tupdateMenuDesc();\r\n\t}",
+			"doc": null,
+			"meta": []
+		}
+	]
+}
